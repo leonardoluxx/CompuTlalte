@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <!-- Metadatos básicos para que la página se muestre correctamente en distintos dispositivos. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="description" content="Computlalte: computadoras de alto rendimiento para juegos, desarrollo y uso diario, con accesorios y ofertas.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Computlalte | Tecnología de alto rendimiento">
+    <meta property="og:description" content="Computadoras de alto rendimiento para juegos, desarrollo y uso diario.">
+    <title>Computlalte | Tecnología de alto rendimiento</title>
+    <!-- Favicon dibujado con SVG en línea: sin peticiones adicionales. -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23111111'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='700' text-anchor='middle' fill='%23ff0033'%3EC%3C/text%3E%3C/svg%3E">
+    <!-- La imagen del anuncio es el elemento más grande de la primera pantalla. -->
+    <link rel="preload" as="image" href="imagenes/imagen-procesador-add.jpg" fetchpriority="high">
+    <link rel="preload" href="fonts/Orbitron/Orbitron-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/Rajdhani/Rajdhani-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/ChakraPetch-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Encabezado de navegación para las versiones de escritorio y móvil. -->
+    <header class="encabezado-sitio">
+        <nav class="barra-navegacion" aria-label="Navegación principal">
+            <!-- Grupo con el botón hamburguesa y el logotipo. -->
+            <div class="inicio-navegacion">
+                <button class="boton-icono boton-menu" type="button" aria-label="Abrir menú" aria-controls="menu-movil" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+                </button>
+                <a class="logotipo" href="#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+            </div>
+
+            <!-- Enlaces centrales y menú desplegable para pantallas grandes. -->
+            <ul class="enlaces-navegacion">
+                <li class="menu-desplegable">
+                    <a class="enlace-navegacion" href="#computadoras">Computadoras <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+                    <ul class="contenido-desplegable">
+                        <li><a href="#juegos">Para Juegos</a></li>
+                        <li><a href="#desarrollo">Desarrollo</a></li>
+                        <li><a href="#uso-diario">Uso Diario</a></li>
+                    </ul>
+                </li>
+                <li><a class="enlace-navegacion" href="#accesorios">Accesorios</a></li>
+                <li><a class="enlace-navegacion" href="#ofertas">Ofertas</a></li>
+            </ul>
+
+            <!-- Iconos dibujados como SVG dentro del archivo: funcionan sin recursos externos. -->
+            <div class="iconos-navegacion" aria-label="Accesos rápidos">
+                <a class="boton-icono" href="#buscar" aria-label="Buscar">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 4 4"/></svg>
+                </a>
+                <a class="boton-icono" href="#cuenta" aria-label="Mi cuenta">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+                </a>
+                <a class="boton-icono" href="#carrito" aria-label="Carrito de compras">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Anuncio principal debajo de la barra de navegación. -->
+    <section class="seccion-anuncio">
+        <div class="contenido-anuncio">
+            <h1>Snapdragon 8 Elite Gen 6</h1>
+            <p class="subtitulo">El futuro de la potencia móvil en tus manos.</p>
+            <p class="descripcion">Experimenta un salto generacional en rendimiento y eficiencia energética. Diseñado para los desafíos más extremos.</p>
+            <a href="#catalogo" class="boton-comprar">Comprar ahora</a>
+        </div>
+    </section>
+
+    <!-- Capa que cubre la pantalla cuando se abre la navegación móvil. -->
+    <div class="menu-movil" id="menu-movil" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
+        <div class="encabezado-menu-movil">
+            <a class="logotipo" href="#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+            <button class="boton-icono boton-cerrar" type="button" aria-label="Cerrar menú">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+        </div>
+        <!-- Lista vertical de enlaces; Computadoras abre sus opciones como acordeón. -->
+        <nav class="navegacion-movil" aria-label="Navegación móvil">
+            <div>
+                <button class="enlace-movil boton-acordeon" type="button" aria-expanded="false" aria-controls="opciones-movil">
+                    <span>Computadoras</span>
+                    <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                </button>
+                <div class="submenu-movil" id="opciones-movil" inert>
+                    <a href="#juegos">Para Juegos</a>
+                    <a href="#desarrollo">Desarrollo</a>
+                    <a href="#uso-diario">Uso Diario</a>
+                </div>
+            </div>
+            <a class="enlace-movil" href="#accesorios">Accesorios</a>
+            <a class="enlace-movil" href="#ofertas">Ofertas</a>
+        </nav>
+        <!-- Pie decorativo de la capa móvil. -->
+        <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
+    </div>
+    <!-- Lógica local para abrir el menú y desplegar el acordeón. -->
+    <script src="js/script.js" defer></script>
+</body>
+</html>
