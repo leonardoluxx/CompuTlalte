@@ -10,18 +10,17 @@
     <meta property="og:title" content="Computlalte | Tecnología de alto rendimiento">
     <meta property="og:description" content="Computadoras de alto rendimiento para juegos, desarrollo y uso diario.">
     <title>Computlalte | Tecnología de alto rendimiento</title>
-    <!-- Favicon dibujado con SVG en línea: sin peticiones adicionales. -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23111111'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='700' text-anchor='middle' fill='%23ff0033'%3EC%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <!-- La imagen del anuncio es el elemento más grande de la primera pantalla. -->
-    <link rel="preload" as="image" href="imagenes/imagen-procesador-add.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="imagenes/anuncios/imagen-procesador-add.jpg" fetchpriority="high">
     <link rel="preload" href="fonts/Orbitron/Orbitron-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/Rajdhani/Rajdhani-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="fonts/ChakraPetch-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/ChakraPetch/ChakraPetch-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <!-- Encabezado de navegación para las versiones de escritorio y móvil. -->
-    <header class="encabezado-sitio">
+    <header class="encabezado-sitio" id="inicio">
         <nav class="barra-navegacion" aria-label="Navegación principal">
             <!-- Grupo con el botón hamburguesa y el logotipo. -->
             <div class="inicio-navegacion">
@@ -47,9 +46,9 @@
 
             <!-- Iconos dibujados como SVG dentro del archivo: funcionan sin recursos externos. -->
             <div class="iconos-navegacion" aria-label="Accesos rápidos">
-                <a class="boton-icono" href="#buscar" aria-label="Buscar">
+                <button class="boton-icono boton-abrir-busqueda" id="abrir-busqueda" type="button" aria-label="Buscar productos" aria-haspopup="dialog" aria-controls="modal-busqueda">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 4 4"/></svg>
-                </a>
+                </button>
                 <a class="boton-icono" href="#cuenta" aria-label="Mi cuenta">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
                 </a>
@@ -69,6 +68,82 @@
             <a href="#catalogo" class="boton-comprar">Comprar ahora</a>
         </div>
     </section>
+
+    <section class="titulo-categoria" id="computadoras">
+        <h2>Computadoras <span class="texto-rojo">para juegos</span></h2>
+    </section>
+
+    <!-- La cuadrícula se llena con las tarjetas creadas desde js/script.js. -->
+    <section class="seccion-catalogo" id="catalogo" aria-label="Catálogo de computadoras para juegos">
+        <div id="juegos" class="ancla-categoria" aria-hidden="true"></div>
+        <div class="rejilla-productos" id="rejilla-productos"></div>
+    </section>
+
+    <!-- Ventana de detalles: el contenido y las imágenes se cargan desde el producto seleccionado. -->
+    <dialog class="modal-producto" id="modal-producto" aria-labelledby="modal-titulo" tabindex="-1">
+        <div class="contenido-modal-producto">
+            <section class="galeria-producto" aria-label="Galería de imágenes del producto">
+                <div class="marco-imagen-producto">
+                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="">
+                    <button class="control-galeria control-galeria-anterior" id="imagen-anterior" type="button" aria-label="Ver imagen anterior">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                    </button>
+                    <button class="control-galeria control-galeria-siguiente" id="imagen-siguiente" type="button" aria-label="Ver imagen siguiente">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                    </button>
+                </div>
+                <div class="miniaturas-producto" id="miniaturas-producto" role="group" aria-label="Miniaturas. También puedes usar las flechas sobre la imagen"></div>
+            </section>
+
+            <section class="informacion-producto">
+                <div class="encabezado-detalle-producto">
+                    <div>
+                        <p class="categoria-producto" id="categoria-producto"></p>
+                        <h2 id="modal-titulo"></h2>
+                    </div>
+                    <button class="boton-cerrar-modal" id="cerrar-modal-producto" type="button" aria-label="Cerrar detalles">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+                    </button>
+                </div>
+
+                <p class="precio-producto" id="precio-producto"></p>
+                <p class="descripcion-producto" id="descripcion-producto"></p>
+
+                <div class="listas-detalles-producto">
+                    <section class="lista-detalle">
+                        <h3>Características clave</h3>
+                        <ul id="caracteristicas-producto"></ul>
+                    </section>
+                    <section class="lista-detalle">
+                        <h3>Especificaciones técnicas</h3>
+                        <ul id="especificaciones-producto"></ul>
+                    </section>
+                </div>
+
+                <button class="boton-comprar-modal" id="comprar-producto" type="button">Comprar ahora</button>
+                <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
+            </section>
+        </div>
+    </dialog>
+
+    <!-- Búsqueda local: las sugerencias se generan desde el catálogo de productos. -->
+    <dialog class="modal-busqueda" id="modal-busqueda" aria-labelledby="titulo-busqueda" tabindex="-1">
+        <div class="contenido-busqueda">
+            <div class="encabezado-busqueda">
+                <div>
+                    <p class="etiqueta-busqueda">CATÁLOGO COMPUTLALTE</p>
+                    <h2 id="titulo-busqueda">Buscar productos</h2>
+                </div>
+                <button class="boton-cerrar-modal" id="cerrar-busqueda" type="button" aria-label="Cerrar búsqueda">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+                </button>
+            </div>
+            <label class="etiqueta-campo-busqueda" for="campo-busqueda">¿Qué estás buscando?</label>
+            <input class="campo-busqueda" id="campo-busqueda" type="search" autocomplete="off" placeholder="Escribe un producto, marca o componente" aria-autocomplete="list" aria-controls="resultados-busqueda">
+            <p class="estado-busqueda" id="estado-busqueda" role="status" aria-live="polite">Empieza a escribir para ver sugerencias.</p>
+            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Sugerencias de productos"></div>
+        </div>
+    </dialog>
 
     <!-- Capa que cubre la pantalla cuando se abre la navegación móvil. -->
     <div class="menu-movil" id="menu-movil" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
@@ -97,7 +172,9 @@
         <!-- Pie decorativo de la capa móvil. -->
         <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
     </div>
-    <!-- Lógica local para abrir el menú y desplegar el acordeón. -->
+    <!-- Datos locales de prueba; después podrá sustituirse su origen por la base de datos. -->
+    <script src="js/catalogo-local.js" defer></script>
+    <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
     <script src="js/script.js" defer></script>
 </body>
 </html>
