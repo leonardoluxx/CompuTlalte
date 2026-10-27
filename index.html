@@ -13,9 +13,8 @@
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <!-- La imagen del anuncio es el elemento más grande de la primera pantalla. -->
     <link rel="preload" as="image" href="imagenes/anuncios/imagen-procesador-add.jpg" fetchpriority="high">
-    <link rel="preload" href="fonts/Orbitron/Orbitron-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="fonts/Rajdhani/Rajdhani-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="fonts/ChakraPetch/ChakraPetch-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Tipografías incrustadas para que el diseño se vea igual sin conexión. -->
+    <link rel="stylesheet" href="css/fuentes.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -49,10 +48,10 @@
                 <button class="boton-icono boton-abrir-busqueda" id="abrir-busqueda" type="button" aria-label="Buscar productos" aria-haspopup="dialog" aria-controls="modal-busqueda">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 4 4"/></svg>
                 </button>
-                <a class="boton-icono" href="#cuenta" aria-label="Mi cuenta">
+                <a class="boton-icono" href="Cuenta.html" aria-label="Mi cuenta">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
                 </a>
-                <a class="boton-icono" href="#carrito" aria-label="Carrito de compras">
+                <a class="boton-icono" href="Carrito.html" aria-label="Carrito de compras">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
                 </a>
             </div>

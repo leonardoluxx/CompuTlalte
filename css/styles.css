@@ -1,35 +1,5 @@
-/* Fuentes locales para que la interfaz conserve su tipografía sin conexión. */
-@font-face {
-    font-family: 'Orbitron';
-    src: url('../fonts/Orbitron/Orbitron-VariableFont_wght.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 400 900;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Rajdhani';
-    src: url('../fonts/Rajdhani/Rajdhani-Regular.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 400;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Rajdhani';
-    src: url('../fonts/Rajdhani/Rajdhani-Bold.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 700;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Chakra Petch';
-    src: url('../fonts/ChakraPetch/ChakraPetch-Regular.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 400;
-    font-display: block;
-}
+/* Las tipografías están incrustadas en css/fuentes.css para que el diseño
+   se vea igual sin conexión y sin depender de recursos externos. */
 
 :root {
     color-scheme: dark;
@@ -130,6 +100,7 @@ button {
 .logotipo {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     color: var(--color-texto);
     font-family: var(--fuente-titulos);
     font-size: var(--texto-logotipo);
@@ -477,12 +448,36 @@ button {
 
 .pie-tarjeta-producto {
     display: flex;
-    align-items: end;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 12px;
     margin-top: auto;
     padding-top: 16px;
     border-top: 1px solid #292929;
+}
+
+.acciones-tarjeta-producto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.boton-anadir-carrito {
+    border: 1px solid var(--color-acento);
+    background: transparent;
+    color: var(--color-texto-principal);
+    font-family: var(--fuente-interfaz);
+    font-size: var(--texto-boton);
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: var(--transicion-estandar);
+}
+
+.boton-anadir-carrito:hover,
+.boton-anadir-carrito:focus-visible {
+    background: var(--color-acento);
 }
 
 .precio-tarjeta-producto span,
@@ -1417,6 +1412,51 @@ h3 {
 
     .lista-detalle ul {
         font-size: 13px;
+    }
+}
+
+/* Ajusta la barra superior en teléfonos para que logotipo e iconos quepan sin desbordarse. */
+@media (max-width: 480px) {
+    .barra-navegacion {
+        padding: 0 12px;
+    }
+
+    .barra-navegacion .logotipo {
+        font-size: 1rem;
+    }
+
+    .iconos-navegacion {
+        gap: 2px;
+    }
+
+    .iconos-navegacion .boton-icono {
+        width: 40px;
+        min-width: 40px;
+    }
+}
+
+/* En pantallas de 380 px o menos se compacta aún más el encabezado. */
+@media (max-width: 380px) {
+    .barra-navegacion {
+        padding: 0 8px;
+    }
+
+    .barra-navegacion .logotipo {
+        font-size: 15px;
+    }
+
+    .iconos-navegacion {
+        gap: 0;
+    }
+
+    .boton-menu {
+        width: 40px;
+        min-width: 40px;
+    }
+
+    .iconos-navegacion .boton-icono {
+        width: 40px;
+        min-width: 40px;
     }
 }
 

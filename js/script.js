@@ -267,6 +267,22 @@ function mostrarProductos() {
             crearElemento("strong", "", formateadorMoneda.format(calcularPrecioFinal(producto)))
         );
 
+        const accionesTarjeta = document.createElement("div");
+        accionesTarjeta.className = "acciones-tarjeta-producto";
+
+        const botonAnadirCarrito = document.createElement("button");
+        botonAnadirCarrito.className = "boton-anadir-carrito";
+        botonAnadirCarrito.type = "button";
+        botonAnadirCarrito.textContent = "Añadir al carrito";
+        botonAnadirCarrito.addEventListener("click", (evento) => {
+            evento.stopPropagation();
+            añadirProductoAlCarrito(producto);
+            botonAnadirCarrito.textContent = "Añadido ✓";
+            setTimeout(() => {
+                botonAnadirCarrito.textContent = "Añadir al carrito";
+            }, 1000);
+        });
+
         const accion = document.createElement("span");
         accion.className = "accion-ver-detalles";
         accion.append(document.createTextNode("Ver detalles"));
@@ -279,7 +295,8 @@ function mostrarProductos() {
         flecha.append(trazoFlecha);
         accion.append(flecha);
 
-        pie.append(precio, accion);
+        accionesTarjeta.append(botonAnadirCarrito, accion);
+        pie.append(precio, accionesTarjeta);
         contenido.append(pie);
         botonTarjeta.append(marcoImagen, contenido);
         tarjeta.append(botonTarjeta);
@@ -461,7 +478,48 @@ document.addEventListener("keydown", (evento) => {
     }
 });
 
-// El botón informa que la compra es demostrativa, pues todavía no hay checkout.
+function añadirProductoAlCarrito(producto) {
+    const CLAVE_CARRITO = "carrito";
+    let carrito = [];
+
+    try {
+        const guardado = localStorage.getItem(CLAVE_CARRITO);
+        if (guardado) {
+            carrito = JSON.parse(guardado);
+        }
+    } catch (error) {
+        carrito = [];
+    }
+
+    const precioFinal = calcularPrecioFinal(producto);
+    const indiceExistente = carrito.findIndex((item) => item.id === producto.id);
+
+    if (indiceExistente >= 0) {
+        carrito[indiceExistente].cantidad += 1;
+    } else {
+        carrito.push({
+            id: producto.id,
+            nombre: producto.nombre,
+            precio: Math.round(precioFinal),
+            cantidad: 1,
+            imagen: producto.imagenPrincipal
+        });
+    }
+
+    localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+}
+
+// Añade el producto al carrito y redirige a la página de compras.
 botonComprarProducto.addEventListener("click", () => {
-    estadoCompra.textContent = "Compra de demostración: el pago aún no está conectado.";
+    if (!productoModalActual) {
+        estadoCompra.textContent = "No hay producto seleccionado.";
+        return;
+    }
+
+    añadirProductoAlCarrito(productoModalActual);
+    estadoCompra.textContent = "Producto añadido al carrito. Redirigiendo...";
+
+    setTimeout(() => {
+        window.location.href = "Carrito.html";
+    }, 600);
 });
