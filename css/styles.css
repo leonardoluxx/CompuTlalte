@@ -42,6 +42,12 @@ html {
     scroll-behavior: smooth;
 }
 
+/* Entrada suave para que el cambio de página no se sienta de golpe. */
+@keyframes aparecer-pagina {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 /* Chakra Petch mantiene cómodos de leer los textos largos y descriptivos. */
 body {
     min-width: 320px;
@@ -51,6 +57,7 @@ body {
     color: var(--color-texto);
     font-family: var(--fuente-lectura);
     -webkit-font-smoothing: antialiased;
+    animation: aparecer-pagina 0.28s ease both;
 }
 
 /* Impide desplazar el contenido del fondo mientras el menú está abierto. */
@@ -590,20 +597,31 @@ button {
     height: 44px;
     place-items: center;
     padding: 0;
-    background: rgb(10 10 10 / 78%);
-    border: 1px solid rgb(255 255 255 / 18%);
+    background: rgb(0 0 0 / 50%);
+    border: 1px solid rgb(255 255 255 / 12%);
     border-radius: 50%;
     color: #ffffff;
     cursor: pointer;
+    opacity: 0;
     transform: translateY(-50%);
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition: opacity 0.25s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
+/* Regla de la galería: las flechas quedan ocultas para no estorbar sobre la
+   foto y solo aparecen al pasar el cursor o al llegar con el teclado. */
 .control-galeria:hover,
 .control-galeria:focus-visible {
+    opacity: 1;
     background: var(--color-acento);
     border-color: var(--color-acento);
     color: #ffffff;
+}
+
+/* En pantallas táctiles no existe hover: se mantienen visibles. */
+@media (hover: none) {
+    .control-galeria {
+        opacity: 1;
+    }
 }
 
 .control-galeria-anterior {
@@ -1468,5 +1486,171 @@ h3 {
         scroll-behavior: auto !important;
         transition-duration: 0s !important;
         transition-delay: 0s !important;
+        animation-duration: 0s !important;
+    }
+}
+
+/* Pie de página: misma paleta y tipografías que el resto del sitio. */
+.pie-sitio {
+    margin-top: 70px;
+    background: var(--color-barra);
+    border-top: 1px solid var(--color-linea);
+}
+
+.contenido-pie {
+    display: grid;
+    width: min(100% - 32px, 1000px);
+    margin: 0 auto;
+    padding: 38px 0 30px;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 32px;
+}
+
+.logotipo-pie {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-texto);
+    font-family: var(--fuente-titulos);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    transition: text-shadow 0.3s ease;
+}
+
+/* El logotipo enciende un halo rojo tenue al pasar el cursor. */
+.logotipo-pie:hover,
+.logotipo-pie:focus-visible {
+    text-shadow: 0 0 16px rgb(255 0 51 / 55%);
+}
+
+.logotipo-pie span {
+    font-weight: 400;
+}
+
+.logotipo-pie b {
+    color: var(--color-acento);
+    font-weight: 850;
+}
+
+.lema-pie {
+    max-width: 38ch;
+    margin: 14px 0 0;
+    color: var(--color-atenuado);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.titulo-pie {
+    margin: 0 0 14px;
+    color: var(--color-acento);
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.columna-pie ul {
+    display: grid;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.columna-pie li {
+    color: var(--color-atenuado);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.columna-pie a {
+    position: relative;
+    display: inline-block;
+    color: var(--color-atenuado);
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Subrayado rojo que crece desde la izquierda al pasar el cursor. */
+.columna-pie a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: var(--color-acento);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.columna-pie a:hover,
+.columna-pie a:focus-visible {
+    color: var(--color-texto);
+    transform: translateX(3px);
+}
+
+.columna-pie a:hover::after,
+.columna-pie a:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.pie-inferior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin: 0;
+    padding: 16px max(16px, calc((100% - 1000px) / 2)) 18px;
+    border-top: 1px solid var(--color-linea);
+    color: var(--color-atenuado);
+    font-size: 13px;
+}
+
+.pie-inferior p {
+    margin: 0;
+}
+
+.lema-corto {
+    font-family: var(--fuente-interfaz);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.corazon-pie {
+    display: inline-block;
+    color: var(--color-acento);
+}
+
+/* El corazón late suavemente al pasar el cursor por el lema. */
+@keyframes latido-pie {
+    0%, 100% { transform: scale(1); }
+    35% { transform: scale(1.35); }
+    70% { transform: scale(0.95); }
+}
+
+.lema-corto:hover .corazon-pie {
+    animation: latido-pie 0.9s ease;
+}
+
+/* En pantallas angostas el pie pasa a una sola columna. */
+@media (max-width: 760px) {
+    .pie-sitio {
+        margin-top: 50px;
+    }
+
+    .contenido-pie {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding: 32px 0 26px;
+    }
+
+    .pie-inferior {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

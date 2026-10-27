@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1c1c1c">
+    <meta name="color-scheme" content="dark">
+    <title>Carrito de compras | Computlalte</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/style-carrito.css">
+</head>
+<body>
+    <!-- Misma barra que el resto de páginas interiores. -->
+    <header class="barra-superior">
+        <a class="logotipo-superior" href="index.html" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+        <a class="enlace-volver" href="index.html">Volver a la tienda</a>
+    </header>
+
+    <div class="contenido-pagina">
+        <h1 id="titulo">Carrito de compras</h1>
+
+        <div id="productos">
+            <h2 id="cantidad">Mis productos</h2>
+            <hr id="separador">
+
+            <!-- Aquí se dibujan los productos que vienen de la tienda -->
+            <div id="contenido">
+                <p class="vacio">Tu carrito está vacío.</p>
+            </div>
+
+            <div id="resumen">
+                <p id="total">Total: $0</p>
+
+                <div id="botones">
+                    <a href="index.html" id="seguir">Seguir comprando</a>
+                    <button id="pagar" type="button">Pagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/scripts-carrito.js"></script>
+</body>
+</html>

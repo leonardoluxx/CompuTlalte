@@ -1,6 +1,14 @@
 // El carrito se guarda con esta clave; la página de la tienda debe usar la misma
 const CLAVE = "carrito";
 
+// Mismo formato de moneda que usa la tienda, para que un precio se lea igual
+// en la tarjeta del producto y en el carrito.
+const formatoMoneda = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+    maximumFractionDigits: 0
+});
+
 const contenidoEl = document.getElementById("contenido");
 const totalEl     = document.getElementById("total");
 const pagarEl     = document.getElementById("pagar");
@@ -60,7 +68,7 @@ function mostrarCarrito() {
         vacio.className = "vacio";
         vacio.textContent = "Tu carrito está vacío.";
         contenidoEl.appendChild(vacio);
-        totalEl.textContent = "Total: $0 MXN";
+        totalEl.textContent = "Total: " + formatoMoneda.format(0);
         return;
     }
 
@@ -76,7 +84,7 @@ function mostrarCarrito() {
 
         const info = document.createElement("span");
         info.className = "info";
-        info.textContent = producto.nombre + " - $" + producto.precio + " MXN";
+        info.textContent = producto.nombre + " - " + formatoMoneda.format(producto.precio);
 
         const controles = document.createElement("div");
         controles.className = "controles";
@@ -96,7 +104,7 @@ function mostrarCarrito() {
         contenidoEl.appendChild(fila);
     });
 
-    totalEl.textContent = "Total: $" + calcularTotal() + " MXN";
+    totalEl.textContent = "Total: " + formatoMoneda.format(calcularTotal());
 }
 
 pagarEl.addEventListener("click", function () {
@@ -110,12 +118,12 @@ pagarEl.addEventListener("click", function () {
     if (!sesionIniciada) {
         alert("Debes iniciar sesión para continuar con el pago.");
         localStorage.setItem("redirigirTrasLogin", "carrito");
-        window.location.href = "Login.html";
+        window.location.href = "login.html";
         return;
     }
 
     // Redirigir al formulario de datos bancarios para transferencia
-    window.location.href = "Pago.html";
+    window.location.href = "pago.html";
 });
 
 mostrarCarrito();

@@ -1,4 +1,11 @@
 const CLAVE_CARRITO = "carrito";
+
+// El monto se muestra con el mismo formato que el resto del sitio.
+const formatoMoneda = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+    maximumFractionDigits: 0
+});
 const formularioPagoEl = document.getElementById("formulario-pago");
 const titularEl = document.getElementById("titular");
 const bancoEl = document.getElementById("banco");
@@ -31,7 +38,7 @@ function mostrarMonto() {
         formularioPagoEl.querySelector("#confirmar").style.opacity = "0.5";
         return;
     }
-    montoEl.textContent = "Total a pagar: $" + calcularTotal(carrito) + " MXN";
+    montoEl.textContent = "Total a pagar: " + formatoMoneda.format(calcularTotal(carrito));
 }
 
 formularioPagoEl.addEventListener("submit", function (evento) {

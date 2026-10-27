@@ -19,6 +19,12 @@
     box-sizing: border-box;
 }
 
+/* Entrada suave para que el cambio de página no se sienta de golpe. */
+@keyframes aparecer-pagina {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 body {
     min-width: 320px;
     min-height: 100vh;
@@ -29,10 +35,11 @@ body {
     color: var(--color-texto);
     font-family: var(--fuente-lectura);
     -webkit-font-smoothing: antialiased;
+    animation: aparecer-pagina 0.28s ease both;
 }
 
-/* Barra superior con el logotipo y el enlace de regreso. */
-.barra-cuenta {
+/* Barra superior con el logotipo y el enlace de regreso a la tienda. */
+.barra-superior {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -43,7 +50,7 @@ body {
     border-bottom: 1px solid #303030;
 }
 
-.logotipo-cuenta {
+.logotipo-superior {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -56,11 +63,11 @@ body {
     white-space: nowrap;
 }
 
-.logotipo-cuenta span {
+.logotipo-superior span {
     font-weight: 400;
 }
 
-.logotipo-cuenta b {
+.logotipo-superior b {
     color: var(--color-acento);
     font-weight: 850;
 }
@@ -365,5 +372,16 @@ body {
 
     .panel-cuenta {
         padding: 16px;
+    }
+}
+
+/* Respeta la preferencia del sistema para reducir animaciones. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        animation-duration: 0s !important;
     }
 }

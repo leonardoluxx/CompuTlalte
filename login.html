@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1c1c1c">
+    <meta name="color-scheme" content="dark">
+    <title>Iniciar sesión | Computlalte</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/style-login.css">
+</head>
+<body>
+    <!-- Misma barra que el resto de páginas interiores. -->
+    <header class="barra-superior">
+        <a class="logotipo-superior" href="index.html" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+        <a class="enlace-volver" href="index.html">Volver a la tienda</a>
+    </header>
+
+    <div class="contenido-pagina">
+        <h1 id="titulo">Iniciar sesión</h1>
+
+        <div id="login">
+            <!-- novalidate hace que los mensajes de error los muestre login.js y no el navegador -->
+            <form id="formulario" novalidate>
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" autocomplete="username" placeholder="tucorreo@ejemplo.com">
+
+                <label for="clave">Contraseña</label>
+                <div class="campo-clave">
+                    <input type="password" id="clave" autocomplete="current-password">
+                    <button type="button" id="ver-clave">Mostrar</button>
+                </div>
+
+                <p id="mensaje" role="alert"></p>
+
+                <button type="submit" id="entrar">Iniciar sesión</button>
+            </form>
+
+            <!-- Cambia registro.html por el nombre de tu página de registro -->
+            <p id="registro">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
+        </div>
+    </div>
+
+    <script src="js/scripts-login.js"></script>
+</body>
+</html>
