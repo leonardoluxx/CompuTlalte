@@ -1,0 +1,172 @@
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+
+html{
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1c1c1c;
+    margin: 0;
+    padding: clamp(20px, 5vw, 30px) 15px;
+    min-height: 100vh;
+}
+
+#titulo{
+    color: red;
+    text-align: center;
+    font-size: clamp(28px, 7vw, 40px);
+    line-height: 1.15;
+    margin: 0 0 22px 0;
+}
+
+#pago{
+    width: min(100%, 560px);
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #111111;
+    border: 1px solid #333;
+    border-radius: 10px;
+    color: white;
+}
+
+.info-tienda h2{
+    margin-top: 0;
+    color: #ff3b3b;
+    text-align: center;
+}
+
+.info-tienda p{
+    margin: 8px 0;
+}
+
+.nota{
+    font-size: 14px;
+    color: #cccccc;
+}
+
+.monto{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    margin-top: 16px;
+}
+
+.separador{
+    border: none;
+    height: 2px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+
+#formulario-pago{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#formulario-pago label{
+    font-weight: bold;
+}
+
+#formulario-pago input{
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #1c1c1c;
+    color: white;
+    font-size: 16px;
+}
+
+#mensaje{
+    color: #ff6b6b;
+    min-height: 20px;
+    margin: 5px 0;
+}
+
+.botones{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#volver{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #d71920;
+    border-radius: 5px;
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#confirmar{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid #d71920;
+    border-radius: 5px;
+    background-color: #d71920;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#volver:hover{
+    background-color: #2a2a2a;
+}
+
+#confirmar:hover{
+    background-color: #b3141a;
+}
+
+@media (max-width: 480px){
+    body{
+        padding: 20px 12px;
+    }
+
+    #titulo{
+        margin-bottom: 18px;
+    }
+
+    #pago{
+        padding: 15px;
+    }
+
+    .botones{
+        flex-direction: column;
+    }
+
+    #volver,
+    #confirmar{
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 360px){
+    #pago{
+        padding: 12px;
+    }
+
+    .info-tienda h2{
+        font-size: 20px;
+    }
+}

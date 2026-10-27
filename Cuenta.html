@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1c1c1c">
+    <meta name="color-scheme" content="dark">
+    <title>Mi cuenta | Computlalte</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/StyleCuenta.css">
+</head>
+<body>
+    <!-- Barra sencilla con el logotipo y el regreso a la tienda. -->
+    <header class="barra-cuenta">
+        <a class="logotipo-cuenta" href="index.html" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+        <a class="enlace-volver" href="index.html">Volver a la tienda</a>
+    </header>
+
+    <main class="contenedor-cuenta">
+        <div class="encabezado-cuenta">
+            <div class="avatar-cuenta" id="avatar-cuenta" aria-hidden="true">?</div>
+            <div>
+                <p class="etiqueta-cuenta">ÁREA DE CLIENTE</p>
+                <h1 id="titulo">Mi cuenta</h1>
+                <p class="descripcion-cuenta" id="descripcion-cuenta">Consulta y actualiza tus datos personales.</p>
+            </div>
+        </div>
+
+        <!-- Se muestra cuando no hay una sesión iniciada o la cuenta ya no existe. -->
+        <section class="panel-cuenta panel-sesion" id="panel-sesion">
+            <h2>Inicia sesión para continuar</h2>
+            <p>Necesitas iniciar sesión para consultar y editar tu información personal. Al entrar, volverás a esta página automáticamente.</p>
+            <p class="mensaje-cuenta" id="mensaje-sesion" role="alert"></p>
+            <div class="acciones-cuenta">
+                <a class="boton-principal" id="enlace-login" href="Login.html">Iniciar sesión</a>
+                <a class="boton-secundario" id="enlace-registro" href="Registro.html">Crear cuenta</a>
+            </div>
+        </section>
+
+        <!-- Formulario con los datos que se guardan en localStorage. -->
+        <form class="panel-cuenta" id="formulario-cuenta" novalidate hidden>
+            <section class="grupo-formulario" aria-labelledby="titulo-datos">
+                <div class="encabezado-grupo">
+                    <h2 id="titulo-datos">Datos personales</h2>
+                    <p>Esta información se usa para identificar tu cuenta y tus entregas.</p>
+                </div>
+
+                <div class="rejilla-campos">
+                    <div class="campo">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" autocomplete="name">
+                    </div>
+
+                    <div class="campo">
+                        <label for="correo">Correo electrónico</label>
+                        <input type="email" id="correo" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+                    </div>
+
+                    <div class="campo campo-completo">
+                        <label for="direccion">Dirección de entrega</label>
+                        <input type="text" id="direccion" autocomplete="street-address" placeholder="Calle, número, colonia, ciudad">
+                    </div>
+                </div>
+            </section>
+
+            <section class="grupo-formulario" aria-labelledby="titulo-seguridad">
+                <div class="encabezado-grupo">
+                    <h2 id="titulo-seguridad">Cambiar contraseña</h2>
+                    <p>Déjalo vacío si no quieres cambiarla.</p>
+                </div>
+
+                <div class="rejilla-campos">
+                    <div class="campo campo-completo">
+                        <label for="clave-actual">Contraseña actual</label>
+                        <input type="password" id="clave-actual" autocomplete="current-password">
+                    </div>
+
+                    <div class="campo">
+                        <label for="clave-nueva">Nueva contraseña</label>
+                        <input type="password" id="clave-nueva" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+                    </div>
+
+                    <div class="campo">
+                        <label for="clave-confirmar">Confirmar nueva contraseña</label>
+                        <input type="password" id="clave-confirmar" autocomplete="new-password">
+                    </div>
+                </div>
+            </section>
+
+            <p class="mensaje-cuenta" id="mensaje-cuenta" role="alert" aria-live="polite"></p>
+
+            <div class="acciones-cuenta">
+                <button class="boton-principal" type="submit">Guardar cambios</button>
+                <button class="boton-secundario" type="button" id="cerrar-sesion">Cerrar sesión</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="js/ScriptsCuenta.js"></script>
+</body>
+</html>

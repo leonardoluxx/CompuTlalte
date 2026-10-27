@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1c1c1c">
+    <meta name="color-scheme" content="dark">
+    <title>Datos de pago - Transferencia</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/StylePago.css">
+</head>
+<body>
+    <h1 id="titulo">Datos para transferencia</h1>
+
+    <div id="pago">
+        <div class="info-tienda">
+            <h2>Datos bancarios de la tienda</h2>
+            <p><strong>Banco:</strong> BBVA</p>
+            <p><strong>CLABE:</strong> 012345678901234567</p>
+            <p><strong>Titular:</strong> COMPUTLALTE SA DE CV</p>
+            <p class="nota">Realiza tu transferencia con los datos anteriores y llena el formulario con la información de tu pago.</p>
+            <p id="monto" class="monto"></p>
+        </div>
+
+        <hr class="separador">
+
+        <form id="formulario-pago" novalidate>
+            <label for="titular">Nombre del titular de la cuenta</label>
+            <input type="text" id="titular" autocomplete="name" placeholder="Nombre completo">
+
+            <label for="banco">Banco desde el que transferiste</label>
+            <input type="text" id="banco" placeholder="Ej. Banamex, BBVA, Santander">
+
+            <label for="referencia">Referencia o folio de transferencia</label>
+            <input type="text" id="referencia" placeholder="Número de referencia">
+
+            <label for="fecha">Fecha de la transferencia</label>
+            <input type="date" id="fecha">
+
+            <p id="mensaje" role="alert"></p>
+
+            <div class="botones">
+                <a href="Carrito.html" id="volver">Volver al carrito</a>
+                <button type="submit" id="confirmar">Confirmar pago</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/ScriptsPago.js"></script>
+</body>
+</html>
