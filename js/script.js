@@ -106,6 +106,15 @@ const productos = window.catalogoLocal;
 
 // Elementos de la página que reciben las tarjetas y los datos del modal.
 const rejillaProductos = document.querySelector("#rejilla-productos");
+const rejillaAccesorios = document.querySelector("#rejilla-accesorios");
+const filtrosAccesorios = document.querySelector("#filtros-accesorios");
+const selectorOrdenAccesorios = document.querySelector("#orden-accesorios");
+const conteoAccesorios = document.querySelector("#conteo-accesorios");
+const mensajeSinAccesorios = document.querySelector("#sin-resultados-accesorios");
+const botonLimpiarFiltros = document.querySelector("#limpiar-filtros");
+const contenedorCatalogo = document.querySelector("#contenedor-catalogo");
+const botonAlternarFiltros = document.querySelector("#alternar-filtros");
+const textoAlternarFiltros = document.querySelector("#texto-alternar-filtros");
 const modalProducto = document.querySelector("#modal-producto");
 const botonAbrirBusqueda = document.querySelector("#abrir-busqueda");
 const modalBusqueda = document.querySelector("#modal-busqueda");
@@ -126,6 +135,8 @@ const listaCaracteristicas = document.querySelector("#caracteristicas-producto")
 const listaEspecificaciones = document.querySelector("#especificaciones-producto");
 const estadoCompra = document.querySelector("#estado-compra-producto");
 const botonComprarProducto = document.querySelector("#comprar-producto");
+const listasDetallesProducto = document.querySelector("#listas-detalles-producto");
+const botonAlternarDetalles = document.querySelector("#alternar-detalles");
 let elementoQueAbrioModal = null;
 let productoModalActual = null;
 let indiceImagenActual = 0;
@@ -141,6 +152,11 @@ function crearElemento(etiqueta, clase, texto) {
 // Devuelve el costo base más el margen de ganancia configurado.
 function calcularPrecioFinal(producto) {
     return producto.costoBase * (1 + margenGanancia);
+}
+
+// Extrae del catálogo solo los accesorios que corresponden a la categoría indicada.
+function obtenerAccesorios() {
+    return productos.filter((producto) => producto.tipo === "accesorio");
 }
 
 // Normaliza mayúsculas y acentos para que la búsqueda tolere distintas escrituras.
@@ -164,6 +180,7 @@ function actualizarSugerenciasBusqueda(consulta) {
 
     const coincidencias = productos.filter((producto) => {
         const camposProducto = [
+            producto.marca,
             producto.nombre,
             producto.categoria,
             producto.especificacionesCortas,
@@ -184,7 +201,6 @@ function actualizarSugerenciasBusqueda(consulta) {
         opcion.type = "button";
         opcion.dataset.productoId = producto.id;
         opcion.setAttribute("role", "option");
-        opcion.setAttribute("aria-label", `${producto.nombre}. ${producto.especificacionesCortas}`);
 
         const texto = document.createElement("span");
         texto.className = "texto-resultado-busqueda";
@@ -211,10 +227,30 @@ function abrirBusqueda() {
     campoBusqueda.focus();
 }
 
-// Elige una sugerencia, cierra la búsqueda y muestra el detalle del equipo.
+// Cada producto tiene su página: los equipos viven en index.html y los
+// accesorios en accesorios.html. Devuelve dónde está su tarjeta de venta.
+function paginaDeProducto(producto) {
+    return producto.tipo === "accesorio" ? "accesorios.html" : "index.html";
+}
+
+// Nombre del archivo de la página que se está viendo ahora mismo.
+function paginaActual() {
+    return window.location.pathname.split("/").pop() || "index.html";
+}
+
+// Elige una sugerencia: si el producto es de esta página se abre su tarjeta
+// aquí mismo; si es de otra, se viaja hasta ella para no enseñar una versión
+// recortada del detalle.
 function abrirProductoDesdeBusqueda(botonResultado) {
     const producto = productos.find((elemento) => elemento.id === Number(botonResultado.dataset.productoId));
     if (!producto) {
+        return;
+    }
+
+    const paginaDestino = paginaDeProducto(producto);
+
+    if (paginaDestino !== paginaActual()) {
+        window.location.href = `${paginaDestino}#producto-${producto.id}`;
         return;
     }
 
@@ -226,7 +262,7 @@ function abrirProductoDesdeBusqueda(botonResultado) {
 function mostrarProductos() {
     rejillaProductos.replaceChildren();
 
-    productos.forEach((producto) => {
+    productos.filter((producto) => producto.tipo !== "accesorio").forEach((producto) => {
         const tarjeta = document.createElement("article");
         tarjeta.className = "tarjeta-producto";
 
@@ -235,7 +271,6 @@ function mostrarProductos() {
         botonTarjeta.type = "button";
         botonTarjeta.dataset.productoId = producto.id;
         botonTarjeta.setAttribute("aria-haspopup", "dialog");
-        botonTarjeta.setAttribute("aria-label", `Ver detalles de ${producto.nombre}`);
 
         const marcoImagen = document.createElement("div");
         marcoImagen.className = "imagen-tarjeta-producto";
@@ -266,7 +301,6 @@ function mostrarProductos() {
             crearElemento("span", "", "Precio"),
             crearElemento("strong", "", formateadorMoneda.format(calcularPrecioFinal(producto)))
         );
-
         const accionesTarjeta = document.createElement("div");
         accionesTarjeta.className = "acciones-tarjeta-producto";
 
@@ -301,6 +335,128 @@ function mostrarProductos() {
         botonTarjeta.append(marcoImagen, contenido);
         tarjeta.append(botonTarjeta);
         rejillaProductos.append(tarjeta);
+    });
+}
+
+// Dibuja tarjetas de accesorios, aplicando filtros y orden al conjunto local.
+function mostrarAccesorios() {
+    const disponibilidadSeleccionada = [...filtrosAccesorios.querySelectorAll('input[name="disponibilidad"]:checked')]
+        .map((filtro) => filtro.value);
+    const categoriasSeleccionadas = [...filtrosAccesorios.querySelectorAll('input[name="categoria-accesorio"]:checked')]
+        .map((filtro) => filtro.value);
+
+    let accesoriosVisibles = obtenerAccesorios().filter((producto) => {
+        const coincideDisponibilidad = !disponibilidadSeleccionada.length
+            || disponibilidadSeleccionada.includes(producto.disponible ? "disponible" : "agotado");
+        const coincideCategoria = !categoriasSeleccionadas.length
+            || categoriasSeleccionadas.includes(producto.categoria);
+
+        return coincideDisponibilidad && coincideCategoria;
+    });
+
+    // Ordena la copia visible; el catálogo original no se altera.
+    const criterioOrden = selectorOrdenAccesorios.value;
+    accesoriosVisibles.sort((primero, segundo) => {
+        switch (criterioOrden) {
+            case "mas-vendidos":
+                return (segundo.vendidos ?? 0) - (primero.vendidos ?? 0);
+            case "nombre-asc":
+                return primero.nombre.localeCompare(segundo.nombre, "es");
+            case "nombre-desc":
+                return segundo.nombre.localeCompare(primero.nombre, "es");
+            case "precio-ascendente":
+                return calcularPrecioFinal(primero) - calcularPrecioFinal(segundo);
+            case "precio-descendente":
+                return calcularPrecioFinal(segundo) - calcularPrecioFinal(primero);
+            case "fecha-nuevos":
+                return (Date.parse(segundo.fechaAlta) || 0) - (Date.parse(primero.fechaAlta) || 0);
+            default:
+                return Number(segundo.destacado) - Number(primero.destacado)
+                    || (segundo.reseñas ?? 0) - (primero.reseñas ?? 0);
+        }
+    });
+
+    rejillaAccesorios.replaceChildren();
+    const cantidadAccesorios = accesoriosVisibles.length;
+    conteoAccesorios.textContent = `${cantidadAccesorios} artículo${cantidadAccesorios === 1 ? "" : "s"} encontrado${cantidadAccesorios === 1 ? "" : "s"}`;
+    mensajeSinAccesorios.hidden = cantidadAccesorios > 0;
+
+    accesoriosVisibles.forEach((producto) => {
+        const tarjeta = document.createElement("article");
+        tarjeta.className = "tarjeta-producto";
+
+        const botonTarjeta = document.createElement("button");
+        botonTarjeta.className = "boton-tarjeta-producto";
+        botonTarjeta.type = "button";
+        botonTarjeta.dataset.productoId = producto.id;
+        botonTarjeta.setAttribute("aria-haspopup", "dialog");
+
+        const marcoImagen = document.createElement("div");
+        marcoImagen.className = "imagen-tarjeta-producto";
+
+        const imagen = document.createElement("img");
+        imagen.src = producto.imagenPrincipal;
+        imagen.alt = `Vista del accesorio ${producto.nombre}`;
+        imagen.loading = "lazy";
+
+        const etiquetaEstado = crearElemento(
+            "span",
+            `etiqueta-categoria-producto ${!producto.disponible ? "etiqueta-agotado" : ""}`,
+            !producto.disponible ? "Agotado" : (producto.etiqueta || producto.categoria)
+        );
+        marcoImagen.append(imagen, etiquetaEstado);
+
+        const contenido = document.createElement("div");
+        contenido.className = "contenido-tarjeta-producto";
+        contenido.append(
+            crearElemento("p", "marca-producto", producto.marca),
+            crearElemento("h3", "nombre-tarjeta-producto", producto.nombre),
+            crearElemento("p", "especificaciones-cortas-producto", producto.especificacionesCortas)
+        );
+
+        const pie = document.createElement("div");
+        pie.className = "pie-tarjeta-producto";
+
+        const precio = document.createElement("div");
+        precio.className = "precio-tarjeta-producto";
+        precio.append(
+            crearElemento("span", "", "Precio"),
+            crearElemento("strong", "", formateadorMoneda.format(calcularPrecioFinal(producto)))
+        );
+        const accionesTarjeta = document.createElement("div");
+        accionesTarjeta.className = "acciones-tarjeta-producto";
+
+        const botonAnadirCarrito = document.createElement("button");
+        botonAnadirCarrito.className = "boton-anadir-carrito";
+        botonAnadirCarrito.type = "button";
+        botonAnadirCarrito.textContent = "Añadir al carrito";
+        botonAnadirCarrito.addEventListener("click", (evento) => {
+            evento.stopPropagation();
+            añadirProductoAlCarrito(producto);
+            botonAnadirCarrito.textContent = "Añadido ✓";
+            setTimeout(() => {
+                botonAnadirCarrito.textContent = "Añadir al carrito";
+            }, 1000);
+        });
+
+        const accion = document.createElement("span");
+        accion.className = "accion-ver-detalles";
+        accion.append(document.createTextNode("Ver detalles"));
+
+        const flecha = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        flecha.setAttribute("viewBox", "0 0 24 24");
+        flecha.setAttribute("aria-hidden", "true");
+        const trazoFlecha = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        trazoFlecha.setAttribute("d", "M5 12h14m-6-6 6 6-6 6");
+        flecha.append(trazoFlecha);
+        accion.append(flecha);
+
+        accionesTarjeta.append(botonAnadirCarrito, accion);
+        pie.append(precio, accionesTarjeta);
+        contenido.append(pie);
+        botonTarjeta.append(marcoImagen, contenido);
+        tarjeta.append(botonTarjeta);
+        rejillaAccesorios.append(tarjeta);
     });
 }
 
@@ -359,8 +515,27 @@ function mostrarDetallesProducto(producto, elementoOrigen) {
     descripcionProducto.textContent = producto.descripcionLarga;
     estadoCompra.textContent = "";
 
+    const reseñasModal = document.querySelector("#reseñas-modal");
+    if (reseñasModal) {
+        reseñasModal.textContent = producto.reseñas ? `${producto.reseñas} reseñas` : "";
+    }
+
     mostrarLista(listaCaracteristicas, producto.caracteristicasClave);
     mostrarLista(listaEspecificaciones, producto.especificacionesTecnicas);
+
+    const detallesVisiblesIniciales = 4;
+    const hayDetallesExtra = producto.caracteristicasClave.length > detallesVisiblesIniciales
+        || producto.especificacionesTecnicas.length > detallesVisiblesIniciales;
+
+    if (listasDetallesProducto) {
+        listasDetallesProducto.classList.toggle("listas-colapsadas", hayDetallesExtra);
+    }
+    if (botonAlternarDetalles) {
+        botonAlternarDetalles.hidden = !hayDetallesExtra;
+        botonAlternarDetalles.setAttribute("aria-expanded", "false");
+        botonAlternarDetalles.textContent = "Mostrar más";
+    }
+
     miniaturasProducto.replaceChildren();
 
     producto.imagenesGaleria.forEach((rutaImagen, indice) => {
@@ -385,7 +560,45 @@ function mostrarDetallesProducto(producto, elementoOrigen) {
 }
 
 // Presenta el catálogo cuando el documento ya está listo para usarse.
-mostrarProductos();
+if (rejillaProductos) {
+    mostrarProductos();
+}
+if (rejillaAccesorios) {
+    mostrarAccesorios();
+}
+
+// Actualiza accesorios al cambiar cualquier filtro u orden.
+if (filtrosAccesorios && selectorOrdenAccesorios && botonLimpiarFiltros) {
+    filtrosAccesorios.addEventListener("change", mostrarAccesorios);
+    selectorOrdenAccesorios.addEventListener("change", mostrarAccesorios);
+    botonLimpiarFiltros.addEventListener("click", () => {
+        filtrosAccesorios.querySelectorAll('input[type="checkbox"]').forEach((filtro) => {
+            // Vuelve al estado inicial: disponibilidad completa, sin categorías.
+            filtro.checked = filtro.name === "disponibilidad";
+        });
+        selectorOrdenAccesorios.value = "destacados";
+        mostrarAccesorios();
+    });
+}
+
+// Muestra u oculta el panel lateral y actualiza el texto del botón.
+if (contenedorCatalogo && botonAlternarFiltros && textoAlternarFiltros) {
+    const consultaFiltrosMoviles = window.matchMedia("(max-width: 1024px)");
+    let filtrosVisibles = !consultaFiltrosMoviles.matches;
+
+    function aplicarEstadoFiltros(visibles) {
+        filtrosVisibles = visibles;
+        contenedorCatalogo.classList.toggle("filtros-ocultos", !visibles);
+        botonAlternarFiltros.setAttribute("aria-expanded", String(visibles));
+        textoAlternarFiltros.textContent = visibles ? "Ocultar filtro" : "Mostrar filtro";
+    }
+
+    // En escritorio el panel inicia visible; en móvil, oculto.
+    aplicarEstadoFiltros(filtrosVisibles);
+
+    botonAlternarFiltros.addEventListener("click", () => aplicarEstadoFiltros(!filtrosVisibles));
+    consultaFiltrosMoviles.addEventListener("change", (evento) => aplicarEstadoFiltros(!evento.matches));
+}
 
 // Conecta el acceso de búsqueda con el catálogo local.
 botonAbrirBusqueda.addEventListener("click", abrirBusqueda);
@@ -432,17 +645,19 @@ resultadosBusqueda.addEventListener("keydown", (evento) => {
 modalBusqueda.addEventListener("close", () => botonAbrirBusqueda.focus());
 
 // Cada tarjeta abre el modal del producto que indica su atributo data.
-rejillaProductos.addEventListener("click", (evento) => {
-    const botonTarjeta = evento.target.closest("[data-producto-id]");
-    if (!botonTarjeta) {
-        return;
-    }
+if (rejillaProductos) {
+    rejillaProductos.addEventListener("click", (evento) => {
+        const botonTarjeta = evento.target.closest("[data-producto-id]");
+        if (!botonTarjeta) {
+            return;
+        }
 
-    const producto = productos.find((elemento) => elemento.id === Number(botonTarjeta.dataset.productoId));
-    if (producto) {
-        mostrarDetallesProducto(producto, botonTarjeta);
-    }
-});
+        const producto = productos.find((elemento) => elemento.id === Number(botonTarjeta.dataset.productoId));
+        if (producto) {
+            mostrarDetallesProducto(producto, botonTarjeta);
+        }
+    });
+}
 
 // Cierra el diálogo y devuelve el foco a la tarjeta que lo abrió.
 botonCerrarModal.addEventListener("click", () => modalProducto.close());
@@ -477,6 +692,15 @@ document.addEventListener("keydown", (evento) => {
         modalProducto.close();
     }
 });
+
+// Alterna entre las primeras filas y todas las características/especificaciones.
+if (botonAlternarDetalles && listasDetallesProducto) {
+    botonAlternarDetalles.addEventListener("click", () => {
+        const quedanColapsadas = listasDetallesProducto.classList.toggle("listas-colapsadas");
+        botonAlternarDetalles.setAttribute("aria-expanded", String(!quedanColapsadas));
+        botonAlternarDetalles.textContent = quedanColapsadas ? "Mostrar más" : "Mostrar menos";
+    });
+}
 
 function añadirProductoAlCarrito(producto) {
     const CLAVE_CARRITO = "carrito";
@@ -520,6 +744,120 @@ botonComprarProducto.addEventListener("click", () => {
     estadoCompra.textContent = "Producto añadido al carrito. Redirigiendo...";
 
     setTimeout(() => {
-        window.location.href = "Carrito.html";
+        window.location.href = "carrito.html";
     }, 600);
 });
+
+// Las tarjetas de accesorios abren el mismo modal dinámico que los equipos.
+if (rejillaAccesorios) {
+    rejillaAccesorios.addEventListener("click", (evento) => {
+        const botonTarjeta = evento.target.closest("[data-producto-id]");
+        if (!botonTarjeta) {
+            return;
+        }
+
+        const producto = obtenerAccesorios().find((elemento) => elemento.id === Number(botonTarjeta.dataset.productoId));
+        if (producto) {
+            mostrarDetallesProducto(producto, botonTarjeta);
+        }
+    });
+}
+
+// El botón del anuncio en accesorios abre el detalle del mouse (id 2).
+const botonComprarAnuncio = document.querySelector("#boton-comprar-anuncio");
+if (botonComprarAnuncio) {
+    botonComprarAnuncio.addEventListener("click", (e) => {
+        e.preventDefault();
+        const producto = productos.find((p) => p.id === 2);
+        if (producto) {
+            mostrarDetallesProducto(producto, botonComprarAnuncio);
+        }
+    });
+}
+
+// Al llegar desde otra página con un ancla (por ejemplo de accesorios a
+// index.html#computadoras) el navegador salta de golpe hasta la sección. Aquí
+// se evita ese salto: la página arranca arriba y se desliza suavemente.
+function suavizarLlegadaAAncla() {
+    const ancla = window.location.hash;
+
+    if (!ancla || ancla.length < 2) {
+        return;
+    }
+
+    let idDestino = ancla.slice(1);
+
+    try {
+        idDestino = decodeURIComponent(idDestino);
+    } catch (error) {
+        // Si el ancla viene mal codificada se usa tal cual.
+    }
+
+    const destino = document.getElementById(idDestino);
+
+    if (!destino) {
+        return;
+    }
+
+    // Se limpia el ancla de la barra de direcciones para que el navegador no
+    // vuelva a saltar de golpe si se recarga la página.
+    try {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+    } catch (error) {
+        // Con archivos abiertos directamente en local esto puede no permitirse.
+    }
+
+    // Quien pidió menos movimiento ve la sección de inmediato, sin recorrido.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+    }
+
+    const raiz = document.documentElement;
+    const desplazamientoPrevio = raiz.style.scrollBehavior;
+
+    // Vuelve al inicio sin animación y desde ahí inicia el recorrido suave.
+    raiz.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    raiz.style.scrollBehavior = desplazamientoPrevio;
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            destino.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    });
+}
+
+// Si se llegó desde el buscador de otra página con un ancla #producto-<id>,
+// se abre directamente la tarjeta de venta de ese producto.
+function abrirProductoDesdeAncla() {
+    const coincidencia = window.location.hash.match(/^#producto-(\d+)$/);
+
+    if (!coincidencia) {
+        return;
+    }
+
+    const producto = productos.find((elemento) => elemento.id === Number(coincidencia[1]));
+
+    if (!producto) {
+        return;
+    }
+
+    // Si el ancla apunta a un producto de otra página, se corrige la ruta.
+    const paginaDestino = paginaDeProducto(producto);
+
+    if (paginaDestino !== paginaActual()) {
+        window.location.href = `${paginaDestino}#producto-${producto.id}`;
+        return;
+    }
+
+    try {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+    } catch (error) {
+        // Con archivos abiertos directamente en local esto puede no permitirse.
+    }
+
+    mostrarDetallesProducto(producto, botonAbrirBusqueda);
+}
+
+abrirProductoDesdeAncla();
+suavizarLlegadaAAncla();

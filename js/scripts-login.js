@@ -60,8 +60,8 @@ formularioEl.addEventListener("submit", function (evento) {
     localStorage.removeItem("redirigirTrasLogin");
 
     const paginasDestino = {
-        carrito: "Carrito.html",
-        cuenta: "Cuenta.html"
+        carrito: "carrito.html",
+        cuenta: "cuenta.html"
     };
 
     if (redirigir && redirigir in paginasDestino) {

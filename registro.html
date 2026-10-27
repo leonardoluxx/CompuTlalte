@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1c1c1c">
+    <meta name="color-scheme" content="dark">
+    <title>Crear cuenta | Computlalte</title>
+
+    <!-- Usa el mismo CSS del inicio de sesión para que las dos páginas se vean igual -->
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/style-login.css">
+</head>
+<body>
+    <!-- Misma barra que el resto de páginas interiores. -->
+    <header class="barra-superior">
+        <a class="logotipo-superior" href="index.html" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+        <a class="enlace-volver" href="index.html">Volver a la tienda</a>
+    </header>
+
+    <div class="contenido-pagina">
+        <h1 id="titulo">Crear cuenta</h1>
+
+        <div id="login">
+            <form id="formulario" novalidate>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" autocomplete="name">
+
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" autocomplete="street-address" placeholder="Calle, número, colonia, ciudad">
+
+                <label for="clave">Contraseña</label>
+                <div class="campo-clave">
+                    <input type="password" id="clave" autocomplete="new-password">
+                    <button type="button" id="ver-clave">Mostrar</button>
+                </div>
+
+                <label for="clave2">Confirmar contraseña</label>
+                <input type="password" id="clave2" autocomplete="new-password">
+
+                <p id="mensaje" role="alert"></p>
+
+                <button type="submit" id="entrar">Crear cuenta</button>
+            </form>
+
+            <p id="registro">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+        </div>
+    </div>
+
+    <script src="js/scripts-registro.js"></script>
+</body>
+</html>

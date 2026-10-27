@@ -1,0 +1,296 @@
+/* Mismas variables de color y tipografía que la portada y la cuenta, para que
+   el pago se vea como parte del mismo sitio. */
+:root{
+    --color-fondo: #1c1c1c;
+    --color-barra: #111111;
+    --color-panel: #111111;
+    --color-texto: #f5f5f5;
+    --color-atenuado: #a3a3a3;
+    --color-linea: #2b2b2b;
+    --color-acento: #ff0033;
+    --color-precio: #70d6a2;
+    --fuente-titulos: 'Orbitron', sans-serif;
+    --fuente-interfaz: 'Rajdhani', sans-serif;
+    --fuente-lectura: 'Chakra Petch', sans-serif;
+}
+
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
+
+html{
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background: var(--color-fondo);
+}
+
+body{
+    font-family: var(--fuente-lectura);
+    color: var(--color-texto);
+    background:
+        radial-gradient(circle at 50% -20%, rgb(255 0 51 / 12%), transparent 45%),
+        var(--color-fondo);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    animation: aparecer-pagina 0.28s ease both;
+}
+
+/* Relleno del contenido: la barra superior queda a todo lo ancho. */
+.contenido-pagina{
+    padding: clamp(20px, 5vw, 30px) 15px;
+}
+
+/* Barra superior con el logotipo y el enlace de regreso a la tienda. */
+.barra-superior{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 70px;
+    padding: 0 clamp(16px, 4vw, 42px);
+    background: var(--color-barra);
+    border-bottom: 1px solid #303030;
+}
+
+.logotipo-superior{
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-texto);
+    font-family: var(--fuente-titulos);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.logotipo-superior span{
+    font-weight: 400;
+}
+
+.logotipo-superior b{
+    color: var(--color-acento);
+    font-weight: 850;
+}
+
+.enlace-volver{
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.enlace-volver:hover,
+.enlace-volver:focus-visible{
+    color: var(--color-texto);
+}
+
+@media (max-width: 360px){
+    .enlace-volver{
+        font-size: 15px;
+    }
+}
+
+/* Entrada suave para que el cambio de página no se sienta de golpe. */
+@keyframes aparecer-pagina{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+#titulo{
+    color: var(--color-acento);
+    font-family: var(--fuente-titulos);
+    text-align: center;
+    font-size: clamp(26px, 7vw, 40px);
+    line-height: 1.15;
+    margin: 0 0 22px 0;
+}
+
+#pago{
+    width: min(100%, 560px);
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--color-panel);
+    border: 1px solid var(--color-linea);
+    border-radius: 10px;
+    color: var(--color-texto);
+}
+
+.info-tienda h2{
+    margin-top: 0;
+    color: var(--color-acento);
+    font-family: var(--fuente-titulos);
+    font-size: 22px;
+    text-align: center;
+}
+
+.info-tienda p{
+    margin: 8px 0;
+}
+
+.nota{
+    font-size: 14px;
+    color: var(--color-atenuado);
+}
+
+.monto{
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-precio);
+    font-family: var(--fuente-titulos);
+    margin-top: 16px;
+}
+
+.separador{
+    border: none;
+    height: 2px;
+    background-color: var(--color-linea);
+    margin: 20px 0;
+}
+
+#formulario-pago{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#formulario-pago label{
+    font-family: var(--fuente-interfaz);
+    font-size: 17px;
+    letter-spacing: 0.02em;
+    font-weight: 700;
+}
+
+#formulario-pago input{
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #3a3a3a;
+    background-color: #1c1c1c;
+    color: var(--color-texto);
+    font-size: 16px;
+    font-family: var(--fuente-lectura);
+    transition: border-color 0.2s ease;
+}
+
+#formulario-pago input:focus{
+    outline: 2px solid var(--color-acento);
+    outline-offset: 1px;
+    border-color: var(--color-acento);
+}
+
+#mensaje{
+    color: #ff6b6b;
+    min-height: 20px;
+    margin: 5px 0;
+}
+
+.botones{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#volver{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid var(--color-acento);
+    border-radius: 5px;
+    color: var(--color-texto);
+    background-color: transparent;
+    text-decoration: none;
+    font-family: var(--fuente-interfaz);
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+#confirmar{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid var(--color-acento);
+    border-radius: 5px;
+    background-color: var(--color-acento);
+    color: #ffffff;
+    font-family: var(--fuente-interfaz);
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+#volver:hover{
+    background-color: #262626;
+}
+
+#confirmar:hover{
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce){
+    body{
+        animation: none;
+    }
+
+    #confirmar:hover{
+        transform: none;
+    }
+}
+
+@media (max-width: 480px){
+    .contenido-pagina{
+        padding: 20px 12px;
+    }
+
+    #titulo{
+        margin-bottom: 18px;
+    }
+
+    #pago{
+        padding: 15px;
+    }
+
+    .botones{
+        flex-direction: column;
+    }
+
+    #volver,
+    #confirmar{
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 360px){
+    #pago{
+        padding: 12px;
+    }
+
+    .info-tienda h2{
+        font-size: 20px;
+    }
+}

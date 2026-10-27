@@ -39,8 +39,8 @@
                         <li><a href="#uso-diario">Uso Diario</a></li>
                     </ul>
                 </li>
-                <li><a class="enlace-navegacion" href="#accesorios">Accesorios</a></li>
-                <li><a class="enlace-navegacion" href="#ofertas">Ofertas</a></li>
+                <li><a class="enlace-navegacion" href="accesorios.html">Accesorios</a></li>
+                <li><a class="enlace-navegacion" href="accesorios.html#ofertas">Ofertas</a></li>
             </ul>
 
             <!-- Iconos dibujados como SVG dentro del archivo: funcionan sin recursos externos. -->
@@ -48,10 +48,10 @@
                 <button class="boton-icono boton-abrir-busqueda" id="abrir-busqueda" type="button" aria-label="Buscar productos" aria-haspopup="dialog" aria-controls="modal-busqueda">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 4 4"/></svg>
                 </button>
-                <a class="boton-icono" href="Cuenta.html" aria-label="Mi cuenta">
+                <a class="boton-icono" href="cuenta.html" aria-label="Mi cuenta">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
                 </a>
-                <a class="boton-icono" href="Carrito.html" aria-label="Carrito de compras">
+                <a class="boton-icono" href="carrito.html" aria-label="Carrito de compras">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
                 </a>
             </div>
@@ -165,12 +165,45 @@
                     <a href="#uso-diario">Uso Diario</a>
                 </div>
             </div>
-            <a class="enlace-movil" href="#accesorios">Accesorios</a>
-            <a class="enlace-movil" href="#ofertas">Ofertas</a>
+            <a class="enlace-movil" href="accesorios.html">Accesorios</a>
+            <a class="enlace-movil" href="accesorios.html#ofertas">Ofertas</a>
         </nav>
         <!-- Pie decorativo de la capa móvil. -->
         <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
     </div>
+    <!-- Pie de página: marca, navegación rápida y datos de contacto. -->
+    <footer class="pie-sitio">
+        <div class="contenido-pie">
+            <div class="marca-pie">
+                <a class="logotipo-pie" href="#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+                <p class="lema-pie">Computadoras y accesorios de alto rendimiento para juegos, desarrollo y uso diario.</p>
+            </div>
+
+            <nav class="columna-pie" aria-labelledby="titulo-pie-tienda">
+                <h2 class="titulo-pie" id="titulo-pie-tienda">Tienda</h2>
+                <ul>
+                    <li><a href="#computadoras">Computadoras</a></li>
+                    <li><a href="accesorios.html">Accesorios</a></li>
+                    <li><a href="accesorios.html#ofertas">Ofertas</a></li>
+                    <li><a href="cuenta.html">Mi cuenta</a></li>
+                </ul>
+            </nav>
+
+            <div class="columna-pie">
+                <h2 class="titulo-pie">Contacto</h2>
+                <ul>
+                    <li><a href="mailto:contacto@computlalte.com">contacto@computlalte.com</a></li>
+                    <li>No tenemos numero 😿</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pie-inferior">
+            <p>© 2026 Computlalte. Todos los derechos reservados.</p>
+            <p class="lema-corto">SOMOS TU MEJOR OPCIÓN <span class="corazon-pie">❤</span></p>
+        </div>
+    </footer>
+
     <!-- Datos locales de prueba; después podrá sustituirse su origen por la base de datos. -->
     <script src="js/catalogo-local.js" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->

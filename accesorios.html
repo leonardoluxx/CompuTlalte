@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="description" content="Computlalte: accesorios de alto rendimiento para gaming, desarrollo y uso diario.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Computlalte | Accesorios">
+    <meta property="og:description" content="Catálogo local de accesorios con filtros y detalles completos.">
+    <title>Computlalte | Accesorios</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="preload" as="image" href="imagenes/anuncios/imagen-mouse-accesorios-add.jpg" fetchpriority="high">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/catalogo-accesorios.css">
+</head>
+<body>
+    <header class="encabezado-sitio" id="inicio">
+        <nav class="barra-navegacion" aria-label="Navegación principal">
+            <div class="inicio-navegacion">
+                <button class="boton-icono boton-menu" type="button" aria-label="Abrir menú" aria-controls="menu-movil" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+                </button>
+                <a class="logotipo" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+            </div>
+            <ul class="enlaces-navegacion">
+                <li class="menu-desplegable">
+                    <a class="enlace-navegacion" href="index.html#computadoras">Computadoras <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+                    <ul class="contenido-desplegable">
+                        <li><a href="index.html#juegos">Para Juegos</a></li>
+                        <li><a href="index.html#desarrollo">Desarrollo</a></li>
+                        <li><a href="index.html#uso-diario">Uso Diario</a></li>
+                    </ul>
+                </li>
+                <li><a class="enlace-navegacion" href="#accesorios">Accesorios</a></li>
+                <li><a class="enlace-navegacion" href="#ofertas">Ofertas</a></li>
+            </ul>
+            <div class="iconos-navegacion" aria-label="Accesos rápidos">
+                <button class="boton-icono boton-abrir-busqueda" id="abrir-busqueda" type="button" aria-label="Buscar productos" aria-haspopup="dialog" aria-controls="modal-busqueda">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 4 4"/></svg>
+                </button>
+                <a class="boton-icono" href="cuenta.html" aria-label="Mi cuenta">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+                </a>
+                <a class="boton-icono" href="carrito.html" aria-label="Carrito de compras">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="seccion-anuncio">
+        <div class="contenido-anuncio">
+            <h1>ATTACK SHARK R3</h1>
+            <p class="subtitulo">Precisión extrema en solo 46 gramos.</p>
+            <p class="descripcion">Mouse ultraligero con cuerpo de aleación de magnesio, sensor óptico PixArt PAW3395, tasa de sondeo de 8000 Hz y conectividad triple. Diseñado para los desafíos más extremos.</p>
+            <a href="#" id="boton-comprar-anuncio" class="boton-comprar">Comprar ahora</a>
+        </div>
+    </section>
+
+    <section class="titulo-categoria" id="accesorios">
+        <h2>Accesorios <span class="texto-rojo">de alto rendimiento</span></h2>
+    </section>
+
+    <div class="contenedor-catalogo-con-filtros" id="contenedor-catalogo">
+        <section class="barra-controles-catalogo" aria-label="Controles del catálogo">
+            <button class="boton-alternar-filtros" id="alternar-filtros" type="button" aria-expanded="true" aria-controls="filtros-accesorios">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4-2v-4.5L4 5Z" /></svg>
+                <span id="texto-alternar-filtros">Ocultar filtro</span>
+            </button>
+
+            <div class="grupo-orden">
+                <label class="etiqueta-orden" for="orden-accesorios">Ordenar por:</label>
+                <select id="orden-accesorios" class="campo-orden">
+                    <option value="destacados" selected>Destacados</option>
+                    <option value="mas-vendidos">Más vendidos</option>
+                    <option value="nombre-asc">Alfabéticamente A-Z</option>
+                    <option value="nombre-desc">Alfabéticamente Z-A</option>
+                    <option value="precio-ascendente">Precio: Menor a Mayor</option>
+                    <option value="precio-descendente">Precio: Mayor a Menor</option>
+                    <option value="fecha-nuevos">Fecha: Más nuevos</option>
+                </select>
+            </div>
+
+            <p class="conteo-resultado" id="conteo-accesorios" role="status" aria-live="polite">0 artículos encontrados</p>
+        </section>
+
+        <aside class="panel-filtros" id="filtros-accesorios" aria-label="Filtros de accesorios">
+            <section class="grupo-filtros">
+                <h3>Disponibilidad</h3>
+                <ul class="lista-filtros">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="disponibilidad" value="disponible" checked>
+                            <span>En existencia</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="disponibilidad" value="agotado" checked>
+                            <span>Agotado</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="grupo-filtros">
+                <h3>Categoría</h3>
+                <ul class="lista-filtros">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-accesorio" value="Audio">
+                            <span>Audio</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-accesorio" value="Energía y Cables">
+                            <span>Energía y Cables</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-accesorio" value="Mouse">
+                            <span>Mouse</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-accesorio" value="Teclados">
+                            <span>Teclados</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-accesorio" value="Monitores">
+                            <span>Monitores</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="acciones-filtros">
+                <button class="boton-limpiar-filtros" id="limpiar-filtros" type="button">Limpiar filtros</button>
+            </div>
+        </aside>
+
+        <main class="contenedor-catalogo">
+            <section class="seccion-catalogo" id="catalogo-accesorios" aria-label="Catálogo de accesorios">
+                <p class="mensaje-sin-resultados" id="sin-resultados-accesorios" hidden>No encontramos accesorios con esos filtros.</p>
+                <div class="rejilla-productos" id="rejilla-accesorios"></div>
+            </section>
+        </main>
+    </div>
+
+    <section class="seccion-categoria" id="ofertas" aria-label="Ofertas especiales">
+        <h2>Ofertas <span class="texto-rojo">especiales</span></h2>
+        <p>Próximamente encontrarás ofertas exclusivas aquí.</p>
+    </section>
+
+    <dialog class="modal-producto" id="modal-producto" aria-labelledby="modal-titulo" tabindex="-1">
+        <div class="contenido-modal-producto">
+            <section class="galeria-producto" aria-label="Galería de imágenes del producto">
+                <div class="marco-imagen-producto">
+                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="">
+                    <button class="control-galeria control-galeria-anterior" id="imagen-anterior" type="button" aria-label="Ver imagen anterior">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                    </button>
+                    <button class="control-galeria control-galeria-siguiente" id="imagen-siguiente" type="button" aria-label="Ver imagen siguiente">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                    </button>
+                </div>
+                <div class="miniaturas-producto" id="miniaturas-producto" role="group" aria-label="Miniaturas. También puedes usar las flechas sobre la imagen"></div>
+            </section>
+            <section class="informacion-producto">
+                <div class="encabezado-detalle-producto">
+                    <div>
+                        <p class="categoria-producto" id="categoria-producto"></p>
+                        <h2 id="modal-titulo"></h2>
+                    </div>
+                    <div class="reseñas-modal" id="reseñas-modal"></div>
+                    <button class="boton-cerrar-modal" id="cerrar-modal-producto" type="button" aria-label="Cerrar detalles">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+                    </button>
+                </div>
+                <p class="precio-producto" id="precio-producto"></p>
+                <p class="descripcion-producto" id="descripcion-producto"></p>
+                <div class="listas-detalles-producto" id="listas-detalles-producto">
+                    <section class="lista-detalle">
+                        <h3>Características clave</h3>
+                        <ul id="caracteristicas-producto"></ul>
+                    </section>
+                    <section class="lista-detalle">
+                        <h3>Especificaciones técnicas</h3>
+                        <ul id="especificaciones-producto"></ul>
+                    </section>
+                </div>
+                <button class="boton-mostrar-mas" id="alternar-detalles" type="button" aria-expanded="false" aria-controls="listas-detalles-producto" hidden>Mostrar más</button>
+                <button class="boton-comprar-modal" id="comprar-producto" type="button">Comprar ahora</button>
+                <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
+            </section>
+        </div>
+    </dialog>
+
+    <dialog class="modal-busqueda" id="modal-busqueda" aria-labelledby="titulo-busqueda" tabindex="-1">
+        <div class="contenido-busqueda">
+            <div class="encabezado-busqueda">
+                <div>
+                    <p class="etiqueta-busqueda">CATÁLOGO COMPUTLALTE</p>
+                    <h2 id="titulo-busqueda">Buscar productos</h2>
+                </div>
+                <button class="boton-cerrar-modal" id="cerrar-busqueda" type="button" aria-label="Cerrar búsqueda">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+                </button>
+            </div>
+            <label class="etiqueta-campo-busqueda" for="campo-busqueda">¿Qué estás buscando?</label>
+            <input class="campo-busqueda" id="campo-busqueda" type="search" autocomplete="off" placeholder="Escribe un producto, marca o componente" aria-autocomplete="list" aria-controls="resultados-busqueda">
+            <p class="estado-busqueda" id="estado-busqueda" role="status" aria-live="polite">Empieza a escribir para ver sugerencias.</p>
+            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Sugerencias de productos"></div>
+        </div>
+    </dialog>
+
+    <div class="menu-movil" id="menu-movil" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
+        <div class="encabezado-menu-movil">
+            <a class="logotipo" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+            <button class="boton-icono boton-cerrar" type="button" aria-label="Cerrar menú">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+        </div>
+        <nav class="navegacion-movil" aria-label="Navegación móvil">
+            <div>
+                <button class="enlace-movil boton-acordeon" type="button" aria-expanded="false" aria-controls="opciones-movil">
+                    <span>Computadoras</span>
+                    <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                </button>
+                <div class="submenu-movil" id="opciones-movil" inert>
+                    <a href="index.html#juegos">Para Juegos</a>
+                    <a href="index.html#desarrollo">Desarrollo</a>
+                    <a href="index.html#uso-diario">Uso Diario</a>
+                </div>
+            </div>
+            <a class="enlace-movil" href="#accesorios">Accesorios</a>
+            <a class="enlace-movil" href="#ofertas">Ofertas</a>
+        </nav>
+        <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
+    </div>
+
+    <!-- Pie de página: marca, navegación rápida y datos de contacto. -->
+    <footer class="pie-sitio">
+        <div class="contenido-pie">
+            <div class="marca-pie">
+                <a class="logotipo-pie" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+                <p class="lema-pie">Computadoras y accesorios de alto rendimiento para juegos, desarrollo y uso diario.</p>
+            </div>
+
+            <nav class="columna-pie" aria-labelledby="titulo-pie-tienda">
+                <h2 class="titulo-pie" id="titulo-pie-tienda">Tienda</h2>
+                <ul>
+                    <li><a href="index.html#computadoras">Computadoras</a></li>
+                    <li><a href="#accesorios">Accesorios</a></li>
+                    <li><a href="#ofertas">Ofertas</a></li>
+                    <li><a href="cuenta.html">Mi cuenta</a></li>
+                </ul>
+            </nav>
+
+            <div class="columna-pie">
+                <h2 class="titulo-pie">Contacto</h2>
+                <ul>
+                    <li><a href="mailto:contacto@computlalte.com">contacto@computlalte.com</a></li>
+                    <li>No tenemos numero 😿</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pie-inferior">
+            <p>© 2026 Computlalte. Todos los derechos reservados.</p>
+            <p class="lema-corto">SOMOS TU MEJOR OPCIÓN <span class="corazon-pie">❤</span></p>
+        </div>
+    </footer>
+
+    <script src="js/catalogo-local.js" defer></script>
+    <script src="js/script.js" defer></script>
+</body>
+</html>

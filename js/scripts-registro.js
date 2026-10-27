@@ -86,5 +86,5 @@ formularioEl.addEventListener("submit", function (evento) {
 
     localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
     alert("Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
-    window.location.href = "Login.html";
+    window.location.href = "login.html";
 });
