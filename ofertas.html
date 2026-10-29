@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="description" content="Computlalte: ofertas especiales en computadoras y accesorios de alto rendimiento.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Computlalte | Ofertas">
+    <meta property="og:description" content="Descuentos especiales en productos seleccionados de la tienda.">
+    <title>Computlalte | Ofertas</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="preload" as="image" href="imagenes/anuncios/imagen-ofertas-add.jpg" fetchpriority="high">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/catalogo-accesorios.css?v=6">
+    <link rel="stylesheet" href="css/ofertas.css?v=6">
+    <link rel="stylesheet" href="css/mega-menu.css?v=4">
+</head>
+<body class="pagina-ofertas">
+    <header class="encabezado-sitio" id="inicio">
+        <nav class="barra-navegacion" aria-label="Navegación principal">
+            <div class="inicio-navegacion">
+                <button class="boton-icono boton-menu" type="button" aria-label="Abrir menú" aria-controls="menu-movil" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+                </button>
+                <a class="logotipo" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+            </div>
+            <ul class="enlaces-navegacion">
+                <li class="menu-desplegable menu-mega">
+                    <a class="enlace-navegacion" href="index.html#computadoras">Computadoras <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+                    <div class="contenido-mega" role="group" aria-label="Categorías de computadoras">
+                        <div class="mega-cuadricula">
+                            <a class="mega-opcion" href="index.html#juegos">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-gaming/pc-vengeance/pc-juego-corsair-vengeance-a7500-11.avif" alt="Computadora gamer con monitor y escritorio iluminado" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Para Juegos</span>
+                            </a>
+                            <a class="mega-opcion" href="index.html#desarrollo">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg" alt="Computadora portátil para desarrollo y programación" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Desarrollo</span>
+                            </a>
+                            <a class="mega-opcion" href="index.html#uso-diario">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp" alt="Computadora portátil para uso diario" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Uso Diario</span>
+                            </a>
+                        </div>
+                        <a class="mega-ver-todo" href="index.html#catalogo">
+                            Ver catálogo de computadoras
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                        </a>
+                    </div>
+                </li>
+                <li><a class="enlace-navegacion" href="accesorios.html">Accesorios</a></li>
+                <li class="menu-desplegable menu-ofertas">
+                    <a class="enlace-navegacion" href="#ofertas">Ofertas <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+                    <ul class="contenido-ofertas" aria-label="Ofertas">
+                        <li><a href="#ofertas">Ofertas de la semana</a></li>
+                        <li><a href="#ofertas">Descuentos educativos</a></li>
+                        <li><a href="#ofertas">Promociones especiales</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="iconos-navegacion" aria-label="Accesos rápidos">
+                <button class="boton-icono boton-abrir-busqueda" id="abrir-busqueda" type="button" aria-label="Buscar productos" aria-haspopup="dialog" aria-controls="modal-busqueda">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 4 4"/></svg>
+                </button>
+                <a class="boton-icono" href="cuenta.html" aria-label="Mi cuenta">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+                </a>
+                <a class="boton-icono" href="carrito.html" aria-label="Carrito de compras">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Anuncio principal de ofertas: la imagen cubre todo el fondo, como en
+         Computadoras y Accesorios. -->
+    <section class="seccion-anuncio anuncio-ofertas" aria-labelledby="titulo-anuncio-ofertas">
+        <div class="contenido-anuncio">
+            <p class="etiqueta-anuncio">PRECIOS ESPECIALES</p>
+            <h1 id="titulo-anuncio-ofertas">Ofertas</h1>
+            <p class="descripcion">Descuentos exclusivos en equipos y accesorios seleccionados. Aprovecha antes de que termine la promoción.</p>
+            <a href="#ofertas" class="boton-comprar">Ver ofertas ahora</a>
+        </div>
+    </section>
+
+    <main class="contenido-ofertas-pagina">
+        <section class="seccion-ofertas" id="ofertas" aria-labelledby="titulo-ofertas">
+            <div class="encabezado-ofertas">
+                <p class="etiqueta-ofertas">APROVECHA</p>
+                <h2 id="titulo-ofertas">Ofertas <span class="texto-rojo">de la semana</span></h2>
+                <p class="descripcion-ofertas">Productos seleccionados con precio especial por tiempo limitado.</p>
+            </div>
+            <div class="rejilla-productos rejilla-ofertas" id="rejilla-ofertas"></div>
+            <p class="enlace-volver-tienda"><a href="index.html#catalogo">Seguir explorando la tienda</a></p>
+        </section>
+    </main>
+
+    <dialog class="modal-producto" id="modal-producto" aria-labelledby="modal-titulo" tabindex="-1">
+        <div class="contenido-modal-producto">
+            <section class="galeria-producto" aria-label="Galería de imágenes del producto">
+                <div class="marco-imagen-producto">
+                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="">
+                    <button class="control-galeria control-galeria-anterior" id="imagen-anterior" type="button" aria-label="Ver imagen anterior">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                    </button>
+                    <button class="control-galeria control-galeria-siguiente" id="imagen-siguiente" type="button" aria-label="Ver imagen siguiente">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                    </button>
+                </div>
+                <div class="miniaturas-producto" id="miniaturas-producto" role="group" aria-label="Miniaturas. También puedes usar las flechas sobre la imagen"></div>
+            </section>
+            <section class="informacion-producto">
+                <div class="encabezado-detalle-producto">
+                    <div>
+                        <p class="categoria-producto" id="categoria-producto"></p>
+                        <h2 id="modal-titulo"></h2>
+                    </div>
+                    <div class="reseñas-modal" id="reseñas-modal"></div>
+                    <button class="boton-cerrar-modal" id="cerrar-modal-producto" type="button" aria-label="Cerrar detalles">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+                    </button>
+                </div>
+                <p class="precio-producto" id="precio-producto"></p>
+                <p class="descripcion-producto" id="descripcion-producto"></p>
+                <div class="listas-detalles-producto" id="listas-detalles-producto">
+                    <section class="lista-detalle">
+                        <h3>Características clave</h3>
+                        <ul id="caracteristicas-producto"></ul>
+                    </section>
+                    <section class="lista-detalle">
+                        <h3>Especificaciones técnicas</h3>
+                        <ul id="especificaciones-producto"></ul>
+                    </section>
+                </div>
+                <button class="boton-mostrar-mas" id="alternar-detalles" type="button" aria-expanded="false" aria-controls="listas-detalles-producto" hidden>Mostrar más</button>
+                <button class="boton-comprar-modal" id="comprar-producto" type="button">Comprar ahora</button>
+                <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
+            </section>
+        </div>
+    </dialog>
+
+    <dialog class="modal-busqueda" id="modal-busqueda" aria-labelledby="titulo-busqueda" tabindex="-1">
+        <div class="contenido-busqueda">
+            <div class="encabezado-busqueda">
+                <div>
+                    <p class="etiqueta-busqueda">CATÁLOGO COMPUTLALTE</p>
+                    <h2 id="titulo-busqueda">Buscar productos</h2>
+                </div>
+                <button class="boton-cerrar-modal" id="cerrar-busqueda" type="button" aria-label="Cerrar búsqueda">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+                </button>
+            </div>
+            <label class="etiqueta-campo-busqueda" for="campo-busqueda">¿Qué estás buscando?</label>
+            <input class="campo-busqueda" id="campo-busqueda" type="search" autocomplete="off" placeholder="Escribe un producto, marca o componente" aria-autocomplete="list" aria-controls="resultados-busqueda">
+            <p class="estado-busqueda" id="estado-busqueda" role="status" aria-live="polite">Empieza a escribir para ver sugerencias.</p>
+            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Productos vistos y sugerencias"></div>
+            <div class="historial-busqueda" id="historial-busqueda" hidden>
+                <div class="encabezado-historial">
+                    <p class="titulo-historial">Búsquedas recientes</p>
+                    <button class="boton-limpiar-historial" id="limpiar-historial" type="button">Borrar historial</button>
+                </div>
+                <div class="etiquetas-historial" id="etiquetas-historial"></div>
+            </div>
+        </div>
+    </dialog>
+
+    <div class="menu-movil" id="menu-movil" role="dialog" aria-modal="true" aria-label="Menú de navegación" aria-hidden="true" inert>
+        <div class="encabezado-menu-movil">
+            <a class="logotipo" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+            <button class="boton-icono boton-cerrar" type="button" aria-label="Cerrar menú">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+        </div>
+        <nav class="navegacion-movil" aria-label="Navegación móvil">
+            <div>
+                <button class="enlace-movil boton-acordeon" type="button" aria-expanded="false" aria-controls="opciones-movil">
+                    <span>Computadoras</span>
+                    <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                </button>
+                <div class="submenu-movil" id="opciones-movil" inert>
+                    <a href="index.html#juegos">Para Juegos</a>
+                    <a href="index.html#desarrollo">Desarrollo</a>
+                    <a href="index.html#uso-diario">Uso Diario</a>
+                </div>
+            </div>
+            <a class="enlace-movil" href="accesorios.html">Accesorios</a>
+            <a class="enlace-movil" href="#ofertas">Ofertas</a>
+        </nav>
+        <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
+    </div>
+
+    <footer class="pie-sitio">
+        <div class="contenido-pie">
+            <div class="marca-pie">
+                <a class="logotipo-pie" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+                <p class="lema-pie">Computadoras y accesorios de alto rendimiento para juegos, desarrollo y uso diario.</p>
+            </div>
+
+            <nav class="columna-pie" aria-labelledby="titulo-pie-tienda">
+                <h2 class="titulo-pie" id="titulo-pie-tienda">Tienda</h2>
+                <ul>
+                    <li><a href="index.html#computadoras">Computadoras</a></li>
+                    <li><a href="accesorios.html">Accesorios</a></li>
+                    <li><a href="#ofertas">Ofertas</a></li>
+                    <li><a href="cuenta.html">Mi cuenta</a></li>
+                </ul>
+            </nav>
+
+            <div class="columna-pie">
+                <h2 class="titulo-pie">Contacto</h2>
+                <ul>
+                    <li><a href="mailto:contacto@computlalte.com">contacto@computlalte.com</a></li>
+                    <li>Lun a Vie · 9:00 a 18:00</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pie-inferior">
+            <p>© 2026 Computlalte. Todos los derechos reservados.</p>
+            <p class="lema-corto">SOMOS TU MEJOR OPCIÓN <span class="corazon-pie">❤</span></p>
+        </div>
+    </footer>
+
+    <script src="js/catalogo-local.js?v=4" defer></script>
+    <script src="js/script.js?v=12" defer></script>
+</body>
+</html>

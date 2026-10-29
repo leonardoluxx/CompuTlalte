@@ -8,7 +8,7 @@
     <title>Carrito de compras | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-carrito.css">
+    <link rel="stylesheet" href="css/style-carrito.css?v=4">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -17,29 +17,162 @@
         <a class="enlace-volver" href="index.html">Volver a la tienda</a>
     </header>
 
-    <div class="contenido-pagina">
-        <h1 id="titulo">Carrito de compras</h1>
+    <main class="contenido-pagina">
+        <header class="encabezado-carrito">
+            <p class="etiqueta-pagina">Tu selección</p>
+            <h1 id="titulo">Carrito de compras</h1>
+            <p class="descripcion-carrito">Revisa tus equipos, ajusta sus mejoras y confirma la compra cuando todo esté listo.</p>
+        </header>
 
-        <div id="productos">
-            <h2 id="cantidad">Mis productos</h2>
-            <hr id="separador">
+        <div class="disposicion-carrito" id="disposicion-carrito">
+            <section id="productos" aria-labelledby="cantidad">
+                <div class="cabecera-productos">
+                    <h2 id="cantidad">Mis productos</h2>
+                    <p class="cantidad-articulos" id="cantidad-articulos" role="status" aria-live="polite"></p>
+                </div>
 
-            <!-- Aquí se dibujan los productos que vienen de la tienda -->
-            <div id="contenido">
-                <p class="vacio">Tu carrito está vacío.</p>
-            </div>
+                <!-- Aquí se dibujan los productos que vienen de la tienda. -->
+                <div id="contenido"></div>
+            </section>
 
-            <div id="resumen">
+            <aside id="resumen" aria-labelledby="titulo-resumen">
+                <h2 id="titulo-resumen">Resumen de compra</h2>
+
+                <dl class="lineas-resumen">
+                    <div>
+                        <dt>Artículos</dt>
+                        <dd id="subtotal">$0</dd>
+                    </div>
+                    <div>
+                        <dt>Envío</dt>
+                        <dd>Se calcula al pagar</dd>
+                    </div>
+                </dl>
+
                 <p id="total">Total: $0</p>
+                <p class="nota-resumen">Pago seguro por transferencia bancaria o tarjeta.</p>
 
                 <div id="botones">
                     <a href="index.html" id="seguir">Seguir comprando</a>
-                    <button id="pagar" type="button">Pagar</button>
+                    <button id="pagar" type="button">Proceder al pago</button>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Detalle del producto: permite revisarlo sin salir del carrito. -->
+    <dialog class="modal-carrito" id="modal-detalle-carrito" aria-labelledby="detalle-nombre">
+        <div class="contenido-modal-carrito">
+            <button class="cerrar-modal-carrito" id="cerrar-detalle-carrito" type="button" aria-label="Cerrar detalles">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+
+            <div class="detalle-carrito">
+                <div class="detalle-imagen-marco">
+                    <img id="detalle-imagen" alt="">
+                </div>
+
+                <div class="detalle-texto">
+                    <div class="detalle-encabezado">
+                        <p class="detalle-marca" id="detalle-marca"></p>
+                        <span class="detalle-categoria" id="detalle-categoria"></span>
+                    </div>
+                    <h2 id="detalle-nombre"></h2>
+                    <p class="detalle-descripcion" id="detalle-descripcion"></p>
+
+                    <div class="detalle-bloque">
+                        <h3>Especificaciones</h3>
+                        <ul id="detalle-especificaciones"></ul>
+                    </div>
+
+                    <div class="detalle-bloque" id="detalle-bloque-opciones">
+                        <h3>Mejoras elegidas</h3>
+                        <div class="detalle-opciones" id="detalle-opciones"></div>
+                    </div>
+
+                    <p class="detalle-precio" id="detalle-precio"></p>
+
+                    <div class="acciones-modal">
+                        <button class="boton-secundario" id="editar-desde-detalle" type="button">Editar mejoras</button>
+                        <button class="boton-peligro" id="quitar-desde-detalle" type="button">Quitar del carrito</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <script src="js/scripts-carrito.js"></script>
+    <!-- Editor de mejoras: mismas opciones que el detalle de la tienda. -->
+    <dialog class="modal-carrito" id="modal-editar-carrito" aria-labelledby="editar-nombre">
+        <form class="contenido-modal-carrito" id="form-editar-carrito" novalidate>
+            <button class="cerrar-modal-carrito" id="cerrar-editar-carrito" type="button" aria-label="Cerrar editor">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+
+            <p class="etiqueta-modal">Personaliza tu equipo</p>
+            <h2 id="editar-nombre"></h2>
+            <p class="nota-modal">Ajusta las mejoras y el precio se actualizará al instante.</p>
+
+            <fieldset class="grupo-edicion">
+                <legend>Almacenamiento</legend>
+                <div class="opciones-edicion">
+                    <label class="opcion-edicion">
+                        <input type="radio" name="editar-almacenamiento" value="1-tb" data-grupo="almacenamiento" data-etiqueta="1 TB" data-extra="0" checked>
+                        <span>1 TB</span>
+                        <small>Incluido</small>
+                    </label>
+                    <label class="opcion-edicion">
+                        <input type="radio" name="editar-almacenamiento" value="2-tb" data-grupo="almacenamiento" data-etiqueta="2 TB" data-extra="2000">
+                        <span>2 TB</span>
+                        <small>+ $2,000</small>
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset class="grupo-edicion">
+                <legend>Memoria RAM</legend>
+                <div class="opciones-edicion">
+                    <label class="opcion-edicion">
+                        <input type="radio" name="editar-memoria" value="16-gb" data-grupo="memoria" data-etiqueta="16 GB" data-extra="0" checked>
+                        <span>16 GB</span>
+                        <small>Incluido</small>
+                    </label>
+                    <label class="opcion-edicion">
+                        <input type="radio" name="editar-memoria" value="32-gb" data-grupo="memoria" data-etiqueta="32 GB" data-extra="3500">
+                        <span>32 GB</span>
+                        <small>+ $3,500</small>
+                    </label>
+                </div>
+            </fieldset>
+
+            <fieldset class="grupo-edicion">
+                <legend>Color</legend>
+                <div class="opciones-edicion">
+                    <label class="opcion-edicion">
+                        <input type="radio" name="editar-color" value="plata" data-grupo="color" data-etiqueta="Plata" data-extra="0" checked>
+                        <span>Plata</span>
+                        <small>Incluido</small>
+                    </label>
+                    <label class="opcion-edicion">
+                        <input type="radio" name="editar-color" value="negro-espacial" data-grupo="color" data-etiqueta="Negro Espacial" data-extra="500">
+                        <span>Negro Espacial</span>
+                        <small>+ $500</small>
+                    </label>
+                </div>
+            </fieldset>
+
+            <p class="precio-edicion" id="editar-precio" role="status" aria-live="polite"></p>
+
+            <div class="acciones-modal">
+                <button class="boton-secundario" id="cancelar-editar" type="button">Cancelar</button>
+                <button class="boton-primario" type="submit">Guardar cambios</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="aviso-carrito" id="aviso-carrito" role="status" aria-live="polite"></div>
+
+    <!-- Datos del catálogo para mostrar especificaciones y precios base. -->
+    <script src="js/catalogo-local.js?v=4"></script>
+    <script src="js/scripts-carrito.js?v=5"></script>
 </body>
 </html>

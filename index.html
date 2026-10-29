@@ -15,7 +15,8 @@
     <link rel="preload" as="image" href="imagenes/anuncios/imagen-procesador-add.jpg" fetchpriority="high">
     <!-- Tipografías incrustadas para que el diseño se vea igual sin conexión. -->
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=7">
+    <link rel="stylesheet" href="css/mega-menu.css?v=4">
 </head>
 <body>
     <!-- Encabezado de navegación para las versiones de escritorio y móvil. -->
@@ -29,18 +30,46 @@
                 <a class="logotipo" href="#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
             </div>
 
-            <!-- Enlaces centrales y menú desplegable para pantallas grandes. -->
+            <!-- Enlaces centrales: mega menú de computadoras y panel de ofertas. -->
             <ul class="enlaces-navegacion">
-                <li class="menu-desplegable">
+                <li class="menu-desplegable menu-mega">
                     <a class="enlace-navegacion" href="#computadoras">Computadoras <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
-                    <ul class="contenido-desplegable">
-                        <li><a href="#juegos">Para Juegos</a></li>
-                        <li><a href="#desarrollo">Desarrollo</a></li>
-                        <li><a href="#uso-diario">Uso Diario</a></li>
-                    </ul>
+                    <div class="contenido-mega" role="group" aria-label="Categorías de computadoras">
+                        <div class="mega-cuadricula">
+                            <a class="mega-opcion" href="#juegos">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-gaming/pc-vengeance/pc-juego-corsair-vengeance-a7500-11.avif" alt="Computadora gamer con monitor y escritorio iluminado" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Para Juegos</span>
+                            </a>
+                            <a class="mega-opcion" href="#desarrollo">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg" alt="Computadora portátil para desarrollo y programación" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Desarrollo</span>
+                            </a>
+                            <a class="mega-opcion" href="#uso-diario">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp" alt="Computadora portátil para uso diario" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Uso Diario</span>
+                            </a>
+                        </div>
+                        <a class="mega-ver-todo" href="#catalogo">
+                            Ver catálogo de computadoras
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                        </a>
+                    </div>
                 </li>
                 <li><a class="enlace-navegacion" href="accesorios.html">Accesorios</a></li>
-                <li><a class="enlace-navegacion" href="accesorios.html#ofertas">Ofertas</a></li>
+                <li class="menu-desplegable menu-ofertas">
+                    <a class="enlace-navegacion" href="ofertas.html">Ofertas <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+                    <ul class="contenido-ofertas" aria-label="Ofertas">
+                        <li><a href="ofertas.html">Ofertas de la semana</a></li>
+                        <li><a href="ofertas.html">Descuentos educativos</a></li>
+                        <li><a href="ofertas.html">Promociones especiales</a></li>
+                    </ul>
+                </li>
             </ul>
 
             <!-- Iconos dibujados como SVG dentro del archivo: funcionan sin recursos externos. -->
@@ -69,14 +98,109 @@
     </section>
 
     <section class="titulo-categoria" id="computadoras">
-        <h2>Computadoras <span class="texto-rojo">para juegos</span></h2>
+        <h2>Computadoras <span class="texto-rojo">de alto rendimiento</span></h2>
+        <p class="descripcion-categoria">Equipos pensados para jugar, crear y trabajar. Filtra por categoría, disponibilidad y precio para encontrar el tuyo.</p>
     </section>
 
-    <!-- La cuadrícula se llena con las tarjetas creadas desde js/script.js. -->
-    <section class="seccion-catalogo" id="catalogo" aria-label="Catálogo de computadoras para juegos">
-        <div id="juegos" class="ancla-categoria" aria-hidden="true"></div>
-        <div class="rejilla-productos" id="rejilla-productos"></div>
-    </section>
+    <!-- Mismo layout de dos columnas que Accesorios: controles arriba y filtros a la izquierda. -->
+    <div class="contenedor-catalogo-con-filtros" id="contenedor-catalogo-computadoras">
+        <section class="barra-controles-catalogo" aria-label="Controles del catálogo de computadoras">
+            <button class="boton-alternar-filtros" id="alternar-filtros-computadoras" type="button" aria-expanded="true" aria-controls="filtros-computadoras">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16l-6 7.5V19l-4-2v-4.5L4 5Z" /></svg>
+                <span id="texto-alternar-filtros-computadoras">Ocultar filtro</span>
+            </button>
+
+            <div class="grupo-orden">
+                <label class="etiqueta-orden" for="orden-computadoras">Ordenar por:</label>
+                <select id="orden-computadoras" class="campo-orden">
+                    <option value="destacados" selected>Destacados</option>
+                    <option value="precio-ascendente">Precio: Menor a Mayor</option>
+                    <option value="precio-descendente">Precio: Mayor a Menor</option>
+                </select>
+            </div>
+
+            <p class="conteo-resultado" id="conteo-computadoras" role="status" aria-live="polite">0 artículos encontrados</p>
+        </section>
+
+        <aside class="panel-filtros" id="filtros-computadoras" aria-label="Filtros de computadoras">
+            <section class="grupo-filtros">
+                <h3>Disponibilidad</h3>
+                <ul class="lista-filtros">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="disponibilidad-computadora" value="disponible" checked>
+                            <span>En existencia</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="disponibilidad-computadora" value="agotado" checked>
+                            <span>Agotado</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="grupo-filtros">
+                <h3>Categoría</h3>
+                <ul class="lista-filtros">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-computadora" value="Juegos" checked>
+                            <span>Juegos</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-computadora" value="Desarrollo">
+                            <span>Desarrollo</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="categoria-computadora" value="Uso Diario">
+                            <span>Uso Diario</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="grupo-filtros">
+                <h3>Precio</h3>
+                <ul class="lista-filtros">
+                    <li>
+                        <label>
+                            <input type="checkbox" name="precio-computadora" value="menos-15000">
+                            <span>Menos de $15,000</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="precio-computadora" value="15000-30000">
+                            <span>$15,000 - $30,000</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="precio-computadora" value="mas-30000">
+                            <span>Más de $30,000</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="acciones-filtros">
+                <button class="boton-limpiar-filtros" id="limpiar-filtros-computadoras" type="button">Limpiar filtros</button>
+            </div>
+        </aside>
+
+        <main class="contenedor-catalogo">
+            <section class="seccion-catalogo" id="catalogo" aria-label="Catálogo de computadoras">
+                <p class="mensaje-sin-resultados" id="sin-resultados-computadoras" hidden>No encontramos computadoras con esos filtros.</p>
+                <div class="rejilla-productos" id="rejilla-computadoras"></div>
+            </section>
+        </main>
+    </div>
 
     <!-- Ventana de detalles: el contenido y las imágenes se cargan desde el producto seleccionado. -->
     <dialog class="modal-producto" id="modal-producto" aria-labelledby="modal-titulo" tabindex="-1">
@@ -119,6 +243,68 @@
                     </section>
                 </div>
 
+                <!-- Personalización de equipos: los accesorios no muestran esta sección. -->
+                <section class="personalizacion-producto" id="personalizacion-producto" aria-labelledby="titulo-personalizacion">
+                    <div class="encabezado-personalizacion">
+                        <div class="texto-personalizacion">
+                            <h3 id="titulo-personalizacion">Personaliza tu equipo</h3>
+                            <p id="ayuda-personalizacion">Haz clic para mejorar tu equipo</p>
+                        </div>
+                        <button class="boton-personalizacion" id="alternar-personalizacion" type="button" aria-expanded="false" aria-controls="opciones-personalizacion">
+                            <span class="texto-boton-personalizacion">Personalizar ahora</span>
+                            <svg class="flecha-personalizacion" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </button>
+                    </div>
+
+                    <div class="contenedor-opciones-personalizacion" id="opciones-personalizacion">
+                        <div class="interior-opciones-personalizacion">
+                            <fieldset class="grupo-personalizacion">
+                                <legend>Almacenamiento</legend>
+                                <div class="opciones-personalizacion">
+                                    <label class="opcion-personalizacion">
+                                        <input type="radio" name="personalizacion-almacenamiento" value="1-tb" data-extra="0" checked>
+                                        <span class="contenido-opcion"><strong>1 TB</strong><small>Incluido</small></span>
+                                    </label>
+                                    <label class="opcion-personalizacion">
+                                        <input type="radio" name="personalizacion-almacenamiento" value="2-tb" data-extra="2000">
+                                        <span class="contenido-opcion"><strong>2 TB</strong><small>+ $2,000</small></span>
+                                    </label>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="grupo-personalizacion">
+                                <legend>Memoria RAM</legend>
+                                <div class="opciones-personalizacion">
+                                    <label class="opcion-personalizacion">
+                                        <input type="radio" name="personalizacion-memoria" value="16-gb" data-extra="0" checked>
+                                        <span class="contenido-opcion"><strong>16 GB</strong><small>Incluido</small></span>
+                                    </label>
+                                    <label class="opcion-personalizacion">
+                                        <input type="radio" name="personalizacion-memoria" value="32-gb" data-extra="3500">
+                                        <span class="contenido-opcion"><strong>32 GB</strong><small>+ $3,500</small></span>
+                                    </label>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="grupo-personalizacion">
+                                <legend>Color</legend>
+                                <div class="opciones-personalizacion">
+                                    <label class="opcion-personalizacion">
+                                        <input type="radio" name="personalizacion-color" value="plata" data-extra="0" checked>
+                                        <span class="contenido-opcion"><strong>Plata</strong><small>Incluido</small></span>
+                                    </label>
+                                    <label class="opcion-personalizacion">
+                                        <input type="radio" name="personalizacion-color" value="negro-espacial" data-extra="500">
+                                        <span class="contenido-opcion"><strong>Negro Espacial</strong><small>+ $500</small></span>
+                                    </label>
+                                </div>
+                            </fieldset>
+
+                            <p class="total-personalizacion" id="total-personalizacion" role="status" aria-live="polite"></p>
+                        </div>
+                    </div>
+                </section>
+
                 <button class="boton-comprar-modal" id="comprar-producto" type="button">Comprar ahora</button>
                 <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
             </section>
@@ -140,7 +326,14 @@
             <label class="etiqueta-campo-busqueda" for="campo-busqueda">¿Qué estás buscando?</label>
             <input class="campo-busqueda" id="campo-busqueda" type="search" autocomplete="off" placeholder="Escribe un producto, marca o componente" aria-autocomplete="list" aria-controls="resultados-busqueda">
             <p class="estado-busqueda" id="estado-busqueda" role="status" aria-live="polite">Empieza a escribir para ver sugerencias.</p>
-            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Sugerencias de productos"></div>
+            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Productos vistos y sugerencias"></div>
+            <div class="historial-busqueda" id="historial-busqueda" hidden>
+                <div class="encabezado-historial">
+                    <p class="titulo-historial">Búsquedas recientes</p>
+                    <button class="boton-limpiar-historial" id="limpiar-historial" type="button">Borrar historial</button>
+                </div>
+                <div class="etiquetas-historial" id="etiquetas-historial"></div>
+            </div>
         </div>
     </dialog>
 
@@ -166,7 +359,7 @@
                 </div>
             </div>
             <a class="enlace-movil" href="accesorios.html">Accesorios</a>
-            <a class="enlace-movil" href="accesorios.html#ofertas">Ofertas</a>
+            <a class="enlace-movil" href="ofertas.html">Ofertas</a>
         </nav>
         <!-- Pie decorativo de la capa móvil. -->
         <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
@@ -184,7 +377,7 @@
                 <ul>
                     <li><a href="#computadoras">Computadoras</a></li>
                     <li><a href="accesorios.html">Accesorios</a></li>
-                    <li><a href="accesorios.html#ofertas">Ofertas</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
                     <li><a href="cuenta.html">Mi cuenta</a></li>
                 </ul>
             </nav>
@@ -193,7 +386,7 @@
                 <h2 class="titulo-pie">Contacto</h2>
                 <ul>
                     <li><a href="mailto:contacto@computlalte.com">contacto@computlalte.com</a></li>
-                    <li>No tenemos numero 😿</li>
+                    <li>Lun a Vie · 9:00 a 18:00</li>
                 </ul>
             </div>
         </div>
@@ -204,9 +397,9 @@
         </div>
     </footer>
 
-    <!-- Datos locales de prueba; después podrá sustituirse su origen por la base de datos. -->
-    <script src="js/catalogo-local.js" defer></script>
+    <!-- Catálogo de productos de la tienda. -->
+    <script src="js/catalogo-local.js?v=4" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
-    <script src="js/script.js" defer></script>
+    <script src="js/script.js?v=12" defer></script>
 </body>
 </html>

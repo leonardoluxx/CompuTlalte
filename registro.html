@@ -10,7 +10,7 @@
     <!-- Usa el mismo CSS del inicio de sesión para que las dos páginas se vean igual -->
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-login.css">
+    <link rel="stylesheet" href="css/style-login.css?v=3">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -42,6 +42,29 @@
                 <label for="clave2">Confirmar contraseña</label>
                 <input type="password" id="clave2" autocomplete="new-password">
 
+                <!-- Preferencia opcional: se puede cambiar después desde Mi cuenta. -->
+                <fieldset class="preferencia-pago">
+                    <legend>Método de pago preferido <span>Opcional</span></legend>
+                    <p class="nota-preferencia">Lo usaremos para agilizar tu próxima compra. Puedes cambiarlo cuando quieras desde Mi cuenta.</p>
+
+                    <div class="opciones-pago">
+                        <label class="opcion-pago">
+                            <input type="radio" name="metodo-pago" value="transferencia">
+                            <span>Transferencia</span>
+                        </label>
+
+                        <label class="opcion-pago">
+                            <input type="radio" name="metodo-pago" value="tarjeta">
+                            <span>Tarjeta</span>
+                        </label>
+
+                        <label class="opcion-pago">
+                            <input type="radio" name="metodo-pago" value="" checked>
+                            <span>Decidir al pagar</span>
+                        </label>
+                    </div>
+                </fieldset>
+
                 <p id="mensaje" role="alert"></p>
 
                 <button type="submit" id="entrar">Crear cuenta</button>
@@ -51,6 +74,6 @@
         </div>
     </div>
 
-    <script src="js/scripts-registro.js"></script>
+    <script src="js/scripts-registro.js?v=3"></script>
 </body>
 </html>

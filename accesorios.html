@@ -12,7 +12,8 @@
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="preload" as="image" href="imagenes/anuncios/imagen-mouse-accesorios-add.jpg" fetchpriority="high">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/catalogo-accesorios.css">
+    <link rel="stylesheet" href="css/catalogo-accesorios.css?v=6">
+    <link rel="stylesheet" href="css/mega-menu.css?v=4">
 </head>
 <body>
     <header class="encabezado-sitio" id="inicio">
@@ -24,16 +25,44 @@
                 <a class="logotipo" href="index.html#inicio" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
             </div>
             <ul class="enlaces-navegacion">
-                <li class="menu-desplegable">
+                <li class="menu-desplegable menu-mega">
                     <a class="enlace-navegacion" href="index.html#computadoras">Computadoras <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
-                    <ul class="contenido-desplegable">
-                        <li><a href="index.html#juegos">Para Juegos</a></li>
-                        <li><a href="index.html#desarrollo">Desarrollo</a></li>
-                        <li><a href="index.html#uso-diario">Uso Diario</a></li>
-                    </ul>
+                    <div class="contenido-mega" role="group" aria-label="Categorías de computadoras">
+                        <div class="mega-cuadricula">
+                            <a class="mega-opcion" href="index.html#juegos">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-gaming/pc-vengeance/pc-juego-corsair-vengeance-a7500-11.avif" alt="Computadora gamer con monitor y escritorio iluminado" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Para Juegos</span>
+                            </a>
+                            <a class="mega-opcion" href="index.html#desarrollo">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg" alt="Computadora portátil para desarrollo y programación" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Desarrollo</span>
+                            </a>
+                            <a class="mega-opcion" href="index.html#uso-diario">
+                                <span class="mega-imagen">
+                                    <img src="imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp" alt="Computadora portátil para uso diario" loading="lazy">
+                                </span>
+                                <span class="mega-etiqueta">Uso Diario</span>
+                            </a>
+                        </div>
+                        <a class="mega-ver-todo" href="index.html#catalogo">
+                            Ver catálogo de computadoras
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                        </a>
+                    </div>
                 </li>
                 <li><a class="enlace-navegacion" href="#accesorios">Accesorios</a></li>
-                <li><a class="enlace-navegacion" href="#ofertas">Ofertas</a></li>
+                <li class="menu-desplegable menu-ofertas">
+                    <a class="enlace-navegacion" href="ofertas.html">Ofertas <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
+                    <ul class="contenido-ofertas" aria-label="Ofertas">
+                        <li><a href="ofertas.html">Ofertas de la semana</a></li>
+                        <li><a href="ofertas.html">Descuentos educativos</a></li>
+                        <li><a href="ofertas.html">Promociones especiales</a></li>
+                    </ul>
+                </li>
             </ul>
             <div class="iconos-navegacion" aria-label="Accesos rápidos">
                 <button class="boton-icono boton-abrir-busqueda" id="abrir-busqueda" type="button" aria-label="Buscar productos" aria-haspopup="dialog" aria-controls="modal-busqueda">
@@ -153,11 +182,6 @@
         </main>
     </div>
 
-    <section class="seccion-categoria" id="ofertas" aria-label="Ofertas especiales">
-        <h2>Ofertas <span class="texto-rojo">especiales</span></h2>
-        <p>Próximamente encontrarás ofertas exclusivas aquí.</p>
-    </section>
-
     <dialog class="modal-producto" id="modal-producto" aria-labelledby="modal-titulo" tabindex="-1">
         <div class="contenido-modal-producto">
             <section class="galeria-producto" aria-label="Galería de imágenes del producto">
@@ -216,7 +240,14 @@
             <label class="etiqueta-campo-busqueda" for="campo-busqueda">¿Qué estás buscando?</label>
             <input class="campo-busqueda" id="campo-busqueda" type="search" autocomplete="off" placeholder="Escribe un producto, marca o componente" aria-autocomplete="list" aria-controls="resultados-busqueda">
             <p class="estado-busqueda" id="estado-busqueda" role="status" aria-live="polite">Empieza a escribir para ver sugerencias.</p>
-            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Sugerencias de productos"></div>
+            <div class="resultados-busqueda" id="resultados-busqueda" role="listbox" aria-label="Productos vistos y sugerencias"></div>
+            <div class="historial-busqueda" id="historial-busqueda" hidden>
+                <div class="encabezado-historial">
+                    <p class="titulo-historial">Búsquedas recientes</p>
+                    <button class="boton-limpiar-historial" id="limpiar-historial" type="button">Borrar historial</button>
+                </div>
+                <div class="etiquetas-historial" id="etiquetas-historial"></div>
+            </div>
         </div>
     </dialog>
 
@@ -240,7 +271,7 @@
                 </div>
             </div>
             <a class="enlace-movil" href="#accesorios">Accesorios</a>
-            <a class="enlace-movil" href="#ofertas">Ofertas</a>
+            <a class="enlace-movil" href="ofertas.html">Ofertas</a>
         </nav>
         <div class="pie-menu-movil">COMPUTLALTE SOMOS TU MEJOR OPCIÓN<span class="corazon">❤</span></div>
     </div>
@@ -258,7 +289,7 @@
                 <ul>
                     <li><a href="index.html#computadoras">Computadoras</a></li>
                     <li><a href="#accesorios">Accesorios</a></li>
-                    <li><a href="#ofertas">Ofertas</a></li>
+                    <li><a href="ofertas.html">Ofertas</a></li>
                     <li><a href="cuenta.html">Mi cuenta</a></li>
                 </ul>
             </nav>
@@ -267,7 +298,7 @@
                 <h2 class="titulo-pie">Contacto</h2>
                 <ul>
                     <li><a href="mailto:contacto@computlalte.com">contacto@computlalte.com</a></li>
-                    <li>No tenemos numero 😿</li>
+                    <li>Lun a Vie · 9:00 a 18:00</li>
                 </ul>
             </div>
         </div>
@@ -278,7 +309,7 @@
         </div>
     </footer>
 
-    <script src="js/catalogo-local.js" defer></script>
-    <script src="js/script.js" defer></script>
+    <script src="js/catalogo-local.js?v=4" defer></script>
+    <script src="js/script.js?v=12" defer></script>
 </body>
 </html>

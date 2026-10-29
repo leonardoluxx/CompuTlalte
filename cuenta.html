@@ -8,7 +8,7 @@
     <title>Mi cuenta | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-cuenta.css">
+    <link rel="stylesheet" href="css/style-cuenta.css?v=5">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -19,16 +19,15 @@
 
     <main class="contenedor-cuenta">
         <div class="encabezado-cuenta">
-            <div class="avatar-cuenta" id="avatar-cuenta" aria-hidden="true">?</div>
             <div>
                 <p class="etiqueta-cuenta">ÁREA DE CLIENTE</p>
                 <h1 id="titulo">Mi cuenta</h1>
-                <p class="descripcion-cuenta" id="descripcion-cuenta">Consulta y actualiza tus datos personales.</p>
+                <p class="descripcion-cuenta" id="descripcion-cuenta">Administra tus datos, tu seguridad y tus compras.</p>
             </div>
         </div>
 
         <!-- Se muestra cuando no hay una sesión iniciada o la cuenta ya no existe. -->
-        <section class="panel-cuenta panel-sesion" id="panel-sesion">
+        <section class="panel-cuenta panel-sesion" id="panel-sesion" hidden>
             <h2>Inicia sesión para continuar</h2>
             <p>Necesitas iniciar sesión para consultar y editar tu información personal. Al entrar, volverás a esta página automáticamente.</p>
             <p class="mensaje-cuenta" id="mensaje-sesion" role="alert"></p>
@@ -38,65 +37,257 @@
             </div>
         </section>
 
-        <!-- Formulario con los datos que se guardan en localStorage. -->
-        <form class="panel-cuenta" id="formulario-cuenta" novalidate hidden>
-            <section class="grupo-formulario" aria-labelledby="titulo-datos">
-                <div class="encabezado-grupo">
-                    <h2 id="titulo-datos">Datos personales</h2>
-                    <p>Esta información se usa para identificar tu cuenta y tus entregas.</p>
+        <!-- Perfil lateral + secciones desplegables de la cuenta. -->
+        <div class="disposicion-cuenta" id="disposicion-cuenta" hidden>
+            <aside class="perfil-cuenta" aria-label="Resumen de tu cuenta">
+                <div class="tarjeta-perfil">
+                    <div class="avatar-cuenta" id="avatar-cuenta" aria-hidden="true">?</div>
+                    <h2 class="nombre-perfil" id="perfil-nombre">Cliente Computlalte</h2>
+                    <p class="correo-perfil" id="perfil-correo"></p>
+                    <p class="insignia-cliente">Cuenta verificada</p>
                 </div>
 
-                <div class="rejilla-campos">
-                    <div class="campo">
-                        <label for="nombre">Nombre completo</label>
-                        <input type="text" id="nombre" autocomplete="name">
+                <dl class="datos-rapidos">
+                    <div>
+                        <dt>Pedidos realizados</dt>
+                        <dd id="total-pedidos">0</dd>
                     </div>
-
-                    <div class="campo">
-                        <label for="correo">Correo electrónico</label>
-                        <input type="email" id="correo" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+                    <div>
+                        <dt>Método de pago</dt>
+                        <dd id="perfil-metodo">Sin definir</dd>
                     </div>
+                </dl>
 
-                    <div class="campo campo-completo">
-                        <label for="direccion">Dirección de entrega</label>
-                        <input type="text" id="direccion" autocomplete="street-address" placeholder="Calle, número, colonia, ciudad">
+                <nav class="menu-cuenta" aria-label="Secciones de la cuenta">
+                    <a href="#informacion-personal" data-seccion="informacion-personal">
+                        <span>Información personal</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+                    </a>
+                    <a href="#seguridad" data-seccion="seguridad">
+                        <span>Seguridad</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+                    </a>
+                    <a href="#metodos-pago" data-seccion="metodos-pago">
+                        <span>Métodos de pago</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+                    </a>
+                    <a href="#mis-pedidos" data-seccion="mis-pedidos">
+                        <span>Mis pedidos</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+                    </a>
+                </nav>
+
+                <button class="boton-salir-cuenta" id="cerrar-sesion" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 8l-4 4 4 4M6 12h10" /></svg>
+                    Cerrar sesión
+                </button>
+            </aside>
+
+            <div class="secciones-cuenta">
+                <!-- Información personal -->
+                <details class="acordeon-cuenta" id="informacion-personal" open>
+                    <summary>
+                        <span class="icono-acordeon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 20a7.5 7.5 0 0 1 15 0" /></svg>
+                        </span>
+                        <span class="texto-acordeon">
+                            <strong>Información personal</strong>
+                            <small>Nombre, correo electrónico y dirección de entrega.</small>
+                        </span>
+                        <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                    </summary>
+
+                    <div class="contenido-acordeon">
+                        <form id="formulario-datos" novalidate>
+                            <div class="rejilla-campos">
+                                <div class="campo">
+                                    <label for="nombre">Nombre completo</label>
+                                    <input type="text" id="nombre" autocomplete="name" placeholder="Nombre y apellidos">
+                                </div>
+
+                                <div class="campo">
+                                    <label for="correo">Correo electrónico</label>
+                                    <input type="email" id="correo" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+                                </div>
+
+                                <div class="campo campo-completo">
+                                    <label for="direccion">Dirección de entrega</label>
+                                    <input type="text" id="direccion" autocomplete="street-address" placeholder="Calle, número, colonia, ciudad">
+                                </div>
+                            </div>
+
+                            <p class="mensaje-cuenta" id="mensaje-datos" role="alert" aria-live="polite"></p>
+
+                            <div class="acciones-cuenta">
+                                <button class="boton-principal" type="submit">Guardar cambios</button>
+                            </div>
+                        </form>
                     </div>
-                </div>
-            </section>
+                </details>
 
-            <section class="grupo-formulario" aria-labelledby="titulo-seguridad">
-                <div class="encabezado-grupo">
-                    <h2 id="titulo-seguridad">Cambiar contraseña</h2>
-                    <p>Déjalo vacío si no quieres cambiarla.</p>
-                </div>
+                <!-- Seguridad -->
+                <details class="acordeon-cuenta" id="seguridad">
+                    <summary>
+                        <span class="icono-acordeon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+                        </span>
+                        <span class="texto-acordeon">
+                            <strong>Seguridad</strong>
+                            <small>Contraseña y autenticación en dos pasos.</small>
+                        </span>
+                        <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                    </summary>
 
-                <div class="rejilla-campos">
-                    <div class="campo campo-completo">
-                        <label for="clave-actual">Contraseña actual</label>
-                        <input type="password" id="clave-actual" autocomplete="current-password">
+                    <div class="contenido-acordeon">
+                        <form id="formulario-seguridad" novalidate>
+                            <div class="rejilla-campos">
+                                <div class="campo campo-completo">
+                                    <label for="clave-actual">Contraseña actual</label>
+                                    <input type="password" id="clave-actual" autocomplete="current-password">
+                                </div>
+
+                                <div class="campo">
+                                    <label for="clave-nueva">Nueva contraseña</label>
+                                    <input type="password" id="clave-nueva" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+                                </div>
+
+                                <div class="campo">
+                                    <label for="clave-confirmar">Confirmar nueva contraseña</label>
+                                    <input type="password" id="clave-confirmar" autocomplete="new-password">
+                                </div>
+                            </div>
+
+                            <p class="nota-seguridad">Usa al menos 8 caracteres e incluye números o símbolos para mayor protección.</p>
+
+                            <section class="autenticacion-cuenta" aria-labelledby="titulo-autenticacion">
+                                <div class="texto-autenticacion">
+                                    <h3 id="titulo-autenticacion">Verificación en dos pasos</h3>
+                                    <p>Añade una capa adicional de seguridad al iniciar sesión en tu cuenta.</p>
+                                </div>
+                                <label class="interruptor-cuenta">
+                                    <input type="checkbox" id="verificacion-dos-pasos">
+                                    <span class="riel-interruptor" aria-hidden="true"><span></span></span>
+                                    <small id="estado-dos-pasos">Desactivada</small>
+                                </label>
+                            </section>
+
+                            <p class="mensaje-cuenta" id="mensaje-seguridad" role="alert" aria-live="polite"></p>
+
+                            <div class="acciones-cuenta">
+                                <button class="boton-principal" type="submit">Actualizar contraseña</button>
+                            </div>
+                        </form>
                     </div>
+                </details>
 
-                    <div class="campo">
-                        <label for="clave-nueva">Nueva contraseña</label>
-                        <input type="password" id="clave-nueva" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+                <!-- Métodos de pago -->
+                <details class="acordeon-cuenta" id="metodos-pago">
+                    <summary>
+                        <span class="icono-acordeon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5" /><path d="M2.5 10h19M6 15h4" /></svg>
+                        </span>
+                        <span class="texto-acordeon">
+                            <strong>Métodos de pago</strong>
+                            <small>Forma de pago preferida, tarjetas y datos bancarios.</small>
+                        </span>
+                        <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                    </summary>
+
+                    <div class="contenido-acordeon">
+                        <p class="estado-pago estado-sin" id="estado-pago" aria-live="polite">
+                            <span class="punto-estado" aria-hidden="true"></span>
+                            <span id="texto-estado-pago">Sin método definido</span>
+                        </p>
+
+                        <form id="formulario-pago-cuenta" novalidate>
+                            <fieldset class="opciones-pago-cuenta">
+                                <legend class="sr-only">Método de pago preferido</legend>
+
+                                <label class="opcion-pago-cuenta">
+                                    <input type="radio" name="metodo-pago-cuenta" value="transferencia">
+                                    <span class="texto-opcion-pago">
+                                        <strong>Transferencia bancaria</strong>
+                                        <small>Recibirás la CLABE al finalizar tu compra.</small>
+                                    </span>
+                                </label>
+
+                                <label class="opcion-pago-cuenta">
+                                    <input type="radio" name="metodo-pago-cuenta" value="tarjeta">
+                                    <span class="texto-opcion-pago">
+                                        <strong>Tarjeta de crédito o débito</strong>
+                                        <small>Paga al instante con tarjeta al finalizar tu compra.</small>
+                                    </span>
+                                </label>
+
+                                <label class="opcion-pago-cuenta">
+                                    <input type="radio" name="metodo-pago-cuenta" value="ninguno">
+                                    <span class="texto-opcion-pago">
+                                        <strong>Sin definir</strong>
+                                        <small>Te pediremos elegir un método al finalizar la compra.</small>
+                                    </span>
+                                </label>
+                            </fieldset>
+
+                            <section class="tarjeta-guardada" id="tarjeta-guardada" aria-labelledby="titulo-tarjeta-guardada" hidden>
+                                <div class="encabezado-tarjeta-guardada">
+                                    <div>
+                                        <h3 id="titulo-tarjeta-guardada">Tarjeta guardada</h3>
+                                        <p id="texto-tarjeta-guardada"></p>
+                                    </div>
+                                    <button class="boton-quitar-tarjeta" id="quitar-tarjeta" type="button">Quitar</button>
+                                </div>
+                            </section>
+
+                            <section class="datos-bancarios-cuenta" aria-labelledby="titulo-datos-bancarios">
+                                <h3 id="titulo-datos-bancarios">Datos para transferencia</h3>
+                                <dl>
+                                    <div>
+                                        <dt>Banco</dt>
+                                        <dd>BBVA</dd>
+                                    </div>
+                                    <div>
+                                        <dt>CLABE interbancaria</dt>
+                                        <dd>0123 4567 8901 2345 67</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Titular</dt>
+                                        <dd>COMPUTLALTE SA DE CV</dd>
+                                    </div>
+                                </dl>
+                                <p>Usa estos datos cuando elijas transferencia bancaria al finalizar tu compra.</p>
+                            </section>
+
+                            <p class="nota-seguridad">Solo guardamos la marca y los últimos 4 dígitos de tu tarjeta. Nunca almacenamos el número completo ni el CVV.</p>
+                            <p class="mensaje-cuenta" id="mensaje-pago" role="alert" aria-live="polite"></p>
+
+                            <div class="acciones-cuenta">
+                                <button class="boton-principal" type="submit">Guardar método de pago</button>
+                            </div>
+                        </form>
                     </div>
+                </details>
 
-                    <div class="campo">
-                        <label for="clave-confirmar">Confirmar nueva contraseña</label>
-                        <input type="password" id="clave-confirmar" autocomplete="new-password">
+                <!-- Historial de pedidos -->
+                <details class="acordeon-cuenta" id="mis-pedidos">
+                    <summary>
+                        <span class="icono-acordeon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M5 4h14a1 1 0 0 1 1 1v15l-3-2-3 2-3-2-3 2V5a1 1 0 0 1 1-1Z" /><path d="M9 8h6M9 12h6" /></svg>
+                        </span>
+                        <span class="texto-acordeon">
+                            <strong>Mis pedidos</strong>
+                            <small>Consulta el estado y el detalle de tus compras.</small>
+                        </span>
+                        <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                    </summary>
+
+                    <div class="contenido-acordeon">
+                        <div class="lista-pedidos" id="lista-pedidos"></div>
                     </div>
-                </div>
-            </section>
-
-            <p class="mensaje-cuenta" id="mensaje-cuenta" role="alert" aria-live="polite"></p>
-
-            <div class="acciones-cuenta">
-                <button class="boton-principal" type="submit">Guardar cambios</button>
-                <button class="boton-secundario" type="button" id="cerrar-sesion">Cerrar sesión</button>
+                </details>
             </div>
-        </form>
+        </div>
     </main>
 
-    <script src="js/scripts-cuenta.js"></script>
+    <script src="js/scripts-cuenta.js?v=5"></script>
 </body>
 </html>

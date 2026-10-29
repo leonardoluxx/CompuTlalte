@@ -1,0 +1,211 @@
+/* Mega menú compartido por la página de inicio y el catálogo de accesorios.
+   Se carga después de styles.css / catalogo-accesorios.css para sustituir
+   el antiguo desplegable de texto del escritorio. */
+.contenido-mega {
+    position: fixed;
+    top: calc(var(--alto-encabezado) - 1px);
+    left: 50%;
+    z-index: 30;
+    width: min(900px, calc(100vw - 48px));
+    max-height: calc(100vh - var(--alto-encabezado) - 24px);
+    padding: 24px;
+    overflow-y: auto;
+    background: #111111;
+    border: 1px solid #2a2a2a;
+    border-top: 2px solid var(--color-acento);
+    box-shadow: 0 24px 60px rgb(0 0 0 / 65%);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0s linear 0.28s;
+    visibility: hidden;
+}
+
+.menu-mega:hover .contenido-mega,
+.menu-mega:focus-within .contenido-mega {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    visibility: visible;
+}
+
+.mega-cuadricula {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.mega-opcion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mega-imagen {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #080808;
+    border: 1px solid #2d2d2d;
+    border-radius: 4px;
+    transition: border-color 0.25s ease;
+}
+
+.mega-imagen img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.mega-etiqueta {
+    color: #e8e8e8;
+    font-family: var(--fuente-interfaz);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+    transition: color 0.25s ease;
+}
+
+.mega-opcion:hover .mega-imagen,
+.mega-opcion:focus-visible .mega-imagen {
+    border-color: var(--color-acento);
+}
+
+.mega-opcion:hover .mega-imagen img,
+.mega-opcion:focus-visible .mega-imagen img {
+    filter: brightness(1.14);
+    transform: scale(1.05);
+}
+
+.mega-opcion:hover .mega-etiqueta,
+.mega-opcion:focus-visible .mega-etiqueta {
+    color: var(--color-acento);
+}
+
+.mega-opcion:focus-visible,
+.mega-ver-todo:focus-visible,
+.contenido-ofertas a:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 4px;
+}
+
+.mega-ver-todo {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 10px;
+    margin: 22px auto 0;
+    padding: 11px 26px;
+    background: var(--color-acento);
+    border-radius: 2px;
+    color: #ffffff;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.mega-ver-todo:hover,
+.mega-ver-todo:focus-visible {
+    background: #ff335c;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.mega-ver-todo svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+/* ---------- Menú de Ofertas ---------- */
+/* El <li> es el ancla del panel: queda justo debajo del enlace "Ofertas",
+   centrado respecto a él para que no se desplace hacia un lado. */
+.enlaces-navegacion > li.menu-ofertas {
+    position: relative;
+}
+
+.menu-ofertas {
+    position: relative;
+}
+
+.menu-ofertas > .contenido-ofertas {
+    position: absolute;
+    top: 100%;
+    right: auto;
+    left: 50%;
+    z-index: 30;
+    width: min(290px, calc(100vw - 32px));
+    margin: 0;
+    padding: 6px 0;
+    background: #111111;
+    border: 1px solid #2a2a2a;
+    border-top: 2px solid var(--color-acento);
+    box-shadow: 0 24px 60px rgb(0 0 0 / 65%);
+    list-style: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transform-origin: top center;
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0s linear 0.28s;
+    visibility: hidden;
+}
+
+.menu-ofertas:hover .contenido-ofertas,
+.menu-ofertas:focus-within .contenido-ofertas {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    visibility: visible;
+}
+
+.contenido-ofertas li + li {
+    border-top: 1px solid #252525;
+}
+
+.contenido-ofertas a {
+    display: block;
+    padding: 13px 18px;
+    color: #c6c6c6;
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.contenido-ofertas a:hover {
+    background: var(--color-panel-resaltado);
+    color: var(--color-acento);
+}
+
+/* En móvil se usa el menú hamburguesa; los paneles de escritorio no existen. */
+@media (max-width: 768px) {
+    .contenido-mega,
+    .contenido-ofertas {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contenido-mega,
+    .contenido-ofertas,
+    .mega-imagen,
+    .mega-imagen img,
+    .mega-etiqueta,
+    .mega-ver-todo {
+        transition-duration: 0s;
+    }
+}
