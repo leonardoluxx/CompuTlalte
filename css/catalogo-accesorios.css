@@ -1295,6 +1295,82 @@ button { color: inherit; font: inherit; }
     outline: none;
 }
 
+/* Historial de búsquedas: discreto y solo visible con el campo vacío. */
+.historial-busqueda {
+    margin: 12px 0 4px;
+    padding: 11px 13px 13px;
+    background: #0d0d0d;
+    border: 1px solid #262626;
+    border-radius: 3px;
+}
+
+.encabezado-historial {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 9px;
+}
+
+.titulo-historial {
+    margin: 0;
+    color: #8a8a8a;
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.boton-limpiar-historial {
+    padding: 2px 0;
+    background: none;
+    border: 0;
+    color: #8a8a8a;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.boton-limpiar-historial:hover,
+.boton-limpiar-historial:focus-visible {
+    color: var(--color-acento);
+}
+
+.etiquetas-historial {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.etiqueta-historial {
+    max-width: 100%;
+    padding: 6px 11px;
+    background: #161616;
+    border: 1px solid #2e2e2e;
+    border-radius: 999px;
+    color: #c2c2c2;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.etiqueta-historial span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.etiqueta-historial:hover,
+.etiqueta-historial:focus-visible {
+    background: #1d1d1d;
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
 .estado-busqueda {
     min-height: 20px;
     margin: 12px 0 8px;
@@ -1333,8 +1409,27 @@ button { color: inherit; font: inherit; }
     outline-offset: -2px;
 }
 
+/* Miniatura de los productos vistos recientemente en el buscador. */
+.imagen-resultado-busqueda {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    overflow: hidden;
+    background: #0b0b0b;
+    border: 1px solid #2c2c2c;
+    border-radius: 3px;
+}
+
+.imagen-resultado-busqueda img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .texto-resultado-busqueda {
     display: grid;
+    flex: 1 1 auto;
     min-width: 0;
     gap: 4px;
 }

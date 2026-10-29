@@ -6,6 +6,7 @@ const claveEl      = document.getElementById("clave");
 const clave2El     = document.getElementById("clave2");
 const mensajeEl    = document.getElementById("mensaje");
 const verClaveEl   = document.getElementById("ver-clave");
+const metodosPago  = [...document.querySelectorAll('input[name="metodo-pago"]')];
 
 // Muestra u oculta las dos contraseñas a la vez
 verClaveEl.addEventListener("click", function () {
@@ -30,6 +31,12 @@ formularioEl.addEventListener("submit", function (evento) {
     const direccion = direccionEl.value.trim();
     const clave = claveEl.value;
     const clave2 = clave2El.value;
+    const metodoElegido = metodosPago.find(function (radio) {
+        return radio.checked;
+    });
+    const metodoPago = metodoElegido && ["transferencia", "tarjeta"].includes(metodoElegido.value)
+        ? metodoElegido.value
+        : "";
 
     if (nombre === "") {
         mostrarError("Escribe tu nombre.", nombreEl);
@@ -81,10 +88,19 @@ formularioEl.addEventListener("submit", function (evento) {
         nombre: nombre,
         correo: correo,
         direccion: direccion,
-        clave: clave
+        clave: clave,
+        metodoPago: metodoPago
     });
 
     localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
+
+    // Recuerda la preferencia para que el checkout la preseleccione.
+    if (metodoPago) {
+        localStorage.setItem("metodoPagoPreferido", metodoPago);
+    } else {
+        localStorage.removeItem("metodoPagoPreferido");
+    }
+
     alert("Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
     window.location.href = "login.html";
 });

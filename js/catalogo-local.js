@@ -1,5 +1,5 @@
-// Datos de prueba locales con la misma forma que consumirá la interfaz.
-// Cuando exista una base de datos, se podrá sustituir este origen sin rehacer las tarjetas.
+// Catálogo local de la tienda. La interfaz consume estos datos y, cuando se
+// conecte el servicio de catálogo, el formato se conserva sin rehacer las tarjetas.
 window.catalogoLocal = [
     {
         id: 1,
@@ -36,6 +36,77 @@ window.catalogoLocal = [
             "NVIDIA GeForce RTX 4070 Ti SUPER",
             "Windows 11 Home",
             "Garantía de dos años"
+        ]
+    },
+    {
+        id: 3,
+        marca: "ASUS",
+        nombre: "ASUS Zenbook 14 OLED",
+        categoria: "Desarrollo",
+        tipo: "computadora",
+        terminosBusqueda: ["asus", "zenbook", "zenbook 14", "oled", "laptop", "portatil", "desarrollo", "programacion", "intel", "core ultra", "ultra 5"],
+        costoBase: 23500,
+        imagenPrincipal: "imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg",
+        imagenesGaleria: [
+            "imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-1.jpg",
+            "imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-2.jpg",
+            "imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg",
+            "imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-4.jpg",
+            "imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-5.jpg"
+        ],
+        especificacionesCortas: "Intel Core Ultra 5 225H, pantalla de 14\" OLED WUXGA táctil, 16 GB LPDDR5X, SSD de 1 TB, Wi-Fi 7 y Windows 11 Home.",
+        descripcionLarga: "Laptop ultraligera con pantalla táctil OLED y procesador Intel de última generación. Ideal para programar y multitarea.",
+        caracteristicasClave: [
+            "Pantalla OLED táctil de 14 pulgadas con resolución WUXGA",
+            "Procesador Intel Core Ultra 5 225H de última generación",
+            "16 GB de memoria LPDDR5X y SSD NVMe de 1 TB",
+            "Conectividad Wi-Fi 7 y teclado retroiluminado",
+            "Diseño ultraligero ideal para programar y multitarea"
+        ],
+        especificacionesTecnicas: [
+            "Windows 11 Home",
+            "Intel Core Ultra 5 225H",
+            "14\" OLED WUXGA Táctil",
+            "16 GB RAM LPDDR5X",
+            "1 TB SSD NVMe",
+            "Wi-Fi 7",
+            "Teclado retroiluminado"
+        ]
+    },
+    {
+        id: 4,
+        marca: "APPLE",
+        nombre: "MacBook Pro 16\" M5 Max",
+        categoria: "Uso Diario",
+        tipo: "computadora",
+        terminosBusqueda: ["apple", "mac", "macbook", "macbook pro", "m5", "m5 max", "creadores", "uso diario", "16 pulgadas"],
+        costoBase: 95000,
+        imagenPrincipal: "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp",
+        imagenesGaleria: [
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack_AV1.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack_AV2.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack_AV3.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-size-select-202610-16inch.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-size-select-202610-16inch_AV1_GEO_MX.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-size-select-202610-16inch_AV2.webp",
+            "imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-chip-select-202610-16inch.webp"
+        ],
+        especificacionesCortas: "Chip M5 Max de 18 núcleos de CPU y 40 de GPU, 128 GB de memoria unificada, 8 TB de almacenamiento y pantalla de 16\" nanotexturizada.",
+        descripcionLarga: "La bestia definitiva de Apple para creadores. Pantalla increíble y el nuevo chip M5 Max.",
+        caracteristicasClave: [
+            "Chip M5 Max con CPU de 18 núcleos y GPU de 40 núcleos",
+            "128 GB de memoria unificada para flujos de trabajo extremos",
+            "8 TB de almacenamiento SSD de alta velocidad",
+            "Pantalla de 16 pulgadas con acabado nanotexturizado",
+            "Teclado en español y chasis de aluminio"
+        ],
+        especificacionesTecnicas: [
+            "Chip M5 Max (CPU 18 núcleos, GPU 40 núcleos)",
+            "128 GB Memoria Unificada",
+            "8 TB Almacenamiento",
+            "Pantalla 16\" Nanotexturizada",
+            "Teclado Español"
         ]
     },
     {

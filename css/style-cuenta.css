@@ -93,15 +93,12 @@ body {
 
 /* Contenedor central de la página. */
 .contenedor-cuenta {
-    width: min(100%, 780px);
+    width: min(100%, 1140px);
     margin: 0 auto;
-    padding: 44px 20px 64px;
+    padding: 44px 20px 72px;
 }
 
 .encabezado-cuenta {
-    display: flex;
-    align-items: center;
-    gap: 20px;
     margin-bottom: 30px;
 }
 
@@ -145,6 +142,450 @@ body {
     margin: 8px 0 0;
     color: var(--color-atenuado);
     font-size: 15px;
+}
+
+/* Perfil lateral y secciones desplegables. */
+.disposicion-cuenta {
+    display: grid;
+    grid-template-columns: 296px minmax(0, 1fr);
+    align-items: start;
+    gap: 26px;
+}
+
+.disposicion-cuenta[hidden] {
+    display: none;
+}
+
+.perfil-cuenta {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    padding: 26px 22px;
+    background: var(--color-panel);
+    border: 1px solid var(--color-linea);
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 28%);
+}
+
+.tarjeta-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--color-linea);
+    text-align: center;
+}
+
+.tarjeta-perfil .avatar-cuenta {
+    width: 78px;
+    height: 78px;
+    font-size: 32px;
+}
+
+.nombre-perfil {
+    margin: 16px 0 2px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.correo-perfil {
+    margin: 0;
+    color: var(--color-atenuado);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.insignia-cliente {
+    margin: 12px 0 0;
+    padding: 4px 12px;
+    background: rgb(112 214 162 / 9%);
+    border: 1px solid rgb(112 214 162 / 30%);
+    border-radius: 999px;
+    color: var(--color-exito);
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.datos-rapidos {
+    display: grid;
+    gap: 12px;
+    margin: 22px 0;
+}
+
+.datos-rapidos div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.datos-rapidos dt {
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.datos-rapidos dd {
+    margin: 0;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.menu-cuenta {
+    display: grid;
+    gap: 4px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-linea);
+}
+
+.menu-cuenta a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.menu-cuenta a:hover,
+.menu-cuenta a:focus-visible {
+    background: #1a1a1a;
+    border-color: #333333;
+    color: #ffffff;
+}
+
+.menu-cuenta a svg {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    opacity: 0.6;
+}
+
+.boton-salir-cuenta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 20px;
+    padding: 0 16px;
+    background: transparent;
+    border: 1px solid #4a4a4a;
+    border-radius: 6px;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.boton-salir-cuenta:hover,
+.boton-salir-cuenta:focus-visible {
+    background: rgb(255 0 51 / 7%);
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
+.boton-salir-cuenta svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.secciones-cuenta {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+}
+
+.acordeon-cuenta {
+    background: var(--color-panel);
+    border: 1px solid var(--color-linea);
+    border-radius: 12px;
+    box-shadow: 0 18px 44px rgb(0 0 0 / 22%);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.acordeon-cuenta[open] {
+    border-color: #3a3a3a;
+}
+
+.acordeon-cuenta > summary {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 22px;
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.acordeon-cuenta > summary::-webkit-details-marker {
+    display: none;
+}
+
+.acordeon-cuenta > summary:hover {
+    background: #171717;
+}
+
+.acordeon-cuenta > summary:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: -2px;
+}
+
+.icono-acordeon {
+    display: grid;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    background: rgb(255 0 51 / 10%);
+    border: 1px solid rgb(255 0 51 / 26%);
+    border-radius: 9px;
+    color: var(--color-acento);
+}
+
+.icono-acordeon svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.texto-acordeon {
+    display: grid;
+    min-width: 0;
+    gap: 3px;
+}
+
+.texto-acordeon strong {
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.texto-acordeon small {
+    color: var(--color-atenuado);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.flecha-acordeon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    margin-left: auto;
+    fill: none;
+    stroke: var(--color-atenuado);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    transition: transform 0.25s ease;
+}
+
+.acordeon-cuenta[open] .flecha-acordeon {
+    transform: rotate(180deg);
+}
+
+.contenido-acordeon {
+    padding: 4px 22px 24px;
+    border-top: 1px solid var(--color-linea);
+}
+
+.contenido-acordeon form {
+    padding-top: 20px;
+}
+
+.nota-seguridad {
+    margin: 0 0 4px;
+    color: var(--color-atenuado);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* Verificación en dos pasos dentro de Seguridad. */
+.autenticacion-cuenta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 22px;
+    padding: 16px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+}
+
+.texto-autenticacion h3 {
+    margin: 0 0 4px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.texto-autenticacion p {
+    max-width: 430px;
+    margin: 0;
+    color: var(--color-atenuado);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.interruptor-cuenta {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.interruptor-cuenta input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.riel-interruptor {
+    position: relative;
+    display: block;
+    width: 44px;
+    height: 24px;
+    background: #3c3c3c;
+    border: 1px solid #555555;
+    border-radius: 999px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.riel-interruptor span {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.interruptor-cuenta input:checked + .riel-interruptor {
+    background: var(--color-acento);
+    border-color: var(--color-acento);
+}
+
+.interruptor-cuenta input:checked + .riel-interruptor span {
+    transform: translateX(20px);
+}
+
+.interruptor-cuenta input:focus-visible + .riel-interruptor {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+.interruptor-cuenta small {
+    min-width: 76px;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Datos bancarios de la tienda para transferencias. */
+.datos-bancarios-cuenta {
+    margin: 22px 0 0;
+    padding: 16px;
+    background: #141414;
+    border: 1px solid #2f2f2f;
+    border-radius: 8px;
+}
+
+.datos-bancarios-cuenta h3 {
+    margin: 0;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.datos-bancarios-cuenta dl {
+    display: grid;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.datos-bancarios-cuenta dl div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #2c2c2c;
+}
+
+.datos-bancarios-cuenta dt {
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.datos-bancarios-cuenta dd {
+    margin: 0;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: right;
+}
+
+.datos-bancarios-cuenta p {
+    margin: 0;
+    color: var(--color-atenuado);
+    font-size: 12px;
+    line-height: 1.5;
 }
 
 /* Tarjeta principal y tarjeta de sesión. */
@@ -244,6 +685,358 @@ body {
     border-color: var(--color-acento);
 }
 
+/* Oculta el texto solo a la vista, pero lo deja disponible para lectores de pantalla. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Estado actual del método de pago. */
+.estado-pago {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 16px;
+    padding: 8px 14px;
+    border: 1px solid;
+    border-radius: 999px;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.punto-estado {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    background: currentColor;
+    border-radius: 50%;
+}
+
+.estado-definido {
+    color: var(--color-exito);
+    background: rgb(112 214 162 / 8%);
+    border-color: rgb(112 214 162 / 32%);
+}
+
+.estado-sin {
+    color: #ffcf7a;
+    background: rgb(255 207 122 / 7%);
+    border-color: rgb(255 207 122 / 30%);
+}
+
+/* Opciones de método de pago dentro de Mi cuenta. */
+.opciones-pago-cuenta {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.opcion-pago-cuenta {
+    position: relative;
+    display: block;
+    padding: 13px 15px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.opcion-pago-cuenta:hover {
+    border-color: #666666;
+}
+
+.opcion-pago-cuenta:has(input:checked) {
+    background: rgb(255 0 51 / 7%);
+    border-color: var(--color-acento);
+}
+
+.opcion-pago-cuenta:has(input:focus-visible) {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* El radio real sigue existiendo para teclado y lectores de pantalla. */
+.opcion-pago-cuenta input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.texto-opcion-pago {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 2px;
+    align-items: center;
+}
+
+.texto-opcion-pago::before {
+    content: "";
+    grid-row: 1 / span 2;
+    width: 16px;
+    height: 16px;
+    background: #111111;
+    border: 1px solid #5a5a5a;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.texto-opcion-pago strong {
+    grid-column: 2;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.texto-opcion-pago small {
+    grid-column: 2;
+    color: var(--color-atenuado);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.opcion-pago-cuenta input:checked + .texto-opcion-pago::before {
+    background: var(--color-acento);
+    border-color: var(--color-acento);
+    box-shadow: inset 0 0 0 3px #1a1a1a;
+}
+
+/* Tarjeta guardada: solo se muestra la marca y los últimos 4 dígitos. */
+.tarjeta-guardada {
+    margin-top: 18px;
+    padding: 15px 16px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+}
+
+.tarjeta-guardada[hidden] {
+    display: none;
+}
+
+.encabezado-tarjeta-guardada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.encabezado-tarjeta-guardada h3 {
+    margin: 0 0 4px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.encabezado-tarjeta-guardada p {
+    margin: 0;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    letter-spacing: 0.06em;
+}
+
+.boton-quitar-tarjeta {
+    min-height: 36px;
+    padding: 0 14px;
+    background: transparent;
+    border: 1px solid #4a4a4a;
+    border-radius: 5px;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.boton-quitar-tarjeta:hover,
+.boton-quitar-tarjeta:focus-visible {
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
+/* Historial de pedidos. */
+.lista-pedidos {
+    display: grid;
+    gap: 14px;
+    padding-top: 20px;
+}
+
+.pedido-cuenta {
+    padding: 18px;
+    background: #171717;
+    border: 1px solid #313131;
+    border-radius: 9px;
+}
+
+.cabecera-pedido {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.cabecera-pedido h3 {
+    margin: 0 0 4px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.fecha-pedido {
+    margin: 0;
+    color: var(--color-atenuado);
+    font-size: 13px;
+}
+
+.estado-pedido {
+    flex: 0 0 auto;
+    padding: 5px 12px;
+    border: 1px solid;
+    border-radius: 999px;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.estado-pagado {
+    background: rgb(112 214 162 / 8%);
+    border-color: rgb(112 214 162 / 32%);
+    color: var(--color-exito);
+}
+
+.estado-revision {
+    background: rgb(255 207 122 / 7%);
+    border-color: rgb(255 207 122 / 30%);
+    color: #ffcf7a;
+}
+
+.detalles-pedido {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0 0;
+    padding: 14px 0 0;
+    border-top: 1px solid #2c2c2c;
+}
+
+.detalles-pedido div {
+    display: grid;
+    gap: 3px;
+}
+
+.detalles-pedido dt {
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.detalles-pedido dd {
+    margin: 0;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detalles-pedido .total-pedido {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.productos-pedido {
+    display: grid;
+    gap: 5px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.productos-pedido li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    color: #c9c9c9;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.productos-pedido small {
+    flex: 0 0 auto;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-weight: 700;
+}
+
+.productos-pedido .productos-restantes {
+    color: var(--color-atenuado);
+    font-style: italic;
+}
+
+.pedidos-vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 26px 12px 12px;
+    text-align: center;
+}
+
+.pedidos-vacio svg {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+    fill: none;
+    stroke: var(--color-acento);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+    opacity: 0.85;
+}
+
+.pedidos-vacio h3 {
+    margin: 0 0 6px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.pedidos-vacio p {
+    max-width: 380px;
+    margin: 0 0 20px;
+    color: var(--color-atenuado);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
 .mensaje-cuenta {
     min-height: 1.3em;
     margin: 20px 0 0;
@@ -306,15 +1099,25 @@ body {
     background: #1e1e1e;
 }
 
+/* Ajustes para pantallas medianas: el perfil pasa arriba del contenido. */
+@media (max-width: 980px) {
+    .disposicion-cuenta {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .perfil-cuenta {
+        position: static;
+    }
+
+    .menu-cuenta {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 /* Ajustes para pantallas pequeñas. */
 @media (max-width: 620px) {
     .contenedor-cuenta {
         padding-top: 30px;
-    }
-
-    .encabezado-cuenta {
-        align-items: flex-start;
-        gap: 14px;
     }
 
     .avatar-cuenta {
@@ -339,16 +1142,62 @@ body {
     .boton-secundario {
         width: 100%;
     }
+
+    .menu-cuenta {
+        grid-template-columns: 1fr;
+    }
+
+    .acordeon-cuenta > summary {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .icono-acordeon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .texto-acordeon strong {
+        font-size: 16px;
+    }
+
+    .contenido-acordeon {
+        padding: 4px 16px 20px;
+    }
+
+    .detalles-pedido {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .cabecera-pedido {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .autenticacion-cuenta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .datos-bancarios-cuenta dl div {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .datos-bancarios-cuenta dd {
+        text-align: left;
+    }
 }
 
 /* En teléfonos angostos se reducen los textos de la barra para que quepan en una línea. */
 @media (max-width: 380px) {
-    .barra-cuenta {
+    .barra-superior {
         gap: 8px;
         padding: 0 12px;
     }
 
-    .logotipo-cuenta {
+    .logotipo-superior {
         font-size: 16px;
     }
 
@@ -358,10 +1207,6 @@ body {
 
     .contenedor-cuenta {
         padding: 26px 14px 48px;
-    }
-
-    .encabezado-cuenta {
-        gap: 12px;
     }
 
     .avatar-cuenta {

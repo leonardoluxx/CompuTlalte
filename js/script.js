@@ -101,11 +101,29 @@ const formateadorMoneda = new Intl.NumberFormat("es-MX", {
     maximumFractionDigits: 0
 });
 
+// Configuración que incluye cada equipo sin costo adicional. Se guarda con el
+// producto para que el carrito pueda mostrarla y volver a editarla.
+const mejorasPredeterminadas = [
+    { grupo: "almacenamiento", grupoEtiqueta: "Almacenamiento", valor: "1-tb", etiqueta: "1 TB", extra: 0 },
+    { grupo: "memoria", grupoEtiqueta: "Memoria RAM", valor: "16-gb", etiqueta: "16 GB", extra: 0 },
+    { grupo: "color", grupoEtiqueta: "Color", valor: "plata", etiqueta: "Plata", extra: 0 }
+];
+
 // La interfaz consume el conjunto de datos cargado antes desde catalogo-local.js.
 const productos = window.catalogoLocal;
 
 // Elementos de la página que reciben las tarjetas y los datos del modal.
-const rejillaProductos = document.querySelector("#rejilla-productos");
+const contenedorCatalogoComputadoras = document.querySelector("#catalogo");
+const rejillaComputadoras = document.querySelector("#rejilla-computadoras");
+const filtrosComputadoras = document.querySelector("#filtros-computadoras");
+const selectorOrdenComputadoras = document.querySelector("#orden-computadoras");
+const conteoComputadoras = document.querySelector("#conteo-computadoras");
+const mensajeSinComputadoras = document.querySelector("#sin-resultados-computadoras");
+const botonLimpiarFiltrosComputadoras = document.querySelector("#limpiar-filtros-computadoras");
+const contenedorComputadoras = document.querySelector("#contenedor-catalogo-computadoras");
+const botonAlternarFiltrosComputadoras = document.querySelector("#alternar-filtros-computadoras");
+const textoAlternarFiltrosComputadoras = document.querySelector("#texto-alternar-filtros-computadoras");
+const rejillaOfertas = document.querySelector("#rejilla-ofertas");
 const rejillaAccesorios = document.querySelector("#rejilla-accesorios");
 const filtrosAccesorios = document.querySelector("#filtros-accesorios");
 const selectorOrdenAccesorios = document.querySelector("#orden-accesorios");
@@ -122,6 +140,13 @@ const botonCerrarBusqueda = document.querySelector("#cerrar-busqueda");
 const campoBusqueda = document.querySelector("#campo-busqueda");
 const estadoBusqueda = document.querySelector("#estado-busqueda");
 const resultadosBusqueda = document.querySelector("#resultados-busqueda");
+const historialBusqueda = document.querySelector("#historial-busqueda");
+const etiquetasHistorial = document.querySelector("#etiquetas-historial");
+const botonLimpiarHistorial = document.querySelector("#limpiar-historial");
+const CLAVE_HISTORIAL_BUSQUEDA = "computlalte-busquedas-recientes";
+const MAXIMO_HISTORIAL_BUSQUEDA = 6;
+const CLAVE_PRODUCTOS_VISTOS = "computlalte-productos-vistos";
+const MAXIMO_PRODUCTOS_VISTOS = 4;
 const botonCerrarModal = document.querySelector("#cerrar-modal-producto");
 const imagenPrincipalProducto = document.querySelector("#imagen-principal-producto");
 const miniaturasProducto = document.querySelector("#miniaturas-producto");
@@ -130,6 +155,11 @@ const botonImagenSiguiente = document.querySelector("#imagen-siguiente");
 const tituloModal = document.querySelector("#modal-titulo");
 const categoriaProducto = document.querySelector("#categoria-producto");
 const precioProducto = document.querySelector("#precio-producto");
+const totalPersonalizacion = document.querySelector("#total-personalizacion");
+const seccionPersonalizacion = document.querySelector("#personalizacion-producto");
+const botonPersonalizacion = document.querySelector("#alternar-personalizacion");
+const contenedorOpcionesPersonalizacion = document.querySelector("#opciones-personalizacion");
+const textoBotonPersonalizacion = document.querySelector(".texto-boton-personalizacion");
 const descripcionProducto = document.querySelector("#descripcion-producto");
 const listaCaracteristicas = document.querySelector("#caracteristicas-producto");
 const listaEspecificaciones = document.querySelector("#especificaciones-producto");
@@ -140,6 +170,14 @@ const botonAlternarDetalles = document.querySelector("#alternar-detalles");
 let elementoQueAbrioModal = null;
 let productoModalActual = null;
 let indiceImagenActual = 0;
+let descuentoProductoActual = 0;
+
+// Las categorías del menú se aplican como filtro del catálogo de computadoras.
+const categoriasPorAncla = {
+    juegos: "Juegos",
+    desarrollo: "Desarrollo",
+    "uso-diario": "Uso Diario"
+};
 
 // Crea un elemento de texto con su etiqueta y clase, sin insertar HTML dinámico.
 function crearElemento(etiqueta, clase, texto) {
@@ -152,6 +190,108 @@ function crearElemento(etiqueta, clase, texto) {
 // Devuelve el costo base más el margen de ganancia configurado.
 function calcularPrecioFinal(producto) {
     return producto.costoBase * (1 + margenGanancia);
+}
+
+// Aplica el descuento promocional sin alterar el precio base del catálogo.
+function calcularPrecioOferta(producto, descuentoPorcentaje = 0) {
+    return calcularPrecioFinal(producto) * (1 - descuentoPorcentaje / 100);
+}
+
+// Opciones de personalización marcadas actualmente en el modal.
+function obtenerOpcionesPersonalizacion() {
+    if (!seccionPersonalizacion) {
+        return [];
+    }
+
+    return [...seccionPersonalizacion.querySelectorAll('input[type="radio"]:checked')];
+}
+
+// Suma únicamente los extras de las mejoras seleccionadas.
+function calcularExtrasPersonalizacion() {
+    return obtenerOpcionesPersonalizacion().reduce(
+        (total, opcion) => total + Number(opcion.dataset.extra || 0),
+        0
+    );
+}
+
+// Texto legible de la configuración elegida, por ejemplo "2 TB, 32 GB, Plata".
+function describirPersonalizacion() {
+    return obtenerOpcionesPersonalizacion()
+        .map((opcion) => opcion.closest(".opcion-personalizacion")?.querySelector("strong")?.textContent.trim() || "")
+        .filter(Boolean)
+        .join(", ");
+}
+
+// Versión estructurada de las mejoras elegidas. Se guarda en el carrito para
+// poder mostrar cada cambio y reabrir el editor sin perder la selección.
+function describirOpcionesPersonalizacion() {
+    return obtenerOpcionesPersonalizacion().map((opcion) => {
+        const grupo = opcion.closest(".grupo-personalizacion");
+
+        return {
+            grupo: opcion.name.replace("personalizacion-", ""),
+            grupoEtiqueta: grupo?.querySelector("legend")?.textContent.trim() || "",
+            valor: opcion.value,
+            etiqueta: opcion.closest(".opcion-personalizacion")?.querySelector("strong")?.textContent.trim() || opcion.value,
+            extra: Number(opcion.dataset.extra || 0)
+        };
+    });
+}
+
+// Vuelve a la configuración incluida y deja las opciones cerradas al abrir un equipo.
+function reiniciarPersonalizacion() {
+    if (!seccionPersonalizacion) {
+        return;
+    }
+
+    seccionPersonalizacion.querySelectorAll(".grupo-personalizacion").forEach((grupo) => {
+        const primeraOpcion = grupo.querySelector('input[type="radio"]');
+        if (primeraOpcion) {
+            primeraOpcion.checked = true;
+        }
+    });
+
+    establecerOpcionesPersonalizacion(false);
+}
+
+// Despliega o pliega las opciones de personalización y sincroniza el botón.
+function establecerOpcionesPersonalizacion(abiertas) {
+    if (!seccionPersonalizacion || !botonPersonalizacion) {
+        return;
+    }
+
+    seccionPersonalizacion.classList.toggle("personalizacion-abierta", abiertas);
+    botonPersonalizacion.setAttribute("aria-expanded", String(abiertas));
+
+    if (contenedorOpcionesPersonalizacion) {
+        contenedorOpcionesPersonalizacion.setAttribute("aria-hidden", String(!abiertas));
+    }
+
+    if (textoBotonPersonalizacion) {
+        textoBotonPersonalizacion.textContent = abiertas ? "Ocultar opciones" : "Personalizar ahora";
+    }
+}
+
+// Recalcula el precio visible y devuelve el total que debe cobrarse.
+function actualizarPrecioProducto() {
+    if (!productoModalActual) {
+        return 0;
+    }
+
+    const extras = productoModalActual.tipo === "accesorio" ? 0 : calcularExtrasPersonalizacion();
+    const precioBase = calcularPrecioOferta(productoModalActual, descuentoProductoActual);
+    const precioTotal = precioBase + extras;
+    precioProducto.textContent = descuentoProductoActual > 0
+        ? `${formateadorMoneda.format(precioTotal)} · ${descuentoProductoActual}% de descuento`
+        : formateadorMoneda.format(precioTotal);
+
+    if (totalPersonalizacion) {
+        totalPersonalizacion.textContent = extras > 0
+            ? `Precio final: ${formateadorMoneda.format(precioTotal)} · +${formateadorMoneda.format(extras)} en mejoras`
+            : `Precio final: ${formateadorMoneda.format(precioTotal)}`;
+    }
+
+    return precioTotal;
 }
 
 // Extrae del catálogo solo los accesorios que corresponden a la categoría indicada.
@@ -168,14 +308,177 @@ function normalizarBusqueda(texto) {
         .trim();
 }
 
+// Historial de búsquedas: vive en el navegador del usuario, no en un servidor.
+function leerHistorialBusqueda() {
+    try {
+        const guardadas = JSON.parse(window.localStorage.getItem(CLAVE_HISTORIAL_BUSQUEDA) || "[]");
+
+        if (!Array.isArray(guardadas)) {
+            return [];
+        }
+
+        return guardadas
+            .filter((termino) => typeof termino === "string" && termino.trim())
+            .slice(0, MAXIMO_HISTORIAL_BUSQUEDA);
+    } catch (error) {
+        // Si el navegador bloquea el almacenamiento, el buscador sigue igual.
+        return [];
+    }
+}
+
+function guardarHistorialBusqueda(terminos) {
+    try {
+        window.localStorage.setItem(CLAVE_HISTORIAL_BUSQUEDA, JSON.stringify(terminos));
+    } catch (error) {
+        // Sin almacenamiento disponible el historial solo dura esta visita.
+    }
+}
+
+// Guarda el término al frente y evita repetidos aunque cambien mayúsculas.
+function registrarBusquedaEnHistorial(termino) {
+    const limpio = termino.replace(/\s+/g, " ").trim();
+
+    if (!limpio) {
+        return;
+    }
+
+    const clave = normalizarBusqueda(limpio);
+    const terminos = leerHistorialBusqueda()
+        .filter((guardado) => normalizarBusqueda(guardado) !== clave);
+
+    terminos.unshift(limpio);
+    guardarHistorialBusqueda(terminos.slice(0, MAXIMO_HISTORIAL_BUSQUEDA));
+    dibujarHistorialBusqueda();
+}
+
+// Pinta las búsquedas recientes y oculta el bloque cuando no hay ninguna.
+function dibujarHistorialBusqueda() {
+    if (!historialBusqueda || !etiquetasHistorial) {
+        return;
+    }
+
+    const terminos = leerHistorialBusqueda();
+
+    etiquetasHistorial.replaceChildren(
+        ...terminos.map((termino) => {
+            const boton = document.createElement("button");
+            boton.className = "etiqueta-historial";
+            boton.type = "button";
+            boton.dataset.termino = termino;
+            boton.append(crearElemento("span", "", termino));
+            return boton;
+        })
+    );
+
+    historialBusqueda.hidden = terminos.length === 0;
+}
+
+// Productos vistos hace poco: son el historial principal del buscador, con
+// imagen, nombre y precio en lugar de solo texto.
+function leerProductosVistos() {
+    try {
+        const guardados = JSON.parse(window.localStorage.getItem(CLAVE_PRODUCTOS_VISTOS) || "[]");
+
+        if (!Array.isArray(guardados)) {
+            return [];
+        }
+
+        return guardados
+            .filter((id) => Number.isFinite(id))
+            .slice(0, MAXIMO_PRODUCTOS_VISTOS);
+    } catch (error) {
+        return [];
+    }
+}
+
+// Cada producto abierto sube al inicio de la lista sin repetirse.
+function registrarProductoVisto(producto) {
+    const vistos = leerProductosVistos().filter((id) => id !== producto.id);
+    vistos.unshift(producto.id);
+
+    try {
+        window.localStorage.setItem(
+            CLAVE_PRODUCTOS_VISTOS,
+            JSON.stringify(vistos.slice(0, MAXIMO_PRODUCTOS_VISTOS))
+        );
+    } catch (error) {
+        // Sin almacenamiento disponible la lista solo dura esta visita.
+    }
+}
+
+// Opción del buscador: sirve para resultados y para productos vistos.
+function crearOpcionResultado(producto, { conImagen = false } = {}) {
+    const opcion = document.createElement("button");
+    opcion.className = "resultado-busqueda";
+    opcion.type = "button";
+    opcion.dataset.productoId = producto.id;
+    opcion.setAttribute("role", "option");
+
+    if (conImagen) {
+        const marco = document.createElement("span");
+        marco.className = "imagen-resultado-busqueda";
+
+        const imagen = document.createElement("img");
+        imagen.src = producto.imagenPrincipal;
+        imagen.alt = "";
+        imagen.loading = "lazy";
+
+        marco.append(imagen);
+        opcion.append(marco);
+    }
+
+    const texto = document.createElement("span");
+    texto.className = "texto-resultado-busqueda";
+    texto.append(
+        crearElemento("strong", "", producto.nombre),
+        crearElemento("span", "", producto.especificacionesCortas)
+    );
+
+    const precio = crearElemento(
+        "span",
+        "precio-resultado-busqueda",
+        formateadorMoneda.format(calcularPrecioFinal(producto))
+    );
+    opcion.append(texto, precio);
+
+    return opcion;
+}
+
+// Con el campo vacío se muestran los últimos productos abiertos.
+function mostrarProductosVistos() {
+    dibujarHistorialBusqueda();
+    const hayBusquedasGuardadas = historialBusqueda && !historialBusqueda.hidden;
+
+    const vistos = leerProductosVistos()
+        .map((id) => productos.find((producto) => producto.id === id))
+        .filter(Boolean);
+
+    resultadosBusqueda.replaceChildren(
+        ...vistos.map((producto) => crearOpcionResultado(producto, { conImagen: true }))
+    );
+
+    if (vistos.length) {
+        estadoBusqueda.textContent = "Productos que viste recientemente.";
+    } else {
+        estadoBusqueda.textContent = hayBusquedasGuardadas
+            ? "Elige una búsqueda reciente o escribe un producto."
+            : "Empieza a escribir para ver sugerencias.";
+    }
+}
+
 // Filtra el catálogo mientras se escribe y construye opciones accesibles.
 function actualizarSugerenciasBusqueda(consulta) {
     const termino = normalizarBusqueda(consulta);
     resultadosBusqueda.replaceChildren();
 
+    // Sin texto se muestran los productos vistos y las búsquedas guardadas.
     if (!termino) {
-        estadoBusqueda.textContent = "Empieza a escribir para ver sugerencias.";
+        mostrarProductosVistos();
         return;
+    }
+
+    if (historialBusqueda) {
+        historialBusqueda.hidden = true;
     }
 
     const coincidencias = productos.filter((producto) => {
@@ -196,26 +499,7 @@ function actualizarSugerenciasBusqueda(consulta) {
         : "No encontramos productos con ese nombre.";
 
     coincidencias.forEach((producto) => {
-        const opcion = document.createElement("button");
-        opcion.className = "resultado-busqueda";
-        opcion.type = "button";
-        opcion.dataset.productoId = producto.id;
-        opcion.setAttribute("role", "option");
-
-        const texto = document.createElement("span");
-        texto.className = "texto-resultado-busqueda";
-        texto.append(
-            crearElemento("strong", "", producto.nombre),
-            crearElemento("span", "", producto.especificacionesCortas)
-        );
-
-        const precio = crearElemento(
-            "span",
-            "precio-resultado-busqueda",
-            formateadorMoneda.format(calcularPrecioFinal(producto))
-        );
-        opcion.append(texto, precio);
-        resultadosBusqueda.append(opcion);
+        resultadosBusqueda.append(crearOpcionResultado(producto));
     });
 }
 
@@ -247,6 +531,9 @@ function abrirProductoDesdeBusqueda(botonResultado) {
         return;
     }
 
+    // La búsqueda que sí llevó a un producto merece quedarse en el historial.
+    registrarBusquedaEnHistorial(campoBusqueda.value);
+
     const paginaDestino = paginaDeProducto(producto);
 
     if (paginaDestino !== paginaActual()) {
@@ -254,88 +541,203 @@ function abrirProductoDesdeBusqueda(botonResultado) {
         return;
     }
 
+    if (producto.tipo !== "accesorio") {
+        aplicarCategoriaComputadoras(producto.categoria);
+    }
+
     modalBusqueda.close();
     mostrarDetallesProducto(producto, botonAbrirBusqueda);
 }
 
-// Construye y muestra una tarjeta para cada producto del arreglo.
-function mostrarProductos() {
-    rejillaProductos.replaceChildren();
+// Construye la tarjeta de un producto. La misma función sirve para el catálogo,
+// los accesorios y las ofertas, donde se aplica el descuento promocional.
+function crearTarjetaProducto(producto, { descuentoPorcentaje = 0, etiquetaOferta = "" } = {}) {
+    const tarjeta = document.createElement("article");
+    tarjeta.className = "tarjeta-producto";
 
-    productos.filter((producto) => producto.tipo !== "accesorio").forEach((producto) => {
-        const tarjeta = document.createElement("article");
-        tarjeta.className = "tarjeta-producto";
+    const botonTarjeta = document.createElement("button");
+    botonTarjeta.className = "boton-tarjeta-producto";
+    botonTarjeta.type = "button";
+    botonTarjeta.dataset.productoId = producto.id;
+    botonTarjeta.dataset.descuento = String(descuentoPorcentaje);
+    botonTarjeta.setAttribute("aria-haspopup", "dialog");
 
-        const botonTarjeta = document.createElement("button");
-        botonTarjeta.className = "boton-tarjeta-producto";
-        botonTarjeta.type = "button";
-        botonTarjeta.dataset.productoId = producto.id;
-        botonTarjeta.setAttribute("aria-haspopup", "dialog");
+    const marcoImagen = document.createElement("div");
+    marcoImagen.className = "imagen-tarjeta-producto";
 
-        const marcoImagen = document.createElement("div");
-        marcoImagen.className = "imagen-tarjeta-producto";
+    const imagen = document.createElement("img");
+    imagen.src = producto.imagenPrincipal;
+    imagen.alt = producto.tipo === "accesorio"
+        ? `Vista del accesorio ${producto.nombre}`
+        : `Vista del equipo ${producto.nombre}`;
+    imagen.loading = "lazy";
 
-        const imagen = document.createElement("img");
-        imagen.src = producto.imagenPrincipal;
-        imagen.alt = `Vista del equipo ${producto.nombre}`;
-        imagen.loading = "lazy";
-        marcoImagen.append(
-            imagen,
-            crearElemento("span", "etiqueta-categoria-producto", producto.categoria)
-        );
+    const etiquetaEstado = crearElemento(
+        "span",
+        `etiqueta-categoria-producto ${producto.disponible === false ? "etiqueta-agotado" : ""}`,
+        producto.disponible === false ? "Agotado" : (producto.etiqueta || producto.categoria)
+    );
+    marcoImagen.append(imagen, etiquetaEstado);
 
-        const contenido = document.createElement("div");
-        contenido.className = "contenido-tarjeta-producto";
-        contenido.append(
-            crearElemento("p", "marca-producto", producto.marca),
-            crearElemento("h3", "nombre-tarjeta-producto", producto.nombre),
-            crearElemento("p", "especificaciones-cortas-producto", producto.especificacionesCortas)
-        );
+    if (etiquetaOferta) {
+        marcoImagen.append(crearElemento("span", "etiqueta-oferta", etiquetaOferta));
+    }
 
-        const pie = document.createElement("div");
-        pie.className = "pie-tarjeta-producto";
+    const contenido = document.createElement("div");
+    contenido.className = "contenido-tarjeta-producto";
+    contenido.append(
+        crearElemento("p", "marca-producto", producto.marca),
+        crearElemento("h3", "nombre-tarjeta-producto", producto.nombre),
+        crearElemento("p", "especificaciones-cortas-producto", producto.especificacionesCortas)
+    );
 
-        const precio = document.createElement("div");
-        precio.className = "precio-tarjeta-producto";
+    const pie = document.createElement("div");
+    pie.className = "pie-tarjeta-producto";
+
+    const precio = document.createElement("div");
+    precio.className = "precio-tarjeta-producto";
+    precio.append(
+        crearElemento("span", "", descuentoPorcentaje > 0 ? "Precio de oferta" : "Precio"),
+        crearElemento("strong", "", formateadorMoneda.format(calcularPrecioOferta(producto, descuentoPorcentaje)))
+    );
+
+    if (descuentoPorcentaje > 0) {
         precio.append(
-            crearElemento("span", "", "Precio"),
-            crearElemento("strong", "", formateadorMoneda.format(calcularPrecioFinal(producto)))
+            crearElemento("small", "precio-anterior", formateadorMoneda.format(calcularPrecioFinal(producto)))
         );
-        const accionesTarjeta = document.createElement("div");
-        accionesTarjeta.className = "acciones-tarjeta-producto";
+    }
 
-        const botonAnadirCarrito = document.createElement("button");
-        botonAnadirCarrito.className = "boton-anadir-carrito";
-        botonAnadirCarrito.type = "button";
-        botonAnadirCarrito.textContent = "Añadir al carrito";
-        botonAnadirCarrito.addEventListener("click", (evento) => {
-            evento.stopPropagation();
-            añadirProductoAlCarrito(producto);
-            botonAnadirCarrito.textContent = "Añadido ✓";
-            setTimeout(() => {
-                botonAnadirCarrito.textContent = "Añadir al carrito";
-            }, 1000);
-        });
+    const accionesTarjeta = document.createElement("div");
+    accionesTarjeta.className = "acciones-tarjeta-producto";
 
-        const accion = document.createElement("span");
-        accion.className = "accion-ver-detalles";
-        accion.append(document.createTextNode("Ver detalles"));
-
-        const flecha = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        flecha.setAttribute("viewBox", "0 0 24 24");
-        flecha.setAttribute("aria-hidden", "true");
-        const trazoFlecha = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        trazoFlecha.setAttribute("d", "M5 12h14m-6-6 6 6-6 6");
-        flecha.append(trazoFlecha);
-        accion.append(flecha);
-
-        accionesTarjeta.append(botonAnadirCarrito, accion);
-        pie.append(precio, accionesTarjeta);
-        contenido.append(pie);
-        botonTarjeta.append(marcoImagen, contenido);
-        tarjeta.append(botonTarjeta);
-        rejillaProductos.append(tarjeta);
+    const botonAnadirCarrito = document.createElement("button");
+    botonAnadirCarrito.className = "boton-anadir-carrito";
+    botonAnadirCarrito.type = "button";
+    botonAnadirCarrito.textContent = "Añadir al carrito";
+    botonAnadirCarrito.addEventListener("click", (evento) => {
+        evento.stopPropagation();
+        añadirProductoAlCarrito(producto, calcularPrecioOferta(producto, descuentoPorcentaje));
+        botonAnadirCarrito.textContent = "Añadido ✓";
+        setTimeout(() => {
+            botonAnadirCarrito.textContent = "Añadir al carrito";
+        }, 1000);
     });
+
+    const accion = document.createElement("span");
+    accion.className = "accion-ver-detalles";
+    accion.append(document.createTextNode("Ver detalles"));
+
+    const flecha = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    flecha.setAttribute("viewBox", "0 0 24 24");
+    flecha.setAttribute("aria-hidden", "true");
+    const trazoFlecha = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    trazoFlecha.setAttribute("d", "M5 12h14m-6-6 6 6-6 6");
+    flecha.append(trazoFlecha);
+    accion.append(flecha);
+
+    accionesTarjeta.append(botonAnadirCarrito, accion);
+    pie.append(precio, accionesTarjeta);
+    contenido.append(pie);
+    botonTarjeta.append(marcoImagen, contenido);
+    tarjeta.append(botonTarjeta);
+
+    return tarjeta;
+}
+
+// Dibuja el catálogo de computadoras aplicando disponibilidad, categoría,
+// rango de precio y orden, igual que la página de accesorios.
+function mostrarComputadoras() {
+    if (!rejillaComputadoras || !filtrosComputadoras || !selectorOrdenComputadoras) {
+        return;
+    }
+
+    const disponibilidadSeleccionada = [...filtrosComputadoras.querySelectorAll('input[name="disponibilidad-computadora"]:checked')]
+        .map((filtro) => filtro.value);
+    const categoriasSeleccionadas = [...filtrosComputadoras.querySelectorAll('input[name="categoria-computadora"]:checked')]
+        .map((filtro) => filtro.value);
+    const rangosSeleccionados = [...filtrosComputadoras.querySelectorAll('input[name="precio-computadora"]:checked')]
+        .map((filtro) => filtro.value);
+
+    const coincideRangoPrecio = (precio) => {
+        if (!rangosSeleccionados.length) {
+            return true;
+        }
+
+        return rangosSeleccionados.some((rango) => {
+            if (rango === "menos-15000") {
+                return precio < 15000;
+            }
+            if (rango === "15000-30000") {
+                return precio >= 15000 && precio <= 30000;
+            }
+            return precio > 30000;
+        });
+    };
+
+    const computadorasVisibles = productos.filter((producto) => {
+        if (producto.tipo === "accesorio") {
+            return false;
+        }
+
+        const estado = producto.disponible === false ? "agotado" : "disponible";
+        const coincideDisponibilidad = !disponibilidadSeleccionada.length
+            || disponibilidadSeleccionada.includes(estado);
+        const coincideCategoria = !categoriasSeleccionadas.length
+            || categoriasSeleccionadas.includes(producto.categoria);
+        const coincidePrecio = coincideRangoPrecio(calcularPrecioFinal(producto));
+
+        return coincideDisponibilidad && coincideCategoria && coincidePrecio;
+    });
+
+    const criterioOrden = selectorOrdenComputadoras.value;
+    computadorasVisibles.sort((primero, segundo) => {
+        switch (criterioOrden) {
+            case "precio-ascendente":
+                return calcularPrecioFinal(primero) - calcularPrecioFinal(segundo);
+            case "precio-descendente":
+                return calcularPrecioFinal(segundo) - calcularPrecioFinal(primero);
+            default:
+                return Number(segundo.destacado) - Number(primero.destacado)
+                    || primero.id - segundo.id;
+        }
+    });
+
+    rejillaComputadoras.replaceChildren(
+        ...computadorasVisibles.map((producto) => crearTarjetaProducto(producto))
+    );
+
+    if (conteoComputadoras) {
+        const cantidad = computadorasVisibles.length;
+        conteoComputadoras.textContent = `${cantidad} artículo${cantidad === 1 ? "" : "s"} encontrado${cantidad === 1 ? "" : "s"}`;
+    }
+
+    if (mensajeSinComputadoras) {
+        mensajeSinComputadoras.hidden = computadorasVisibles.length > 0;
+    }
+}
+
+// Aplica una categoría concreta desde el menú o un enlace interno.
+function aplicarCategoriaComputadoras(categoria) {
+    if (!filtrosComputadoras) {
+        return;
+    }
+
+    filtrosComputadoras.querySelectorAll('input[name="categoria-computadora"]').forEach((casilla) => {
+        casilla.checked = casilla.value === categoria;
+    });
+
+    mostrarComputadoras();
+}
+
+// Si la página llega con #juegos, #desarrollo o #uso-diario, abre esa categoría.
+function aplicarCategoriaDesdeHash() {
+    const categoria = categoriasPorAncla[window.location.hash.slice(1)];
+    if (categoria) {
+        aplicarCategoriaComputadoras(categoria);
+        return true;
+    }
+
+    return false;
 }
 
 // Dibuja tarjetas de accesorios, aplicando filtros y orden al conjunto local.
@@ -381,83 +783,32 @@ function mostrarAccesorios() {
     conteoAccesorios.textContent = `${cantidadAccesorios} artículo${cantidadAccesorios === 1 ? "" : "s"} encontrado${cantidadAccesorios === 1 ? "" : "s"}`;
     mensajeSinAccesorios.hidden = cantidadAccesorios > 0;
 
-    accesoriosVisibles.forEach((producto) => {
-        const tarjeta = document.createElement("article");
-        tarjeta.className = "tarjeta-producto";
+    rejillaAccesorios.append(
+        ...accesoriosVisibles.map((producto) => crearTarjetaProducto(producto))
+    );
+}
 
-        const botonTarjeta = document.createElement("button");
-        botonTarjeta.className = "boton-tarjeta-producto";
-        botonTarjeta.type = "button";
-        botonTarjeta.dataset.productoId = producto.id;
-        botonTarjeta.setAttribute("aria-haspopup", "dialog");
+// Ofertas destacadas: el descuento se calcula sobre el precio de venta y
+// afecta a la etiqueta, al precio mostrado, al modal y al carrito.
+const descuentoOfertaMouse = 1;
 
-        const marcoImagen = document.createElement("div");
-        marcoImagen.className = "imagen-tarjeta-producto";
+function mostrarOfertas() {
+    if (!rejillaOfertas) {
+        return;
+    }
 
-        const imagen = document.createElement("img");
-        imagen.src = producto.imagenPrincipal;
-        imagen.alt = `Vista del accesorio ${producto.nombre}`;
-        imagen.loading = "lazy";
+    const mouseEnOferta = productos.find((producto) => producto.id === 2);
+    if (!mouseEnOferta) {
+        rejillaOfertas.replaceChildren();
+        return;
+    }
 
-        const etiquetaEstado = crearElemento(
-            "span",
-            `etiqueta-categoria-producto ${!producto.disponible ? "etiqueta-agotado" : ""}`,
-            !producto.disponible ? "Agotado" : (producto.etiqueta || producto.categoria)
-        );
-        marcoImagen.append(imagen, etiquetaEstado);
-
-        const contenido = document.createElement("div");
-        contenido.className = "contenido-tarjeta-producto";
-        contenido.append(
-            crearElemento("p", "marca-producto", producto.marca),
-            crearElemento("h3", "nombre-tarjeta-producto", producto.nombre),
-            crearElemento("p", "especificaciones-cortas-producto", producto.especificacionesCortas)
-        );
-
-        const pie = document.createElement("div");
-        pie.className = "pie-tarjeta-producto";
-
-        const precio = document.createElement("div");
-        precio.className = "precio-tarjeta-producto";
-        precio.append(
-            crearElemento("span", "", "Precio"),
-            crearElemento("strong", "", formateadorMoneda.format(calcularPrecioFinal(producto)))
-        );
-        const accionesTarjeta = document.createElement("div");
-        accionesTarjeta.className = "acciones-tarjeta-producto";
-
-        const botonAnadirCarrito = document.createElement("button");
-        botonAnadirCarrito.className = "boton-anadir-carrito";
-        botonAnadirCarrito.type = "button";
-        botonAnadirCarrito.textContent = "Añadir al carrito";
-        botonAnadirCarrito.addEventListener("click", (evento) => {
-            evento.stopPropagation();
-            añadirProductoAlCarrito(producto);
-            botonAnadirCarrito.textContent = "Añadido ✓";
-            setTimeout(() => {
-                botonAnadirCarrito.textContent = "Añadir al carrito";
-            }, 1000);
-        });
-
-        const accion = document.createElement("span");
-        accion.className = "accion-ver-detalles";
-        accion.append(document.createTextNode("Ver detalles"));
-
-        const flecha = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        flecha.setAttribute("viewBox", "0 0 24 24");
-        flecha.setAttribute("aria-hidden", "true");
-        const trazoFlecha = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        trazoFlecha.setAttribute("d", "M5 12h14m-6-6 6 6-6 6");
-        flecha.append(trazoFlecha);
-        accion.append(flecha);
-
-        accionesTarjeta.append(botonAnadirCarrito, accion);
-        pie.append(precio, accionesTarjeta);
-        contenido.append(pie);
-        botonTarjeta.append(marcoImagen, contenido);
-        tarjeta.append(botonTarjeta);
-        rejillaAccesorios.append(tarjeta);
-    });
+    rejillaOfertas.replaceChildren(
+        crearTarjetaProducto(mouseEnOferta, {
+            descuentoPorcentaje: descuentoOfertaMouse,
+            etiquetaOferta: `${descuentoOfertaMouse}% de descuento`
+        })
+    );
 }
 
 // Llena una lista de viñetas usando texto plano para cada característica.
@@ -507,11 +858,15 @@ function cambiarImagenProducto(direccion) {
 }
 
 // Abre el modal y presenta la galería, el precio y las especificaciones elegidas.
-function mostrarDetallesProducto(producto, elementoOrigen) {
+function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje = 0 } = {}) {
+    // Sirve para ofrecer este producto en el buscador la próxima vez.
+    registrarProductoVisto(producto);
+
     elementoQueAbrioModal = elementoOrigen;
+    productoModalActual = producto;
+    descuentoProductoActual = Number(descuentoPorcentaje) || 0;
     tituloModal.textContent = producto.nombre;
     categoriaProducto.textContent = producto.categoria;
-    precioProducto.textContent = formateadorMoneda.format(calcularPrecioFinal(producto));
     descripcionProducto.textContent = producto.descripcionLarga;
     estadoCompra.textContent = "";
 
@@ -522,6 +877,17 @@ function mostrarDetallesProducto(producto, elementoOrigen) {
 
     mostrarLista(listaCaracteristicas, producto.caracteristicasClave);
     mostrarLista(listaEspecificaciones, producto.especificacionesTecnicas);
+
+    // Los equipos permiten personalizar; los accesorios conservan su precio base.
+    if (seccionPersonalizacion) {
+        const esPersonalizable = producto.tipo !== "accesorio";
+        seccionPersonalizacion.hidden = !esPersonalizable;
+
+        if (esPersonalizable) {
+            reiniciarPersonalizacion();
+        }
+    }
+    actualizarPrecioProducto();
 
     const detallesVisiblesIniciales = 4;
     const hayDetallesExtra = producto.caracteristicasClave.length > detallesVisiblesIniciales
@@ -560,11 +926,105 @@ function mostrarDetallesProducto(producto, elementoOrigen) {
 }
 
 // Presenta el catálogo cuando el documento ya está listo para usarse.
-if (rejillaProductos) {
-    mostrarProductos();
+// La categoría inicial es Juegos para no mostrar todo el catálogo de golpe.
+if (rejillaComputadoras) {
+    if (!aplicarCategoriaDesdeHash()) {
+        aplicarCategoriaComputadoras("Juegos");
+    }
 }
 if (rejillaAccesorios) {
     mostrarAccesorios();
+}
+if (rejillaOfertas) {
+    mostrarOfertas();
+}
+
+// Los enlaces internos a una categoría (Juegos, Desarrollo, Uso Diario) activan
+// el filtro correspondiente del catálogo antes de desplazarse a la sección.
+document.addEventListener("click", (evento) => {
+    const enlace = evento.target.closest('a[href^="#"]');
+    if (!enlace) {
+        return;
+    }
+
+    const categoria = categoriasPorAncla[enlace.getAttribute("href").slice(1)];
+    if (!categoria) {
+        return;
+    }
+
+    evento.preventDefault();
+    aplicarCategoriaComputadoras(categoria);
+
+    const destino = document.querySelector("#computadoras");
+    if (destino) {
+        const movimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto"
+            : "smooth";
+        destino.scrollIntoView({ behavior: movimiento, block: "start" });
+    }
+});
+
+// Actualiza el catálogo de computadoras al cambiar cualquier filtro u orden.
+if (filtrosComputadoras && selectorOrdenComputadoras && botonLimpiarFiltrosComputadoras) {
+    filtrosComputadoras.addEventListener("change", mostrarComputadoras);
+    selectorOrdenComputadoras.addEventListener("change", mostrarComputadoras);
+    botonLimpiarFiltrosComputadoras.addEventListener("click", () => {
+        filtrosComputadoras.querySelectorAll('input[type="checkbox"]').forEach((filtro) => {
+            // Vuelve al estado inicial: toda la disponibilidad y solo Juegos.
+            if (filtro.name === "disponibilidad-computadora") {
+                filtro.checked = true;
+            } else if (filtro.name === "categoria-computadora") {
+                filtro.checked = filtro.value === "Juegos";
+            } else {
+                filtro.checked = false;
+            }
+        });
+        selectorOrdenComputadoras.value = "destacados";
+        mostrarComputadoras();
+    });
+}
+
+// Muestra u oculta el panel lateral de computadoras y actualiza el botón.
+if (contenedorComputadoras && botonAlternarFiltrosComputadoras && textoAlternarFiltrosComputadoras) {
+    const consultaFiltrosMovilesComputadoras = window.matchMedia("(max-width: 1024px)");
+    let filtrosVisiblesComputadoras = !consultaFiltrosMovilesComputadoras.matches;
+
+    const aplicarEstadoFiltrosComputadoras = (visibles) => {
+        filtrosVisiblesComputadoras = visibles;
+        contenedorComputadoras.classList.toggle("filtros-ocultos", !visibles);
+        botonAlternarFiltrosComputadoras.setAttribute("aria-expanded", String(visibles));
+        textoAlternarFiltrosComputadoras.textContent = visibles ? "Ocultar filtro" : "Mostrar filtro";
+    };
+
+    aplicarEstadoFiltrosComputadoras(filtrosVisiblesComputadoras);
+
+    botonAlternarFiltrosComputadoras.addEventListener(
+        "click",
+        () => aplicarEstadoFiltrosComputadoras(!filtrosVisiblesComputadoras)
+    );
+    consultaFiltrosMovilesComputadoras.addEventListener(
+        "change",
+        (evento) => aplicarEstadoFiltrosComputadoras(!evento.matches)
+    );
+}
+
+// Cada tarjeta de oferta recuerda su descuento para el modal y el carrito.
+if (rejillaOfertas) {
+    rejillaOfertas.addEventListener("click", (evento) => {
+        const botonTarjeta = evento.target.closest(".boton-tarjeta-producto");
+        if (!botonTarjeta) {
+            return;
+        }
+
+        const producto = productos.find(
+            (elemento) => elemento.id === Number(botonTarjeta.dataset.productoId)
+        );
+        if (producto) {
+            mostrarDetallesProducto(producto, botonTarjeta, {
+                descuentoPorcentaje: Number(botonTarjeta.dataset.descuento) || 0
+            });
+        }
+    });
 }
 
 // Actualiza accesorios al cambiar cualquier filtro u orden.
@@ -605,13 +1065,48 @@ botonAbrirBusqueda.addEventListener("click", abrirBusqueda);
 botonCerrarBusqueda.addEventListener("click", () => modalBusqueda.close());
 campoBusqueda.addEventListener("input", () => actualizarSugerenciasBusqueda(campoBusqueda.value));
 
+// Un clic en una búsqueda reciente la vuelve a ejecutar en el momento.
+if (etiquetasHistorial) {
+    etiquetasHistorial.addEventListener("click", (evento) => {
+        const etiqueta = evento.target.closest(".etiqueta-historial");
+
+        if (!etiqueta) {
+            return;
+        }
+
+        campoBusqueda.value = etiqueta.dataset.termino || "";
+        actualizarSugerenciasBusqueda(campoBusqueda.value);
+        campoBusqueda.focus();
+    });
+}
+
+// "Borrar historial" deja el buscador como recién abierto.
+if (botonLimpiarHistorial) {
+    botonLimpiarHistorial.addEventListener("click", () => {
+        guardarHistorialBusqueda([]);
+        actualizarSugerenciasBusqueda(campoBusqueda.value);
+        campoBusqueda.focus();
+    });
+}
+
+// Pulsar fuera del panel cierra la búsqueda, igual que en el detalle.
+modalBusqueda.addEventListener("click", (evento) => {
+    if (evento.target === modalBusqueda) {
+        modalBusqueda.close();
+    }
+});
+
 // Enter abre la primera coincidencia y las flechas permiten recorrer opciones.
 campoBusqueda.addEventListener("keydown", (evento) => {
     const primeraOpcion = resultadosBusqueda.querySelector(".resultado-busqueda");
+    const primeraReciente = etiquetasHistorial?.querySelector(".etiqueta-historial");
 
     if (evento.key === "ArrowDown" && primeraOpcion) {
         evento.preventDefault();
         primeraOpcion.focus();
+    } else if (evento.key === "ArrowDown" && primeraReciente) {
+        evento.preventDefault();
+        primeraReciente.focus();
     } else if (evento.key === "Enter" && primeraOpcion) {
         evento.preventDefault();
         abrirProductoDesdeBusqueda(primeraOpcion);
@@ -645,8 +1140,8 @@ resultadosBusqueda.addEventListener("keydown", (evento) => {
 modalBusqueda.addEventListener("close", () => botonAbrirBusqueda.focus());
 
 // Cada tarjeta abre el modal del producto que indica su atributo data.
-if (rejillaProductos) {
-    rejillaProductos.addEventListener("click", (evento) => {
+if (contenedorCatalogoComputadoras) {
+    contenedorCatalogoComputadoras.addEventListener("click", (evento) => {
         const botonTarjeta = evento.target.closest("[data-producto-id]");
         if (!botonTarjeta) {
             return;
@@ -654,7 +1149,9 @@ if (rejillaProductos) {
 
         const producto = productos.find((elemento) => elemento.id === Number(botonTarjeta.dataset.productoId));
         if (producto) {
-            mostrarDetallesProducto(producto, botonTarjeta);
+            mostrarDetallesProducto(producto, botonTarjeta, {
+                descuentoPorcentaje: Number(botonTarjeta.dataset.descuento) || 0
+            });
         }
     });
 }
@@ -667,6 +1164,7 @@ modalProducto.addEventListener("close", () => {
     elementoQueAbrioModal?.focus();
     elementoQueAbrioModal = null;
     productoModalActual = null;
+    descuentoProductoActual = 0;
 });
 
 // También permite cerrar el modal al pulsar su fondo oscuro exterior.
@@ -702,7 +1200,12 @@ if (botonAlternarDetalles && listasDetallesProducto) {
     });
 }
 
-function añadirProductoAlCarrito(producto) {
+function añadirProductoAlCarrito(
+    producto,
+    precioFinal = calcularPrecioFinal(producto),
+    personalizacion = "",
+    opcionesPersonalizacion = []
+) {
     const CLAVE_CARRITO = "carrito";
     let carrito = [];
 
@@ -715,38 +1218,105 @@ function añadirProductoAlCarrito(producto) {
         carrito = [];
     }
 
-    const precioFinal = calcularPrecioFinal(producto);
-    const indiceExistente = carrito.findIndex((item) => item.id === producto.id);
+    const esAccesorio = producto.tipo === "accesorio";
+    const opciones = esAccesorio
+        ? []
+        : (opcionesPersonalizacion.length ? opcionesPersonalizacion : mejorasPredeterminadas);
+    const descripcion = esAccesorio
+        ? ""
+        : (personalizacion || opciones.map((opcion) => opcion.etiqueta).join(", "));
+    const precioUnitario = Math.round(precioFinal);
+    // En accesorios el precio guardado ya incluye cualquier oferta vigente.
+    const precioBase = esAccesorio
+        ? precioUnitario
+        : Math.round(calcularPrecioFinal(producto));
+    const extras = Math.max(0, precioUnitario - precioBase);
+
+    // Una misma computadora con distintas mejoras se guarda como una línea aparte.
+    const indiceExistente = carrito.findIndex(
+        (item) => item.id === producto.id && (item.personalizacion || "") === descripcion
+    );
 
     if (indiceExistente >= 0) {
-        carrito[indiceExistente].cantidad += 1;
+        const existente = carrito[indiceExistente];
+        existente.cantidad += 1;
+
+        // Completa los datos de líneas creadas antes de este rediseño.
+        if (!existente.nombreBase) existente.nombreBase = producto.nombre;
+        if (existente.precioBase === undefined) existente.precioBase = precioBase;
+        if (existente.extras === undefined) existente.extras = extras;
+        if (!existente.categoria) existente.categoria = producto.categoria;
+        if (!existente.tipo) existente.tipo = producto.tipo || "computadora";
+        if (!existente.marca) existente.marca = producto.marca;
+        if (!existente.especificacionesCortas) existente.especificacionesCortas = producto.especificacionesCortas;
+        if (!existente.descripcionLarga) existente.descripcionLarga = producto.descripcionLarga || "";
+        if (!existente.opcionesPersonalizacion?.length && opciones.length) {
+            existente.opcionesPersonalizacion = opciones;
+        }
     } else {
         carrito.push({
             id: producto.id,
-            nombre: producto.nombre,
-            precio: Math.round(precioFinal),
+            nombre: descripcion ? `${producto.nombre} — ${descripcion}` : producto.nombre,
+            nombreBase: producto.nombre,
+            precio: precioUnitario,
+            precioBase,
+            extras,
             cantidad: 1,
-            imagen: producto.imagenPrincipal
+            imagen: producto.imagenPrincipal,
+            personalizacion: descripcion,
+            opcionesPersonalizacion: opciones,
+            categoria: producto.categoria,
+            tipo: producto.tipo || "computadora",
+            marca: producto.marca,
+            especificacionesCortas: producto.especificacionesCortas,
+            descripcionLarga: producto.descripcionLarga || ""
         });
     }
 
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
 }
 
-// Añade el producto al carrito y redirige a la página de compras.
+// Añade el producto al carrito con el precio final de la configuración elegida.
 botonComprarProducto.addEventListener("click", () => {
     if (!productoModalActual) {
         estadoCompra.textContent = "No hay producto seleccionado.";
         return;
     }
 
-    añadirProductoAlCarrito(productoModalActual);
+    const precioFinal = actualizarPrecioProducto();
+    const personalizacion = productoModalActual.tipo === "accesorio" ? "" : describirPersonalizacion();
+    const opcionesPersonalizacion = productoModalActual.tipo === "accesorio"
+        ? []
+        : describirOpcionesPersonalizacion();
+    añadirProductoAlCarrito(
+        productoModalActual,
+        precioFinal,
+        personalizacion,
+        opcionesPersonalizacion
+    );
     estadoCompra.textContent = "Producto añadido al carrito. Redirigiendo...";
 
     setTimeout(() => {
         window.location.href = "carrito.html";
     }, 600);
 });
+
+// Cada cambio en las mejoras actualiza el precio del modal al instante.
+if (seccionPersonalizacion) {
+    seccionPersonalizacion.addEventListener("change", (evento) => {
+        if (evento.target.matches('input[type="radio"]')) {
+            actualizarPrecioProducto();
+        }
+    });
+}
+
+// El botón "Personalizar ahora" pliega o despliega las opciones con animación.
+if (botonPersonalizacion) {
+    botonPersonalizacion.addEventListener("click", () => {
+        const estanAbiertas = botonPersonalizacion.getAttribute("aria-expanded") === "true";
+        establecerOpcionesPersonalizacion(!estanAbiertas);
+    });
+}
 
 // Las tarjetas de accesorios abren el mismo modal dinámico que los equipos.
 if (rejillaAccesorios) {
@@ -758,7 +1328,9 @@ if (rejillaAccesorios) {
 
         const producto = obtenerAccesorios().find((elemento) => elemento.id === Number(botonTarjeta.dataset.productoId));
         if (producto) {
-            mostrarDetallesProducto(producto, botonTarjeta);
+            mostrarDetallesProducto(producto, botonTarjeta, {
+                descuentoPorcentaje: Number(botonTarjeta.dataset.descuento) || 0
+            });
         }
     });
 }
@@ -793,7 +1365,17 @@ function suavizarLlegadaAAncla() {
         // Si el ancla viene mal codificada se usa tal cual.
     }
 
-    const destino = document.getElementById(idDestino);
+    const destinoOriginal = document.getElementById(idDestino);
+    const categoriaDelAncla = categoriasPorAncla[idDestino];
+
+    if (!destinoOriginal && !categoriaDelAncla) {
+        return;
+    }
+
+    // Si el ancla apunta a una categoría, se desplaza al inicio del catálogo.
+    const destino = categoriaDelAncla
+        ? document.getElementById("computadoras") || destinoOriginal
+        : destinoOriginal;
 
     if (!destino) {
         return;
@@ -809,6 +1391,7 @@ function suavizarLlegadaAAncla() {
 
     // Quien pidió menos movimiento ve la sección de inmediato, sin recorrido.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        destino.scrollIntoView({ behavior: "auto", block: "start" });
         return;
     }
 
@@ -848,6 +1431,10 @@ function abrirProductoDesdeAncla() {
     if (paginaDestino !== paginaActual()) {
         window.location.href = `${paginaDestino}#producto-${producto.id}`;
         return;
+    }
+
+    if (producto.tipo !== "accesorio") {
+        aplicarCategoriaComputadoras(producto.categoria);
     }
 
     try {

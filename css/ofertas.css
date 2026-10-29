@@ -1,0 +1,183 @@
+/* Página de ofertas de la tienda. */
+
+/* Anuncio de la página: la imagen de ofertas ocupa todo el fondo, igual que
+   en Computadoras y Accesorios. El degradado protege la legibilidad. */
+.pagina-ofertas .seccion-anuncio.anuncio-ofertas {
+    background-image:
+        linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%) 55%, rgb(0 0 0 / 8%)),
+        url("../imagenes/anuncios/imagen-ofertas-add.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.etiqueta-anuncio {
+    margin: 0 0 12px;
+    color: var(--color-acento);
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.pagina-ofertas .anuncio-ofertas h1 {
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.seccion-ofertas {
+    width: min(100%, 1280px);
+    margin: 0 auto;
+    padding: 12px 32px 88px;
+}
+
+/* Página independiente de Ofertas: respira bajo la barra de navegación. */
+.pagina-ofertas .contenido-ofertas-pagina {
+    min-height: calc(100vh - 70px);
+}
+
+.pagina-ofertas .seccion-ofertas {
+    padding-top: 64px;
+}
+
+.etiqueta-ofertas {
+    margin: 0 0 10px;
+    color: var(--color-acento);
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.descripcion-ofertas {
+    max-width: 560px;
+    margin: 16px auto 0;
+    color: #b8b8b8;
+    font-family: var(--fuente-lectura);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.enlace-volver-tienda {
+    margin: 46px 0 0;
+    text-align: center;
+}
+
+.enlace-volver-tienda a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #3a3a3a;
+    color: #d8d8d8;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.enlace-volver-tienda a:hover,
+.enlace-volver-tienda a:focus-visible {
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+}
+
+.encabezado-ofertas {
+    margin: 0 0 34px;
+    text-align: center;
+}
+
+/* Mismo encabezado que Computadoras y Accesorios: título blanco, segunda
+   mitad en rojo y el mismo cambio de color al pasar el cursor. */
+.encabezado-ofertas h2 {
+    position: relative;
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--fuente-titulos);
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.encabezado-ofertas h2 .texto-rojo {
+    color: var(--color-acento);
+    transition: color 0.9s ease, text-shadow 1.5s ease;
+}
+
+.encabezado-ofertas h2:hover .texto-rojo {
+    color: #ff335c;
+    text-shadow: 0 0 8px rgb(255 0 51 / 30%);
+}
+
+.encabezado-ofertas h2::after {
+    display: block;
+    width: 170px;
+    height: 3px;
+    margin: 22px auto 0;
+    background: var(--color-acento);
+    content: "";
+}
+
+.rejilla-ofertas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 320px));
+    justify-content: center;
+    gap: 24px;
+}
+
+/* Etiqueta roja de la promoción sobre la imagen del producto. */
+.etiqueta-oferta {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 10px;
+    background: var(--color-acento);
+    border: 1px solid var(--color-acento);
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.precio-tarjeta-producto .precio-anterior {
+    display: inline-block;
+    margin-top: 5px;
+    color: #8f8f8f;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: line-through;
+}
+
+@media (max-width: 768px) {
+    /* En celular el degradado vertical protege el texto centrado. */
+    .pagina-ofertas .seccion-anuncio.anuncio-ofertas {
+        background-image:
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.72) 32%, rgba(0, 0, 0, 0.35) 52%, transparent 70%),
+            url("../imagenes/anuncios/imagen-ofertas-add.jpg");
+        background-position: center center;
+        background-size: auto, cover;
+        background-repeat: no-repeat;
+    }
+
+    .seccion-ofertas {
+        padding: 0 20px 64px;
+    }
+
+    .encabezado-ofertas h2 {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+        letter-spacing: 2px;
+    }
+
+    .rejilla-ofertas {
+        grid-template-columns: minmax(0, 420px);
+    }
+}

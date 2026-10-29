@@ -346,6 +346,428 @@ button {
     content: "";
 }
 
+/* Texto breve que acompaña al título general del catálogo. */
+.descripcion-categoria {
+    max-width: 720px;
+    margin: 18px auto 0;
+    color: var(--color-atenuado);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Layout con filtros: mismos controles y panel lateral que Accesorios. */
+.contenedor-catalogo-con-filtros {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-areas:
+        "filtros controles"
+        "filtros catalogo";
+    column-gap: 32px;
+    row-gap: 24px;
+    width: min(100%, 1280px);
+    margin: 0 auto;
+    padding: 16px 32px 88px;
+}
+
+.contenedor-catalogo-con-filtros.filtros-ocultos {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "controles"
+        "catalogo";
+}
+
+.contenedor-catalogo-con-filtros.filtros-ocultos .panel-filtros {
+    display: none;
+}
+
+.barra-controles-catalogo {
+    display: grid;
+    grid-area: controles;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: #111111;
+    border: 1px solid #2b2b2b;
+    border-radius: 6px;
+}
+
+.boton-alternar-filtros {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: 9px;
+    padding: 10px 16px;
+    background: #171717;
+    border: 1px solid #353535;
+    border-radius: 4px;
+    color: #eeeeee;
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.boton-alternar-filtros:hover,
+.boton-alternar-filtros:focus-visible {
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+}
+
+.boton-alternar-filtros svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.grupo-orden {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+}
+
+.etiqueta-orden {
+    color: #c3c3c3;
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.barra-controles-catalogo .campo-orden {
+    width: auto;
+    min-width: 210px;
+    padding: 9px 12px;
+    font-size: 14px;
+}
+
+.barra-controles-catalogo .conteo-resultado {
+    justify-self: end;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.panel-filtros {
+    position: sticky;
+    top: 24px;
+    grid-area: filtros;
+    align-self: start;
+    padding: 24px;
+    background: #111111;
+    border: 1px solid #2b2b2b;
+    border-radius: 6px;
+}
+
+.grupo-filtros {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #292929;
+}
+
+.grupo-filtros:last-of-type {
+    border-bottom: 0;
+}
+
+.grupo-filtros h3 {
+    margin: 0 0 14px;
+    color: #ffffff;
+    font-family: var(--fuente-titulos);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.lista-filtros {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-filtros li {
+    margin-bottom: 6px;
+}
+
+.lista-filtros label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #c3c3c3;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.lista-filtros label:hover {
+    color: #ffffff;
+}
+
+.lista-filtros input[type="checkbox"] {
+    display: grid;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    place-content: center;
+    margin: 0;
+    background: #0b0b0b;
+    border: 1px solid #444444;
+    border-radius: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.lista-filtros input[type="checkbox"]::before {
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 49% 62%);
+    content: "";
+    transform: scale(0);
+    transition: transform 0.15s ease;
+}
+
+.lista-filtros input[type="checkbox"]:checked {
+    background: var(--color-acento);
+    border-color: var(--color-acento);
+}
+
+.lista-filtros input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+.lista-filtros input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+.campo-orden {
+    width: 100%;
+    padding: 10px 12px;
+    background: #090909;
+    border: 1px solid #404040;
+    border-radius: 3px;
+    color: #ffffff;
+    font: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.campo-orden:focus {
+    border-color: var(--color-acento);
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(255 0 51 / 15%);
+}
+
+.acciones-filtros {
+    margin-top: 16px;
+}
+
+.boton-limpiar-filtros {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #353535;
+    border-radius: 3px;
+    color: #eeeeee;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.boton-limpiar-filtros:hover,
+.boton-limpiar-filtros:focus-visible {
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+}
+
+.contenedor-catalogo {
+    grid-area: catalogo;
+    min-width: 0;
+}
+
+.conteo-resultado {
+    margin: 0;
+    color: #c3c3c3;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+}
+
+.mensaje-sin-resultados {
+    margin: 0 0 20px;
+    color: #969696;
+    font-family: var(--fuente-lectura);
+    font-size: 14px;
+}
+
+/* Dentro del layout, la cuadrícula ocupa todo el ancho disponible. */
+.contenedor-catalogo .seccion-catalogo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor-catalogo .rejilla-productos {
+    justify-content: start;
+}
+
+@media (max-width: 1024px) {
+    .contenedor-catalogo-con-filtros {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "controles"
+            "filtros"
+            "catalogo";
+    }
+
+    .contenedor-catalogo-con-filtros.filtros-ocultos {
+        grid-template-areas:
+            "controles"
+            "catalogo";
+    }
+
+    .panel-filtros {
+        position: static;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contenedor-catalogo-con-filtros {
+        padding: 0 20px 64px;
+        gap: 20px;
+    }
+
+    .barra-controles-catalogo {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+    }
+
+    .boton-alternar-filtros {
+        justify-content: center;
+    }
+
+    .barra-controles-catalogo .conteo-resultado {
+        font-size: 13px;
+        text-align: center;
+    }
+
+    .grupo-orden {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 6px;
+    }
+
+    .barra-controles-catalogo .campo-orden {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .panel-filtros {
+        padding: 16px;
+    }
+
+    .contenedor-catalogo .rejilla-productos {
+        justify-content: center;
+    }
+}
+
+/* Cada gama de computadoras ocupa el ancho del catálogo. */
+.seccion-gama {
+    scroll-margin-top: 24px;
+}
+
+.seccion-gama[hidden] {
+    display: none;
+}
+
+/* Barra con el selector de gama, alineado a la derecha en escritorio. */
+.barra-gamas {
+    display: flex;
+    width: min(100%, 1216px);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 28px;
+    margin: 34px auto 0;
+    text-align: left;
+}
+
+.etiqueta-gamas {
+    margin: 0;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.selector-gama {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.boton-gama {
+    padding: 10px 20px;
+    background: #111111;
+    border: 1px solid #2b2b2b;
+    border-radius: 2px;
+    color: #c6c6c6;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.boton-gama:hover,
+.boton-gama:focus-visible {
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
+.boton-gama[aria-selected="true"] {
+    background: var(--color-acento);
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
+/* Aviso que ocupa el lugar de la cuadrícula cuando aún no hay equipos. */
+.mensaje-gama-vacia {
+    margin: 0;
+    padding: 40px 24px;
+    background: #111111;
+    border: 1px dashed #333333;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+    text-align: center;
+}
+
+.rejilla-productos[hidden] {
+    display: none;
+}
+
 /* Rejilla de productos: cada artículo conserva su propio marco visual. */
 .seccion-catalogo {
     width: min(100%, 1280px);
@@ -355,7 +777,7 @@ button {
 
 .rejilla-productos {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 360px));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 360px));
     justify-content: center;
     gap: 24px;
 }
@@ -803,6 +1225,229 @@ button {
     color: var(--color-acento);
 }
 
+/* Personalización del equipo dentro del modal. */
+.personalizacion-producto {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #292929;
+}
+
+.personalizacion-producto[hidden] {
+    display: none;
+}
+
+.encabezado-personalizacion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+}
+
+.texto-personalizacion {
+    min-width: 0;
+}
+
+.encabezado-personalizacion h3 {
+    margin: 0 0 4px;
+    color: #ffffff;
+    font-family: var(--fuente-interfaz);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.encabezado-personalizacion p {
+    margin: 0;
+    color: #9f9f9f;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Botón que despliega las opciones de personalización. */
+.boton-personalizacion {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 15px;
+    background: #141414;
+    border: 1px solid #3a3a3a;
+    border-radius: 3px;
+    color: #ededed;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.boton-personalizacion:hover,
+.boton-personalizacion:focus-visible {
+    background: #1a1a1a;
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+    outline: none;
+}
+
+.boton-personalizacion:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+.flecha-personalizacion {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    transition: transform 0.3s ease;
+}
+
+/* Estado desplegado: el botón y la flecha acompañan la apertura. */
+.personalizacion-abierta .boton-personalizacion {
+    background: rgb(255 0 51 / 12%);
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+}
+
+.personalizacion-abierta .flecha-personalizacion {
+    transform: rotate(180deg);
+}
+
+/* Las opciones arrancan cerradas y se despliegan con una animación suave. */
+.contenedor-opciones-personalizacion {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.32s ease, opacity 0.24s ease, visibility 0s linear 0.32s;
+    visibility: hidden;
+}
+
+.interior-opciones-personalizacion {
+    min-height: 0;
+    overflow: hidden;
+    transition: padding-top 0.32s ease;
+}
+
+.personalizacion-abierta .interior-opciones-personalizacion {
+    padding-top: 16px;
+}
+
+.personalizacion-abierta .contenedor-opciones-personalizacion {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition: grid-template-rows 0.32s ease, opacity 0.24s ease;
+    visibility: visible;
+}
+
+.grupo-personalizacion {
+    min-width: 0;
+    margin: 0 0 14px;
+    padding: 0;
+    border: 0;
+}
+
+.grupo-personalizacion:last-of-type {
+    margin-bottom: 16px;
+}
+
+.grupo-personalizacion legend {
+    margin: 0 0 7px;
+    padding: 0;
+    color: #cfcfcf;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.opciones-personalizacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.opcion-personalizacion {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.opcion-personalizacion input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contenido-opcion {
+    display: flex;
+    min-width: 116px;
+    flex-direction: column;
+    gap: 1px;
+    padding: 8px 14px;
+    background: #0d0d0d;
+    border: 1px solid #363636;
+    border-radius: 3px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contenido-opcion strong {
+    color: #ededed;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.contenido-opcion small {
+    color: #9b9b9b;
+    font-family: var(--fuente-lectura);
+    font-size: 11px;
+}
+
+.opcion-personalizacion:hover .contenido-opcion {
+    background: #141414;
+    border-color: #606060;
+}
+
+.opcion-personalizacion input:checked + .contenido-opcion {
+    background: rgb(255 0 51 / 10%);
+    border-color: var(--color-acento);
+    box-shadow: inset 0 0 0 1px var(--color-acento);
+}
+
+.opcion-personalizacion input:checked + .contenido-opcion strong {
+    color: var(--color-acento);
+}
+
+.opcion-personalizacion input:checked + .contenido-opcion small {
+    color: #ff9aac;
+}
+
+.opcion-personalizacion input:focus-visible + .contenido-opcion {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+.total-personalizacion {
+    margin: 0;
+    color: var(--color-precio);
+    font-family: var(--fuente-interfaz);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.total-personalizacion:empty {
+    display: none;
+}
+
 .boton-comprar-modal {
     display: flex;
     min-height: 52px;
@@ -916,6 +1561,82 @@ button {
     outline: none;
 }
 
+/* Historial de búsquedas: discreto y solo visible con el campo vacío. */
+.historial-busqueda {
+    margin: 12px 0 4px;
+    padding: 11px 13px 13px;
+    background: #0d0d0d;
+    border: 1px solid #262626;
+    border-radius: 3px;
+}
+
+.encabezado-historial {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 9px;
+}
+
+.titulo-historial {
+    margin: 0;
+    color: #8a8a8a;
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.boton-limpiar-historial {
+    padding: 2px 0;
+    background: none;
+    border: 0;
+    color: #8a8a8a;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.boton-limpiar-historial:hover,
+.boton-limpiar-historial:focus-visible {
+    color: var(--color-acento);
+}
+
+.etiquetas-historial {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.etiqueta-historial {
+    max-width: 100%;
+    padding: 6px 11px;
+    background: #161616;
+    border: 1px solid #2e2e2e;
+    border-radius: 999px;
+    color: #c2c2c2;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.etiqueta-historial span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.etiqueta-historial:hover,
+.etiqueta-historial:focus-visible {
+    background: #1d1d1d;
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
 .estado-busqueda {
     min-height: 20px;
     margin: 12px 0 8px;
@@ -954,8 +1675,27 @@ button {
     outline-offset: -2px;
 }
 
+/* Miniatura de los productos vistos recientemente en el buscador. */
+.imagen-resultado-busqueda {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    overflow: hidden;
+    background: #0b0b0b;
+    border: 1px solid #2c2c2c;
+    border-radius: 3px;
+}
+
+.imagen-resultado-busqueda img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .texto-resultado-busqueda {
     display: grid;
+    flex: 1 1 auto;
     min-width: 0;
     gap: 4px;
 }
@@ -1138,7 +1878,7 @@ h3 {
 }
 
 .submenu-movil.esta-expandido {
-    max-height: 180px;
+    max-height: 220px;
     opacity: 1;
 }
 
@@ -1233,6 +1973,30 @@ h3 {
     .titulo-categoria h2 {
         font-size: clamp(1.5rem, 7vw, 2rem);
         letter-spacing: clamp(1px, 0.5vw, 2px);
+    }
+
+    .barra-gamas {
+        justify-content: center;
+        margin-top: 26px;
+    }
+
+    .etiqueta-gamas {
+        width: 100%;
+        text-align: center;
+    }
+
+    .selector-gama {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .boton-gama {
+        flex: 1 1 140px;
+        padding: 11px 14px;
+    }
+
+    .descripcion-categoria {
+        font-size: 0.95rem;
     }
 
     .boton-comprar {

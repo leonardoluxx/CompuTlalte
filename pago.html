@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1c1c1c">
     <meta name="color-scheme" content="dark">
-    <title>Datos de pago | Computlalte</title>
+    <title>Método de pago | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-pago.css">
+    <link rel="stylesheet" href="css/style-pago.css?v=4">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -17,44 +17,217 @@
         <a class="enlace-volver" href="index.html">Volver a la tienda</a>
     </header>
 
-    <div class="contenido-pagina">
-        <h1 id="titulo">Datos para transferencia</h1>
+    <main class="contenido-pagina">
+        <header class="encabezado-pago" id="encabezado-pago">
+            <p class="etiqueta-pagina">Finalizar compra</p>
+            <h1 id="titulo">Método de pago</h1>
+            <p class="descripcion-pago">Elige cómo quieres pagar. Solo guardamos tu preferencia; nunca los datos de tu tarjeta.</p>
+        </header>
 
-        <div id="pago">
-            <div class="info-tienda">
-                <h2>Datos bancarios de la tienda</h2>
-                <p><strong>Banco:</strong> BBVA</p>
-                <p><strong>CLABE:</strong> 012345678901234567</p>
-                <p><strong>Titular:</strong> COMPUTLALTE SA DE CV</p>
-                <p class="nota">Realiza tu transferencia con los datos anteriores y llena el formulario con la información de tu pago.</p>
-                <p id="monto" class="monto"></p>
-            </div>
-
-            <hr class="separador">
-
-            <form id="formulario-pago" novalidate>
-                <label for="titular">Nombre del titular de la cuenta</label>
-                <input type="text" id="titular" autocomplete="name" placeholder="Nombre completo">
-
-                <label for="banco">Banco desde el que transferiste</label>
-                <input type="text" id="banco" placeholder="Ej. Banamex, BBVA, Santander">
-
-                <label for="referencia">Referencia o folio de transferencia</label>
-                <input type="text" id="referencia" placeholder="Número de referencia">
-
-                <label for="fecha">Fecha de la transferencia</label>
-                <input type="date" id="fecha">
-
-                <p id="mensaje" role="alert"></p>
-
-                <div class="botones">
-                    <a href="carrito.html" id="volver">Volver al carrito</a>
-                    <button type="submit" id="confirmar">Confirmar pago</button>
+        <div class="disposicion-pago" id="disposicion-pago">
+            <section class="panel-pago" aria-labelledby="titulo-metodos">
+                <div class="cabecera-metodos">
+                    <div>
+                        <p class="etiqueta-pago">Pago seguro</p>
+                        <h2 id="titulo-metodos">Elige tu método de pago</h2>
+                        <p class="nota-cabecera">Puedes cambiarlo después desde Mi cuenta.</p>
+                    </div>
+                    <p class="monto-pago" id="monto">Total: $0</p>
                 </div>
-            </form>
-        </div>
-    </div>
 
-    <script src="js/scripts-pago.js"></script>
+                <!-- Aviso para carrito vacío o cuenta sin método de pago definido. -->
+                <p class="aviso-metodo" id="aviso-metodo" hidden>
+                    <span id="texto-aviso-metodo"></span>
+                    <a href="index.html" id="enlace-vacio" hidden>Explorar productos</a>
+                </p>
+
+                <fieldset class="selector-metodos" id="selector-metodos">
+                    <legend class="sr-only">Método de pago</legend>
+
+                    <label class="metodo-pago">
+                        <input type="radio" name="metodo-pago" value="transferencia" id="metodo-transferencia">
+                        <span class="icono-metodo" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5M5 10v8m5-8v8m4-8v8m5-8v8M3 21h18" /></svg>
+                        </span>
+                        <span class="texto-metodo">
+                            <strong>Transferencia bancaria</strong>
+                            <small>Transfiere desde tu banco y registra el comprobante.</small>
+                        </span>
+                    </label>
+
+                    <label class="metodo-pago">
+                        <input type="radio" name="metodo-pago" value="tarjeta" id="metodo-tarjeta">
+                        <span class="icono-metodo" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5" /><path d="M2.5 10h19M6 15h4" /></svg>
+                        </span>
+                        <span class="texto-metodo">
+                            <strong>Tarjeta de crédito o débito</strong>
+                            <small>Pago inmediato y seguro con tarjeta.</small>
+                        </span>
+                    </label>
+                </fieldset>
+
+                <!-- Transferencia bancaria: datos fijos y formulario del comprobante. -->
+                <section class="detalle-metodo" id="panel-transferencia" aria-labelledby="titulo-transferencia" hidden>
+                    <header class="encabezado-detalle">
+                        <div>
+                            <h3 id="titulo-transferencia">Transferencia bancaria</h3>
+                            <p>Transfiere el total exacto y completa los datos de tu comprobante.</p>
+                        </div>
+                        <span class="insignia-metodo">BBVA</span>
+                    </header>
+
+                    <div class="datos-bancarios">
+                        <div>
+                            <span>Banco</span>
+                            <strong>BBVA</strong>
+                        </div>
+                        <div>
+                            <span>CLABE interbancaria</span>
+                            <strong>0123 4567 8901 2345 67</strong>
+                            <button class="boton-copiar" type="button" data-copiar="012345678901234567">Copiar</button>
+                        </div>
+                        <div>
+                            <span>Titular</span>
+                            <strong>COMPUTLALTE SA DE CV</strong>
+                        </div>
+                        <div>
+                            <span>Concepto</span>
+                            <strong>Pedido Computlalte</strong>
+                        </div>
+                    </div>
+
+                    <p class="nota-detalle">Tu pedido quedará en revisión hasta que confirmemos la transferencia.</p>
+
+                    <form class="formulario-pago" id="formulario-transferencia" novalidate>
+                        <div class="rejilla-pago">
+                            <div class="campo-pago campo-completo-pago">
+                                <label for="titular-transferencia">Nombre del titular de la cuenta</label>
+                                <input type="text" id="titular-transferencia" autocomplete="name" placeholder="Nombre completo">
+                            </div>
+
+                            <div class="campo-pago">
+                                <label for="banco-transferencia">Banco desde el que transferiste</label>
+                                <input type="text" id="banco-transferencia" placeholder="Ej. Banamex, BBVA, Santander">
+                            </div>
+
+                            <div class="campo-pago">
+                                <label for="fecha-transferencia">Fecha de la transferencia</label>
+                                <input type="date" id="fecha-transferencia">
+                            </div>
+
+                            <div class="campo-pago campo-completo-pago">
+                                <label for="referencia-transferencia">Referencia o folio de transferencia</label>
+                                <input type="text" id="referencia-transferencia" placeholder="Número de referencia">
+                            </div>
+                        </div>
+
+                        <p class="mensaje-pago" id="mensaje-transferencia" role="alert" aria-live="polite"></p>
+
+                        <div class="acciones-pago">
+                            <a href="carrito.html" class="enlace-volver-pago">Volver al carrito</a>
+                            <button type="submit" class="boton-confirmar" id="confirmar-transferencia">Confirmar transferencia</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Tarjeta: cobro seguro y resguardo de datos sensibles. -->
+                <section class="detalle-metodo" id="panel-tarjeta" aria-labelledby="titulo-tarjeta" hidden>
+                    <header class="encabezado-detalle">
+                        <div>
+                            <h3 id="titulo-tarjeta">Pago con tarjeta</h3>
+                            <p>Ingresa los datos de tu tarjeta para completar la compra.</p>
+                        </div>
+                        <span class="insignia-metodo">Visa · Mastercard</span>
+                    </header>
+
+                    <p class="aviso-demo">Tus datos se procesan de forma segura. Solo guardamos la marca y los últimos 4 dígitos para identificar tu tarjeta en Mi cuenta.</p>
+
+                    <form class="formulario-pago" id="formulario-tarjeta" novalidate>
+                        <div class="rejilla-pago">
+                            <div class="campo-pago campo-completo-pago">
+                                <label for="numero-tarjeta">Número de tarjeta</label>
+                                <input type="text" id="numero-tarjeta" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000">
+                            </div>
+
+                            <div class="campo-pago campo-completo-pago">
+                                <label for="titular-tarjeta">Nombre como aparece en la tarjeta</label>
+                                <input type="text" id="titular-tarjeta" autocomplete="cc-name" placeholder="Nombre completo">
+                            </div>
+
+                            <div class="campo-pago">
+                                <label for="vencimiento-tarjeta">Vencimiento</label>
+                                <input type="text" id="vencimiento-tarjeta" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/AA">
+                            </div>
+
+                            <div class="campo-pago">
+                                <label for="cvv-tarjeta">CVV</label>
+                                <input type="text" id="cvv-tarjeta" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="123">
+                            </div>
+                        </div>
+
+                        <p class="mensaje-pago" id="mensaje-tarjeta" role="alert" aria-live="polite"></p>
+
+                        <div class="acciones-pago">
+                            <a href="carrito.html" class="enlace-volver-pago">Volver al carrito</a>
+                            <button type="submit" class="boton-confirmar" id="confirmar-tarjeta">Pagar ahora</button>
+                        </div>
+                    </form>
+                </section>
+            </section>
+
+            <aside class="resumen-pago" aria-labelledby="titulo-resumen-pago">
+                <h2 id="titulo-resumen-pago">Tu pedido</h2>
+                <ul class="lista-resumen-pago" id="lista-resumen-pago"></ul>
+
+                <dl class="lineas-resumen-pago">
+                    <div>
+                        <dt>Artículos</dt>
+                        <dd id="subtotal-pago">$0</dd>
+                    </div>
+                    <div>
+                        <dt>Envío</dt>
+                        <dd>Por confirmar</dd>
+                    </div>
+                </dl>
+
+                <p class="total-pago" id="total-pago">Total: $0</p>
+                <p class="nota-resumen-pago">Al confirmar, tu pedido quedará registrado y podrás consultarlo en Mi cuenta.</p>
+                <a class="enlace-carrito" href="carrito.html">Editar carrito</a>
+            </aside>
+        </div>
+
+        <!-- Confirmación final: sustituye al formulario cuando el pago se registra. -->
+        <section class="panel-exito" id="panel-exito" aria-labelledby="titulo-exito" hidden>
+            <div class="icono-exito" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="m5 12 5 5L20 7" /></svg>
+            </div>
+            <p class="etiqueta-pagina">Pedido registrado</p>
+            <h2 id="titulo-exito">¡Gracias por tu compra!</h2>
+            <p class="mensaje-exito" id="mensaje-exito"></p>
+
+            <dl class="detalles-exito">
+                <div>
+                    <dt>Folio</dt>
+                    <dd id="folio-pago"></dd>
+                </div>
+                <div>
+                    <dt>Método</dt>
+                    <dd id="metodo-exito"></dd>
+                </div>
+                <div>
+                    <dt>Total</dt>
+                    <dd id="total-exito"></dd>
+                </div>
+            </dl>
+
+            <div class="acciones-exito">
+                <a class="boton-principal-pago" href="index.html">Volver a la tienda</a>
+                <a class="enlace-secundario-pago" href="cuenta.html">Ver mis pedidos</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/scripts-pago.js?v=4"></script>
 </body>
 </html>
