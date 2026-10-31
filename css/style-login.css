@@ -349,6 +349,62 @@ input:focus{
     }
 }
 
+/* Accesos de prueba: bloque informativo debajo del formulario. */
+.credenciales-prueba{
+    width: min(100%, 400px);
+    margin: 18px auto 0;
+    padding: 16px 18px;
+    background: #161616;
+    border: 1px dashed #3a3a3a;
+    border-radius: 10px;
+}
+
+.titulo-credenciales{
+    margin: 0 0 10px;
+    color: var(--color-atenuado);
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.credenciales-prueba ul{
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.credenciales-prueba li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.credenciales-prueba code{
+    padding: 3px 8px;
+    background: #0d0d0d;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    color: #d8d8d8;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+}
+
+.nota-credenciales{
+    margin: 12px 0 0;
+    color: var(--color-atenuado);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
 @media (max-width: 480px){
     .contenido-pagina{
         padding: 20px 12px;

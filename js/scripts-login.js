@@ -10,58 +10,54 @@ verClaveEl.addEventListener("click", function () {
     verClaveEl.textContent = estaOculta ? "Ocultar" : "Mostrar";
 });
 
+// Traduce el motivo del fallo a un mensaje claro para quien intenta entrar.
+const MENSAJES_ERROR = {
+    usuario: "No hay una cuenta con ese usuario o correo.",
+    clave: "Contraseña incorrecta.",
+    sesion: "El navegador no permitió guardar la sesión."
+};
+
 formularioEl.addEventListener("submit", function (evento) {
     evento.preventDefault();
 
-    const correo = correoEl.value.trim();
+    const identificador = correoEl.value.trim();
     const clave = claveEl.value;
 
-    if (correo === "" || clave === "") {
-        mensajeEl.textContent = "Escribe tu correo y tu contraseña.";
+    if (identificador === "" || clave === "") {
+        mensajeEl.textContent = "Escribe tu usuario y tu contraseña.";
         return;
     }
 
-    if (!correoEl.checkValidity()) {
-        mensajeEl.textContent = "Escribe un correo válido.";
+    if (!window.Tienda) {
+        mensajeEl.textContent = "No se pudo cargar el sistema de cuentas. Recarga la página.";
         return;
     }
 
     mensajeEl.textContent = "";
 
-    const CLAVE_USUARIOS = "usuarios";
-    let usuarios = [];
+    const resultado = window.Tienda.iniciarSesion(identificador, clave);
+
+    if (!resultado.ok) {
+        mensajeEl.textContent = MENSAJES_ERROR[resultado.motivo] || "No se pudo iniciar sesión.";
+        claveEl.value = "";
+        claveEl.focus();
+        return;
+    }
+
+    let redirigir = null;
 
     try {
-        const guardados = localStorage.getItem(CLAVE_USUARIOS);
-        if (guardados) {
-            usuarios = JSON.parse(guardados);
-        }
+        redirigir = localStorage.getItem("redirigirTrasLogin");
+        localStorage.removeItem("redirigirTrasLogin");
     } catch (error) {
-        usuarios = [];
+        // Sin almacenamiento se entra igual a la página por defecto del rol.
     }
-
-    const usuarioEncontrado = usuarios.find((usuario) => usuario.correo.toLowerCase() === correo.toLowerCase());
-
-    if (!usuarioEncontrado) {
-        mensajeEl.textContent = "No hay una cuenta registrada con ese correo.";
-        return;
-    }
-
-    if (usuarioEncontrado.clave !== clave) {
-        mensajeEl.textContent = "Contraseña incorrecta.";
-        return;
-    }
-
-    localStorage.setItem("sesionIniciada", "true");
-    localStorage.setItem("usuario", usuarioEncontrado.correo);
-    localStorage.setItem("usuarioNombre", usuarioEncontrado.nombre);
-
-    const redirigir = localStorage.getItem("redirigirTrasLogin");
-    localStorage.removeItem("redirigirTrasLogin");
 
     const paginasDestino = {
         carrito: "carrito.html",
-        cuenta: "cuenta.html"
+        cuenta: "cuenta.html",
+        pago: "pago.html",
+        panel: "panel.html"
     };
 
     if (redirigir && redirigir in paginasDestino) {
@@ -69,5 +65,7 @@ formularioEl.addEventListener("submit", function (evento) {
         return;
     }
 
-    window.location.href = "index.html";
+    // Los perfiles con permisos entran directo al panel; el cliente, a la tienda.
+    const esGestor = resultado.usuario.rol === "admin" || resultado.usuario.rol === "gerente";
+    window.location.href = esGestor ? "panel.html" : "index.html";
 });

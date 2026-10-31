@@ -588,6 +588,7 @@ cerrarSesionEl.addEventListener("click", function () {
     localStorage.removeItem("sesionIniciada");
     localStorage.removeItem("usuario");
     localStorage.removeItem("usuarioNombre");
+    localStorage.removeItem("usuarioRol");
     localStorage.removeItem("redirigirTrasLogin");
     window.location.href = "index.html";
 });

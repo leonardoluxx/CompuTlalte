@@ -91,9 +91,6 @@ window.matchMedia("(min-width: 769px)").addEventListener("change", (cambio) => {
     }
 });
 
-// Margen aplicado al costo base antes de mostrar cualquier precio al público.
-const margenGanancia = 0.35;
-
 // Formatea los importes como pesos mexicanos sin depender de servicios externos.
 const formateadorMoneda = new Intl.NumberFormat("es-MX", {
     style: "currency",
@@ -109,8 +106,11 @@ const mejorasPredeterminadas = [
     { grupo: "color", grupoEtiqueta: "Color", valor: "plata", etiqueta: "Plata", extra: 0 }
 ];
 
-// La interfaz consume el conjunto de datos cargado antes desde catalogo-local.js.
-const productos = window.catalogoLocal;
+// La interfaz consume el catálogo compartido (con los cambios que guarde el
+// panel). Si el núcleo no está disponible se usa el archivo local original.
+const productos = window.Tienda
+    ? window.Tienda.productos()
+    : (window.catalogoLocal || []);
 
 // Elementos de la página que reciben las tarjetas y los datos del modal.
 const contenedorCatalogoComputadoras = document.querySelector("#catalogo");
@@ -187,14 +187,32 @@ function crearElemento(etiqueta, clase, texto) {
     return elemento;
 }
 
-// Devuelve el costo base más el margen de ganancia configurado.
+// Devuelve el costo base más el margen configurado en el panel (global o propio).
 function calcularPrecioFinal(producto) {
-    return producto.costoBase * (1 + margenGanancia);
+    if (window.Tienda) {
+        return window.Tienda.precioLista(producto);
+    }
+
+    return Math.round((Number(producto.costoBase) || 0) * 1.35);
 }
 
-// Aplica el descuento promocional sin alterar el precio base del catálogo.
-function calcularPrecioOferta(producto, descuentoPorcentaje = 0) {
-    return calcularPrecioFinal(producto) * (1 - descuentoPorcentaje / 100);
+// Precio público: usa la oferta del producto salvo que se indique otra.
+function calcularPrecioOferta(producto, descuentoPorcentaje) {
+    if (!window.Tienda) {
+        const descuento = Number(descuentoPorcentaje) || 0;
+        return Math.round(calcularPrecioFinal(producto) * (1 - descuento / 100));
+    }
+
+    if (descuentoPorcentaje === undefined || descuentoPorcentaje === null) {
+        return window.Tienda.precioVenta(producto);
+    }
+
+    return window.Tienda.precioConDescuento(producto, descuentoPorcentaje);
+}
+
+// Descuento vigente del producto según las ofertas que definió el panel.
+function descuentoVigente(producto) {
+    return window.Tienda ? window.Tienda.descuentoDe(producto) : 0;
 }
 
 // Opciones de personalización marcadas actualmente en el modal.
@@ -551,7 +569,13 @@ function abrirProductoDesdeBusqueda(botonResultado) {
 
 // Construye la tarjeta de un producto. La misma función sirve para el catálogo,
 // los accesorios y las ofertas, donde se aplica el descuento promocional.
-function crearTarjetaProducto(producto, { descuentoPorcentaje = 0, etiquetaOferta = "" } = {}) {
+function crearTarjetaProducto(producto, { descuentoPorcentaje = null, etiquetaOferta = "" } = {}) {
+    // Sin descuento explícito se usa la oferta activa del producto.
+    const descuento = descuentoPorcentaje === null
+        ? descuentoVigente(producto)
+        : (Number(descuentoPorcentaje) || 0);
+    const textoOferta = etiquetaOferta || (descuento > 0 ? `${descuento}% de descuento` : "");
+
     const tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta-producto";
 
@@ -559,7 +583,7 @@ function crearTarjetaProducto(producto, { descuentoPorcentaje = 0, etiquetaOfert
     botonTarjeta.className = "boton-tarjeta-producto";
     botonTarjeta.type = "button";
     botonTarjeta.dataset.productoId = producto.id;
-    botonTarjeta.dataset.descuento = String(descuentoPorcentaje);
+    botonTarjeta.dataset.descuento = String(descuento);
     botonTarjeta.setAttribute("aria-haspopup", "dialog");
 
     const marcoImagen = document.createElement("div");
@@ -579,8 +603,8 @@ function crearTarjetaProducto(producto, { descuentoPorcentaje = 0, etiquetaOfert
     );
     marcoImagen.append(imagen, etiquetaEstado);
 
-    if (etiquetaOferta) {
-        marcoImagen.append(crearElemento("span", "etiqueta-oferta", etiquetaOferta));
+    if (textoOferta) {
+        marcoImagen.append(crearElemento("span", "etiqueta-oferta", textoOferta));
     }
 
     const contenido = document.createElement("div");
@@ -597,11 +621,11 @@ function crearTarjetaProducto(producto, { descuentoPorcentaje = 0, etiquetaOfert
     const precio = document.createElement("div");
     precio.className = "precio-tarjeta-producto";
     precio.append(
-        crearElemento("span", "", descuentoPorcentaje > 0 ? "Precio de oferta" : "Precio"),
-        crearElemento("strong", "", formateadorMoneda.format(calcularPrecioOferta(producto, descuentoPorcentaje)))
+        crearElemento("span", "", descuento > 0 ? "Precio de oferta" : "Precio"),
+        crearElemento("strong", "", formateadorMoneda.format(calcularPrecioOferta(producto, descuento)))
     );
 
-    if (descuentoPorcentaje > 0) {
+    if (descuento > 0) {
         precio.append(
             crearElemento("small", "precio-anterior", formateadorMoneda.format(calcularPrecioFinal(producto)))
         );
@@ -616,7 +640,7 @@ function crearTarjetaProducto(producto, { descuentoPorcentaje = 0, etiquetaOfert
     botonAnadirCarrito.textContent = "Añadir al carrito";
     botonAnadirCarrito.addEventListener("click", (evento) => {
         evento.stopPropagation();
-        añadirProductoAlCarrito(producto, calcularPrecioOferta(producto, descuentoPorcentaje));
+        añadirProductoAlCarrito(producto, calcularPrecioOferta(producto, descuento));
         botonAnadirCarrito.textContent = "Añadido ✓";
         setTimeout(() => {
             botonAnadirCarrito.textContent = "Añadir al carrito";
@@ -684,7 +708,8 @@ function mostrarComputadoras() {
             || disponibilidadSeleccionada.includes(estado);
         const coincideCategoria = !categoriasSeleccionadas.length
             || categoriasSeleccionadas.includes(producto.categoria);
-        const coincidePrecio = coincideRangoPrecio(calcularPrecioFinal(producto));
+        // El filtro usa el precio que realmente paga el cliente (con oferta).
+        const coincidePrecio = coincideRangoPrecio(calcularPrecioOferta(producto));
 
         return coincideDisponibilidad && coincideCategoria && coincidePrecio;
     });
@@ -693,9 +718,9 @@ function mostrarComputadoras() {
     computadorasVisibles.sort((primero, segundo) => {
         switch (criterioOrden) {
             case "precio-ascendente":
-                return calcularPrecioFinal(primero) - calcularPrecioFinal(segundo);
+                return calcularPrecioOferta(primero) - calcularPrecioOferta(segundo);
             case "precio-descendente":
-                return calcularPrecioFinal(segundo) - calcularPrecioFinal(primero);
+                return calcularPrecioOferta(segundo) - calcularPrecioOferta(primero);
             default:
                 return Number(segundo.destacado) - Number(primero.destacado)
                     || primero.id - segundo.id;
@@ -767,9 +792,9 @@ function mostrarAccesorios() {
             case "nombre-desc":
                 return segundo.nombre.localeCompare(primero.nombre, "es");
             case "precio-ascendente":
-                return calcularPrecioFinal(primero) - calcularPrecioFinal(segundo);
+                return calcularPrecioOferta(primero) - calcularPrecioOferta(segundo);
             case "precio-descendente":
-                return calcularPrecioFinal(segundo) - calcularPrecioFinal(primero);
+                return calcularPrecioOferta(segundo) - calcularPrecioOferta(primero);
             case "fecha-nuevos":
                 return (Date.parse(segundo.fechaAlta) || 0) - (Date.parse(primero.fechaAlta) || 0);
             default:
@@ -788,25 +813,30 @@ function mostrarAccesorios() {
     );
 }
 
-// Ofertas destacadas: el descuento se calcula sobre el precio de venta y
-// afecta a la etiqueta, al precio mostrado, al modal y al carrito.
-const descuentoOfertaMouse = 1;
-
+// Ofertas: las define el panel. Solo se dibujan los productos con descuento
+// activo y cada tarjeta conserva su porcentaje para el modal y el carrito.
 function mostrarOfertas() {
     if (!rejillaOfertas) {
         return;
     }
 
-    const mouseEnOferta = productos.find((producto) => producto.id === 2);
-    if (!mouseEnOferta) {
-        rejillaOfertas.replaceChildren();
+    const enOferta = window.Tienda
+        ? window.Tienda.ofertas()
+        : productos.filter((producto) => descuentoVigente(producto) > 0);
+
+    if (!enOferta.length) {
+        const aviso = crearElemento("p", "ofertas-vacio", "Por ahora no hay ofertas activas. Vuelve pronto o explora todo el catálogo.");
+        rejillaOfertas.replaceChildren(aviso);
         return;
     }
 
     rejillaOfertas.replaceChildren(
-        crearTarjetaProducto(mouseEnOferta, {
-            descuentoPorcentaje: descuentoOfertaMouse,
-            etiquetaOferta: `${descuentoOfertaMouse}% de descuento`
+        ...enOferta.map((producto) => {
+            const descuento = descuentoVigente(producto);
+            return crearTarjetaProducto(producto, {
+                descuentoPorcentaje: descuento,
+                etiquetaOferta: `${descuento}% de descuento`
+            });
         })
     );
 }
@@ -938,6 +968,20 @@ if (rejillaAccesorios) {
 if (rejillaOfertas) {
     mostrarOfertas();
 }
+
+// Cuando el panel guarda precios, ofertas o el margen global, la tienda se
+// vuelve a dibujar sin necesidad de recargar la página.
+document.addEventListener("tienda:actualizada", () => {
+    if (rejillaComputadoras) {
+        mostrarComputadoras();
+    }
+    if (rejillaAccesorios) {
+        mostrarAccesorios();
+    }
+    if (rejillaOfertas) {
+        mostrarOfertas();
+    }
+});
 
 // Los enlaces internos a una categoría (Juegos, Desarrollo, Uso Diario) activan
 // el filtro correspondiente del catálogo antes de desplazarse a la sección.
@@ -1202,7 +1246,7 @@ if (botonAlternarDetalles && listasDetallesProducto) {
 
 function añadirProductoAlCarrito(
     producto,
-    precioFinal = calcularPrecioFinal(producto),
+    precioFinal = calcularPrecioOferta(producto),
     personalizacion = "",
     opcionesPersonalizacion = []
 ) {
@@ -1226,10 +1270,11 @@ function añadirProductoAlCarrito(
         ? ""
         : (personalizacion || opciones.map((opcion) => opcion.etiqueta).join(", "));
     const precioUnitario = Math.round(precioFinal);
-    // En accesorios el precio guardado ya incluye cualquier oferta vigente.
+    // El precio base ya incluye la oferta vigente: los extras son solo las
+    // mejoras elegidas (memoria, almacenamiento, color), no el descuento.
     const precioBase = esAccesorio
         ? precioUnitario
-        : Math.round(calcularPrecioFinal(producto));
+        : Math.round(calcularPrecioOferta(producto));
     const extras = Math.max(0, precioUnitario - precioBase);
 
     // Una misma computadora con distintas mejoras se guarda como una línea aparte.

@@ -129,6 +129,22 @@
     gap: 24px;
 }
 
+/* Aviso cuando el panel deja la lista de ofertas vacía. */
+.ofertas-vacio {
+    grid-column: 1 / -1;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 26px 22px;
+    background: #141414;
+    border: 1px dashed #3a3a3a;
+    border-radius: 10px;
+    color: #b9b9b9;
+    font-family: var(--fuente-interfaz);
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+}
+
 /* Etiqueta roja de la promoción sobre la imagen del producto. */
 .etiqueta-oferta {
     position: absolute;

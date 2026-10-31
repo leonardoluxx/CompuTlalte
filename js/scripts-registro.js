@@ -89,7 +89,9 @@ formularioEl.addEventListener("submit", function (evento) {
         correo: correo,
         direccion: direccion,
         clave: clave,
-        metodoPago: metodoPago
+        metodoPago: metodoPago,
+        // El registro de la tienda solo crea clientes; los roles se asignan en el panel.
+        rol: "cliente"
     });
 
     localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));

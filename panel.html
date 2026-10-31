@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="color-scheme" content="dark">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Panel de control | Computlalte</title>
+    <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <link rel="stylesheet" href="css/fuentes.css">
+    <link rel="stylesheet" href="css/panel.css?v=1">
+</head>
+<body class="panel-cuerpo">
+    <header class="panel-cabecera">
+        <a class="panel-logotipo" href="index.html" aria-label="Computlalte, inicio"><span>COMPU</span><b>TLALTE</b></a>
+        <p class="panel-cabecera-titulo">Panel de control</p>
+        <div class="panel-cabecera-acciones">
+            <a class="panel-enlace-tienda" href="index.html">Ver tienda</a>
+            <span class="panel-rol" id="panel-rol" hidden></span>
+            <button class="panel-boton panel-boton-fantasma" id="cerrar-sesion-panel" type="button">Cerrar sesión</button>
+        </div>
+    </header>
+
+    <!-- Se muestra cuando no hay sesión o la cuenta es de cliente. -->
+    <main class="panel-acceso" id="panel-acceso" hidden>
+        <h1 id="panel-acceso-titulo">Necesitas una cuenta autorizada</h1>
+        <p id="panel-acceso-texto">Inicia sesión como administrador o gerente para entrar al panel de control.</p>
+        <div class="panel-acceso-acciones">
+            <a class="panel-boton" id="panel-acceso-login" href="login.html">Iniciar sesión</a>
+            <a class="panel-boton panel-boton-secundario" href="index.html">Volver a la tienda</a>
+        </div>
+    </main>
+
+    <div class="panel-disposicion" id="panel-disposicion" hidden>
+        <aside class="panel-lateral">
+            <nav class="panel-menu" aria-label="Secciones del panel">
+                <button class="panel-menu-boton esta-activo" type="button" data-vista="resumen">Resumen</button>
+                <button class="panel-menu-boton" type="button" data-vista="productos">Productos</button>
+                <button class="panel-menu-boton" type="button" data-vista="ofertas">
+                    Ofertas
+                    <span class="panel-contador" id="contador-ofertas">0</span>
+                </button>
+                <button class="panel-menu-boton" type="button" data-vista="solicitudes">
+                    Solicitudes
+                    <span class="panel-contador" id="contador-solicitudes">0</span>
+                </button>
+                <button class="panel-menu-boton solo-admin" type="button" data-vista="ajustes">Ajustes</button>
+            </nav>
+
+            <div class="panel-sesion">
+                <span class="panel-avatar" id="panel-avatar" aria-hidden="true">?</span>
+                <div>
+                    <strong id="panel-nombre">Usuario</strong>
+                    <small id="panel-rol-texto"></small>
+                </div>
+            </div>
+        </aside>
+
+        <div class="panel-contenido">
+            <!-- Resumen general de la tienda. -->
+            <section class="panel-vista" data-vista-panel="resumen">
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">VISTA GENERAL</p>
+                        <h1>Resumen</h1>
+                    </div>
+                    <p class="panel-fecha" id="panel-fecha"></p>
+                </div>
+
+                <div class="panel-estadisticas">
+                    <article class="panel-stat">
+                        <span>Productos activos</span>
+                        <strong id="stat-productos">0</strong>
+                    </article>
+                    <article class="panel-stat">
+                        <span>Ofertas vigentes</span>
+                        <strong id="stat-ofertas">0</strong>
+                    </article>
+                    <article class="panel-stat">
+                        <span>Solicitudes pendientes</span>
+                        <strong id="stat-pendientes">0</strong>
+                    </article>
+                    <article class="panel-stat">
+                        <span>Margen global</span>
+                        <strong id="stat-margen">0 %</strong>
+                    </article>
+                </div>
+
+                <div class="panel-columnas">
+                    <section class="panel-tarjeta">
+                        <h2>Pendientes de aprobación</h2>
+                        <div id="resumen-pendientes" class="panel-lista-compacta"></div>
+                    </section>
+                    <section class="panel-tarjeta">
+                        <h2>Últimos movimientos</h2>
+                        <div id="lista-bitacora" class="panel-lista-compacta"></div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- Catálogo editable. -->
+            <section class="panel-vista" data-vista-panel="productos" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">CATÁLOGO</p>
+                        <h1>Productos</h1>
+                    </div>
+                    <button class="panel-boton solo-admin" id="nuevo-producto" type="button">Nuevo producto</button>
+                </div>
+
+                <div class="panel-filtros">
+                    <label class="panel-campo">
+                        <span>Buscar</span>
+                        <input type="search" id="buscar-producto" placeholder="Nombre, marca o categoría">
+                    </label>
+                    <label class="panel-campo">
+                        <span>Categoría</span>
+                        <select id="filtro-categoria">
+                            <option value="">Todas</option>
+                        </select>
+                    </label>
+                    <label class="panel-campo">
+                        <span>Estado</span>
+                        <select id="filtro-estado">
+                            <option value="activos">Activos</option>
+                            <option value="eliminados">Eliminados</option>
+                            <option value="todos">Todos</option>
+                        </select>
+                    </label>
+                </div>
+
+                <p class="panel-nota" id="nota-productos"></p>
+                <div class="panel-tabla-envoltura">
+                    <table class="panel-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Costo base</th>
+                                <th scope="col">Margen</th>
+                                <th scope="col">Precio público</th>
+                                <th scope="col">Oferta</th>
+                                <th scope="col"><span class="panel-solo-lector">Acciones</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-productos"></tbody>
+                    </table>
+                </div>
+                <p class="panel-contador-tabla" id="conteo-productos"></p>
+            </section>
+
+            <!-- Ofertas: el admin aplica al instante, el gerente propone. -->
+            <section class="panel-vista" data-vista-panel="ofertas" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">PROMOCIONES</p>
+                        <h1>Ofertas</h1>
+                    </div>
+                </div>
+                <p class="panel-nota">
+                    Marca los productos que aparecerán en la página de ofertas y define su descuento.
+                    <span class="solo-admin">Los cambios se publican al guardar.</span>
+                    <span class="solo-gerente">Cada cambio queda como solicitud para que el administrador lo apruebe.</span>
+                </p>
+                <div class="panel-tabla-envoltura">
+                    <table class="panel-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Precio de lista</th>
+                                <th scope="col">En oferta</th>
+                                <th scope="col">Descuento</th>
+                                <th scope="col"><span class="panel-solo-lector">Guardar</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-ofertas"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Solicitudes de cambio del gerente. -->
+            <section class="panel-vista" data-vista-panel="solicitudes" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">APROBACIONES</p>
+                        <h1>Solicitudes</h1>
+                    </div>
+                </div>
+                <p class="panel-nota" id="nota-solicitudes"></p>
+                <div class="panel-solicitudes" id="lista-solicitudes"></div>
+            </section>
+
+            <!-- Ajustes exclusivos del administrador. -->
+            <section class="panel-vista solo-admin" data-vista-panel="ajustes" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">CONFIGURACIÓN</p>
+                        <h1>Ajustes</h1>
+                    </div>
+                </div>
+
+                <div class="panel-columnas">
+                    <section class="panel-tarjeta">
+                        <h2>Margen de ganancia</h2>
+                        <p class="panel-texto">
+                            Es el porcentaje que se suma al costo base de cada producto para calcular su precio público.
+                            Un producto puede tener su propio margen si lo necesita.
+                        </p>
+                        <form class="panel-formulario-margen" id="formulario-margen">
+                            <label class="panel-campo">
+                                <span>Margen global (%)</span>
+                                <input type="number" id="margen-global" min="0" max="300" step="0.5" required>
+                            </label>
+                            <button class="panel-boton" type="submit">Guardar margen</button>
+                        </form>
+                        <p class="panel-ejemplo" id="ejemplo-margen"></p>
+                    </section>
+
+                    <section class="panel-tarjeta">
+                        <h2>Roles y permisos</h2>
+                        <ul class="panel-roles">
+                            <li>
+                                <strong>Administrador</strong>
+                                <span>Todo el poder: productos, imágenes, precios, ofertas, aprobaciones y ajustes.</span>
+                            </li>
+                            <li>
+                                <strong>Gerente</strong>
+                                <span>Consulta el catálogo y propone cambios de precios, descripciones y ofertas.</span>
+                            </li>
+                            <li>
+                                <strong>Cliente</strong>
+                                <span>Compra en la tienda. No entra al panel ni ve el costo base.</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+
+                <section class="panel-tarjeta">
+                    <h2>Cuentas del sistema</h2>
+                    <p class="panel-texto">Las cuentas se guardan en este navegador. El registro de la tienda crea siempre clientes.</p>
+                    <div class="panel-tabla-envoltura">
+                        <table class="panel-tabla">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Correo</th>
+                                    <th scope="col">Rol</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-usuarios"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+
+    <!-- Editor de producto, compartido por administrador y gerente. -->
+    <dialog class="panel-modal" id="editor-producto" aria-labelledby="editor-titulo">
+        <form class="panel-modal-caja" id="formulario-producto" novalidate>
+            <header class="panel-modal-cabecera">
+                <div>
+                    <p class="panel-etiqueta" id="editor-etiqueta">FICHA DE PRODUCTO</p>
+                    <h2 id="editor-titulo">Editar producto</h2>
+                </div>
+                <button class="panel-cerrar" id="cerrar-editor" type="button" aria-label="Cerrar">×</button>
+            </header>
+
+            <div class="panel-modal-cuerpo">
+                <div class="panel-rejilla-campos">
+                    <label class="panel-campo panel-campo-ancho">
+                        <span>Nombre</span>
+                        <input type="text" id="p-nombre" required>
+                    </label>
+                    <label class="panel-campo">
+                        <span>Marca</span>
+                        <input type="text" id="p-marca">
+                    </label>
+                    <label class="panel-campo">
+                        <span>Categoría</span>
+                        <input type="text" id="p-categoria" list="categorias-conocidas">
+                    </label>
+                    <label class="panel-campo">
+                        <span>Tipo</span>
+                        <select id="p-tipo">
+                            <option value="computadora">Computadora</option>
+                            <option value="accesorio">Accesorio</option>
+                        </select>
+                    </label>
+                    <label class="panel-campo">
+                        <span>Etiqueta de la tarjeta</span>
+                        <input type="text" id="p-etiqueta" placeholder="En existencia">
+                    </label>
+                    <label class="panel-campo">
+                        <span>Costo base (MXN)</span>
+                        <input type="number" id="p-costo" min="0" step="1">
+                    </label>
+                    <label class="panel-campo">
+                        <span>Margen propio (%)</span>
+                        <input type="number" id="p-margen" min="0" max="300" step="0.5" placeholder="Usar margen global">
+                    </label>
+                </div>
+
+                <label class="panel-casilla">
+                    <input type="checkbox" id="p-disponible">
+                    <span>Producto disponible para comprar</span>
+                </label>
+
+                <label class="panel-campo panel-campo-ancho">
+                    <span>Descripción corta (tarjeta)</span>
+                    <textarea id="p-descripcion-corta" rows="2"></textarea>
+                </label>
+
+                <label class="panel-campo panel-campo-ancho">
+                    <span>Descripción larga (detalle)</span>
+                    <textarea id="p-descripcion-larga" rows="3"></textarea>
+                </label>
+
+                <div class="panel-rejilla-campos">
+                    <label class="panel-campo">
+                        <span>Características (una por línea)</span>
+                        <textarea id="p-caracteristicas" rows="5"></textarea>
+                    </label>
+                    <label class="panel-campo">
+                        <span>Especificaciones (una por línea)</span>
+                        <textarea id="p-especificaciones" rows="5"></textarea>
+                    </label>
+                </div>
+
+                <fieldset class="panel-grupo">
+                    <legend>Oferta</legend>
+                    <label class="panel-casilla">
+                        <input type="checkbox" id="p-oferta-activa">
+                        <span>Mostrar este producto en ofertas</span>
+                    </label>
+                    <label class="panel-campo panel-campo-corto">
+                        <span>Descuento (%)</span>
+                        <input type="number" id="p-oferta-descuento" min="0" max="95" step="1">
+                    </label>
+                </fieldset>
+
+                <fieldset class="panel-grupo solo-admin" id="grupo-imagenes">
+                    <legend>Imágenes</legend>
+                    <p class="panel-nota">La primera imagen de la lista es la principal de la tarjeta.</p>
+                    <div class="panel-imagenes" id="lista-imagenes"></div>
+                    <div class="panel-agregar-imagen">
+                        <label class="panel-campo">
+                            <span>Añadir por ruta o URL</span>
+                            <input type="text" id="nueva-imagen-url" placeholder="imagenes/producto/foto.webp">
+                        </label>
+                        <button class="panel-boton panel-boton-secundario" id="agregar-imagen-url" type="button">Añadir</button>
+                    </div>
+                    <label class="panel-campo">
+                        <span>Subir desde el equipo</span>
+                        <input type="file" id="nueva-imagen-archivo" accept="image/*">
+                    </label>
+                </fieldset>
+
+                <p class="panel-nota solo-admin" id="nota-editor-admin">Los cambios se publican al guardar.</p>
+                <p class="panel-nota solo-gerente" id="nota-editor-gerente">
+                    Tu cambio se enviará como solicitud. El administrador debe aprobarlo antes de publicarse.
+                </p>
+                <p class="panel-mensaje" id="mensaje-editor" role="alert"></p>
+            </div>
+
+            <footer class="panel-modal-pie">
+                <button class="panel-boton panel-boton-secundario" id="cancelar-editor" type="button">Cancelar</button>
+                <button class="panel-boton" id="guardar-producto" type="submit">Guardar cambios</button>
+            </footer>
+        </form>
+    </dialog>
+
+    <datalist id="categorias-conocidas">
+        <option value="Juegos"></option>
+        <option value="Desarrollo"></option>
+        <option value="Uso Diario"></option>
+        <option value="Mouse"></option>
+        <option value="Teclado"></option>
+        <option value="Monitor"></option>
+        <option value="Audio"></option>
+        <option value="Almacenamiento"></option>
+    </datalist>
+
+    <div class="panel-aviso" id="panel-aviso" role="status" aria-live="polite" hidden></div>
+
+    <script src="js/catalogo-local.js?v=4"></script>
+    <script src="js/tienda-datos.js?v=1"></script>
+    <script src="js/panel.js?v=1"></script>
+</body>
+</html>

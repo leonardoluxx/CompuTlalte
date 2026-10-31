@@ -8,8 +8,7 @@ const formatoMoneda = new Intl.NumberFormat("es-MX", {
     maximumFractionDigits: 0
 });
 
-// Margen con el que la tienda calcula el precio de lista.
-const margenGanancia = 0.35;
+// El precio de cada línea ya viene calculado desde la tienda y su panel.
 
 // Catálogo local: sirve para recuperar especificaciones e imágenes si una
 // línea del carrito se guardó antes de este rediseño.

@@ -8,7 +8,7 @@
     <title>Iniciar sesión | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-login.css?v=3">
+    <link rel="stylesheet" href="css/style-login.css?v=4">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -23,8 +23,8 @@
         <div id="login">
             <!-- novalidate hace que los mensajes de error los muestre login.js y no el navegador -->
             <form id="formulario" novalidate>
-                <label for="correo">Correo</label>
-                <input type="email" id="correo" autocomplete="username" placeholder="tucorreo@ejemplo.com">
+                <label for="correo">Usuario o correo</label>
+                <input type="text" id="correo" autocomplete="username" placeholder="admin, gerente, usuario o tu correo" autocapitalize="none" spellcheck="false">
 
                 <label for="clave">Contraseña</label>
                 <div class="campo-clave">
@@ -40,8 +40,20 @@
             <!-- Cambia registro.html por el nombre de tu página de registro -->
             <p id="registro">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
         </div>
+
+        <!-- Accesos de prueba mientras no existe un servidor de cuentas. -->
+        <aside class="credenciales-prueba" aria-label="Credenciales de prueba">
+            <p class="titulo-credenciales">Accesos de prueba</p>
+            <ul>
+                <li><span>Administrador</span><code>admin / admin</code></li>
+                <li><span>Gerente</span><code>gerente / gerente</code></li>
+                <li><span>Cliente</span><code>usuario / usuario</code></li>
+            </ul>
+            <p class="nota-credenciales">El administrador y el gerente entran al panel de control. El cliente compra como siempre.</p>
+        </aside>
     </div>
 
-    <script src="js/scripts-login.js"></script>
+    <script src="js/tienda-datos.js?v=1"></script>
+    <script src="js/scripts-login.js?v=2"></script>
 </body>
 </html>
