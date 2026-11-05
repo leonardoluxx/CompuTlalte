@@ -1,0 +1,85 @@
+/* =========================================================
+   tokens.css — Sistema de diseño de Computlalte
+   ---------------------------------------------------------
+   Fuente única de verdad para espaciado, sombras, vidrio
+   (glassmorphism) y movimiento. Debe cargarse ANTES de la
+   hoja de estilos de cada página, para que esas hojas puedan
+   consumir las variables y todo el sitio respire igual.
+   100% local: no hay fuentes ni recursos externos.
+   ========================================================= */
+
+:root {
+    /* ---------- Color de apoyo ----------
+       La paleta base vive en cada hoja (styles.css, style-login.css);
+       aquí solo se definen los tonos compartidos que faltaban. */
+    --color-acento: #ff0033;
+    --color-acento-suave: rgb(255 0 51 / 14%);
+    --color-exito: #70d6a2;
+    --color-aviso: #ffb020;
+
+    /* ---------- Escala de espaciado (base de 4 px) ----------
+       Usar estos pasos en márgenes y rellenos mantiene el ritmo
+       vertical del sitio sin números arbitrarios sueltos. */
+    --espacio-1: 4px;
+    --espacio-2: 8px;
+    --espacio-3: 12px;
+    --espacio-4: 16px;
+    --espacio-5: 24px;
+    --espacio-6: 32px;
+    --espacio-7: 48px;
+    --espacio-8: 64px;
+    --espacio-9: 96px;
+
+    /* ---------- Escala de radios ---------- */
+    --radio-mini: 4px;
+    --radio-chico: 8px;
+    --radio-medio: 14px;
+    --radio-grande: 22px;
+    --radio-perla: 999px;
+
+    /* ---------- Escala de sombras ----------
+       Tres niveles de elevación (más alto = más cerca del usuario)
+       y una sombra teñida del acento para momentos destacados. */
+    --sombra-1: 0 2px 10px rgb(0 0 0 / 35%);
+    --sombra-2: 0 10px 30px rgb(0 0 0 / 42%);
+    --sombra-3: 0 24px 64px rgb(0 0 0 / 55%);
+    --sombra-acento: 0 10px 34px rgb(255 0 51 / 28%);
+
+    /* ---------- Vidrio (glassmorphism) ----------
+       Fondo translúcido + desenfoque de lo que queda detrás y un
+       borde de 1 px casi blanco que simula el canto del vidrio. */
+    --vidrio-fondo: rgb(17 17 17 / 62%);      /* paneles y tarjetas */
+    --vidrio-forte: rgb(15 15 15 / 84%);      /* variante opaca: modales y lecturas largas */
+    --vidrio-borde: rgb(255 255 255 / 9%);    /* canto exterior sutil */
+    --vidrio-brillo: rgb(255 255 255 / 16%);  /* línea de luz superior */
+    --vidrio-resalte: rgb(255 255 255 / 6%);  /* fondo al pasar el cursor */
+    --vidrio-desenfoque: blur(16px) saturate(140%);
+
+    /* ---------- Movimiento ----------
+       Duraciones y curvas compartidas para que todas las
+       animaciones del sitio respiren al mismo ritmo. */
+    --duracion-instante: 140ms;
+    --duracion-rapida: 260ms;
+    --duracion-media: 420ms;
+    --duracion-lenta: 720ms;
+    --curva-suave: cubic-bezier(0.22, 1, 0.36, 1);
+    --curva-rebote: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Panel de vidrio reutilizable: encabezado, tarjetas, modales y
+   la tarjeta de acceso lo aplican para compartir el material. */
+.panel-vidrio {
+    background: var(--vidrio-fondo);
+    -webkit-backdrop-filter: var(--vidrio-desenfoque);
+    backdrop-filter: var(--vidrio-desenfoque);
+    border: 1px solid var(--vidrio-borde);
+    box-shadow: var(--sombra-2);
+}
+
+/* Si el navegador no soporta backdrop-filter, el vidrio se vuelve
+   sólido: pierde el efecto pero conserva el contraste del texto. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .panel-vidrio {
+        background: #141414;
+    }
+}

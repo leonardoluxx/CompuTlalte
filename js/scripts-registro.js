@@ -1,3 +1,6 @@
+// Registro de cuentas nuevas. Los datos se guardan ahora en la base de
+// datos MySQL a través de api/registro.php; el servidor valida de nuevo
+// todo y hashea la contraseña con password_hash.
 const formularioEl = document.getElementById("formulario");
 const nombreEl     = document.getElementById("nombre");
 const correoEl     = document.getElementById("correo");
@@ -6,6 +9,7 @@ const claveEl      = document.getElementById("clave");
 const clave2El     = document.getElementById("clave2");
 const mensajeEl    = document.getElementById("mensaje");
 const verClaveEl   = document.getElementById("ver-clave");
+const botonCrear   = document.getElementById("entrar");
 const metodosPago  = [...document.querySelectorAll('input[name="metodo-pago"]')];
 
 // Muestra u oculta las dos contraseñas a la vez
@@ -20,10 +24,12 @@ verClaveEl.addEventListener("click", function () {
 // Muestra el error y manda el cursor al campo que hay que corregir
 function mostrarError(texto, campo) {
     mensajeEl.textContent = texto;
-    campo.focus();
+    if (campo) {
+        campo.focus();
+    }
 }
 
-formularioEl.addEventListener("submit", function (evento) {
+formularioEl.addEventListener("submit", async function (evento) {
     evento.preventDefault();
 
     const nombre = nombreEl.value.trim();
@@ -64,45 +70,42 @@ formularioEl.addEventListener("submit", function (evento) {
     }
 
     mensajeEl.textContent = "";
+    botonCrear.disabled = true;
 
-    const CLAVE_USUARIOS = "usuarios";
-    let usuarios = [];
-
+    let respuesta;
     try {
-        const guardados = localStorage.getItem(CLAVE_USUARIOS);
-        if (guardados) {
-            usuarios = JSON.parse(guardados);
-        }
+        respuesta = await fetch("api/registro.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                nombre: nombre,
+                email: correo,
+                direccion: direccion,
+                password: clave,
+                metodoPago: metodoPago
+            })
+        });
     } catch (error) {
-        usuarios = [];
-    }
-
-    const existe = usuarios.some((usuario) => usuario.correo.toLowerCase() === correo.toLowerCase());
-
-    if (existe) {
-        mostrarError("Este correo ya está registrado.", correoEl);
+        botonCrear.disabled = false;
+        mostrarError("No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.", null);
         return;
     }
 
-    usuarios.push({
-        nombre: nombre,
-        correo: correo,
-        direccion: direccion,
-        clave: clave,
-        metodoPago: metodoPago,
-        // El registro de la tienda solo crea clientes; los roles se asignan en el panel.
-        rol: "cliente"
-    });
+    botonCrear.disabled = false;
 
-    localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
-
-    // Recuerda la preferencia para que el checkout la preseleccione.
-    if (metodoPago) {
-        localStorage.setItem("metodoPagoPreferido", metodoPago);
-    } else {
-        localStorage.removeItem("metodoPagoPreferido");
+    let resultado;
+    try {
+        resultado = await respuesta.json();
+    } catch (error) {
+        mostrarError("Respuesta inválida del servidor.", null);
+        return;
     }
 
-    alert("Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
+    if (!respuesta.ok || !resultado.ok) {
+        mostrarError(resultado.mensaje || "No se pudo crear la cuenta.", correoEl);
+        return;
+    }
+
+    alert(resultado.mensaje || "Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
     window.location.href = "login.html";
 });

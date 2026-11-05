@@ -1213,3 +1213,176 @@ body.rol-admin .solo-gerente {
         animation: none;
     }
 }
+
+/* ---------- Reportes de ventas (vista Resumen, solo admin) ---------- */
+
+/* Cuatro cifras en fila, más compactas que las del encabezado. */
+.panel-estadisticas-reportes {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 16px;
+}
+
+.panel-columnas-reportes {
+    margin-top: 18px;
+    align-items: start;
+}
+
+.panel-subtitulo-reportes {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-family: var(--fuente-interfaz, sans-serif);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+    .panel-estadisticas-reportes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   BLINDAJE ANTI-DESBORDES (auditoría de UI)
+   Ningún texto se sale de su recuadro, en ninguna vista ni
+   en ninguna pantalla: las palabras largas (nombres, URLs)
+   se parten en lugar de empujar el diseño.
+   ========================================================= */
+
+/* Contenedores: nunca más anchos que su padre. */
+.panel-contenido,
+.panel-vista,
+.panel-tarjeta,
+.panel-solicitud,
+.panel-modal-caja,
+.panel-filtros,
+.panel-ficha-datos {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Las vistas y tarjetas recortan cualquier exceso horizontal. */
+.panel-vista,
+.panel-tarjeta,
+.panel-modal-cuerpo {
+    overflow-x: hidden;
+}
+
+/* Texto corrido: las palabras largas se parten. */
+.panel-vista,
+.panel-tarjeta,
+.panel-diff dd,
+.panel-nota,
+.panel-texto,
+.panel-subtexto,
+.panel-ejemplo,
+.panel-mensaje {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Tablas: celdas que parten el texto (la envoltura sigue permitiendo
+   scroll horizontal en pantallas muy chicas, pero el texto ya no empuja). */
+.panel-tabla th,
+.panel-tabla td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.panel-tabla th {
+    white-space: normal;
+}
+
+/* La columna del producto/cuenta manda en el ancho; el resto se reparte. */
+.panel-tabla th:first-child,
+.panel-tabla td:first-child {
+    width: 38%;
+}
+
+/* Listas compactas: el texto fluye y las acciones no se aplastan. */
+.panel-lista-item > * {
+    min-width: 0;
+}
+
+.panel-lista-texto {
+    flex: 1 1 auto;
+}
+
+.panel-lista-texto strong,
+.panel-lista-texto small,
+.panel-ficha-datos strong,
+.panel-ficha-datos small {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-overflow: clip;
+}
+
+/* Encabezados flexibles: se apilan cuando no caben en una línea. */
+.panel-encabezado,
+.panel-solicitud-cabecera,
+.panel-modal-cabecera {
+    flex-wrap: wrap;
+}
+
+.panel-solicitud-cabecera h2 {
+    overflow-wrap: anywhere;
+}
+
+/* Galería del editor: las miniaturas nunca desbordan su marco. */
+.panel-imagen img {
+    max-width: 100%;
+}
+
+/* El modal siempre respeta el ancho de la ventana. */
+.panel-modal {
+    max-width: calc(100vw - 24px);
+}
+
+/* ---------- Vista previa de la imagen de inicio (Ajustes) ---------- */
+
+.panel-hero-preview {
+    margin: 14px 0;
+}
+
+.panel-hero-preview img {
+    display: block;
+    width: min(100%, 420px);
+    aspect-ratio: 16 / 7;
+    object-fit: cover;
+    background: #0d0d0d;
+    border: 1px solid var(--color-linea, #2b2b2b);
+    border-radius: 10px;
+}
+
+/* ---------- Bitácora: rutas largas siempre dentro de su caja ---------- */
+
+/* El detalle (rutas de imágenes, nombres largos) se parte en varias
+   líneas; la insignia de la derecha no se encoge ni desborda. */
+.panel-lista-texto strong,
+.panel-lista-texto small {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.panel-lista-item .panel-insignia {
+    flex: 0 0 auto;
+    max-width: 42%;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    text-align: right;
+}
+
+/* Cabecera de tarjeta con acción a la derecha (ej. Limpiar bitácora). */
+.panel-tarjeta-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.panel-tarjeta-cabecera h2 {
+    margin: 0;
+}

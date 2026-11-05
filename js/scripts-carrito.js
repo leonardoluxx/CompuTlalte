@@ -12,7 +12,9 @@ const formatoMoneda = new Intl.NumberFormat("es-MX", {
 
 // Catálogo local: sirve para recuperar especificaciones e imágenes si una
 // línea del carrito se guardó antes de este rediseño.
-const catalogo = Array.isArray(window.catalogoLocal) ? window.catalogoLocal : [];
+// El catálogo vive en MySQL: api/bootstrap.php lo entrega en window.DatosBD
+// y el núcleo (tienda-datos.js) lo expone sincrónicamente.
+const catalogo = window.Tienda ? Tienda.productos({ incluirEliminados: true }) : [];
 
 // Mejoras disponibles, en el mismo orden que el detalle de la tienda.
 const GRUPOS_MEJORA = [

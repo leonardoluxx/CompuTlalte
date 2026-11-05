@@ -94,11 +94,15 @@ button { color: inherit; font: inherit; }
 
 /* Encabezado */
 .encabezado-sitio {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 20;
     height: var(--alto-encabezado);
-    background: var(--color-barra);
-    border-bottom: 1px solid #303030;
+    background: var(--vidrio-fondo, rgb(17 17 17 / 72%));
+    -webkit-backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    border-bottom: 1px solid var(--vidrio-borde, #303030);
+    box-shadow: var(--sombra-1, 0 2px 10px rgb(0 0 0 / 35%));
 }
 
 .barra-navegacion {
@@ -267,6 +271,31 @@ button { color: inherit; font: inherit; }
     transition: var(--transicion-estandar);
 }
 
+.boton-carrito {
+    position: relative;
+}
+
+.indicador-carrito {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    display: grid;
+    min-width: 16px;
+    height: 16px;
+    place-items: center;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--color-acento);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.indicador-carrito[hidden] {
+    display: none;
+}
+
 .boton-icono:hover,
 .boton-icono:focus-visible {
     color: var(--color-acento);
@@ -292,7 +321,7 @@ button { color: inherit; font: inherit; }
     min-height: 75vh;
     align-items: center;
     background-color: #0a0a0a;
-    background-image: linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 8%)), url("../imagenes/anuncios/imagen-mouse-accesorios-add.jpg");
+    background-image: var(--fondo-banner-accesorios, linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 8%)), url("../imagenes/anuncios/imagen-mouse-accesorios-add.jpg"));
     background-position: center;
     background-size: cover;
     border-bottom: 3px solid #0c0c0c;
@@ -353,7 +382,7 @@ button { color: inherit; font: inherit; }
         align-items: flex-start;
         min-height: max(70vh, 36rem);
         min-height: max(70svh, 36rem);
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.68) 30%, rgba(0, 0, 0, 0.3) 48%, transparent 64%), url("../imagenes/anuncios/imagen-mouse-accesorios-add.jpg");
+        background-image: var(--fondo-banner-accesorios, linear-gradient(to bottom, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.68) 30%, rgba(0, 0, 0, 0.3) 48%, transparent 64%), url("../imagenes/anuncios/imagen-mouse-accesorios-add.jpg"));
         background-position: center center;
         background-size: auto, cover;
         background-repeat: no-repeat;

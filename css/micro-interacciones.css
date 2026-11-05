@@ -1,0 +1,85 @@
+/* =========================================================
+   micro-interacciones.css
+   ---------------------------------------------------------
+   1) Revelado al hacer scroll: las clases .revelar-scroll y
+      .revelada las coloca js/micro-interacciones.js. Sin
+      JavaScript ninguna clase existe y todo se ve normal:
+      el efecto es una mejora progresiva, nunca un requisito.
+   2) Shimmer: brillo que cruza los botones principales al
+      pasar el cursor o enfocarlos con el teclado.
+   ========================================================= */
+
+/* ---------- Revelado al hacer scroll ---------- */
+
+/* Estado inicial: un poco más abajo de su lugar y transparente.
+   La clase solo existe si JavaScript la puso. */
+.revelar-scroll {
+    opacity: 0;
+    transform: translateY(26px);
+}
+
+/* Estado revelado. La transición se declara aquí (estado
+   destino) para que el navegador la aplique justo cuando la
+   clase llega. El retardo escalonado llega en la variable
+   --retraso-revelado, calculada por el JS. */
+.revelar-scroll.revelada {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+        opacity var(--duracion-lenta, 0.7s) var(--curva-suave, ease),
+        transform var(--duracion-lenta, 0.7s) var(--curva-suave, ease);
+    transition-delay: var(--retraso-revelado, 0ms);
+    will-change: opacity, transform;
+}
+
+/* ---------- Shimmer en botones principales ---------- */
+
+/* El botón recorta el destello dentro de sus propios bordes y
+   crea un contexto propio para que el brillo no se mezcle con
+   capas vecinas. */
+.boton-brillante {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Franja diagonal de luz. Nace fuera del botón, a la izquierda,
+   inclinada para que el cruce se sienta dinámico. */
+.boton-brillante::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    left: 0;
+    width: 34%;
+    background: linear-gradient(100deg, transparent 0%, rgb(255 255 255 / 32%) 50%, transparent 100%);
+    transform: translateX(-140%) skewX(-18deg);
+    pointer-events: none;
+}
+
+/* Al pasar el cursor (o llegar con el teclado) la franja cruza
+   de un extremo al otro una sola vez; forwards la deja fuera,
+   ya recortada por el overflow del botón. */
+.boton-brillante:hover::after,
+.boton-brillante:focus-visible::after {
+    animation: barrer-brillo 0.9s var(--curva-suave, ease) forwards;
+}
+
+@keyframes barrer-brillo {
+    from { transform: translateX(-140%) skewX(-18deg); }
+    to   { transform: translateX(420%) skewX(-18deg); }
+}
+
+/* ---------- Movimiento reducido ----------
+   Nada de destellos ni desplazamientos: los elementos se ven
+   directamente en su estado final. */
+@media (prefers-reduced-motion: reduce) {
+    .revelar-scroll {
+        opacity: 1;
+        transform: none;
+    }
+
+    .boton-brillante::after {
+        display: none;
+    }
+}

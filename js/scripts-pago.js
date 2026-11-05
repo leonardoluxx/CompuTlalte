@@ -16,6 +16,7 @@ const montoEl = document.getElementById("monto");
 const listaResumenEl = document.getElementById("lista-resumen-pago");
 const subtotalEl = document.getElementById("subtotal-pago");
 const totalEl = document.getElementById("total-pago");
+const cuponEl = document.getElementById("cupon-pago");
 const selectorMetodosEl = document.getElementById("selector-metodos");
 const avisoMetodoEl = document.getElementById("aviso-metodo");
 const textoAvisoEl = document.getElementById("texto-aviso-metodo");
@@ -64,26 +65,12 @@ function calcularTotal(lista) {
     }, 0);
 }
 
-function obtenerUsuarios() {
-    try {
-        return JSON.parse(localStorage.getItem(CLAVE_USUARIOS)) || [];
-    } catch (error) {
-        return [];
-    }
-}
-
+// La sesión vive en el servidor; el núcleo la conoce vía bootstrap.php.
 function obtenerUsuarioActual() {
-    const correoSesion = localStorage.getItem("usuario");
-    if (!correoSesion) {
-        return null;
-    }
-
-    return obtenerUsuarios().find(function (usuario) {
-        return String(usuario.correo || "").toLowerCase() === correoSesion.toLowerCase();
-    }) || null;
+    return window.Tienda ? Tienda.sesion() : null;
 }
 
-// La cuenta manda; para invitados se usa la última preferencia guardada.
+// La cuenta manda; para invitados no hay preferencia previa.
 function obtenerMetodoGuardado() {
     const usuario = obtenerUsuarioActual();
 
@@ -93,31 +80,18 @@ function obtenerMetodoGuardado() {
             : "";
     }
 
-    const guardado = localStorage.getItem(CLAVE_METODO);
-    return ["transferencia", "tarjeta"].includes(guardado) ? guardado : "";
+    return "";
 }
 
-// Solo se guarda la preferencia, nunca el número ni el CVV de la tarjeta.
-function guardarMetodoPreferido(metodo) {
+// La tarjeta guardada vive solo en este navegador y NUNCA se envía al
+// servidor: se guarda únicamente la marca y los últimos 4 dígitos.
+const CLAVE_TARJETA = "computlalte-tarjeta-guardada";
+
+function guardarTarjetaLocal(email, tarjeta) {
     try {
-        localStorage.setItem(CLAVE_METODO, metodo);
+        localStorage.setItem(CLAVE_TARJETA + ":" + String(email || "").toLowerCase(), JSON.stringify(tarjeta));
     } catch (error) {
         // Si el navegador bloquea el almacenamiento, el pago continúa igual.
-    }
-
-    const usuario = obtenerUsuarioActual();
-    if (!usuario) {
-        return;
-    }
-
-    const usuarios = obtenerUsuarios();
-    const indice = usuarios.findIndex(function (registro) {
-        return String(registro.correo || "").toLowerCase() === String(usuario.correo).toLowerCase();
-    });
-
-    if (indice >= 0) {
-        usuarios[indice].metodoPago = metodo;
-        localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
     }
 }
 
@@ -250,18 +224,6 @@ function fechaTransferenciaValida(valor) {
     return fecha <= hoy;
 }
 
-function generarFolio() {
-    const ahora = new Date();
-    const fecha = [
-        ahora.getFullYear(),
-        String(ahora.getMonth() + 1).padStart(2, "0"),
-        String(ahora.getDate()).padStart(2, "0")
-    ].join("");
-    const aleatorio = Math.random().toString(36).slice(2, 6).toUpperCase();
-
-    return `CTL-${fecha}-${aleatorio}`;
-}
-
 // Identifica la marca solo para mostrarla en Mi cuenta; no valida la tarjeta.
 function detectarMarcaTarjeta(numero) {
     if (/^4/.test(numero)) {
@@ -276,7 +238,7 @@ function detectarMarcaTarjeta(numero) {
     return "Tarjeta";
 }
 
-// Guarda en la cuenta únicamente la marca y los últimos 4 dígitos.
+// Guarda en el navegador únicamente la marca y los últimos 4 dígitos.
 function guardarTarjetaEnCuenta(numero) {
     const usuario = obtenerUsuarioActual();
 
@@ -284,90 +246,67 @@ function guardarTarjetaEnCuenta(numero) {
         return;
     }
 
-    const usuarios = obtenerUsuarios();
-    const indice = usuarios.findIndex(function (registro) {
-        return String(registro.correo || "").toLowerCase() === String(usuario.correo).toLowerCase();
-    });
-
-    if (indice < 0) {
-        return;
-    }
-
-    usuarios[indice].tarjetaGuardada = {
+    guardarTarjetaLocal(usuario.email, {
         marca: detectarMarcaTarjeta(numero),
         ultimos4: numero.slice(-4),
         actualizado: new Date().toISOString()
-    };
-
-    try {
-        localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
-    } catch (error) {
-        // Si el navegador bloquea el almacenamiento, el pedido ya quedó registrado.
-    }
+    });
 }
 
-function guardarPedidoEnHistorial(pedido) {
-    try {
-        const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-        pedidos.unshift(pedido);
-        localStorage.setItem("pedidos", JSON.stringify(pedidos.slice(0, 40)));
-    } catch (error) {
-        // El historial local es opcional; el pedido ya se completó.
-    }
-}
-
-function finalizarPago(metodo, datosPago = {}) {
+async function finalizarPago(metodo, datosPago = {}) {
     const carritoFinal = obtenerCarrito();
-    const totalFinal = calcularTotal(carritoFinal);
 
     if (carritoFinal.length === 0) {
         mostrarAviso("Tu carrito está vacío. Agrega un producto para continuar.", true);
         return;
     }
 
-    guardarMetodoPreferido(metodo);
+    // El cupón se valida en la base de datos al procesar la venta.
+    const codigoCupon = cuponEl ? cuponEl.value.trim().toUpperCase() : "";
 
-    if (metodo === "tarjeta" && datosPago.numero) {
-        guardarTarjetaEnCuenta(datosPago.numero);
-    }
-
-    const usuario = obtenerUsuarioActual();
-    const folio = generarFolio();
-    const pedido = {
-        folio: folio,
-        metodo: metodo,
-        total: totalFinal,
-        fecha: new Date().toISOString(),
-        articulos: carritoFinal.reduce(function (total, producto) {
-            return total + (Number(producto.cantidad) || 0);
-        }, 0),
-        estado: metodo === "tarjeta" ? "Pagado" : "En revisión",
-        cliente: usuario ? usuario.correo : "",
-        detallePago: metodo === "transferencia"
-            ? {
-                banco: datosPago.banco || "",
-                referencia: datosPago.referencia || "",
-                fecha: datosPago.fecha || ""
-            }
-            : null,
-        productos: carritoFinal.map(function (producto) {
+    // La venta se registra en MySQL: el servidor recalcula todos los
+    // precios desde la base de datos y descuenta el stock.
+    const carga = {
+        metodoPago: metodo,
+        cupon: codigoCupon,
+        referencia: metodo === "transferencia"
+            ? [datosPago.banco, datosPago.referencia, datosPago.fecha].filter(Boolean).join(" · ")
+            : "",
+        items: carritoFinal.map(function (producto) {
             return {
-                nombre: producto.nombreBase || String(producto.nombre || "Producto").split(" — ")[0],
+                id: producto.id,
                 cantidad: Number(producto.cantidad) || 1,
-                precio: Number(producto.precio) || 0,
-                imagen: producto.imagen || ""
+                descripcion: producto.personalizacion || "",
+                opciones: (producto.opcionesPersonalizacion || []).map(function (opcion) {
+                    return { grupo: opcion.grupo, valor: opcion.valor };
+                })
             };
         })
     };
 
-    localStorage.removeItem(CLAVE_CARRITO);
-    guardarPedidoEnHistorial(pedido);
-
+    let resultado;
     try {
-        localStorage.setItem("ultimoPedido", JSON.stringify(pedido));
+        const respuesta = await fetch("api/procesar_venta.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(carga)
+        });
+        resultado = await respuesta.json();
     } catch (error) {
-        // El pedido ya se completó; el historial local es opcional.
+        mostrarAviso("No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.", false);
+        return;
     }
+
+    if (!resultado.ok) {
+        mostrarAviso(resultado.mensaje || "No se pudo registrar la venta.", false);
+        return;
+    }
+
+    const totalFinal = Number(resultado.total) || 0;
+    const folio = resultado.folio;
+
+    // La venta ya vive en la base de datos: el carrito local se vacía.
+    localStorage.removeItem(CLAVE_CARRITO);
 
     formularioTarjetaEl.reset();
     encabezadoPagoEl.hidden = true;
@@ -379,9 +318,16 @@ function finalizarPago(metodo, datosPago = {}) {
         ? "Tarjeta de crédito o débito"
         : "Transferencia bancaria";
     totalExitoEl.textContent = formatoMoneda.format(totalFinal);
-    mensajeExitoEl.textContent = metodo === "tarjeta"
-        ? "Tu pago se procesó correctamente y tu pedido quedó confirmado. Puedes consultarlo en Mis pedidos."
-        : "Recibimos los datos de tu transferencia. Tu pedido quedará en revisión hasta que confirmemos el pago.";
+
+    if (resultado.cupon) {
+        mensajeExitoEl.textContent = metodo === "tarjeta"
+            ? `Tu pago se procesó correctamente con el cupón ${resultado.cupon}. Tu pedido quedó confirmado y puedes consultarlo en Mis pedidos.`
+            : `Recibimos los datos de tu transferencia con el cupón ${resultado.cupon}. Tu pedido quedará en revisión hasta que confirmemos el pago.`;
+    } else {
+        mensajeExitoEl.textContent = metodo === "tarjeta"
+            ? "Tu pago se procesó correctamente y tu pedido quedó confirmado. Puedes consultarlo en Mis pedidos."
+            : "Recibimos los datos de tu transferencia. Tu pedido quedará en revisión hasta que confirmemos el pago.";
+    }
 
     tituloExitoEl.tabIndex = -1;
     tituloExitoEl.focus({ preventScroll: true });

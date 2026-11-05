@@ -15,8 +15,12 @@
     <link rel="preload" as="image" href="imagenes/anuncios/imagen-procesador-add.jpg" fetchpriority="high">
     <!-- Tipografías incrustadas para que el diseño se vea igual sin conexión. -->
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/styles.css?v=7">
-    <link rel="stylesheet" href="css/mega-menu.css?v=4">
+    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/styles.css?v=8">
+    <link rel="stylesheet" href="css/hero-cinematico.css?v=3">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=1">
+    <link rel="stylesheet" href="css/editor-visual.css?v=2">
+    <link rel="stylesheet" href="css/mega-menu.css?v=5">
 </head>
 <body>
     <!-- Encabezado de navegación para las versiones de escritorio y móvil. -->
@@ -55,7 +59,7 @@
                                 <span class="mega-etiqueta">Uso Diario</span>
                             </a>
                         </div>
-                        <a class="mega-ver-todo" href="#catalogo">
+                        <a class="mega-ver-todo boton-brillante" href="#catalogo">
                             Ver catálogo de computadoras
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
                         </a>
@@ -80,24 +84,32 @@
                 <a class="boton-icono" href="cuenta.html" aria-label="Mi cuenta">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
                 </a>
-                <a class="boton-icono" href="carrito.html" aria-label="Carrito de compras">
+                <a class="boton-icono boton-carrito" href="carrito.html" aria-label="Carrito de compras">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 11.1a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+                    <span class="indicador-carrito" aria-hidden="true" hidden></span>
                 </a>
             </div>
         </nav>
     </header>
 
-    <!-- Anuncio principal debajo de la barra de navegación. -->
-    <section class="seccion-anuncio">
-        <div class="contenido-anuncio">
-            <h1>Snapdragon 8 Elite Gen 6</h1>
-            <p class="subtitulo">El futuro de la potencia móvil en tus manos.</p>
-            <p class="descripcion">Experimenta un salto generacional en rendimiento y eficiencia energética. Diseñado para los desafíos más extremos.</p>
-            <a href="#catalogo" class="boton-comprar">Comprar ahora</a>
+    <!-- Portada cinematográfica: gradiente en movimiento sobre la
+         fotografía del procesador. Ver css/hero-cinematico.css. -->
+    <section class="seccion-anuncio" id="heroe">
+        <!-- Capa decorativa: dos orbes de luz que derivan lentamente. -->
+        <div class="escenario-heroe" aria-hidden="true"></div>
+
+        <div class="contenido-heroe">
+            <div class="texto-heroe">
+                <h1 class="titulo-heroe">Snapdragon 8 Elite Gen 6</h1>
+
+                <p class="subtitulo">El futuro de la potencia móvil en tus manos.</p>
+                <p class="descripcion">Experimenta un salto generacional en rendimiento y eficiencia energética. Diseñado para los desafíos más extremos.</p>
+                <a href="#catalogo" class="boton-comprar boton-brillante">Comprar ahora</a>
+            </div>
         </div>
     </section>
 
-    <section class="titulo-categoria" id="computadoras">
+    <section class="titulo-categoria" id="computadoras" data-revelar>
         <h2>Computadoras <span class="texto-rojo">de alto rendimiento</span></h2>
         <p class="descripcion-categoria">Equipos pensados para jugar, crear y trabajar. Filtra por categoría, disponibilidad y precio para encontrar el tuyo.</p>
     </section>
@@ -305,7 +317,7 @@
                     </div>
                 </section>
 
-                <button class="boton-comprar-modal" id="comprar-producto" type="button">Comprar ahora</button>
+                <button class="boton-comprar-modal boton-brillante" id="comprar-producto" type="button">Comprar ahora</button>
                 <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
             </section>
         </div>
@@ -397,11 +409,17 @@
         </div>
     </footer>
 
-    <!-- Catálogo de productos de la tienda. -->
-    <script src="js/catalogo-local.js?v=4" defer></script>
-    <!-- Catálogo editable, precios con margen, ofertas y roles. -->
-    <script src="js/tienda-datos.js?v=1" defer></script>
+    <!-- Catálogo servido desde MySQL: api/bootstrap.php consulta la base y
+         entrega los datos como JavaScript antes del núcleo de la tienda. -->
+    <script src="api/bootstrap.php?v=1"></script>
+    <!-- Núcleo de la tienda: consume window.DatosBD y habla con la API. -->
+    <script src="js/tienda-datos.js?v=4" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
     <script src="js/script.js?v=13" defer></script>
+    <script src="js/contador-carrito.js?v=1" defer></script>
+    <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
+    <script src="js/micro-interacciones.js?v=1" defer></script>
+    <!-- Lápices de edición visual (solo administrador). -->
+    <script src="js/editor-visual.js?v=2" defer></script>
 </body>
 </html>

@@ -20,6 +20,9 @@
     --fuente-lectura: 'Chakra Petch', sans-serif;
     --alto-encabezado: 70px;
     --transicion-estandar: color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    /* Imagen de la portada: el administrador la cambia desde el panel
+       (tabla configuracion) y el núcleo la aplica con esta variable. */
+    --imagen-anuncio: url("../imagenes/anuncios/imagen-procesador-add.jpg");
     --texto-logotipo: 18px;
     --texto-enlace-navegacion: 17px;
     --texto-opcion-desplegable: 14px;
@@ -76,13 +79,18 @@ button {
     font: inherit;
 }
 
-/* Barra superior oscura, separada del resto por un borde discreto. */
+/* Barra superior fija con acabado de vidrio: permanece visible al
+   hacer scroll y desenfoca lo que pasa por debajo. */
 .encabezado-sitio {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 20;
     height: var(--alto-encabezado);
-    background: var(--color-barra);
-    border-bottom: 1px solid #303030;
+    background: var(--vidrio-fondo, rgb(17 17 17 / 72%));
+    -webkit-backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    border-bottom: 1px solid var(--vidrio-borde, #303030);
+    box-shadow: var(--sombra-1, 0 2px 10px rgb(0 0 0 / 35%));
 }
 
 /* Grid organiza logotipo, enlaces centrales e iconos en tres columnas. */
@@ -273,6 +281,31 @@ button {
     transition: var(--transicion-estandar);
 }
 
+.boton-carrito {
+    position: relative;
+}
+
+.indicador-carrito {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    display: grid;
+    min-width: 16px;
+    height: 16px;
+    place-items: center;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--color-acento);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.indicador-carrito[hidden] {
+    display: none;
+}
+
 .boton-icono:hover,
 .boton-icono:focus-visible {
     color: var(--color-acento);
@@ -302,16 +335,23 @@ button {
     min-height: 75vh;
     align-items: center;
     background-color: #0a0a0a;
-    background-image: linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 8%)), url("../imagenes/anuncios/imagen-procesador-add.jpg");
+    background-image: linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 8%)), var(--imagen-anuncio);
     background-position: center;
     background-size: cover;
     border-bottom: 3px solid #0c0c0c;
 }
 
-/* Encabezado centrado para presentar la futura cuadrícula de productos. */
+/* Encabezado centrado para presentar la futura cuadrícula de productos.
+   Con la barra ahora fija, el ancla aterriza debajo de ella. Si el
+   administrador configura una imagen para esta sección, se muestra como
+   un banner oscuro detrás del título (variable aplicada por la tienda). */
 .titulo-categoria {
+    position: relative;
     padding: 60px 20px;
-    background: var(--color-fondo);
+    background: var(--fondo-seccion-computadoras, var(--color-fondo));
+    background-size: cover;
+    background-position: center;
+    scroll-margin-top: calc(var(--alto-encabezado) + 16px);
     text-align: center;
 }
 
@@ -387,9 +427,10 @@ button {
     align-items: center;
     gap: 16px;
     padding: 12px 16px;
-    background: #111111;
-    border: 1px solid #2b2b2b;
-    border-radius: 6px;
+    background: var(--vidrio-forte, #111111);
+    border: 1px solid var(--vidrio-borde, #2b2b2b);
+    border-radius: var(--radio-chico, 6px);
+    box-shadow: var(--sombra-1, none);
 }
 
 .boton-alternar-filtros {
@@ -457,13 +498,15 @@ button {
 
 .panel-filtros {
     position: sticky;
-    top: 24px;
+    /* Debajo de la barra fija: así el panel nunca queda tapado. */
+    top: calc(var(--alto-encabezado) + 16px);
     grid-area: filtros;
     align-self: start;
     padding: 24px;
-    background: #111111;
-    border: 1px solid #2b2b2b;
-    border-radius: 6px;
+    background: var(--vidrio-forte, #111111);
+    border: 1px solid var(--vidrio-borde, #2b2b2b);
+    border-radius: var(--radio-chico, 6px);
+    box-shadow: var(--sombra-1, none);
 }
 
 .grupo-filtros {
@@ -687,9 +730,10 @@ button {
     }
 }
 
-/* Cada gama de computadoras ocupa el ancho del catálogo. */
+/* Cada gama de computadoras ocupa el ancho del catálogo. Con la
+   barra fija, el ancla aterriza debajo de ella y no tapada. */
 .seccion-gama {
-    scroll-margin-top: 24px;
+    scroll-margin-top: calc(var(--alto-encabezado) + 16px);
 }
 
 .seccion-gama[hidden] {
@@ -782,17 +826,23 @@ button {
     gap: 24px;
 }
 
+/* Tarjeta con material de vidrio: fondo translúcido, canto sutil y
+   sombra que crece al pasar el cursor. Sin backdrop-filter a propósito:
+   sobre el fondo plano el desenfoque no se percibe y encarecería el
+   render de muchas tarjetas a la vez. */
 .tarjeta-producto {
     overflow: hidden;
-    background: #111111;
-    border: 1px solid #2b2b2b;
-    border-radius: 4px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    background: var(--vidrio-forte, #111111);
+    border: 1px solid var(--vidrio-borde, #2b2b2b);
+    border-radius: var(--radio-medio, 4px);
+    box-shadow: var(--sombra-1, none);
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .tarjeta-producto:hover,
 .tarjeta-producto:focus-within {
     border-color: rgb(255 0 51 / 55%);
+    box-shadow: var(--sombra-2, none);
     transform: translateY(-3px);
 }
 
@@ -955,7 +1005,9 @@ button {
     transform: translateX(3px);
 }
 
-/* El diálogo usa dos columnas y bloquea el fondo de forma nativa. */
+/* El diálogo usa dos columnas y bloquea el fondo de forma nativa.
+   Material de vidrio más opaco (--vidrio-forte) para que el texto
+   del detalle siga siendo cómodo de leer. */
 .modal-producto {
     width: min(1120px, calc(100% - 36px));
     max-width: none;
@@ -963,15 +1015,19 @@ button {
     margin: auto;
     padding: 0;
     overflow: auto;
-    background: #111111;
-    border: 1px solid #343434;
-    border-radius: 6px;
+    background: var(--vidrio-forte, #111111);
+    -webkit-backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    border: 1px solid var(--vidrio-borde, #343434);
+    border-radius: var(--radio-grande, 6px);
+    box-shadow: var(--sombra-3, 0 24px 64px rgb(0 0 0 / 55%));
     color: #f5f5f5;
 }
 
 .modal-producto::backdrop {
     background: rgb(0 0 0 / 82%);
-    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
 }
 
 .contenido-modal-producto {
@@ -1491,15 +1547,19 @@ button {
     margin: auto;
     padding: 0;
     overflow: hidden;
-    background: #111111;
-    border: 1px solid #343434;
-    border-radius: 6px;
+    background: var(--vidrio-forte, #111111);
+    -webkit-backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    backdrop-filter: var(--vidrio-desenfoque, blur(16px));
+    border: 1px solid var(--vidrio-borde, #343434);
+    border-radius: var(--radio-grande, 6px);
+    box-shadow: var(--sombra-3, 0 24px 64px rgb(0 0 0 / 55%));
     color: var(--color-texto);
 }
 
 .modal-busqueda::backdrop {
     background: rgb(0 0 0 / 78%);
-    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
 }
 
 .contenido-busqueda {
@@ -1725,22 +1785,8 @@ button {
 }
 
 
-/* El margen posiciona el bloque a la izquierda sin limitar la imagen de fondo. */
-.contenido-anuncio {
-    width: min(50%, 680px);
-    margin-left: 5%;
-    padding: 48px 0;
-}
-
-.contenido-anuncio h1 {
-    margin: 0 0 20px;
-    color: #ffffff;
-    font-family: var(--fuente-titulos);
-    font-size: 4rem;
-    font-weight: 850;
-    letter-spacing: 0.03em;
-    line-height: 1.05;
-}
+/* El contenido del anuncio (titular, subtítulo, descripción y
+   tarjeta flotante) vive ahora en css/hero-cinematico.css. */
 
 /* Mantiene el mismo carácter visual en los encabezados de todas las secciones. */
 h2,
@@ -1748,21 +1794,7 @@ h3 {
     font-family: var(--fuente-titulos);
 }
 
-.subtitulo {
-    margin: 0 0 14px;
-    color: #ffffff;
-    font-family: var(--fuente-interfaz);
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-
-.descripcion {
-    max-width: 560px;
-    margin: 0 0 30px;
-    color: #e2e2e2;
-    font-size: 1rem;
-    line-height: 1.7;
-}
+/* .subtitulo y .descripcion del héroe se estilan en hero-cinematico.css. */
 
 .boton-comprar {
     display: inline-block;
@@ -1931,39 +1963,10 @@ h3 {
         align-items: flex-start;
         min-height: max(70vh, 36rem);
         min-height: max(70svh, 36rem);
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.68) 30%, rgba(0, 0, 0, 0.3) 48%, transparent 64%), url("../imagenes/anuncios/imagen-procesador-add.jpg");
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.68) 30%, rgba(0, 0, 0, 0.3) 48%, transparent 64%), var(--imagen-anuncio);
         background-position: center center;
         background-size: auto, cover;
         background-repeat: no-repeat;
-    }
-
-    .contenido-anuncio {
-        width: min(90%, 560px);
-        margin-left: 0;
-        padding: 28px 0 36px;
-        text-align: center;
-    }
-
-    .contenido-anuncio h1 {
-        margin-bottom: 12px;
-        font-size: 2rem;
-        text-shadow: 2px 2px 8px rgb(0 0 0 / 90%);
-    }
-
-    .contenido-anuncio p {
-        text-shadow: 2px 2px 8px rgb(0 0 0 / 90%);
-    }
-
-    .subtitulo {
-        margin-bottom: 8px;
-        font-size: 1.125rem;
-    }
-
-    .descripcion {
-        margin-bottom: 20px;
-        margin-right: auto;
-        margin-left: auto;
-        line-height: 1.5;
     }
 
     .titulo-categoria {

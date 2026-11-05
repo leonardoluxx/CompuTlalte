@@ -92,11 +92,48 @@
                         <h2>Pendientes de aprobación</h2>
                         <div id="resumen-pendientes" class="panel-lista-compacta"></div>
                     </section>
-                    <section class="panel-tarjeta">
+                <section class="panel-tarjeta">
+                    <div class="panel-tarjeta-cabecera">
                         <h2>Últimos movimientos</h2>
-                        <div id="lista-bitacora" class="panel-lista-compacta"></div>
-                    </section>
+                        <button class="panel-boton panel-boton-mini panel-boton-secundario solo-admin" id="limpiar-bitacora" type="button">Limpiar bitácora</button>
+                    </div>
+                    <div id="lista-bitacora" class="panel-lista-compacta"></div>
+                </section>
                 </div>
+
+                <!-- Reportes de ventas: exclusivos del administrador. -->
+                <section class="panel-tarjeta solo-admin">
+                    <h2>Reportes de ventas</h2>
+                    <div class="panel-estadisticas panel-estadisticas-reportes">
+                        <article class="panel-stat">
+                            <span>Ventas totales</span>
+                            <strong id="reporte-ventas">0</strong>
+                        </article>
+                        <article class="panel-stat">
+                            <span>Ventas de hoy</span>
+                            <strong id="reporte-ventas-hoy">0</strong>
+                        </article>
+                        <article class="panel-stat">
+                            <span>Ingresos totales</span>
+                            <strong id="reporte-ingresos">$0</strong>
+                        </article>
+                        <article class="panel-stat">
+                            <span>Ticket promedio</span>
+                            <strong id="reporte-ticket">$0</strong>
+                        </article>
+                    </div>
+
+                    <div class="panel-columnas panel-columnas-reportes">
+                        <div>
+                            <h3 class="panel-subtitulo-reportes">Más vendidos</h3>
+                            <div id="reporte-top" class="panel-lista-compacta"></div>
+                        </div>
+                        <div>
+                            <h3 class="panel-subtitulo-reportes">Stock bajo (2 o menos)</h3>
+                            <div id="reporte-stock" class="panel-lista-compacta"></div>
+                        </div>
+                    </div>
+                </section>
             </section>
 
             <!-- Catálogo editable. -->
@@ -237,15 +274,15 @@
 
                 <section class="panel-tarjeta">
                     <h2>Cuentas del sistema</h2>
-                    <p class="panel-texto">Las cuentas se guardan en este navegador. El registro de la tienda crea siempre clientes.</p>
+                    <p class="panel-texto">Las cuentas se guardan en este navegador. Como administrador puedes cambiar el rol de cualquier cuenta o eliminarla por completo (nunca la tuya ni la del último administrador que quede). El registro de la tienda crea siempre clientes.</p>
                     <div class="panel-tabla-envoltura">
                         <table class="panel-tabla">
                             <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">Usuario</th>
                                     <th scope="col">Correo</th>
                                     <th scope="col">Rol</th>
+                                    <th scope="col"><span class="panel-solo-lector">Acciones</span></th>
                                 </tr>
                             </thead>
                             <tbody id="lista-usuarios"></tbody>
@@ -297,6 +334,10 @@
                         <input type="number" id="p-costo" min="0" step="1">
                     </label>
                     <label class="panel-campo">
+                        <span>Stock (unidades)</span>
+                        <input type="number" id="p-stock" min="0" step="1">
+                    </label>
+                    <label class="panel-campo">
                         <span>Margen propio (%)</span>
                         <input type="number" id="p-margen" min="0" max="300" step="0.5" placeholder="Usar margen global">
                     </label>
@@ -305,6 +346,11 @@
                 <label class="panel-casilla">
                     <input type="checkbox" id="p-disponible">
                     <span>Producto disponible para comprar</span>
+                </label>
+
+                <label class="panel-casilla">
+                    <input type="checkbox" id="p-destacado">
+                    <span>Producto destacado (aparece primero en el catálogo)</span>
                 </label>
 
                 <label class="panel-campo panel-campo-ancho">
@@ -342,19 +388,28 @@
 
                 <fieldset class="panel-grupo solo-admin" id="grupo-imagenes">
                     <legend>Imágenes</legend>
-                    <p class="panel-nota">La primera imagen de la lista es la principal de la tarjeta.</p>
+                    <p class="panel-nota">
+                        La primera imagen de la lista es la principal de la tarjeta. Al subir desde el
+                        equipo, el archivo se guarda en la carpeta que elijas del proyecto y la base de
+                        datos registra su ruta local.
+                    </p>
                     <div class="panel-imagenes" id="lista-imagenes"></div>
                     <div class="panel-agregar-imagen">
                         <label class="panel-campo">
-                            <span>Añadir por ruta o URL</span>
-                            <input type="text" id="nueva-imagen-url" placeholder="imagenes/producto/foto.webp">
+                            <span>Carpeta de destino</span>
+                            <select id="carpeta-imagen">
+                                <option value="imagenes/computadoras-gaming">Computadoras para juegos</option>
+                                <option value="imagenes/computadoras-uso-diario">Computadoras de uso diario</option>
+                                <option value="imagenes/computadoras-desarrollo">Computadoras para desarrollo</option>
+                                <option value="imagenes/imagenes-accesorios">Accesorios</option>
+                                <option value="imagenes/anuncios">Anuncios y portada</option>
+                            </select>
                         </label>
-                        <button class="panel-boton panel-boton-secundario" id="agregar-imagen-url" type="button">Añadir</button>
+                        <label class="panel-campo">
+                            <span>Subir desde el equipo</span>
+                            <input type="file" id="nueva-imagen-archivo" accept="image/*">
+                        </label>
                     </div>
-                    <label class="panel-campo">
-                        <span>Subir desde el equipo</span>
-                        <input type="file" id="nueva-imagen-archivo" accept="image/*">
-                    </label>
                 </fieldset>
 
                 <p class="panel-nota solo-admin" id="nota-editor-admin">Los cambios se publican al guardar.</p>
@@ -384,8 +439,9 @@
 
     <div class="panel-aviso" id="panel-aviso" role="status" aria-live="polite" hidden></div>
 
-    <script src="js/catalogo-local.js?v=4"></script>
-    <script src="js/tienda-datos.js?v=1"></script>
-    <script src="js/panel.js?v=1"></script>
+    <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
+    <script src="api/bootstrap.php?v=1"></script>
+    <script src="js/tienda-datos.js?v=4"></script>
+    <script src="js/panel.js?v=2"></script>
 </body>
 </html>

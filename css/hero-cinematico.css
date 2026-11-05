@@ -1,0 +1,162 @@
+/* =========================================================
+   hero-cinematico.css — Portada cinematográfica
+   ---------------------------------------------------------
+   Capa de ambiente: dos orbes de luz con gradiente en
+   movimiento sobre la fotografía del procesador. El titular
+   aparece de inmediato, sin efectos de escritura.
+   El texto se apoya sobre la zona oscura de la fotografía,
+   alineado a la izquierda como en el diseño original.
+   Respeta prefers-reduced-motion al final del archivo.
+   ========================================================= */
+
+/* ---------- Escenario ---------- */
+
+/* El héroe se vuelve un escenario cerrado: la capa animada no
+   puede derramarse fuera de la sección. */
+.seccion-anuncio {
+    position: relative;
+    overflow: hidden;
+    min-height: max(78vh, 640px);
+}
+
+/* Capa decorativa con dos orbes de luz. Los degradados radiales
+   ya traen el borde suave incorporado, así que no hace falta
+   filter: blur (caro para la GPU). Solo se anima transform. */
+.escenario-heroe {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.escenario-heroe::before,
+.escenario-heroe::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+}
+
+/* Orbe cálido: nace detrás del titular y deriva hacia abajo. */
+.escenario-heroe::before {
+    width: 58vmax;
+    height: 58vmax;
+    left: -14vmax;
+    top: -20vmax;
+    background: radial-gradient(circle, rgb(255 0 51 / 17%) 0%, rgb(255 0 51 / 6%) 38%, transparent 64%);
+    animation: deriva-orbe-a 18s ease-in-out infinite alternate;
+}
+
+/* Orbe frío: contrapunto azul en la esquina inferior derecha. */
+.escenario-heroe::after {
+    width: 50vmax;
+    height: 50vmax;
+    right: -12vmax;
+    bottom: -18vmax;
+    background: radial-gradient(circle, rgb(0 132 255 / 12%) 0%, rgb(0 132 255 / 4%) 40%, transparent 66%);
+    animation: deriva-orbe-b 22s ease-in-out infinite alternate;
+}
+
+/* Cada orbe recorre su propia órbita lenta y vuelve (alternate). */
+@keyframes deriva-orbe-a {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(9vmax, 6vmax, 0) scale(1.14); }
+}
+
+@keyframes deriva-orbe-b {
+    from { transform: translate3d(0, 0, 0) scale(1.08); }
+    to   { transform: translate3d(-8vmax, -7vmax, 0) scale(0.96); }
+}
+
+/* ---------- Contenido ---------- */
+
+/* Bloque único de texto: centrado en la página pero con el texto
+   alineado a la izquierda, apoyado sobre la zona oscura de la
+   fotografía. Sin columnas: no queda espacio vacío a la derecha. */
+.contenido-heroe {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 1280px);
+    margin: 0 auto;
+    padding: var(--espacio-8) var(--espacio-6);
+}
+
+.texto-heroe {
+    max-width: 640px;
+}
+
+.titulo-heroe {
+    margin: 0 0 var(--espacio-5);
+    color: #ffffff;
+    font-family: var(--fuente-titulos);
+    font-size: clamp(2.4rem, 5.2vw, 4rem);
+    font-weight: 850;
+    letter-spacing: 0.02em;
+    line-height: 1.08;
+    text-wrap: balance;
+}
+
+.texto-heroe .subtitulo {
+    margin: 0 0 var(--espacio-3);
+    color: #ffffff;
+    font-family: var(--fuente-interfaz);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.texto-heroe .descripcion {
+    max-width: 560px;
+    margin: 0 0 var(--espacio-6);
+    color: #e2e2e2;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* ---------- Responsive ---------- */
+
+/* En pantallas medianas el texto pasa a centrarse, igual que el
+   resto de la portada móvil. */
+@media (max-width: 900px) {
+    .contenido-heroe {
+        padding: var(--espacio-7) var(--espacio-5) var(--espacio-8);
+    }
+
+    .texto-heroe {
+        max-width: 620px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .texto-heroe .descripcion {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+/* Devuelve al héroe móvil la altura y el alineado que define
+   styles.css para pantallas chicas. */
+@media (max-width: 768px) {
+    .seccion-anuncio {
+        min-height: max(70vh, 36rem);
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenido-heroe {
+        padding: var(--espacio-6) var(--espacio-4) var(--espacio-7);
+    }
+
+    .titulo-heroe {
+        font-size: clamp(1.9rem, 9vw, 2.4rem);
+    }
+}
+
+/* ---------- Movimiento reducido ----------
+   Sin orbes derivando: la portada queda estática e inmediata. */
+@media (prefers-reduced-motion: reduce) {
+    .escenario-heroe::before,
+    .escenario-heroe::after {
+        animation: none;
+    }
+}

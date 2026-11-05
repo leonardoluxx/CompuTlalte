@@ -24,6 +24,7 @@
         costoBase: "Costo base",
         margen: "Margen",
         disponible: "Disponibilidad",
+        destacado: "Destacado",
         descripcionLarga: "Descripción larga",
         especificacionesCortas: "Descripción corta",
         caracteristicasClave: "Características",
@@ -75,7 +76,7 @@
     const mensajeEditor = document.getElementById("mensaje-editor");
     const guardarProductoEl = document.getElementById("guardar-producto");
     const listaImagenes = document.getElementById("lista-imagenes");
-    const nuevaImagenUrl = document.getElementById("nueva-imagen-url");
+    const carpetaImagenEl = document.getElementById("carpeta-imagen");
     const nuevaImagenArchivo = document.getElementById("nueva-imagen-archivo");
 
     const avisoEl = document.getElementById("panel-aviso");
@@ -296,6 +297,68 @@
                 listaBitacora.append(fila);
             });
         }
+
+        // Reportes de ventas: solo el administrador los consulta.
+        if (esAdmin) {
+            renderReportes();
+        }
+    }
+
+    // Pide los reportes a la API y los dibuja en la tarjeta del resumen.
+    async function renderReportes() {
+        const contenedorTop = document.getElementById("reporte-top");
+        const contenedorStock = document.getElementById("reporte-stock");
+
+        if (!contenedorTop || !contenedorStock) {
+            return;
+        }
+
+        try {
+            const respuesta = await fetch("api/reportes.php", { headers: { "Accept": "application/json" } });
+            const datos = await respuesta.json();
+
+            if (!datos.ok) {
+                contenedorTop.replaceChildren(crearVacio(datos.mensaje || "No se pudieron cargar los reportes."));
+                contenedorStock.replaceChildren(crearVacio(""));
+                return;
+            }
+
+            document.getElementById("reporte-ventas").textContent = String(datos.totales.totalVentas);
+            document.getElementById("reporte-ventas-hoy").textContent = String(datos.totales.ventasHoy);
+            document.getElementById("reporte-ingresos").textContent = formatearMoneda.format(datos.totales.ingresosTotales);
+            document.getElementById("reporte-ticket").textContent = formatearMoneda.format(datos.totales.ticketPromedio);
+
+            contenedorTop.replaceChildren();
+            if (!datos.topProductos.length) {
+                contenedorTop.append(crearVacio("Aún no hay ventas registradas."));
+            } else {
+                datos.topProductos.forEach(function (producto) {
+                    const fila = crear("div", "panel-lista-item");
+                    const texto = crear("div", "panel-lista-texto");
+                    texto.append(
+                        crear("strong", "", producto.nombre),
+                        crear("small", "", `${producto.unidades} unidad${producto.unidades === 1 ? "" : "es"} vendida${producto.unidades === 1 ? "" : "s"}`)
+                    );
+                    fila.append(texto, crear("span", "panel-insignia", formatearMoneda.format(producto.ingresos)));
+                    contenedorTop.append(fila);
+                });
+            }
+
+            contenedorStock.replaceChildren();
+            if (!datos.stockBajo.length) {
+                contenedorStock.append(crearVacio("Todo el stock está saludable."));
+            } else {
+                datos.stockBajo.forEach(function (producto) {
+                    const fila = crear("div", "panel-lista-item");
+                    const texto = crear("div", "panel-lista-texto");
+                    texto.append(crear("strong", "", producto.nombre));
+                    fila.append(texto, crear("span", "panel-insignia panel-insignia-pendiente", `${producto.stock} en stock`));
+                    contenedorStock.append(fila);
+                });
+            }
+        } catch (error) {
+            contenedorTop.replaceChildren(crearVacio("No se pudo conectar con el servidor."));
+        }
     }
 
     // -------------------------------------------------------------- productos
@@ -452,7 +515,7 @@
     filtroCategoriaEl.addEventListener("change", renderProductos);
     filtroEstadoEl.addEventListener("change", renderProductos);
 
-    tablaProductos.addEventListener("click", function (evento) {
+    tablaProductos.addEventListener("click", async function (evento) {
         const boton = evento.target.closest("button[data-accion]");
         if (!boton) {
             return;
@@ -469,13 +532,13 @@
             abrirEditor(producto);
         } else if (boton.dataset.accion === "eliminar") {
             if (window.confirm(`¿Eliminar "${producto.nombre}" de la tienda? Podrás restaurarlo desde el filtro Eliminados.`)) {
-                const resultado = Tienda.eliminarProducto(producto.id);
+                const resultado = await Tienda.eliminarProducto(producto.id);
                 avisar(resultado.ok ? "Producto eliminado de la tienda." : resultado.mensaje, resultado.ok ? "exito" : "error");
                 renderProductos();
                 renderContadores();
             }
         } else if (boton.dataset.accion === "restaurar") {
-            const resultado = Tienda.restaurarProducto(producto.id);
+            const resultado = await Tienda.restaurarProducto(producto.id);
             avisar(resultado.ok ? "Producto restaurado." : resultado.mensaje, resultado.ok ? "exito" : "error");
             renderProductos();
             renderContadores();
@@ -545,7 +608,7 @@
         });
     }
 
-    listaOfertas.addEventListener("click", function (evento) {
+    listaOfertas.addEventListener("click", async function (evento) {
         const boton = evento.target.closest("button[data-guardar-oferta]");
         if (!boton) {
             return;
@@ -565,7 +628,7 @@
             return;
         }
 
-        const resultado = Tienda.proponerCambios(
+        const resultado = await Tienda.proponerCambios(
             producto.id,
             { oferta: { activa: activa, descuento: descuento } },
             activa ? `Oferta de ${descuento} %` : "Oferta retirada"
@@ -646,10 +709,10 @@
         return lista;
     }
 
-    function resolverSolicitud(id, accion) {
+    async function resolverSolicitud(id, accion) {
         const resultado = accion === "aprobar"
-            ? Tienda.aprobarSolicitud(id)
-            : Tienda.rechazarSolicitud(id);
+            ? await Tienda.aprobarSolicitud(id)
+            : await Tienda.rechazarSolicitud(id);
 
         if (!resultado.ok) {
             avisar(resultado.mensaje, "error");
@@ -726,13 +789,51 @@
         Tienda.usuarios().forEach(function (usuario) {
             const fila = document.createElement("tr");
             const rol = Tienda.roles[usuario.rol] ? usuario.rol : "cliente";
+            const esLaCuentaActual = sesion
+                && (usuario.email === sesion.email || Number(usuario.id) === Number(sesion.id));
 
             fila.append(
                 crear("td", "", usuario.nombre || "Sin nombre"),
-                crear("td", "", usuario.usuario || "—"),
-                crear("td", "", usuario.correo || "—"),
-                crear("td", "", Tienda.roles[rol].etiqueta)
+                crear("td", "", usuario.email || "—"),
+                crear("td", "", usuario.rol && Tienda.roles[usuario.rol] ? Tienda.roles[usuario.rol].etiqueta : usuario.rol)
             );
+
+            // Rol: lista editable para cualquier cuenta menos la propia.
+            const celdaRol = document.createElement("td");
+            if (esLaCuentaActual) {
+                celdaRol.append(crear("span", "panel-subtexto", `${Tienda.roles[rol].etiqueta} (tu cuenta)`));
+            } else {
+                const selector = document.createElement("select");
+                selector.className = "panel-selector-rol";
+                selector.dataset.id = String(usuario.id);
+                selector.setAttribute("aria-label", `Rol de ${usuario.nombre || usuario.email}`);
+
+                Object.keys(Tienda.roles).forEach(function (clave) {
+                    const opcion = crear("option", "", Tienda.roles[clave].etiqueta);
+                    opcion.value = clave;
+                    if (clave === rol) {
+                        opcion.selected = true;
+                    }
+                    selector.append(opcion);
+                });
+
+                celdaRol.append(selector);
+            }
+            fila.append(celdaRol);
+
+            // Acciones: eliminar la cuenta por completo (nunca la propia).
+            const celdaAcciones = document.createElement("td");
+            if (esLaCuentaActual) {
+                celdaAcciones.append(crear("span", "panel-subtexto", "—"));
+            } else {
+                const boton = crear("button", "panel-boton panel-boton-mini panel-boton-peligro", "Eliminar");
+                boton.type = "button";
+                boton.dataset.eliminarUsuario = String(usuario.id);
+                boton.setAttribute("aria-label", `Eliminar la cuenta de ${usuario.nombre || usuario.email}`);
+                celdaAcciones.append(boton);
+            }
+            fila.append(celdaAcciones);
+
             listaUsuarios.append(fila);
         });
 
@@ -747,10 +848,10 @@
 
     margenGlobalEl.addEventListener("input", actualizarEjemploMargen);
 
-    formularioMargen.addEventListener("submit", function (evento) {
+    formularioMargen.addEventListener("submit", async function (evento) {
         evento.preventDefault();
 
-        const resultado = Tienda.guardarConfig({ margenGlobal: Number(margenGlobalEl.value) });
+        const resultado = await Tienda.guardarConfig({ margenGlobal: Number(margenGlobalEl.value) });
 
         if (!resultado.ok) {
             avisar(resultado.mensaje, "error");
@@ -758,6 +859,77 @@
         }
 
         avisar(`Margen global actualizado a ${resultado.config.margenGlobal} %. Los precios ya se recalcularon.`, "exito");
+        renderAjustes();
+    });
+
+    // Limpiar bitácora: borra todos los movimientos (solo administrador).
+    const botonLimpiarBitacora = document.getElementById("limpiar-bitacora");
+
+    if (botonLimpiarBitacora) {
+        botonLimpiarBitacora.addEventListener("click", async function () {
+            if (!window.confirm("¿Borrar TODOS los registros de la bitácora? Esta acción no se puede deshacer.")) {
+                return;
+            }
+
+            const resultado = await Tienda.limpiarBitacora();
+
+            if (!resultado.ok) {
+                avisar(resultado.mensaje, "error");
+                return;
+            }
+
+            avisar(`Bitácora limpiada (${resultado.eliminados} registros eliminados).`, "exito");
+        });
+    }
+
+    // ------------------------------------------------------- gestión de cuentas
+
+    // Cambio de rol desde la lista de cuentas: pide confirmación y se
+    // aplica al instante (el servidor valida las reglas de protección).
+    listaUsuarios.addEventListener("change", async function (evento) {
+        const selector = evento.target.closest(".panel-selector-rol");
+        if (!selector) {
+            return;
+        }
+
+        const nuevoRol = selector.value;
+        const nombreRol = Tienda.roles[nuevoRol] ? Tienda.roles[nuevoRol].etiqueta : nuevoRol;
+
+        if (!window.confirm(`¿Cambiar el rol de esta cuenta a ${nombreRol}? El cambio es inmediato.`)) {
+            renderAjustes();
+            return;
+        }
+
+        const resultado = await Tienda.actualizarRolUsuario(Number(selector.dataset.id), nuevoRol);
+
+        if (!resultado.ok) {
+            avisar(resultado.mensaje, "error");
+        } else {
+            avisar(`Rol actualizado a ${nombreRol}.`, "exito");
+        }
+
+        renderAjustes();
+    });
+
+    // Eliminación de cuentas: también con confirmación previa.
+    listaUsuarios.addEventListener("click", async function (evento) {
+        const boton = evento.target.closest("button[data-eliminar-usuario]");
+        if (!boton) {
+            return;
+        }
+
+        if (!window.confirm("¿Eliminar esta cuenta por completo? Esa persona ya no podrá iniciar sesión.")) {
+            return;
+        }
+
+        const resultado = await Tienda.eliminarUsuario(Number(boton.dataset.eliminarUsuario));
+
+        if (!resultado.ok) {
+            avisar(resultado.mensaje, "error");
+        } else {
+            avisar("Cuenta eliminada del sistema.", "exito");
+        }
+
         renderAjustes();
     });
 
@@ -804,6 +976,7 @@
         llenarCampo("p-tipo", datos.tipo || "computadora");
         llenarCampo("p-etiqueta", datos.etiqueta);
         llenarCampo("p-costo", Number(datos.costoBase) || 0);
+        llenarCampo("p-stock", Number(datos.stock) || 0);
         llenarCampo("p-margen", datos.margen);
         llenarCampo("p-descripcion-corta", datos.especificacionesCortas);
         llenarCampo("p-descripcion-larga", datos.descripcionLarga);
@@ -812,10 +985,10 @@
         llenarCampo("p-oferta-descuento", datos.oferta ? datos.oferta.descuento : 0);
 
         document.getElementById("p-disponible").checked = datos.disponible !== false;
+        document.getElementById("p-destacado").checked = Boolean(datos.destacado);
         document.getElementById("p-oferta-activa").checked = Boolean(datos.oferta && datos.oferta.activa);
         document.getElementById("p-oferta-descuento").disabled = !document.getElementById("p-oferta-activa").checked;
 
-        nuevaImagenUrl.value = "";
         nuevaImagenArchivo.value = "";
         renderImagenesDraft();
 
@@ -895,80 +1068,51 @@
         renderImagenesDraft();
     });
 
-    document.getElementById("agregar-imagen-url").addEventListener("click", function () {
-        const ruta = nuevaImagenUrl.value.trim();
+    // Sube el archivo al servidor (api/subir_imagen.php): PHP lo guarda en
+    // la carpeta elegida del proyecto y devuelve su ruta local, que se
+    // registra en la base de datos junto con el producto. Nada de URLs
+    // externas ni de imágenes en base64: todo vive en el disco.
+    nuevaImagenArchivo.addEventListener("change", function () {
+        const archivo = nuevaImagenArchivo.files && nuevaImagenArchivo.files[0];
 
-        if (!ruta) {
-            mensajeEditor.textContent = "Escribe la ruta o la URL de la imagen.";
-            return;
-        }
-
-        imagenesDraft.push(ruta);
-        nuevaImagenUrl.value = "";
-        mensajeEditor.textContent = "";
-        renderImagenesDraft();
-    });
-
-    // Reduce la imagen antes de guardarla: localStorage tiene poco espacio.
-    function reducirImagen(archivo) {
-        return new Promise(function (resolver, rechazar) {
-            if (!archivo.type.startsWith("image/")) {
-                rechazar(new Error("El archivo no es una imagen."));
-                return;
-            }
-
-            const lector = new FileReader();
-
-            lector.onload = function () {
-                const imagen = new Image();
-
-                imagen.onload = function () {
-                    const maximo = 900;
-                    const escala = Math.min(1, maximo / Math.max(imagen.width, imagen.height));
-                    const lienzo = document.createElement("canvas");
-                    lienzo.width = Math.max(1, Math.round(imagen.width * escala));
-                    lienzo.height = Math.max(1, Math.round(imagen.height * escala));
-
-                    const contexto = lienzo.getContext("2d");
-                    contexto.drawImage(imagen, 0, 0, lienzo.width, lienzo.height);
-
-                    const webp = lienzo.toDataURL("image/webp", 0.82);
-                    resolver(webp.startsWith("data:image/webp") ? webp : lienzo.toDataURL("image/jpeg", 0.82));
-                };
-
-                imagen.onerror = function () {
-                    rechazar(new Error("No se pudo leer la imagen."));
-                };
-                imagen.src = lector.result;
-            };
-
-            lector.onerror = function () {
-                rechazar(new Error("No se pudo abrir el archivo."));
-            };
-            lector.readAsDataURL(archivo);
-        });
-    }
-
-    nuevaImagenArchivo.addEventListener("change", function (evento) {
-        const archivo = evento.target.files && evento.target.files[0];
         if (!archivo) {
             return;
         }
 
-        reducirImagen(archivo).then(function (dataUrl) {
-            if (dataUrl.length > 1200000) {
-                mensajeEditor.textContent = "La imagen sigue siendo muy pesada. Usa una más pequeña.";
-                return;
-            }
+        mensajeEditor.textContent = "Subiendo imagen…";
 
-            imagenesDraft.push(dataUrl);
-            mensajeEditor.textContent = "";
-            renderImagenesDraft();
-        }).catch(function (error) {
-            mensajeEditor.textContent = error.message;
-        }).finally(function () {
-            nuevaImagenArchivo.value = "";
-        });
+        const carga = new FormData();
+        carga.append("archivo", archivo);
+        carga.append("carpeta", carpetaImagenEl.value);
+        // El nombre del producto crea una subcarpeta propia en el disco
+        // (ej. imagenes/computadoras-gaming/pc-vengeance-a7500/).
+        carga.append(
+            "producto",
+            esNuevo
+                ? document.getElementById("p-nombre").value.trim()
+                : (productoEnEdicion ? productoEnEdicion.nombre : "")
+        );
+
+        fetch("api/subir_imagen.php", { method: "POST", body: carga })
+            .then(function (respuesta) {
+                return respuesta.json();
+            })
+            .then(function (datos) {
+                if (!datos.ok) {
+                    mensajeEditor.textContent = datos.mensaje || "No se pudo subir la imagen.";
+                    return;
+                }
+
+                imagenesDraft.push(datos.url);
+                mensajeEditor.textContent = "";
+                renderImagenesDraft();
+            })
+            .catch(function () {
+                mensajeEditor.textContent = "No se pudo conectar con el servidor.";
+            })
+            .finally(function () {
+                nuevaImagenArchivo.value = "";
+            });
     });
 
     function lineasDe(id) {
@@ -988,8 +1132,10 @@
             tipo: document.getElementById("p-tipo").value,
             etiqueta: document.getElementById("p-etiqueta").value.trim(),
             costoBase: Number(document.getElementById("p-costo").value) || 0,
+            stock: Math.max(0, Math.round(Number(document.getElementById("p-stock").value) || 0)),
             margen: margenTexto === "" ? null : Number(margenTexto),
             disponible: document.getElementById("p-disponible").checked,
+            destacado: document.getElementById("p-destacado").checked,
             descripcionLarga: document.getElementById("p-descripcion-larga").value.trim(),
             especificacionesCortas: document.getElementById("p-descripcion-corta").value.trim(),
             caracteristicasClave: lineasDe("p-caracteristicas"),
@@ -1019,7 +1165,7 @@
             .join(", ");
     }
 
-    formularioProducto.addEventListener("submit", function (evento) {
+    formularioProducto.addEventListener("submit", async function (evento) {
         evento.preventDefault();
         mensajeEditor.textContent = "";
 
@@ -1037,6 +1183,18 @@
             return;
         }
 
+        // Margen propio: número válido entre 0 y 300, o vacío para usar
+        // el margen global. Nada silencioso: si está mal, se avisa aquí.
+        const margenTexto = document.getElementById("p-margen").value.trim();
+        if (margenTexto !== "") {
+            const margenPropio = Number(margenTexto);
+            if (!Number.isFinite(margenPropio) || margenPropio < 0 || margenPropio > 300) {
+                mensajeEditor.textContent = "El margen propio debe estar entre 0 % y 300 %, o vacío para usar el global.";
+                document.getElementById("p-margen").focus();
+                return;
+            }
+        }
+
         if (cambios.oferta.activa && (cambios.oferta.descuento <= 0 || cambios.oferta.descuento > 95)) {
             mensajeEditor.textContent = "El descuento de la oferta debe estar entre 1 % y 95 %.";
             document.getElementById("p-oferta-descuento").focus();
@@ -1047,7 +1205,7 @@
         const fueNuevo = esNuevo;
 
         if (fueNuevo) {
-            resultado = Tienda.crearProducto(cambios);
+            resultado = await Tienda.crearProducto(cambios);
         } else {
             const resumen = resumenCambios(cambios);
             if (!resumen) {
@@ -1056,7 +1214,7 @@
                 return;
             }
 
-            resultado = Tienda.proponerCambios(productoEnEdicion.id, cambios, resumen);
+            resultado = await Tienda.proponerCambios(productoEnEdicion.id, cambios, resumen);
         }
 
         if (!resultado.ok) {

@@ -8,7 +8,9 @@
     <title>Iniciar sesión | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-login.css?v=4">
+    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/login-cinematico.css?v=1">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=1">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -17,43 +19,110 @@
         <a class="enlace-volver" href="index.html">Volver a la tienda</a>
     </header>
 
-    <div class="contenido-pagina">
-        <h1 id="titulo">Iniciar sesión</h1>
+    <!-- Escenario dividido: marca a la izquierda, acceso a la derecha. -->
+    <main class="escenario-acceso">
 
-        <div id="login">
-            <!-- novalidate hace que los mensajes de error los muestre login.js y no el navegador -->
-            <form id="formulario" novalidate>
-                <label for="correo">Usuario o correo</label>
-                <input type="text" id="correo" autocomplete="username" placeholder="admin, gerente, usuario o tu correo" autocapitalize="none" spellcheck="false">
+        <!-- Mitad izquierda: ambiente de marca con orbes animados. -->
+        <section class="panel-marca" aria-label="Computlalte">
+            <div class="trama-marca" aria-hidden="true"></div>
+            <span class="orbito-marca orbito-a" aria-hidden="true"></span>
+            <span class="orbito-marca orbito-b" aria-hidden="true"></span>
 
-                <label for="clave">Contraseña</label>
-                <div class="campo-clave">
-                    <input type="password" id="clave" autocomplete="current-password">
-                    <button type="button" id="ver-clave">Mostrar</button>
+            <div class="contenido-marca">
+                <p class="etiqueta-marca">Computlalte</p>
+                <h1 class="lema-marca">Bienvenido de vuelta<span class="punto-acento">.</span></h1>
+                <p class="descripcion-marca">Inicia sesión para gestionar el catálogo, revisar tus compras o continuar donde lo dejaste.</p>
+
+                <!-- Accesos de prueba: un clic llena el formulario (cuentas de la BD). -->
+                <ul class="chips-credenciales" aria-label="Accesos de prueba">
+                    <li>
+                        <button class="chip-credencial" type="button" data-usuario="admin@computlalte.com" data-clave="Admin123$">
+                            <span>Administrador</span><code>admin@computlalte.com</code>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="chip-credencial" type="button" data-usuario="gerente@computlalte.com" data-clave="Gerente123$">
+                            <span>Gerente</span><code>gerente@computlalte.com</code>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="chip-credencial" type="button" data-usuario="cliente@computlalte.com" data-clave="Cliente123$">
+                            <span>Cliente</span><code>cliente@computlalte.com</code>
+                        </button>
+                    </li>
+                </ul>
+                <p class="nota-chips">El administrador y el gerente entran al panel de control. El cliente compra como siempre.</p>
+            </div>
+        </section>
+
+        <!-- Mitad derecha: tarjeta de vidrio con tres caras. -->
+        <section class="panel-formulario" aria-label="Inicio de sesión">
+            <div class="tarjeta-acceso" id="tarjeta-acceso">
+
+                <!-- Cara 1: formulario. -->
+                <div class="cara-acceso" id="cara-formulario">
+                    <h2 class="titulo-formulario">Iniciar sesión</h2>
+                    <p class="subtitulo-formulario">Escribe tus datos para entrar a tu cuenta.</p>
+
+                    <!-- novalidate: los errores los muestra el JS, no el navegador. -->
+                    <form id="formulario" novalidate>
+                        <div class="campo">
+                            <label for="correo">Usuario o correo</label>
+                            <input type="text" id="correo" autocomplete="username" placeholder="tu correo (ej. cliente@computlalte.com)" autocapitalize="none" spellcheck="false">
+                        </div>
+
+                        <div class="campo">
+                            <label for="clave">Contraseña</label>
+                            <div class="campo-clave">
+                                <input type="password" id="clave" autocomplete="current-password">
+                                <button type="button" id="ver-clave">Mostrar</button>
+                            </div>
+
+                            <!-- Medidor de fuerza en tiempo real (Débil / Fuerte / Élite). -->
+                            <div class="medidor-clave" id="medidor-clave" hidden>
+                                <div class="pista-clave"><span class="relleno-clave" id="relleno-clave"></span></div>
+                                <p class="etiqueta-clave" id="etiqueta-clave" aria-live="polite"></p>
+                            </div>
+                        </div>
+
+                        <p id="mensaje" role="alert"></p>
+
+                        <button type="submit" id="entrar" class="boton-brillante">Iniciar sesión</button>
+                    </form>
+
+                    <p id="registro">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
                 </div>
 
-                <p id="mensaje" role="alert"></p>
+                <!-- Cara 2: verificación (el spinner se vuelve palomita). -->
+                <div class="cara-acceso cara-verificacion" id="cara-verificacion" hidden>
+                    <div class="sello-verificacion" aria-hidden="true">
+                        <svg viewBox="0 0 52 52">
+                            <circle class="anillo-verificacion" cx="26" cy="26" r="23"/>
+                            <path class="palomita-verificacion" d="M15 27l7 7 15-16"/>
+                        </svg>
+                    </div>
+                    <p class="texto-verificacion" id="texto-verificacion" role="status" aria-live="polite">Verificando credenciales…</p>
+                </div>
 
-                <button type="submit" id="entrar">Iniciar sesión</button>
-            </form>
+                <!-- Cara 3: sesión iniciada, con los permisos del rol. -->
+                <div class="cara-acceso cara-sesion" id="cara-sesion" hidden>
+                    <p class="etiqueta-sesion">Sesión iniciada como</p>
+                    <p class="distintivo-rol" id="distintivo-rol"></p>
+                    <p class="nombre-rol" id="nombre-rol"></p>
+                    <p class="descripcion-rol" id="descripcion-rol"></p>
 
-            <!-- Cambia registro.html por el nombre de tu página de registro -->
-            <p id="registro">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
-        </div>
+                    <ul class="lista-permisos" id="lista-permisos" aria-label="Permisos de tu rol"></ul>
 
-        <!-- Accesos de prueba mientras no existe un servidor de cuentas. -->
-        <aside class="credenciales-prueba" aria-label="Credenciales de prueba">
-            <p class="titulo-credenciales">Accesos de prueba</p>
-            <ul>
-                <li><span>Administrador</span><code>admin / admin</code></li>
-                <li><span>Gerente</span><code>gerente / gerente</code></li>
-                <li><span>Cliente</span><code>usuario / usuario</code></li>
-            </ul>
-            <p class="nota-credenciales">El administrador y el gerente entran al panel de control. El cliente compra como siempre.</p>
-        </aside>
-    </div>
+                    <div class="acciones-sesion">
+                        <a id="enlace-destino" class="boton-brillante" href="index.html">Ir a la tienda</a>
+                        <button type="button" id="salir-sesion">¿No eres tú? Cerrar sesión</button>
+                    </div>
+                </div>
 
-    <script src="js/tienda-datos.js?v=1"></script>
-    <script src="js/scripts-login.js?v=2"></script>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/scripts-login-cinematico.js?v=2"></script>
 </body>
 </html>

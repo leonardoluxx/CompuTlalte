@@ -8,7 +8,7 @@
     <title>Mi cuenta | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-cuenta.css?v=5">
+    <link rel="stylesheet" href="css/style-cuenta.css?v=6">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -114,6 +114,16 @@
                                     <label for="direccion">Dirección de entrega</label>
                                     <input type="text" id="direccion" autocomplete="street-address" placeholder="Calle, número, colonia, ciudad">
                                 </div>
+
+                                <div class="campo">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="tel" id="telefono" autocomplete="tel" placeholder="55 1234 5678">
+                                </div>
+
+                                <div class="campo">
+                                    <label for="rfc">RFC <span>(para facturas, opcional)</span></label>
+                                    <input type="text" id="rfc" autocomplete="off" placeholder="XAXX010101000" maxlength="13" style="text-transform: uppercase;">
+                                </div>
                             </div>
 
                             <p class="mensaje-cuenta" id="mensaje-datos" role="alert" aria-live="polite"></p>
@@ -133,7 +143,7 @@
                         </span>
                         <span class="texto-acordeon">
                             <strong>Seguridad</strong>
-                            <small>Contraseña y autenticación en dos pasos.</small>
+                            <small>Cambia tu contraseña cuando quieras.</small>
                         </span>
                         <svg class="flecha-acordeon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
                     </summary>
@@ -158,18 +168,6 @@
                             </div>
 
                             <p class="nota-seguridad">Usa al menos 8 caracteres e incluye números o símbolos para mayor protección.</p>
-
-                            <section class="autenticacion-cuenta" aria-labelledby="titulo-autenticacion">
-                                <div class="texto-autenticacion">
-                                    <h3 id="titulo-autenticacion">Verificación en dos pasos</h3>
-                                    <p>Añade una capa adicional de seguridad al iniciar sesión en tu cuenta.</p>
-                                </div>
-                                <label class="interruptor-cuenta">
-                                    <input type="checkbox" id="verificacion-dos-pasos">
-                                    <span class="riel-interruptor" aria-hidden="true"><span></span></span>
-                                    <small id="estado-dos-pasos">Desactivada</small>
-                                </label>
-                            </section>
 
                             <p class="mensaje-cuenta" id="mensaje-seguridad" role="alert" aria-live="polite"></p>
 
@@ -288,7 +286,9 @@
         </div>
     </main>
 
-    <script src="js/tienda-datos.js?v=1"></script>
-    <script src="js/scripts-cuenta.js?v=6"></script>
+    <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
+    <script src="api/bootstrap.php?v=1"></script>
+    <script src="js/tienda-datos.js?v=4"></script>
+    <script src="js/scripts-cuenta.js?v=7"></script>
 </body>
 </html>

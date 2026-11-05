@@ -4,8 +4,7 @@
    en Computadoras y Accesorios. El degradado protege la legibilidad. */
 .pagina-ofertas .seccion-anuncio.anuncio-ofertas {
     background-image:
-        linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%) 55%, rgb(0 0 0 / 8%)),
-        url("../imagenes/anuncios/imagen-ofertas-add.jpg");
+        var(--fondo-banner-ofertas, linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%) 55%, rgb(0 0 0 / 8%)), url("../imagenes/anuncios/imagen-ofertas-add.jpg"));
     background-position: center;
     background-size: cover;
 }
@@ -177,8 +176,7 @@
     /* En celular el degradado vertical protege el texto centrado. */
     .pagina-ofertas .seccion-anuncio.anuncio-ofertas {
         background-image:
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.72) 32%, rgba(0, 0, 0, 0.35) 52%, transparent 70%),
-            url("../imagenes/anuncios/imagen-ofertas-add.jpg");
+            var(--fondo-banner-ofertas, linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.72) 32%, rgba(0, 0, 0, 0.35) 52%, transparent 70%), url("../imagenes/anuncios/imagen-ofertas-add.jpg"));
         background-position: center center;
         background-size: auto, cover;
         background-repeat: no-repeat;

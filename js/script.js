@@ -106,11 +106,11 @@ const mejorasPredeterminadas = [
     { grupo: "color", grupoEtiqueta: "Color", valor: "plata", etiqueta: "Plata", extra: 0 }
 ];
 
-// La interfaz consume el catálogo compartido (con los cambios que guarde el
-// panel). Si el núcleo no está disponible se usa el archivo local original.
+// La interfaz consume el catálogo que vive en MySQL: api/bootstrap.php
+// lo entrega sincrónicamente en window.DatosBD antes de este archivo.
 const productos = window.Tienda
     ? window.Tienda.productos()
-    : (window.catalogoLocal || []);
+    : [];
 
 // Elementos de la página que reciben las tarjetas y los datos del modal.
 const contenedorCatalogoComputadoras = document.querySelector("#catalogo");
@@ -1319,6 +1319,7 @@ function añadirProductoAlCarrito(
     }
 
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+    window.dispatchEvent(new Event("carrito-actualizado"));
 }
 
 // Añade el producto al carrito con el precio final de la configuración elegida.

@@ -18,6 +18,8 @@ const formularioDatosEl  = document.getElementById("formulario-datos");
 const nombreEl           = document.getElementById("nombre");
 const correoEl           = document.getElementById("correo");
 const direccionEl        = document.getElementById("direccion");
+const telefonoEl         = document.getElementById("telefono");
+const rfcEl              = document.getElementById("rfc");
 const mensajeDatosEl     = document.getElementById("mensaje-datos");
 
 const formularioSeguridadEl = document.getElementById("formulario-seguridad");
@@ -25,8 +27,6 @@ const claveActualEl      = document.getElementById("clave-actual");
 const claveNuevaEl       = document.getElementById("clave-nueva");
 const claveConfirmarEl   = document.getElementById("clave-confirmar");
 const mensajeSeguridadEl = document.getElementById("mensaje-seguridad");
-const verificacionEl     = document.getElementById("verificacion-dos-pasos");
-const estadoVerificacionEl = document.getElementById("estado-dos-pasos");
 
 const formularioPagoEl   = document.getElementById("formulario-pago-cuenta");
 const metodosPagoCuenta  = [...document.querySelectorAll('input[name="metodo-pago-cuenta"]')];
@@ -55,23 +55,31 @@ const formatoMoneda = new Intl.NumberFormat("es-MX", {
 
 let usuarioActual = null;
 
-function obtenerUsuarios() {
+// La tarjeta guardada vive solo en este navegador y NUNCA se envía al
+// servidor: es una comodidad del cliente, no un dato de la base.
+const CLAVE_TARJETA = "computlalte-tarjeta-guardada";
+
+function obtenerTarjeta(email) {
     try {
-        return JSON.parse(localStorage.getItem(CLAVE_USUARIOS)) || [];
+        return JSON.parse(localStorage.getItem(CLAVE_TARJETA + ":" + String(email || "").toLowerCase()) || "null");
     } catch (error) {
-        return [];
+        return null;
     }
 }
 
-function guardarUsuarios(usuarios) {
-    localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(usuarios));
+function guardarTarjeta(email, tarjeta) {
+    try {
+        localStorage.setItem(CLAVE_TARJETA + ":" + String(email || "").toLowerCase(), JSON.stringify(tarjeta));
+    } catch (error) {
+        // Sin almacenamiento la tarjeta simplemente no se recuerda.
+    }
 }
 
-function obtenerPedidos() {
+function borrarTarjeta(email) {
     try {
-        return JSON.parse(localStorage.getItem(CLAVE_PEDIDOS)) || [];
+        localStorage.removeItem(CLAVE_TARJETA + ":" + String(email || "").toLowerCase());
     } catch (error) {
-        return [];
+        // Nada que borrar.
     }
 }
 
@@ -143,7 +151,6 @@ function mostrarPanelSesion(texto) {
 
 function mostrarTarjetaGuardada(usuario) {
     const tarjeta = usuario && usuario.tarjetaGuardada;
-
     if (!tarjeta || !tarjeta.ultimos4) {
         tarjetaGuardadaEl.hidden = true;
         textoTarjetaEl.textContent = "";
@@ -153,12 +160,6 @@ function mostrarTarjetaGuardada(usuario) {
     const marca = tarjeta.marca ? tarjeta.marca + " " : "";
     textoTarjetaEl.textContent = marca + "•••• •••• •••• " + tarjeta.ultimos4;
     tarjetaGuardadaEl.hidden = false;
-}
-
-function actualizarEstadoVerificacion(usuario) {
-    const activa = Boolean(usuario && usuario.autenticacionDosPasos);
-    verificacionEl.checked = activa;
-    estadoVerificacionEl.textContent = activa ? "Activada" : "Desactivada";
 }
 
 function guardarUsuarioActual(usuarios, indice) {
@@ -287,57 +288,62 @@ function crearTarjetaPedido(pedido) {
     return tarjeta;
 }
 
-function mostrarPedidos(usuario) {
-    const correo = String(usuario.correo || "").toLowerCase();
-    const pedidos = obtenerPedidos().filter(function (pedido) {
-        return !pedido.cliente || String(pedido.cliente).toLowerCase() === correo;
-    });
+function mostrarPedidos(pedidos) {
+    const lista = Array.isArray(pedidos) ? pedidos : [];
 
-    totalPedidosEl.textContent = String(pedidos.length);
+    totalPedidosEl.textContent = String(lista.length);
 
-    if (!pedidos.length) {
+    if (!lista.length) {
         listaPedidosEl.replaceChildren(crearPedidoVacio());
         return;
     }
 
     listaPedidosEl.replaceChildren(
-        ...pedidos.map(function (pedido) {
+        ...lista.map(function (pedido) {
             return crearTarjetaPedido(pedido);
         })
     );
 }
 
-function cargarCuenta() {
-    const sesionIniciada = localStorage.getItem("sesionIniciada") === "true";
-    const correoSesion = localStorage.getItem("usuario");
+async function cargarCuenta() {
+    // La sesión vive en el servidor; el núcleo la conoce vía bootstrap.php.
+    const actual = window.Tienda ? Tienda.sesion() : null;
 
-    if (!sesionIniciada || !correoSesion) {
+    if (!actual) {
         mostrarPanelSesion();
         return;
     }
 
-    const usuarios = obtenerUsuarios();
-    const indice = usuarios.findIndex(function (registro) {
-        return String(registro.correo || "").toLowerCase() === String(correoSesion).toLowerCase();
-    });
-
-    if (indice === -1) {
-        mostrarPanelSesion("Tu cuenta ya no está disponible. Inicia sesión de nuevo.");
+    let datos;
+    try {
+        const respuesta = await fetch("api/cuenta.php", { headers: { "Accept": "application/json" } });
+        datos = await respuesta.json();
+    } catch (error) {
+        mostrarPanelSesion("No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.");
         return;
     }
 
-    usuarioActual = usuarios[indice];
+    if (!datos.ok) {
+        mostrarPanelSesion(datos.mensaje || "Tu cuenta ya no está disponible. Inicia sesión de nuevo.");
+        return;
+    }
+
+    usuarioActual = Object.assign({}, datos.perfil, {
+        correo: datos.perfil.email,
+        tarjetaGuardada: obtenerTarjeta(datos.perfil.email)
+    });
 
     nombreEl.value = usuarioActual.nombre || "";
     correoEl.value = usuarioActual.correo || "";
     direccionEl.value = usuarioActual.direccion || "";
+    telefonoEl.value = usuarioActual.telefono || "";
+    rfcEl.value = usuarioActual.rfc || "";
     perfilCorreoEl.textContent = usuarioActual.correo || "";
 
     marcarMetodoPago(usuarioActual.metodoPago);
     mostrarTarjetaGuardada(usuarioActual);
-    actualizarEstadoVerificacion(usuarioActual);
     actualizarEncabezado(usuarioActual.nombre || "");
-    mostrarPedidos(usuarioActual);
+    mostrarPedidos(datos.pedidos);
 
     panelSesionEl.hidden = true;
     disposicionEl.hidden = false;
@@ -354,14 +360,16 @@ function obtenerIndiceUsuarioActual() {
     });
 }
 
-// Información personal
-formularioDatosEl.addEventListener("submit", function (evento) {
+// Información personal: se guarda en la base de datos vía api/cuenta.php.
+formularioDatosEl.addEventListener("submit", async function (evento) {
     evento.preventDefault();
     mostrarMensaje(mensajeDatosEl, "", "");
 
     const nombre = nombreEl.value.trim();
     const correo = correoEl.value.trim();
     const direccion = direccionEl.value.trim();
+    const telefono = telefonoEl.value.trim();
+    const rfc = rfcEl.value.trim().toUpperCase();
 
     if (nombre === "") {
         mostrarMensaje(mensajeDatosEl, "Escribe tu nombre completo.", "error");
@@ -381,55 +389,41 @@ formularioDatosEl.addEventListener("submit", function (evento) {
         return;
     }
 
-    const usuarios = obtenerUsuarios();
-    const indice = obtenerIndiceUsuarioActual();
-
-    if (indice === -1) {
-        mostrarPanelSesion("Tu sesión terminó. Inicia sesión de nuevo para continuar.");
-        return;
-    }
-
-    const correoRepetido = usuarios.some(function (registro, posicion) {
-        return posicion !== indice
-            && String(registro.correo || "").toLowerCase() === correo.toLowerCase();
-    });
-
-    if (correoRepetido) {
-        mostrarMensaje(mensajeDatosEl, "Ya existe otra cuenta con ese correo electrónico.", "error");
-        correoEl.focus();
-        return;
-    }
-
-    usuarios[indice].nombre = nombre;
-    usuarios[indice].correo = correo;
-    usuarios[indice].direccion = direccion;
-
-    // Los pedidos anteriores siguen vinculados aunque cambie el correo.
-    const correoAnterior = String(usuarioActual.correo || "").toLowerCase();
-    if (correo.toLowerCase() !== correoAnterior) {
-        const pedidos = obtenerPedidos();
-        let huboCambios = false;
-
-        pedidos.forEach(function (pedido) {
-            if (String(pedido.cliente || "").toLowerCase() === correoAnterior) {
-                pedido.cliente = correo;
-                huboCambios = true;
-            }
+    let resultado;
+    try {
+        const respuesta = await fetch("api/cuenta.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                accion: "datos",
+                nombre: nombre,
+                email: correo,
+                direccion: direccion,
+                telefono: telefono,
+                rfc: rfc
+            })
         });
-
-        if (huboCambios) {
-            localStorage.setItem(CLAVE_PEDIDOS, JSON.stringify(pedidos));
-        }
+        resultado = await respuesta.json();
+    } catch (error) {
+        mostrarMensaje(mensajeDatosEl, "No se pudo conectar con el servidor.", "error");
+        return;
     }
 
-    guardarUsuarioActual(usuarios, indice);
+    if (!resultado.ok) {
+        mostrarMensaje(mensajeDatosEl, resultado.mensaje || "No se pudieron guardar los datos.", "error");
+        return;
+    }
+
+    // El correo puede haber cambiado: la vista se refresca con los datos nuevos.
+    usuarioActual.correo = correo;
+    usuarioActual.nombre = nombre;
     perfilCorreoEl.textContent = correo;
     actualizarEncabezado(nombre);
-    mostrarMensaje(mensajeDatosEl, "Tus datos se guardaron correctamente.", "exito");
+    mostrarMensaje(mensajeDatosEl, resultado.mensaje || "Tus datos se guardaron correctamente.", "exito");
 });
 
-// Seguridad
-formularioSeguridadEl.addEventListener("submit", function (evento) {
+// Seguridad: el cambio de contraseña se valida y hashea en el servidor.
+formularioSeguridadEl.addEventListener("submit", async function (evento) {
     evento.preventDefault();
     mostrarMensaje(mensajeSeguridadEl, "", "");
 
@@ -439,20 +433,6 @@ formularioSeguridadEl.addEventListener("submit", function (evento) {
 
     if (claveActual === "") {
         mostrarMensaje(mensajeSeguridadEl, "Escribe tu contraseña actual.", "error");
-        claveActualEl.focus();
-        return;
-    }
-
-    const usuarios = obtenerUsuarios();
-    const indice = obtenerIndiceUsuarioActual();
-
-    if (indice === -1) {
-        mostrarPanelSesion("Tu sesión terminó. Inicia sesión de nuevo para continuar.");
-        return;
-    }
-
-    if (claveActual !== usuarios[indice].clave) {
-        mostrarMensaje(mensajeSeguridadEl, "La contraseña actual no es correcta.", "error");
         claveActualEl.focus();
         return;
     }
@@ -469,17 +449,36 @@ formularioSeguridadEl.addEventListener("submit", function (evento) {
         return;
     }
 
-    usuarios[indice].clave = claveNueva;
-    guardarUsuarioActual(usuarios, indice);
+    let resultado;
+    try {
+        const respuesta = await fetch("api/cuenta.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                accion: "clave",
+                actual: claveActual,
+                nueva: claveNueva
+            })
+        });
+        resultado = await respuesta.json();
+    } catch (error) {
+        mostrarMensaje(mensajeSeguridadEl, "No se pudo conectar con el servidor.", "error");
+        return;
+    }
+
+    if (!resultado.ok) {
+        mostrarMensaje(mensajeSeguridadEl, resultado.mensaje || "No se pudo actualizar la contraseña.", "error");
+        return;
+    }
 
     claveActualEl.value = "";
     claveNuevaEl.value = "";
     claveConfirmarEl.value = "";
-    mostrarMensaje(mensajeSeguridadEl, "Tu contraseña se actualizó correctamente.", "exito");
+    mostrarMensaje(mensajeSeguridadEl, resultado.mensaje || "Tu contraseña se actualizó correctamente.", "exito");
 });
 
-// Métodos de pago
-formularioPagoEl.addEventListener("submit", function (evento) {
+// Métodos de pago: la preferencia vive en la base de datos.
+formularioPagoEl.addEventListener("submit", async function (evento) {
     evento.preventDefault();
     mostrarMensaje(mensajePagoEl, "", "");
 
@@ -490,22 +489,22 @@ formularioPagoEl.addEventListener("submit", function (evento) {
         ? normalizarMetodo(metodoSeleccionado.value)
         : "";
 
-    const usuarios = obtenerUsuarios();
-    const indice = obtenerIndiceUsuarioActual();
-
-    if (indice === -1) {
-        mostrarPanelSesion("Tu sesión terminó. Inicia sesión de nuevo para continuar.");
+    let resultado;
+    try {
+        const respuesta = await fetch("api/cuenta.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ accion: "metodo", metodo: metodoPago })
+        });
+        resultado = await respuesta.json();
+    } catch (error) {
+        mostrarMensaje(mensajePagoEl, "No se pudo conectar con el servidor.", "error");
         return;
     }
 
-    usuarios[indice].metodoPago = metodoPago;
-    guardarUsuarioActual(usuarios, indice);
-
-    // Mantiene sincronizada la preferencia que lee el checkout.
-    if (metodoPago) {
-        localStorage.setItem(CLAVE_METODO, metodoPago);
-    } else {
-        localStorage.removeItem(CLAVE_METODO);
+    if (!resultado.ok) {
+        mostrarMensaje(mensajePagoEl, resultado.mensaje || "No se pudo guardar el método.", "error");
+        return;
     }
 
     actualizarEstadoPago(metodoPago);
@@ -516,39 +515,14 @@ formularioPagoEl.addEventListener("submit", function (evento) {
 });
 
 quitarTarjetaEl.addEventListener("click", function () {
-    const usuarios = obtenerUsuarios();
-    const indice = obtenerIndiceUsuarioActual();
-
-    if (indice === -1) {
+    if (!usuarioActual) {
         return;
     }
 
-    delete usuarios[indice].tarjetaGuardada;
-    guardarUsuarioActual(usuarios, indice);
+    borrarTarjeta(usuarioActual.correo);
+    usuarioActual.tarjetaGuardada = null;
     mostrarTarjetaGuardada(usuarioActual);
     mostrarMensaje(mensajePagoEl, "Quitamos la tarjeta guardada de tu cuenta.", "exito");
-});
-
-// Autenticación en dos pasos: se guarda en la cuenta y se refleja al instante.
-verificacionEl.addEventListener("change", function () {
-    const usuarios = obtenerUsuarios();
-    const indice = obtenerIndiceUsuarioActual();
-
-    if (indice === -1) {
-        mostrarPanelSesion("Tu sesión terminó. Inicia sesión de nuevo para continuar.");
-        return;
-    }
-
-    usuarios[indice].autenticacionDosPasos = verificacionEl.checked;
-    guardarUsuarioActual(usuarios, indice);
-    actualizarEstadoVerificacion(usuarioActual);
-    mostrarMensaje(
-        mensajeSeguridadEl,
-        verificacionEl.checked
-            ? "La verificación en dos pasos quedó activada."
-            : "La verificación en dos pasos quedó desactivada.",
-        "exito"
-    );
 });
 
 // El estado cambia al instante al elegir, aunque todavía haya que guardar.
@@ -585,11 +559,10 @@ enlacesSeccion.forEach(function (enlace) {
 });
 
 cerrarSesionEl.addEventListener("click", function () {
-    localStorage.removeItem("sesionIniciada");
-    localStorage.removeItem("usuario");
-    localStorage.removeItem("usuarioNombre");
-    localStorage.removeItem("usuarioRol");
-    localStorage.removeItem("redirigirTrasLogin");
+    // Cierra la sesión en el servidor y limpia las huellas locales.
+    if (window.Tienda) {
+        Tienda.cerrarSesion();
+    }
     window.location.href = "index.html";
 });
 
