@@ -821,9 +821,11 @@ button {
 
 .rejilla-productos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 360px));
+    /* Las columnas se reparten todo el ancho disponible: antes quedaban
+       dos columnas fijas de 360px y sobraba una franja negra a la derecha. */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
     justify-content: center;
-    gap: 24px;
+    gap: 28px;
 }
 
 /* Tarjeta con material de vidrio: fondo translúcido, canto sutil y
@@ -2122,7 +2124,8 @@ h3 {
     }
 
     .rejilla-productos {
-        grid-template-columns: minmax(0, 420px);
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+        gap: 20px;
     }
 
     .contenido-modal-producto {

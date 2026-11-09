@@ -123,9 +123,9 @@
 
 .rejilla-ofertas {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 320px));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
     justify-content: center;
-    gap: 24px;
+    gap: 28px;
 }
 
 /* Aviso cuando el panel deja la lista de ofertas vacía. */
@@ -192,6 +192,7 @@
     }
 
     .rejilla-ofertas {
-        grid-template-columns: minmax(0, 420px);
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+        gap: 20px;
     }
 }
