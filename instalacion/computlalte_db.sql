@@ -1348,8 +1348,10 @@ SET descripcion = 'El pináculo del audio. Sistema electrostático de referencia
   tipo = 'accesorio',
   etiqueta = 'Audio de referencia',
   destacado = 1,
-  en_oferta = 0,
-  descuento = 0,
+  en_oferta = 1,
+  descuento = 5,
+  resenas = 64,
+  vendidos = 21,
   terminos_busqueda = '["sennheiser","he1","orpheus","audifonos","auriculares","electrostatico","audio premium"]'
 WHERE id = @he1_id;
 
@@ -1395,7 +1397,7 @@ WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Teclado Magnético Coo
 
 SET @teclado_id = (SELECT id FROM productos WHERE nombre = 'Teclado Magnético Cool 68' ORDER BY id LIMIT 1);
 UPDATE productos SET categoria_id = @teclados_categoria_id, costo_base = 5135.60,
-  precio_final = 6933.06, margen_propio = 35,
+  precio_final = 6933.06, margen_propio = 35, resenas = 132, vendidos = 215,
   imagen_url = 'imagenes/imagenes-accesorios/teclados/teclado-cool-68-1.jpg'
 WHERE id = @teclado_id;
 DELETE FROM imagenes_producto WHERE producto_id = @teclado_id;
@@ -1436,7 +1438,7 @@ WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Monitor ASUS ROG Swift
 
 SET @monitor_id = (SELECT id FROM productos WHERE nombre = 'Monitor ASUS ROG Swift PG32UCDM' ORDER BY id LIMIT 1);
 UPDATE productos SET categoria_id = @monitores_categoria_id, costo_base = 16449.00,
-  precio_final = 22206.15, margen_propio = 35,
+  precio_final = 22206.15, margen_propio = 35, resenas = 89, vendidos = 98,
   imagen_url = 'imagenes/imagenes-accesorios/monitores/monitor-asus-rog-1.jpg'
 WHERE id = @monitor_id;
 DELETE FROM imagenes_producto WHERE producto_id = @monitor_id;
@@ -1480,7 +1482,7 @@ WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Fuente de Poder Corsai
 
 SET @fuente_id = (SELECT id FROM productos WHERE nombre = 'Fuente de Poder Corsair AX1600i' ORDER BY id LIMIT 1);
 UPDATE productos SET categoria_id = @energia_categoria_id, costo_base = 10078.20,
-  precio_final = 13605.57, margen_propio = 35,
+  precio_final = 13605.57, margen_propio = 35, resenas = 57, vendidos = 76,
   imagen_url = 'imagenes/imagenes-accesorios/energia-y-cables/fuente-corsair-ax1600i-1.jpg'
 WHERE id = @fuente_id;
 DELETE FROM imagenes_producto WHERE producto_id = @fuente_id;
@@ -1563,8 +1565,38 @@ WHERE p.nombre = 'Fuente de Poder Corsair AX1600i' AND e.tipo = 'tecnica'
     'Garantía de 10 años'
   );
 
-UPDATE productos SET en_oferta = 1, descuento = 1
-WHERE nombre IN ('Monitor ASUS ROG Swift PG32UCDM', 'Teclado Magnético Cool 68');
+-- Balance de listas: una especificación técnica más pasa a características
+-- clave (audífonos y monitor); en la fuente se quita la lista de conectores
+-- y se mueven las protecciones a características clave.
+UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
+SET e.tipo = 'clave'
+WHERE p.nombre = 'Sennheiser HE1 Orpheus' AND e.tipo = 'tecnica'
+  AND e.descripcion = 'Respuesta de frecuencia: 8 Hz a >100 kHz';
+
+UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
+SET e.tipo = 'clave'
+WHERE p.nombre = 'Monitor ASUS ROG Swift PG32UCDM' AND e.tipo = 'tecnica'
+  AND e.descripcion = 'Entradas HDMI 2.1, DisplayPort y USB-C con entrega de energía de 90 W';
+
+UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
+SET e.tipo = 'clave'
+WHERE p.nombre = 'Fuente de Poder Corsair AX1600i' AND e.tipo = 'tecnica'
+  AND e.descripcion = 'Protecciones: OVP, UVP, SCP, OTP y OPP';
+
+DELETE FROM especificaciones
+WHERE producto_id = @fuente_id
+  AND tipo = 'tecnica'
+  AND descripcion = 'Conectores: 1x ATX, 9x PATA, 16x SATA y 2x Floppy';
+
+-- Ofertas estilo mouse: cada tarjeta de accesorio muestra su porcentaje.
+UPDATE productos SET en_oferta = 1, descuento = 5
+WHERE nombre = 'Sennheiser HE1 Orpheus';
+UPDATE productos SET en_oferta = 1, descuento = 8
+WHERE nombre = 'Teclado Magnético Cool 68';
+UPDATE productos SET en_oferta = 1, descuento = 12
+WHERE nombre = 'Monitor ASUS ROG Swift PG32UCDM';
+UPDATE productos SET en_oferta = 1, descuento = 15
+WHERE nombre = 'Fuente de Poder Corsair AX1600i';
 
 UPDATE productos
 SET personalizacion = JSON_ARRAY(

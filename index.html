@@ -219,7 +219,7 @@
         <div class="contenido-modal-producto">
             <section class="galeria-producto" aria-label="Galería de imágenes del producto">
                 <div class="marco-imagen-producto">
-                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="" tabindex="0" role="button" aria-haspopup="dialog">
+                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="">
                     <button class="control-galeria control-galeria-anterior" id="imagen-anterior" type="button" aria-label="Ver imagen anterior">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
                     </button>
@@ -236,6 +236,7 @@
                         <p class="categoria-producto" id="categoria-producto"></p>
                         <h2 id="modal-titulo"></h2>
                     </div>
+                    <div class="reseñas-modal" id="reseñas-modal"></div>
                     <button class="boton-cerrar-modal" id="cerrar-modal-producto" type="button" aria-label="Cerrar detalles">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
                     </button>
@@ -244,7 +245,7 @@
                 <p class="precio-producto" id="precio-producto"></p>
                 <p class="descripcion-producto" id="descripcion-producto"></p>
 
-                <div class="listas-detalles-producto">
+                <div class="listas-detalles-producto" id="listas-detalles-producto">
                     <section class="lista-detalle">
                         <h3>Características clave</h3>
                         <ul id="caracteristicas-producto"></ul>
@@ -254,6 +255,7 @@
                         <ul id="especificaciones-producto"></ul>
                     </section>
                 </div>
+                <button class="boton-mostrar-mas" id="alternar-detalles" type="button" aria-expanded="false" aria-controls="listas-detalles-producto" hidden>Mostrar más</button>
 
                 <!-- Personalización de equipos: los accesorios no muestran esta sección. -->
                 <section class="personalizacion-producto" id="personalizacion-producto" aria-labelledby="titulo-personalizacion">
@@ -279,19 +281,6 @@
                 <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
             </section>
         </div>
-    </dialog>
-
-    <dialog class="lightbox-imagen" id="lightbox-imagen" aria-label="Visor de imágenes del producto">
-        <button class="lightbox-cerrar" id="cerrar-lightbox" type="button" aria-label="Cerrar imagen ampliada">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
-        </button>
-        <button class="lightbox-control lightbox-anterior" id="lightbox-anterior" type="button" aria-label="Ver imagen anterior">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
-        </button>
-        <img class="lightbox-foto" id="lightbox-foto" alt="">
-        <button class="lightbox-control lightbox-siguiente" id="lightbox-siguiente" type="button" aria-label="Ver imagen siguiente">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
-        </button>
     </dialog>
 
     <!-- Búsqueda local: las sugerencias se generan desde el catálogo de productos. -->
