@@ -150,6 +150,8 @@ const MAXIMO_PRODUCTOS_VISTOS = 4;
 const botonCerrarModal = document.querySelector("#cerrar-modal-producto");
 const imagenPrincipalProducto = document.querySelector("#imagen-principal-producto");
 const miniaturasProducto = document.querySelector("#miniaturas-producto");
+const lightboxImagen = document.querySelector("#lightbox-imagen");
+const imagenLightbox = document.querySelector("#lightbox-foto");
 const botonImagenAnterior = document.querySelector("#imagen-anterior");
 const botonImagenSiguiente = document.querySelector("#imagen-siguiente");
 const tituloModal = document.querySelector("#modal-titulo");
@@ -159,6 +161,7 @@ const totalPersonalizacion = document.querySelector("#total-personalizacion");
 const seccionPersonalizacion = document.querySelector("#personalizacion-producto");
 const botonPersonalizacion = document.querySelector("#alternar-personalizacion");
 const contenedorOpcionesPersonalizacion = document.querySelector("#opciones-personalizacion");
+const interiorOpcionesPersonalizacion = contenedorOpcionesPersonalizacion?.querySelector(".interior-opciones-personalizacion");
 const textoBotonPersonalizacion = document.querySelector(".texto-boton-personalizacion");
 const descripcionProducto = document.querySelector("#descripcion-producto");
 const listaCaracteristicas = document.querySelector("#caracteristicas-producto");
@@ -254,6 +257,64 @@ function describirOpcionesPersonalizacion() {
             extra: Number(opcion.dataset.extra || 0)
         };
     });
+}
+
+function renderizarPersonalizacion(producto) {
+    if (!interiorOpcionesPersonalizacion) {
+        return false;
+    }
+
+    const grupos = Array.isArray(producto.personalizacion) ? producto.personalizacion : [];
+    const contenido = document.createDocumentFragment();
+
+    grupos.forEach((grupo) => {
+        const opciones = Array.isArray(grupo.opciones) ? grupo.opciones : [];
+        if (!opciones.length) {
+            return;
+        }
+
+        const campo = document.createElement("fieldset");
+        campo.className = "grupo-personalizacion";
+        const titulo = document.createElement("legend");
+        titulo.textContent = grupo.grupoEtiqueta || grupo.grupo || "Opciones";
+        campo.append(titulo);
+
+        const lista = document.createElement("div");
+        lista.className = "opciones-personalizacion";
+
+        opciones.forEach((opcion, indice) => {
+            const etiqueta = document.createElement("label");
+            etiqueta.className = "opcion-personalizacion";
+            const entrada = document.createElement("input");
+            entrada.type = "radio";
+            entrada.name = `personalizacion-${grupo.grupo}`;
+            entrada.value = String(opcion.valor ?? indice);
+            entrada.dataset.extra = String(Math.max(0, Number(opcion.extra) || 0));
+            entrada.checked = indice === 0;
+
+            const contenidoOpcion = document.createElement("span");
+            contenidoOpcion.className = "contenido-opcion";
+            const nombreOpcion = document.createElement("strong");
+            nombreOpcion.textContent = String(opcion.etiqueta || opcion.valor || "Opción");
+            const precioOpcion = document.createElement("small");
+            precioOpcion.textContent = Number(opcion.extra) > 0
+                ? `+ ${formateadorMoneda.format(Number(opcion.extra))}`
+                : "Incluido";
+
+            contenidoOpcion.append(nombreOpcion, precioOpcion);
+            etiqueta.append(entrada, contenidoOpcion);
+            lista.append(etiqueta);
+        });
+
+        campo.append(lista);
+        contenido.append(campo);
+    });
+
+    if (totalPersonalizacion) {
+        contenido.append(totalPersonalizacion);
+    }
+    interiorOpcionesPersonalizacion.replaceChildren(contenido);
+    return grupos.some((grupo) => Array.isArray(grupo.opciones) && grupo.opciones.length > 0);
 }
 
 // Vuelve a la configuración incluida y deja las opciones cerradas al abrir un equipo.
@@ -855,6 +916,12 @@ function seleccionarImagenProducto(producto, indiceSeleccionado) {
     const rutaImagen = producto.imagenesGaleria[indiceSeleccionado];
     imagenPrincipalProducto.src = rutaImagen;
     imagenPrincipalProducto.alt = `Vista ${indiceSeleccionado + 1} del equipo ${producto.nombre}`;
+    imagenPrincipalProducto.setAttribute("aria-label", `Ampliar imagen ${indiceSeleccionado + 1} de ${producto.nombre}`);
+
+    if (lightboxImagen.open) {
+        imagenLightbox.src = rutaImagen;
+        imagenLightbox.alt = imagenPrincipalProducto.alt;
+    }
 
     miniaturasProducto.querySelectorAll(".miniatura-producto").forEach((miniatura, indice) => {
         const estaSeleccionada = indice === indiceSeleccionado;
@@ -874,6 +941,16 @@ function seleccionarImagenProducto(producto, indiceSeleccionado) {
             });
         }
     });
+}
+
+function abrirLightbox() {
+    if (!productoModalActual || !productoModalActual.imagenesGaleria.length) {
+        return;
+    }
+
+    imagenLightbox.src = productoModalActual.imagenesGaleria[indiceImagenActual];
+    imagenLightbox.alt = `Vista ampliada ${indiceImagenActual + 1} de ${productoModalActual.nombre}`;
+    lightboxImagen.showModal();
 }
 
 // Avanza o retrocede una imagen y vuelve al extremo opuesto al llegar al final.
@@ -910,7 +987,7 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
 
     // Los equipos permiten personalizar; los accesorios conservan su precio base.
     if (seccionPersonalizacion) {
-        const esPersonalizable = producto.tipo !== "accesorio";
+        const esPersonalizable = producto.tipo !== "accesorio" && renderizarPersonalizacion(producto);
         seccionPersonalizacion.hidden = !esPersonalizable;
 
         if (esPersonalizable) {
@@ -919,7 +996,7 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
     }
     actualizarPrecioProducto();
 
-    const detallesVisiblesIniciales = 4;
+    const detallesVisiblesIniciales = 8;
     const hayDetallesExtra = producto.caracteristicasClave.length > detallesVisiblesIniciales
         || producto.especificacionesTecnicas.length > detallesVisiblesIniciales;
 
@@ -940,7 +1017,10 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
         miniatura.type = "button";
         miniatura.setAttribute("aria-label", `Ver imagen ${indice + 1} de ${producto.nombre}`);
         miniatura.setAttribute("aria-pressed", String(indice === 0));
-        miniatura.addEventListener("click", () => seleccionarImagenProducto(producto, indice));
+        miniatura.addEventListener("click", () => {
+            seleccionarImagenProducto(producto, indice);
+            abrirLightbox();
+        });
 
         const imagenMiniatura = document.createElement("img");
         imagenMiniatura.src = rutaImagen;
@@ -951,6 +1031,13 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
     });
 
     seleccionarImagenProducto(producto, 0);
+    imagenPrincipalProducto.onclick = abrirLightbox;
+    imagenPrincipalProducto.onkeydown = (evento) => {
+        if (evento.key === "Enter" || evento.key === " ") {
+            evento.preventDefault();
+            abrirLightbox();
+        }
+    };
     modalProducto.showModal();
     modalProducto.focus({ preventScroll: true });
 }
@@ -1204,6 +1291,14 @@ if (contenedorCatalogoComputadoras) {
 botonCerrarModal.addEventListener("click", () => modalProducto.close());
 botonImagenAnterior.addEventListener("click", () => cambiarImagenProducto(-1));
 botonImagenSiguiente.addEventListener("click", () => cambiarImagenProducto(1));
+document.querySelector("#cerrar-lightbox").addEventListener("click", () => lightboxImagen.close());
+document.querySelector("#lightbox-anterior").addEventListener("click", () => cambiarImagenProducto(-1));
+document.querySelector("#lightbox-siguiente").addEventListener("click", () => cambiarImagenProducto(1));
+lightboxImagen.addEventListener("click", (evento) => {
+    if (evento.target === lightboxImagen) {
+        lightboxImagen.close();
+    }
+});
 modalProducto.addEventListener("close", () => {
     elementoQueAbrioModal?.focus();
     elementoQueAbrioModal = null;
@@ -1220,6 +1315,20 @@ modalProducto.addEventListener("click", (evento) => {
 
 // Cierra el modal con Escape y deja que su evento close restaure el foco.
 document.addEventListener("keydown", (evento) => {
+    if (lightboxImagen.open) {
+        if (evento.key === "ArrowLeft") {
+            evento.preventDefault();
+            cambiarImagenProducto(-1);
+        } else if (evento.key === "ArrowRight") {
+            evento.preventDefault();
+            cambiarImagenProducto(1);
+        } else if (evento.key === "Escape") {
+            evento.preventDefault();
+            lightboxImagen.close();
+        }
+        return;
+    }
+
     if (!modalProducto.open) {
         return;
     }
@@ -1343,8 +1452,9 @@ botonComprarProducto.addEventListener("click", () => {
     estadoCompra.textContent = "Producto añadido al carrito. Redirigiendo...";
 
     setTimeout(() => {
+        estadoCompra.textContent = "";
         window.location.href = "carrito.html";
-    }, 600);
+    }, 2400);
 });
 
 // Cada cambio en las mejoras actualiza el precio del modal al instante.

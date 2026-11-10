@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $usuario = exigir_rol(["admin"]);
+rate_limit("upload", 20, 60);
 
 // ------------------------------------------- carpetas permitidas (whitelist)
 $carpetas = [
@@ -27,6 +28,11 @@ $carpetas = [
     "imagenes/computadoras-uso-diario" => "Computadoras de uso diario",
     "imagenes/computadoras-desarrollo" => "Computadoras para desarrollo",
     "imagenes/imagenes-accesorios" => "Accesorios",
+    "imagenes/imagenes-accesorios/audio" => "Accesorios / Audio",
+    "imagenes/imagenes-accesorios/mouse" => "Accesorios / Mouse",
+    "imagenes/imagenes-accesorios/energia-y-cables" => "Accesorios / Energía y Cables",
+    "imagenes/imagenes-accesorios/teclados" => "Accesorios / Teclados",
+    "imagenes/imagenes-accesorios/monitores" => "Accesorios / Monitores",
     "imagenes/anuncios" => "Anuncios y portada"
 ];
 

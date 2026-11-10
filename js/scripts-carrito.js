@@ -73,6 +73,7 @@ const cerrarEditarEl = document.getElementById("cerrar-editar-carrito");
 const cancelarEditarEl = document.getElementById("cancelar-editar");
 const editarNombreEl = document.getElementById("editar-nombre");
 const editarPrecioEl = document.getElementById("editar-precio");
+const gruposEdicionEl = document.getElementById("grupos-edicion-carrito");
 
 let indiceDetalle = null;
 let indiceEdicion = null;
@@ -119,31 +120,35 @@ function guardarCarrito() {
 
 // Devuelve las mejoras guardadas o, si la línea es antigua, las deduce del
 // texto de personalización. Siempre entrega una opción por grupo.
-function normalizarOpciones(item) {
+function normalizarOpciones(item, producto) {
     const guardadas = Array.isArray(item.opcionesPersonalizacion)
         ? item.opcionesPersonalizacion
         : [];
     const etiquetas = String(item.personalizacion || "")
         .split(",")
         .map((texto) => texto.trim());
+    const gruposProducto = Array.isArray(producto?.personalizacion) && producto.personalizacion.length
+        ? producto.personalizacion
+        : GRUPOS_MEJORA;
 
-    return GRUPOS_MEJORA.map((grupo) => {
+    return gruposProducto.map((grupo) => {
+        const opcionesGrupo = Array.isArray(grupo.opciones) ? grupo.opciones : [];
         const guardada = guardadas.find((opcion) => opcion.grupo === grupo.grupo);
         let opcion = guardada
-            ? grupo.opciones.find((candidata) => candidata.valor === guardada.valor)
+            ? opcionesGrupo.find((candidata) => candidata.valor === guardada.valor)
             : null;
 
         if (!opcion) {
             const etiqueta = etiquetas.find((texto) =>
-                grupo.opciones.some((candidata) => candidata.etiqueta === texto)
+                opcionesGrupo.some((candidata) => candidata.etiqueta === texto)
             );
-            opcion = grupo.opciones.find((candidata) => candidata.etiqueta === etiqueta);
+            opcion = opcionesGrupo.find((candidata) => candidata.etiqueta === etiqueta);
         }
 
         return {
             grupo: grupo.grupo,
-            grupoEtiqueta: grupo.etiqueta,
-            ...(opcion || grupo.opciones[0])
+            grupoEtiqueta: grupo.grupoEtiqueta || grupo.etiqueta,
+            ...(opcion || opcionesGrupo[0] || {})
         };
     });
 }
@@ -153,7 +158,7 @@ function normalizarOpciones(item) {
 function normalizarItem(item) {
     const producto = buscarEnCatalogo(item.id);
     const esAccesorio = item.tipo === "accesorio" || producto?.tipo === "accesorio";
-    const opciones = esAccesorio ? [] : normalizarOpciones(item);
+    const opciones = esAccesorio ? [] : normalizarOpciones(item, producto);
     const extras = opciones.reduce((total, opcion) => total + Number(opcion.extra || 0), 0);
     const precioAnterior = Number(item.precio) || 0;
     const baseGuardada = Number(item.precioBase);
@@ -233,7 +238,7 @@ function crearEstadoVacio() {
         "",
         "Cuando agregues un equipo o un accesorio, aparecerá aquí con sus especificaciones y mejoras."
     );
-    const enlace = crearElemento("a", "boton-explorar", "Explorar computadoras");
+    const enlace = crearElemento("a", "boton-explorar boton-brillante", "Explorar computadoras");
     enlace.href = "index.html";
 
     estado.append(icono, titulo, texto, enlace);
@@ -496,6 +501,52 @@ function preseleccionarOpciones(opciones) {
     });
 }
 
+function renderizarGruposEdicion(item) {
+    const producto = buscarEnCatalogo(item.id);
+    const grupos = Array.isArray(producto?.personalizacion) ? producto.personalizacion : GRUPOS_MEJORA;
+    const contenido = document.createDocumentFragment();
+
+    grupos.forEach((grupo) => {
+        const opciones = Array.isArray(grupo.opciones) ? grupo.opciones : [];
+        if (!opciones.length) {
+            return;
+        }
+
+        const campo = document.createElement("fieldset");
+        campo.className = "grupo-edicion";
+        const titulo = document.createElement("legend");
+        titulo.textContent = grupo.grupoEtiqueta || grupo.etiqueta || grupo.grupo;
+        campo.append(titulo);
+
+        const lista = document.createElement("div");
+        lista.className = "opciones-edicion";
+        opciones.forEach((opcion, indice) => {
+            const etiqueta = document.createElement("label");
+            etiqueta.className = "opcion-edicion";
+            const entrada = document.createElement("input");
+            entrada.type = "radio";
+            entrada.name = `editar-${grupo.grupo}`;
+            entrada.value = String(opcion.valor ?? indice);
+            entrada.dataset.grupo = grupo.grupo;
+            entrada.dataset.etiqueta = String(opcion.etiqueta || opcion.valor || "Opción");
+            entrada.dataset.extra = String(Math.max(0, Number(opcion.extra) || 0));
+
+            const nombre = crearElemento("span", "", entrada.dataset.etiqueta);
+            const extra = Number(opcion.extra) || 0;
+            const precio = crearElemento("small", "", extra > 0
+                ? `+ ${formatoMoneda.format(extra)}`
+                : "Incluido");
+            etiqueta.append(entrada, nombre, precio);
+            lista.append(etiqueta);
+        });
+
+        campo.append(lista);
+        contenido.append(campo);
+    });
+
+    gruposEdicionEl.replaceChildren(contenido);
+}
+
 function leerOpcionesEdicion() {
     return [...formularioEditar.querySelectorAll('input[type="radio"]:checked')].map((entrada) => ({
         grupo: entrada.dataset.grupo,
@@ -536,6 +587,7 @@ function abrirEdicion(indice) {
 
     indiceEdicion = indice;
     editarNombreEl.textContent = item.nombreBase;
+    renderizarGruposEdicion(item);
     preseleccionarOpciones(item.opcionesPersonalizacion);
     actualizarPrecioEdicion();
 
@@ -670,11 +722,14 @@ pagarEl.addEventListener("click", () => {
         return;
     }
 
-    const sesionIniciada = localStorage.getItem("sesionIniciada") === "true";
+    // Verificar sesión SOLO en el servidor (bootstrap.php la carga al inicio)
+    const usuario = window.Tienda ? Tienda.sesion() : null;
 
-    if (!sesionIniciada) {
+    if (!usuario) {
         mostrarAviso("Inicia sesión para continuar con el pago.");
-        localStorage.setItem("redirigirTrasLogin", "carrito");
+        try {
+            localStorage.setItem("redirigirTrasLogin", "carrito");
+        } catch (error) {}
         window.location.href = "login.html";
         return;
     }

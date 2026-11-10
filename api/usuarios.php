@@ -47,6 +47,8 @@ if ($metodo_http !== "POST") {
 
 $cuerpo = leer_cuerpo();
 $accion = (string) ($cuerpo["accion"] ?? "");
+csrf_exigir();
+rate_limit("usuarios", 20, 60);
 $id_objetivo = (int) ($cuerpo["id"] ?? 0);
 $id_actual = (int) $usuario["id"];
 

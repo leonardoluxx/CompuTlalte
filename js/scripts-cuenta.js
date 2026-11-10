@@ -201,7 +201,7 @@ function crearPedidoVacio() {
     texto.textContent = "Cuando completes una compra, aquí verás su folio, su estado y su total.";
 
     const enlace = document.createElement("a");
-    enlace.className = "boton-secundario";
+    enlace.className = "boton-secundario boton-brillante";
     enlace.href = "index.html#computadoras";
     enlace.textContent = "Explorar la tienda";
 

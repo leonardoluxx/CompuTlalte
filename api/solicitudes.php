@@ -17,6 +17,8 @@ $usuario = exigir_rol(["admin"]);
 $bd = obtenerConexion();
 
 $cuerpo = leer_cuerpo();
+csrf_exigir();
+rate_limit("solicitudes", 20, 60);
 $id = (int) ($cuerpo["id"] ?? 0);
 $accion = (string) ($cuerpo["accion"] ?? "");
 

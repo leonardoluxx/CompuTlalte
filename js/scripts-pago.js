@@ -17,6 +17,8 @@ const listaResumenEl = document.getElementById("lista-resumen-pago");
 const subtotalEl = document.getElementById("subtotal-pago");
 const totalEl = document.getElementById("total-pago");
 const cuponEl = document.getElementById("cupon-pago");
+const botonUsarCuponEl = document.getElementById("usar-cupon");
+const estadoCuponEl = document.getElementById("estado-cupon-pago");
 const selectorMetodosEl = document.getElementById("selector-metodos");
 const avisoMetodoEl = document.getElementById("aviso-metodo");
 const textoAvisoEl = document.getElementById("texto-aviso-metodo");
@@ -50,6 +52,62 @@ const totalExitoEl = document.getElementById("total-exito");
 const tituloExitoEl = document.getElementById("titulo-exito");
 
 let carrito = obtenerCarrito();
+let cuponPreviewActivo = false;
+
+function tokenCsrfActual() {
+    return document.querySelector('meta[name="csrf-token"]')?.content || "";
+}
+
+async function renovarTokenCsrf() {
+    const respuesta = await fetch("api/csrf.php", {
+        cache: "no-store",
+        credentials: "same-origin",
+        headers: { "Accept": "application/json" }
+    });
+    const datos = await respuesta.json();
+    if (!respuesta.ok || !datos.ok || !datos.csrf) {
+        return "";
+    }
+
+    let meta = document.querySelector('meta[name="csrf-token"]');
+    if (!meta) {
+        meta = document.createElement("meta");
+        meta.name = "csrf-token";
+        document.head.append(meta);
+    }
+    meta.content = datos.csrf;
+    return datos.csrf;
+}
+
+async function enviarVentaConCsrf(carga) {
+    let token = "";
+    try {
+        token = await renovarTokenCsrf();
+    } catch (error) {
+        token = tokenCsrfActual();
+    }
+
+    for (let intento = 0; intento < 2; intento += 1) {
+        const respuesta = await fetch("api/procesar_venta.php", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...carga, csrf: token })
+        });
+        const resultado = await respuesta.json();
+
+        if (respuesta.status !== 403 || intento > 0) {
+            return resultado;
+        }
+
+        token = await renovarTokenCsrf();
+        if (!token) {
+            return resultado;
+        }
+    }
+
+    return { ok: false, mensaje: "No se pudo validar la sesión de seguridad. Recarga la página." };
+}
 
 function obtenerCarrito() {
     try {
@@ -105,9 +163,10 @@ function crearElemento(etiqueta, clase, texto) {
 }
 
 function mostrarResumen() {
-    const total = calcularTotal(carrito);
+    const subtotal = calcularTotal(carrito);
+    const total = cuponPreviewActivo ? Math.round(subtotal * 0.9) : subtotal;
     montoEl.textContent = "Total: " + formatoMoneda.format(total);
-    subtotalEl.textContent = formatoMoneda.format(total);
+    subtotalEl.textContent = formatoMoneda.format(subtotal);
     totalEl.textContent = "Total: " + formatoMoneda.format(total);
     confirmarTarjetaEl.textContent = "Pagar " + formatoMoneda.format(total);
 
@@ -286,12 +345,7 @@ async function finalizarPago(metodo, datosPago = {}) {
 
     let resultado;
     try {
-        const respuesta = await fetch("api/procesar_venta.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(carga)
-        });
-        resultado = await respuesta.json();
+        resultado = await enviarVentaConCsrf(carga);
     } catch (error) {
         mostrarAviso("No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.", false);
         return;
@@ -466,6 +520,21 @@ radiosMetodo.forEach(function (radio) {
 formularioTransferenciaEl.addEventListener("submit", manejarTransferencia);
 formularioTarjetaEl.addEventListener("submit", manejarTarjeta);
 
+botonUsarCuponEl.addEventListener("click", function () {
+    cuponEl.value = "COMPU10";
+    cuponPreviewActivo = true;
+    estadoCuponEl.textContent = "COMPU10 aplicado: 10% de descuento al confirmar el pedido.";
+    mostrarResumen();
+});
+
+cuponEl.addEventListener("input", function () {
+    if (cuponPreviewActivo && cuponEl.value.trim().toUpperCase() !== "COMPU10") {
+        cuponPreviewActivo = false;
+        estadoCuponEl.textContent = "";
+        mostrarResumen();
+    }
+});
+
 // Copiar la CLABE facilita hacer la transferencia sin errores de dedo.
 document.querySelectorAll("[data-copiar]").forEach(function (boton) {
     boton.addEventListener("click", async function () {
@@ -485,6 +554,17 @@ document.querySelectorAll("[data-copiar]").forEach(function (boton) {
 });
 
 function iniciarPagina() {
+    // Verificar sesión en el servidor
+    const usuario = obtenerUsuarioActual();
+    if (!usuario) {
+        // No hay sesión: redirigir a login guardando el destino
+        try {
+            localStorage.setItem("redirigirTrasLogin", "pago");
+        } catch (error) {}
+        window.location.href = "login.html";
+        return;
+    }
+
     mostrarResumen();
 
     if (carrito.length === 0) {

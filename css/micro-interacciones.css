@@ -5,8 +5,11 @@
       .revelada las coloca js/micro-interacciones.js. Sin
       JavaScript ninguna clase existe y todo se ve normal:
       el efecto es una mejora progresiva, nunca un requisito.
-   2) Shimmer: brillo que cruza los botones principales al
-      pasar el cursor o enfocarlos con el teclado.
+   2) Shimmer: brillo que cruza los botones de acción principal
+      al pasar el cursor o enfocarlos con el teclado. Se usa en
+      las acciones importantes (comprar, entrar, registrarse,
+      pagar) y no en cada botón pequeño, para que el efecto
+      conserve su intención.
    ========================================================= */
 
 /* ---------- Revelado al hacer scroll ---------- */
@@ -59,10 +62,22 @@
 
 /* Al pasar el cursor (o llegar con el teclado) la franja cruza
    de un extremo al otro una sola vez; forwards la deja fuera,
-   ya recortada por el overflow del botón. */
-.boton-brillante:hover::after,
-.boton-brillante:focus-visible::after {
+   ya recortada por el overflow del botón.
+   El hover solo se activa en dispositivos con puntero fino:
+   así el destello no se queda pegado después de un toque. */
+@media (hover: hover) and (pointer: fine) {
+    .boton-brillante:not(:disabled):hover::after {
+        animation: barrer-brillo 0.9s var(--curva-suave, ease) forwards;
+    }
+}
+
+.boton-brillante:not(:disabled):focus-visible::after {
     animation: barrer-brillo 0.9s var(--curva-suave, ease) forwards;
+}
+
+/* Un botón desactivado no invita a pulsarlo: sin destello. */
+.boton-brillante:disabled::after {
+    display: none;
 }
 
 @keyframes barrer-brillo {

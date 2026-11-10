@@ -118,12 +118,28 @@ body{
 }
 
 #login{
+    position: relative;
     width: min(100%, 400px);
     margin: 0 auto;
     padding: 25px;
     background-color: var(--color-panel);
     border: 1px solid var(--color-linea);
     border-radius: 10px;
+    box-shadow: 0 24px 60px rgb(0 0 0 / 35%);
+}
+
+/* Canto de luz superior: el mismo detalle de vidrio de la tarjeta
+   de inicio de sesión, para que registrarse se sienta parte del
+   mismo sistema visual. */
+#login::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 14%;
+    left: 14%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 18%), transparent);
+    pointer-events: none;
 }
 
 label{
@@ -177,6 +193,7 @@ input:focus{
     font-family: var(--fuente-interfaz);
     font-size: 15px;
     font-weight: 700;
+    white-space: nowrap;
     transition: filter 0.2s ease;
 }
 
@@ -307,6 +324,7 @@ input:focus{
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.02em;
+    white-space: nowrap;
     cursor: pointer;
     transition: filter 0.2s ease, transform 0.2s ease;
 }
@@ -314,6 +332,11 @@ input:focus{
 #entrar:hover{
     filter: brightness(1.2);
     transform: translateY(-2px);
+}
+
+#entrar:focus-visible{
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
 }
 
 #registro{
@@ -416,6 +439,21 @@ input:focus{
 
     #login{
         padding: 18px;
+    }
+}
+
+@media (max-width: 380px){
+    .barra-superior{
+        gap: 8px;
+        padding: 0 12px;
+    }
+
+    .logotipo-superior{
+        font-size: 16px;
+    }
+
+    .enlace-volver{
+        font-size: 14px;
     }
 }
 

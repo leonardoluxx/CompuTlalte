@@ -2,3 +2,41 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 *.log
+
+# Freebuff: historial y datos locales del asistente
+.freebuff/
+
+# Archivos de sistema y editores
+ehthumbs.db
+*.swp
+*.swo
+*.swn
+*~
+.vscode/
+.idea/
+
+# Temporales, copias y volcados generados
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.save
+*.cache
+*.dump
+*.sql.gz
+
+# Entornos y secretos locales
+.env
+.env.*
+!.env.example
+!.env.sample
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Dependencias y salidas de herramientas web
+node_modules/
+dist/
+build/

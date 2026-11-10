@@ -414,6 +414,7 @@ body {
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 3px;
+    white-space: nowrap;
     cursor: pointer;
 }
 
@@ -500,6 +501,67 @@ body {
     cursor: not-allowed;
 }
 
+.campo-tarjeta-numero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 8px;
+}
+
+.campo-tarjeta-numero input { margin-bottom: 14px; }
+
+.boton-usar-cupon {
+    min-height: 44px;
+    padding: 0 14px;
+    color: #ffffff;
+    background: #242424;
+    border: 1px solid #494949;
+    border-radius: 5px;
+    font-family: var(--fuente-interfaz);
+    font-size: 0.84rem;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.boton-usar-cupon:hover,
+.boton-usar-cupon:focus-visible {
+    border-color: var(--color-acento);
+    background: rgb(255 0 51 / 12%);
+}
+
+.campo-cupon-pago {
+    display: grid;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.campo-cupon-pago label {
+    color: #e7e7e7;
+    font-family: var(--fuente-interfaz);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.campo-cupon-pago input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    color: var(--color-texto);
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.estado-cupon-pago {
+    min-height: 1.2em;
+    margin: 0;
+    color: var(--color-precio);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
 .mensaje-pago {
     min-height: 1.3em;
     margin: 0 0 10px;
@@ -531,6 +593,7 @@ body {
     font-size: 0.92rem;
     font-weight: 700;
     text-decoration: none;
+    white-space: nowrap;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -553,6 +616,7 @@ body {
     font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: 0.03em;
+    white-space: nowrap;
     cursor: pointer;
     transition: filter 0.2s ease, transform 0.2s ease;
 }
@@ -699,6 +763,7 @@ body {
     font-size: 0.9rem;
     font-weight: 600;
     text-decoration: none;
+    white-space: nowrap;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -815,6 +880,7 @@ body {
     font-size: 0.95rem;
     font-weight: 700;
     text-decoration: none;
+    white-space: nowrap;
     transition: filter 0.2s ease;
 }
 
@@ -844,6 +910,7 @@ body {
     font-size: 0.95rem;
     font-weight: 700;
     text-decoration: none;
+    white-space: nowrap;
     transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
@@ -920,6 +987,22 @@ body {
     .icono-metodo {
         width: 36px;
         height: 36px;
+    }
+}
+
+/* En teléfonos angostos la barra superior cabe en una sola línea. */
+@media (max-width: 380px) {
+    .barra-superior {
+        gap: 8px;
+        padding: 0 12px;
+    }
+
+    .logotipo-superior {
+        font-size: 16px;
+    }
+
+    .enlace-volver {
+        font-size: 14px;
     }
 }
 

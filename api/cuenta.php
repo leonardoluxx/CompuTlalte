@@ -94,6 +94,8 @@ if ($metodo_http !== "POST") {
 
 $cuerpo = leer_cuerpo();
 $accion = (string) ($cuerpo["accion"] ?? "");
+csrf_exigir();
+rate_limit("cuenta", 30, 60);
 
 switch ($accion) {
     case "datos":

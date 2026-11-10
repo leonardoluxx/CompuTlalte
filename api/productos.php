@@ -46,6 +46,8 @@ if ($metodo !== "POST") {
 
 $cuerpo = leer_cuerpo();
 $accion = (string) ($cuerpo["accion"] ?? "");
+csrf_exigir();
+rate_limit("productos", 60, 60);
 
 // ------------------------------------------------------------ escritura
 $usuario = usuario_de_sesion();

@@ -234,9 +234,10 @@ button {
 .chip-credencial {
     display: flex;
     width: 100%;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--espacio-3);
+    gap: 6px var(--espacio-3);
     padding: 11px 14px;
     background: var(--vidrio-fondo);
     border: 1px solid var(--vidrio-borde);
@@ -263,6 +264,8 @@ button {
 }
 
 .chip-credencial code {
+    max-width: 100%;
+    margin-left: auto;
     padding: 3px 9px;
     background: #0d0d0d;
     border: 1px solid #333333;
@@ -270,6 +273,7 @@ button {
     color: #d8d8d8;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 .nota-chips {
@@ -424,6 +428,7 @@ button {
     font-family: var(--fuente-interfaz);
     font-size: 14px;
     font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
     transition: filter var(--duracion-instante) ease;
 }
@@ -462,9 +467,10 @@ button {
         background-color var(--duracion-media) ease;
 }
 
-/* Colores por nivel: débil rojo, fuerte ámbar, élite verde. */
+/* Colores por nivel: débil rojo, media ámbar, alta azul y élite verde. */
 .relleno-clave.nivel-debil { background: var(--color-acento); }
-.relleno-clave.nivel-fuerte { background: var(--color-aviso); }
+.relleno-clave.nivel-media { background: var(--color-aviso); }
+.relleno-clave.nivel-alta { background: #4ea8de; }
 .relleno-clave.nivel-elite { background: var(--color-exito); }
 
 .etiqueta-clave {
@@ -478,7 +484,8 @@ button {
 }
 
 .etiqueta-clave.nivel-debil { color: #ff7a92; }
-.etiqueta-clave.nivel-fuerte { color: var(--color-aviso); }
+.etiqueta-clave.nivel-media { color: var(--color-aviso); }
+.etiqueta-clave.nivel-alta { color: #73c5f3; }
 .etiqueta-clave.nivel-elite { color: var(--color-exito); }
 
 /* ---------- Mensaje, botón y enlace a registro ---------- */
@@ -505,6 +512,7 @@ button {
     font-size: 17px;
     font-weight: 700;
     letter-spacing: 0.03em;
+    white-space: nowrap;
     cursor: pointer;
     transition:
         filter var(--duracion-instante) ease,
@@ -738,6 +746,7 @@ button {
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.03em;
+    white-space: nowrap;
     transition:
         filter var(--duracion-instante) ease,
         transform var(--duracion-instante) ease,
@@ -759,6 +768,7 @@ button {
     font-family: var(--fuente-interfaz);
     font-size: 13.5px;
     font-weight: 600;
+    white-space: nowrap;
     cursor: pointer;
     transition: color var(--duracion-instante) ease;
 }
@@ -800,6 +810,22 @@ button {
 
     .tarjeta-acceso {
         padding: var(--espacio-5) var(--espacio-4);
+    }
+}
+
+/* En teléfonos angostos la barra superior cabe en una sola línea. */
+@media (max-width: 380px) {
+    .barra-superior {
+        gap: 8px;
+        padding: 0 12px;
+    }
+
+    .logotipo-superior {
+        font-size: 16px;
+    }
+
+    .enlace-volver {
+        font-size: 14px;
     }
 }
 

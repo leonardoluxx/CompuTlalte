@@ -262,6 +262,7 @@
 /* Pie con las acciones. */
 .pie-editor-visual {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 10px;
 }
@@ -272,6 +273,7 @@
     font-family: var(--fuente-interfaz, sans-serif);
     font-size: 15px;
     font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
     transition: filter var(--duracion-instante, 140ms) ease, transform var(--duracion-instante, 140ms) ease;
 }

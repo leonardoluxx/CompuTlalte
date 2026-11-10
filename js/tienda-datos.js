@@ -112,7 +112,7 @@
             ["heroImagen", "--imagen-anuncio", null],
             ["imagenComputadoras", "--fondo-seccion-computadoras", "linear-gradient(rgb(10 10 10 / 86%), rgb(10 10 10 / 86%))"],
             ["imagenAccesorios", "--fondo-banner-accesorios", "linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 8%))"],
-            ["imagenOfertas", "--fondo-banner-ofertas", "linear-gradient(to right, rgb(0 0 0 / 92%), rgb(0 0 0 / 45%) 55%, rgb(0 0 0 / 8%))"]
+            ["imagenOfertas", "--fondo-banner-ofertas", null]
         ];
 
         mapa.forEach(function (item) {
@@ -159,10 +159,16 @@
     // a quien llama, aunque el servidor esté caído.
     async function peticion(url, cuerpo) {
         try {
+            // CSRF token desde meta tag (inyectado por bootstrap.php o layout)
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || "";
+            const headers = { "Content-Type": "application/json" };
+            if (csrfToken) {
+                headers["X-CSRF-Token"] = csrfToken;
+            }
             const respuesta = await fetch(url, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(cuerpo)
+                headers,
+                body: JSON.stringify({ ...cuerpo, csrf: csrfToken })
             });
 
             const datos = await respuesta.json();

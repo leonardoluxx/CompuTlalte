@@ -16,11 +16,11 @@
     <!-- Tipografías incrustadas para que el diseño se vea igual sin conexión. -->
     <link rel="stylesheet" href="css/fuentes.css">
     <link rel="stylesheet" href="css/tokens.css?v=1">
-    <link rel="stylesheet" href="css/styles.css?v=9">
+    <link rel="stylesheet" href="css/styles.css?v=10">
     <link rel="stylesheet" href="css/hero-cinematico.css?v=3">
-    <link rel="stylesheet" href="css/micro-interacciones.css?v=1">
-    <link rel="stylesheet" href="css/editor-visual.css?v=2">
-    <link rel="stylesheet" href="css/mega-menu.css?v=5">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
+    <link rel="stylesheet" href="css/editor-visual.css?v=3">
+    <link rel="stylesheet" href="css/mega-menu.css?v=6">
 </head>
 <body>
     <!-- Encabezado de navegación para las versiones de escritorio y móvil. -->
@@ -219,7 +219,7 @@
         <div class="contenido-modal-producto">
             <section class="galeria-producto" aria-label="Galería de imágenes del producto">
                 <div class="marco-imagen-producto">
-                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="">
+                    <img class="imagen-principal-producto" id="imagen-principal-producto" alt="" tabindex="0" role="button" aria-haspopup="dialog">
                     <button class="control-galeria control-galeria-anterior" id="imagen-anterior" type="button" aria-label="Ver imagen anterior">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
                     </button>
@@ -270,48 +270,6 @@
 
                     <div class="contenedor-opciones-personalizacion" id="opciones-personalizacion">
                         <div class="interior-opciones-personalizacion">
-                            <fieldset class="grupo-personalizacion">
-                                <legend>Almacenamiento</legend>
-                                <div class="opciones-personalizacion">
-                                    <label class="opcion-personalizacion">
-                                        <input type="radio" name="personalizacion-almacenamiento" value="1-tb" data-extra="0" checked>
-                                        <span class="contenido-opcion"><strong>1 TB</strong><small>Incluido</small></span>
-                                    </label>
-                                    <label class="opcion-personalizacion">
-                                        <input type="radio" name="personalizacion-almacenamiento" value="2-tb" data-extra="2000">
-                                        <span class="contenido-opcion"><strong>2 TB</strong><small>+ $2,000</small></span>
-                                    </label>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="grupo-personalizacion">
-                                <legend>Memoria RAM</legend>
-                                <div class="opciones-personalizacion">
-                                    <label class="opcion-personalizacion">
-                                        <input type="radio" name="personalizacion-memoria" value="16-gb" data-extra="0" checked>
-                                        <span class="contenido-opcion"><strong>16 GB</strong><small>Incluido</small></span>
-                                    </label>
-                                    <label class="opcion-personalizacion">
-                                        <input type="radio" name="personalizacion-memoria" value="32-gb" data-extra="3500">
-                                        <span class="contenido-opcion"><strong>32 GB</strong><small>+ $3,500</small></span>
-                                    </label>
-                                </div>
-                            </fieldset>
-
-                            <fieldset class="grupo-personalizacion">
-                                <legend>Color</legend>
-                                <div class="opciones-personalizacion">
-                                    <label class="opcion-personalizacion">
-                                        <input type="radio" name="personalizacion-color" value="plata" data-extra="0" checked>
-                                        <span class="contenido-opcion"><strong>Plata</strong><small>Incluido</small></span>
-                                    </label>
-                                    <label class="opcion-personalizacion">
-                                        <input type="radio" name="personalizacion-color" value="negro-espacial" data-extra="500">
-                                        <span class="contenido-opcion"><strong>Negro Espacial</strong><small>+ $500</small></span>
-                                    </label>
-                                </div>
-                            </fieldset>
-
                             <p class="total-personalizacion" id="total-personalizacion" role="status" aria-live="polite"></p>
                         </div>
                     </div>
@@ -321,6 +279,19 @@
                 <p class="estado-compra-producto" id="estado-compra-producto" role="status" aria-live="polite"></p>
             </section>
         </div>
+    </dialog>
+
+    <dialog class="lightbox-imagen" id="lightbox-imagen" aria-label="Visor de imágenes del producto">
+        <button class="lightbox-cerrar" id="cerrar-lightbox" type="button" aria-label="Cerrar imagen ampliada">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
+        <button class="lightbox-control lightbox-anterior" id="lightbox-anterior" type="button" aria-label="Ver imagen anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <img class="lightbox-foto" id="lightbox-foto" alt="">
+        <button class="lightbox-control lightbox-siguiente" id="lightbox-siguiente" type="button" aria-label="Ver imagen siguiente">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
     </dialog>
 
     <!-- Búsqueda local: las sugerencias se generan desde el catálogo de productos. -->
@@ -415,7 +386,7 @@
     <!-- Núcleo de la tienda: consume window.DatosBD y habla con la API. -->
     <script src="js/tienda-datos.js?v=4" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
-    <script src="js/script.js?v=13" defer></script>
+    <script src="js/script.js?v=14" defer></script>
     <script src="js/contador-carrito.js?v=1" defer></script>
     <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
     <script src="js/micro-interacciones.js?v=1" defer></script>

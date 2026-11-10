@@ -8,7 +8,9 @@
     <title>Carrito de compras | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-carrito.css?v=4">
+    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/style-carrito.css?v=5">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -54,7 +56,7 @@
 
                 <div id="botones">
                     <a href="index.html" id="seguir">Seguir comprando</a>
-                    <button id="pagar" type="button">Proceder al pago</button>
+                    <button id="pagar" class="boton-brillante" type="button">Proceder al pago</button>
                 </div>
             </aside>
         </div>
@@ -112,59 +114,13 @@
             <h2 id="editar-nombre"></h2>
             <p class="nota-modal">Ajusta las mejoras y el precio se actualizará al instante.</p>
 
-            <fieldset class="grupo-edicion">
-                <legend>Almacenamiento</legend>
-                <div class="opciones-edicion">
-                    <label class="opcion-edicion">
-                        <input type="radio" name="editar-almacenamiento" value="1-tb" data-grupo="almacenamiento" data-etiqueta="1 TB" data-extra="0" checked>
-                        <span>1 TB</span>
-                        <small>Incluido</small>
-                    </label>
-                    <label class="opcion-edicion">
-                        <input type="radio" name="editar-almacenamiento" value="2-tb" data-grupo="almacenamiento" data-etiqueta="2 TB" data-extra="2000">
-                        <span>2 TB</span>
-                        <small>+ $2,000</small>
-                    </label>
-                </div>
-            </fieldset>
-
-            <fieldset class="grupo-edicion">
-                <legend>Memoria RAM</legend>
-                <div class="opciones-edicion">
-                    <label class="opcion-edicion">
-                        <input type="radio" name="editar-memoria" value="16-gb" data-grupo="memoria" data-etiqueta="16 GB" data-extra="0" checked>
-                        <span>16 GB</span>
-                        <small>Incluido</small>
-                    </label>
-                    <label class="opcion-edicion">
-                        <input type="radio" name="editar-memoria" value="32-gb" data-grupo="memoria" data-etiqueta="32 GB" data-extra="3500">
-                        <span>32 GB</span>
-                        <small>+ $3,500</small>
-                    </label>
-                </div>
-            </fieldset>
-
-            <fieldset class="grupo-edicion">
-                <legend>Color</legend>
-                <div class="opciones-edicion">
-                    <label class="opcion-edicion">
-                        <input type="radio" name="editar-color" value="plata" data-grupo="color" data-etiqueta="Plata" data-extra="0" checked>
-                        <span>Plata</span>
-                        <small>Incluido</small>
-                    </label>
-                    <label class="opcion-edicion">
-                        <input type="radio" name="editar-color" value="negro-espacial" data-grupo="color" data-etiqueta="Negro Espacial" data-extra="500">
-                        <span>Negro Espacial</span>
-                        <small>+ $500</small>
-                    </label>
-                </div>
-            </fieldset>
+            <div id="grupos-edicion-carrito"></div>
 
             <p class="precio-edicion" id="editar-precio" role="status" aria-live="polite"></p>
 
             <div class="acciones-modal">
                 <button class="boton-secundario" id="cancelar-editar" type="button">Cancelar</button>
-                <button class="boton-primario" type="submit">Guardar cambios</button>
+                <button class="boton-primario boton-brillante" type="submit">Guardar cambios</button>
             </div>
         </form>
     </dialog>
@@ -175,6 +131,6 @@
     <!-- Catálogo servido desde MySQL por api/bootstrap.php. -->
     <script src="api/bootstrap.php?v=1"></script>
     <script src="js/tienda-datos.js?v=4"></script>
-    <script src="js/scripts-carrito.js?v=6"></script>
+    <script src="js/scripts-carrito.js?v=8"></script>
 </body>
 </html>

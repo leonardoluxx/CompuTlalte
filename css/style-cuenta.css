@@ -303,6 +303,7 @@ body {
     font-family: var(--fuente-interfaz);
     font-size: 15px;
     font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
     transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
 }
@@ -774,6 +775,7 @@ body {
     font-family: var(--fuente-interfaz);
     font-size: 13px;
     font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
     transition: border-color 0.2s ease, color 0.2s ease;
 }
@@ -980,8 +982,14 @@ body {
     font-weight: 700;
     letter-spacing: 0.03em;
     text-decoration: none;
+    white-space: nowrap;
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .boton-principal {
@@ -990,10 +998,14 @@ body {
     border: 1px solid var(--color-acento);
 }
 
+/* Mismo gesto que el botón de acceso del inicio de sesión:
+   se eleva apenas y deja un halo rojo muy sutil. */
 .boton-principal:hover,
 .boton-principal:focus-visible {
     background: #c40027;
     border-color: #c40027;
+    box-shadow: 0 10px 26px rgb(255 0 51 / 26%);
+    transform: translateY(-1px);
 }
 
 .boton-secundario {
@@ -1006,6 +1018,12 @@ body {
 .boton-secundario:focus-visible {
     border-color: #777777;
     background: #1e1e1e;
+}
+
+.boton-principal:focus-visible,
+.boton-secundario:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 3px;
 }
 
 /* Ajustes para pantallas medianas: el perfil pasa arriba del contenido. */
@@ -1132,5 +1150,10 @@ body {
         transition-duration: 0s !important;
         transition-delay: 0s !important;
         animation-duration: 0s !important;
+    }
+
+    .boton-principal:hover,
+    .boton-principal:focus-visible {
+        transform: none;
     }
 }

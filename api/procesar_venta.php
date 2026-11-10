@@ -17,6 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $cuerpo = leer_cuerpo();
+csrf_exigir();
+rate_limit("venta", 10, 60);
 $items = $cuerpo["items"] ?? [];
 $metodo = (string) ($cuerpo["metodoPago"] ?? "");
 $referencia = trim((string) ($cuerpo["referencia"] ?? ""));
@@ -32,6 +34,10 @@ if (!in_array($metodo, ["tarjeta", "transferencia"], true)) {
 }
 
 $usuario = usuario_de_sesion();
+if (!$usuario) {
+    responder_error("Debes iniciar sesión para comprar.", 401);
+}
+
 $bd = obtenerConexion();
 
 // Folio legible: CTL-20261104-AB3F

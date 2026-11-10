@@ -106,6 +106,28 @@ formularioEl.addEventListener("submit", async function (evento) {
         return;
     }
 
+    // Auto-login después del registro
+    try {
+        const loginRespuesta = await fetch("api/login.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identificador: correo, password: clave })
+        });
+        const loginResultado = await loginRespuesta.json();
+        if (loginRespuesta.ok && loginResultado.ok) {
+            // Redirigir a donde venía el usuario (carrito, pago, etc.)
+            let redirigir = "index.html";
+            try {
+                redirigir = localStorage.getItem("redirigirTrasLogin") || "index.html";
+                localStorage.removeItem("redirigirTrasLogin");
+            } catch (error) {}
+            window.location.href = redirigir;
+            return;
+        }
+    } catch (error) {
+        // Si falla el auto-login, redirigir a login normal
+    }
+
     alert(resultado.mensaje || "Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
     window.location.href = "login.html";
 });

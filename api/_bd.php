@@ -19,12 +19,64 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// ------------------------------------------------------------- CSRF
+// Token por sesión (stateless dentro de la sesión). Se valida en cada POST mutante.
+function csrf_token(): string
+{
+    if (empty($_SESSION["csrf"])) {
+        $_SESSION["csrf"] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION["csrf"];
+}
+
+function csrf_verificar(string $token): bool
+{
+    $sessionToken = $_SESSION["csrf"] ?? "";
+    if ($sessionToken === "" || $token === "") {
+        return false;
+    }
+    return hash_equals($sessionToken, $token);
+}
+
+function csrf_exigir(): void
+{
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $cuerpo = leer_cuerpo();
+        $token = (string) ($cuerpo["csrf"] ?? "");
+        if (!csrf_verificar($token)) {
+            http_response_code(403);
+            responder_error("Token CSRF inválido. Recarga la página.", 403);
+        }
+    }
+}
+
+// ------------------------------------------------------------- Rate limiting
+// Límite simple por acción + sesión. No persistente (reinicia al cerrar sesión).
+function rate_limit(string $accion, int $max = 30, int $ventana = 60): void
+{
+    $ahora = time();
+    $clave = "rate_" . $accion;
+    $historial = $_SESSION[$clave] ?? [];
+    $historial = array_filter($historial, fn(int $t): bool => $ahora - $t < $ventana);
+    if (count($historial) >= $max) {
+        http_response_code(429);
+        responder_error("Demasiadas peticiones. Espera un momento.", 429);
+    }
+    $historial[] = $ahora;
+    $_SESSION[$clave] = $historial;
+}
+
 // ---------------------------------------------------------- cabeceras
 // La API siempre responde JSON y solo acepta peticiones del mismo sitio.
 function cabeceras_json(): void
 {
     header("Content-Type: application/json; charset=utf-8");
     header("X-Content-Type-Options: nosniff");
+    header("X-Frame-Options: DENY");
+    header("Referrer-Policy: strict-origin-when-cross-origin");
+    header("Permissions-Policy: camera=(), microphone=(), geolocation=()");
+    // CSP estricto: solo mismo origen para scripts/styles/fonts, imágenes self+data
+    header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
 }
 
 // ------------------------------------------------------- cuerpo JSON

@@ -54,10 +54,11 @@
     // Contraseñas demasiado conocidas: siempre se marcan débiles.
     const CLAVES_COMUNES = ["password", "123456", "computlalte", "qwerty", "contrasena"];
 
-    // Tres niveles, como pidió el diseño: Débil, Fuerte y Élite.
+    // Cuatro niveles de seguridad con etiquetas progresivas.
     const NIVELES = [
         { clase: "nivel-debil", texto: "Débil" },
-        { clase: "nivel-fuerte", texto: "Fuerte" },
+        { clase: "nivel-media", texto: "Media" },
+        { clase: "nivel-alta", texto: "Alta" },
         { clase: "nivel-elite", texto: "Élite" }
     ];
 
@@ -106,13 +107,16 @@
 
     // Traduce la puntuación a uno de los tres niveles.
     function nivelDe(puntos) {
-        if (puntos < 40) {
+        if (puntos < 30) {
             return 0; // Débil
         }
-        if (puntos < 75) {
-            return 1; // Fuerte
+        if (puntos < 55) {
+            return 1; // Media
         }
-        return 2; // Élite
+        if (puntos < 80) {
+            return 2; // Alta
+        }
+        return 3; // Élite
     }
 
     clave.addEventListener("input", () => {
@@ -131,7 +135,7 @@
         relleno.className = `relleno-clave ${datos.clase}`;
         relleno.style.width = `${Math.max(puntos, 8)}%`;
         etiquetaFuerza.className = `etiqueta-clave ${datos.clase}`;
-        etiquetaFuerza.textContent = `Fuerza: ${datos.texto}`;
+        etiquetaFuerza.textContent = `Seguridad: ${datos.texto}`;
     });
 
     // ---------- Cambio de caras de la tarjeta ----------

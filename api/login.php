@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $cuerpo = leer_cuerpo();
+rate_limit("login", 5, 300);
 $identificador = trim((string) ($cuerpo["identificador"] ?? ""));
 $password = (string) ($cuerpo["password"] ?? "");
 

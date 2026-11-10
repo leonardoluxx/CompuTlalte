@@ -8,7 +8,9 @@
     <title>Mi cuenta | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-cuenta.css?v=6">
+    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/style-cuenta.css?v=8">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -32,8 +34,8 @@
             <p>Necesitas iniciar sesión para consultar y editar tu información personal. Al entrar, volverás a esta página automáticamente.</p>
             <p class="mensaje-cuenta" id="mensaje-sesion" role="alert"></p>
             <div class="acciones-cuenta">
-                <a class="boton-principal" id="enlace-login" href="login.html">Iniciar sesión</a>
-                <a class="boton-secundario" id="enlace-registro" href="registro.html">Crear cuenta</a>
+                <a class="boton-principal boton-brillante" id="enlace-login" href="login.html">Iniciar sesión</a>
+                <a class="boton-secundario boton-brillante" id="enlace-registro" href="registro.html">Crear cuenta</a>
             </div>
         </section>
 
@@ -129,7 +131,7 @@
                             <p class="mensaje-cuenta" id="mensaje-datos" role="alert" aria-live="polite"></p>
 
                             <div class="acciones-cuenta">
-                                <button class="boton-principal" type="submit">Guardar cambios</button>
+                                <button class="boton-principal boton-brillante" type="submit">Guardar cambios</button>
                             </div>
                         </form>
                     </div>
@@ -172,7 +174,7 @@
                             <p class="mensaje-cuenta" id="mensaje-seguridad" role="alert" aria-live="polite"></p>
 
                             <div class="acciones-cuenta">
-                                <button class="boton-principal" type="submit">Actualizar contraseña</button>
+                                <button class="boton-principal boton-brillante" type="submit">Actualizar contraseña</button>
                             </div>
                         </form>
                     </div>
@@ -259,7 +261,7 @@
                             <p class="mensaje-cuenta" id="mensaje-pago" role="alert" aria-live="polite"></p>
 
                             <div class="acciones-cuenta">
-                                <button class="boton-principal" type="submit">Guardar método de pago</button>
+                                <button class="boton-principal boton-brillante" type="submit">Guardar método de pago</button>
                             </div>
                         </form>
                     </div>
@@ -289,6 +291,6 @@
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
     <script src="api/bootstrap.php?v=1"></script>
     <script src="js/tienda-datos.js?v=4"></script>
-    <script src="js/scripts-cuenta.js?v=7"></script>
+    <script src="js/scripts-cuenta.js?v=8"></script>
 </body>
 </html>

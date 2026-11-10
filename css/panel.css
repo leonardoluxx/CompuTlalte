@@ -138,6 +138,7 @@ body.rol-admin .solo-gerente {
     font-size: 15px;
     font-weight: 700;
     text-decoration: none;
+    white-space: nowrap;
     transition: color 0.2s ease;
 }
 
@@ -157,6 +158,7 @@ body.rol-admin .solo-gerente {
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 /* --------------------------------------------------------------- acceso */
@@ -230,6 +232,7 @@ body.rol-admin .solo-gerente {
     font-size: 16px;
     font-weight: 600;
     text-align: left;
+    white-space: nowrap;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
@@ -472,6 +475,9 @@ body.rol-admin .solo-gerente {
     font-weight: 700;
     letter-spacing: 0.02em;
     text-decoration: none;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
     cursor: pointer;
     transition: filter 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -711,6 +717,12 @@ body.rol-admin .solo-gerente {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
+    white-space: nowrap;
+}
+
+/* El selector de rol vive en una celda: no debe partir su etiqueta. */
+.panel-selector-rol {
+    white-space: nowrap;
 }
 
 .panel-contador-tabla {
@@ -1037,6 +1049,7 @@ body.rol-admin .solo-gerente {
     font-family: var(--fuente-interfaz);
     font-size: 12px;
     font-weight: 700;
+    white-space: nowrap;
     cursor: pointer;
 }
 
@@ -1167,7 +1180,8 @@ body.rol-admin .solo-gerente {
         min-height: 60px;
     }
 
-    .panel-enlace-tienda {
+    .panel-enlace-tienda,
+    .panel-rol {
         display: none;
     }
 
@@ -1283,22 +1297,41 @@ body.rol-admin .solo-gerente {
     word-break: break-word;
 }
 
-/* Tablas: celdas que parten el texto (la envoltura sigue permitiendo
-   scroll horizontal en pantallas muy chicas, pero el texto ya no empuja). */
-.panel-tabla th,
+/* Tablas: el texto corrido se parte, pero los encabezados y la columna
+   de acciones conservan su tamaño natural. La envoltura ya permite scroll
+   horizontal en pantallas muy chicas, así que nada se aplasta. */
 .panel-tabla td {
     overflow-wrap: anywhere;
     word-break: break-word;
 }
 
 .panel-tabla th {
-    white-space: normal;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 /* La columna del producto/cuenta manda en el ancho; el resto se reparte. */
 .panel-tabla th:first-child,
 .panel-tabla td:first-child {
     width: 38%;
+}
+
+/* Acciones (Eliminar, Editar, Restaurar, Guardar): siempre en una línea. */
+.panel-tabla th:last-child,
+.panel-tabla td:last-child:not(.panel-tabla-vacia) {
+    width: 1%;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* El aviso de tabla vacía ocupa toda la fila y sí puede fluir. */
+.panel-tabla td.panel-tabla-vacia {
+    width: auto;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 /* Listas compactas: el texto fluye y las acciones no se aplastan. */

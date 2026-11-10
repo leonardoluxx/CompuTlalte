@@ -54,6 +54,8 @@ $usuario = exigir_rol(["admin"]);
 $bd = obtenerConexion();
 
 $cuerpo = leer_cuerpo();
+csrf_exigir();
+rate_limit("configuracion", 10, 60);
 
 // ------------------------------------------------- margen de ganancia
 if (isset($cuerpo["margenGlobal"])) {

@@ -233,7 +233,7 @@ if ($accion === "instalar" && !$fallo_conexion) {
             </div>
         <?php endif; ?>
 
-        <?php if (!$fallo_conexion && !$error && !(isset($paso) && count($pasos) > 0 && strpos(end($pasos)["texto"], "completada") !== false)): ?>
+        <?php if (!$fallo_conexion && !$error && !$instalacion_bloqueada && !(isset($paso) && count($pasos) > 0 && strpos(end($pasos)["texto"], "completada") !== false)): ?>
             <?php if ($productos_actuales > 0): ?>
                 <a class="boton secundario" href="?accion=instalar&confirmar=1">Reinstalar desde cero (borra los datos actuales)</a>
             <?php else: ?>

@@ -939,6 +939,21 @@
         document.getElementById(id).value = valor === null || valor === undefined ? "" : String(valor);
     }
 
+    function seleccionarCarpetaPorCategoria() {
+        const carpetas = {
+            audio: "imagenes/imagenes-accesorios/audio",
+            mouse: "imagenes/imagenes-accesorios/mouse",
+            "energia y cables": "imagenes/imagenes-accesorios/energia-y-cables",
+            teclados: "imagenes/imagenes-accesorios/teclados",
+            monitores: "imagenes/imagenes-accesorios/monitores"
+        };
+        const categoria = normalizar(document.getElementById("p-categoria").value);
+
+        if (carpetas[categoria]) {
+            carpetaImagenEl.value = carpetas[categoria];
+        }
+    }
+
     function abrirEditor(producto) {
         esNuevo = !producto;
         productoEnEdicion = producto || null;
@@ -973,6 +988,7 @@
         llenarCampo("p-nombre", datos.nombre);
         llenarCampo("p-marca", datos.marca);
         llenarCampo("p-categoria", datos.categoria);
+        seleccionarCarpetaPorCategoria();
         llenarCampo("p-tipo", datos.tipo || "computadora");
         llenarCampo("p-etiqueta", datos.etiqueta);
         llenarCampo("p-costo", Number(datos.costoBase) || 0);
@@ -1006,6 +1022,7 @@
 
     document.getElementById("cerrar-editor").addEventListener("click", cerrarEditor);
     document.getElementById("cancelar-editor").addEventListener("click", cerrarEditor);
+    document.getElementById("p-categoria").addEventListener("change", seleccionarCarpetaPorCategoria);
 
     editor.addEventListener("click", function (evento) {
         if (evento.target === editor) {

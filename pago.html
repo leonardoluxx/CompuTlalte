@@ -8,7 +8,9 @@
     <title>Método de pago | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/style-pago.css?v=4">
+    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/style-pago.css?v=6">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -126,7 +128,7 @@
 
                         <div class="acciones-pago">
                             <a href="carrito.html" class="enlace-volver-pago">Volver al carrito</a>
-                            <button type="submit" class="boton-confirmar" id="confirmar-transferencia">Confirmar transferencia</button>
+                            <button type="submit" class="boton-confirmar boton-brillante" id="confirmar-transferencia">Confirmar transferencia</button>
                         </div>
                     </form>
                 </section>
@@ -147,7 +149,10 @@
                         <div class="rejilla-pago">
                             <div class="campo-pago campo-completo-pago">
                                 <label for="numero-tarjeta">Número de tarjeta</label>
-                                <input type="text" id="numero-tarjeta" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000">
+                                <div class="campo-tarjeta-numero">
+                                    <input type="text" id="numero-tarjeta" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000">
+                                    <button class="boton-usar-cupon" id="usar-cupon" type="button">Usar Cupón</button>
+                                </div>
                             </div>
 
                             <div class="campo-pago campo-completo-pago">
@@ -170,7 +175,7 @@
 
                         <div class="acciones-pago">
                             <a href="carrito.html" class="enlace-volver-pago">Volver al carrito</a>
-                            <button type="submit" class="boton-confirmar" id="confirmar-tarjeta">Pagar ahora</button>
+                            <button type="submit" class="boton-confirmar boton-brillante" id="confirmar-tarjeta">Pagar ahora</button>
                         </div>
                     </form>
                 </section>
@@ -195,6 +200,7 @@
                 <div class="campo-cupon-pago">
                     <label for="cupon-pago">Cupón de descuento</label>
                     <input type="text" id="cupon-pago" placeholder="Ej. COMPU10" autocomplete="off" style="text-transform: uppercase;">
+                    <p class="estado-cupon-pago" id="estado-cupon-pago" role="status" aria-live="polite"></p>
                 </div>
 
                 <p class="total-pago" id="total-pago">Total: $0</p>
@@ -228,7 +234,7 @@
             </dl>
 
             <div class="acciones-exito">
-                <a class="boton-principal-pago" href="index.html">Volver a la tienda</a>
+                <a class="boton-principal-pago boton-brillante" href="index.html">Volver a la tienda</a>
                 <a class="enlace-secundario-pago" href="cuenta.html">Ver mis pedidos</a>
             </div>
         </section>
@@ -237,6 +243,6 @@
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
     <script src="api/bootstrap.php?v=1"></script>
     <script src="js/tienda-datos.js?v=4"></script>
-    <script src="js/scripts-pago.js?v=5"></script>
+    <script src="js/scripts-pago.js?v=6"></script>
 </body>
 </html>

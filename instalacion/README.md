@@ -44,7 +44,10 @@ problemas al final de esta guía.
 
 3. Espera unos segundos: verás una lista con pasos en verde ✔ y los enlaces
    finales. **Listo, eso es todo.** El instalador crea la base de datos
-   `computlalte_db` con sus tablas, productos, cuentas y una venta de demostración.
+   `computlalte_db` con 11 tablas, 48 productos, sus 661 especificaciones,
+   276 imágenes de producto, tres cuentas de prueba, una venta de demostración
+   y las rutas predeterminadas de portada, accesorios y ofertas. El dump incluye
+   todo el catálogo; no necesita archivos de importación adicionales.
 
 ### Alternativa manual (si prefieres phpMyAdmin)
 
@@ -52,6 +55,11 @@ problemas al final de esta guía.
 2. Pestaña **Importar** → botón **Seleccionar archivo** → elige
    `computlaltenango/instalacion/computlalte_db.sql`.
 3. Botón **Continuar** (abajo). Al terminar verás la base `computlalte_db` en el menú izquierdo.
+
+> ⚠️ El SQL completo elimina y vuelve a crear `computlalte_db`. Úsalo solo en
+> una computadora nueva o después de respaldar la base existente. Si la tienda
+> ya tiene datos, usa el instalador: este bloquea la reinstalación salvo que
+> un administrador la confirme explícitamente.
 
 ## Paso 4 · Verificar que todo funciona
 

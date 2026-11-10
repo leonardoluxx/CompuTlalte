@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $cuerpo = leer_cuerpo();
+rate_limit("registro", 3, 3600);
 $nombre = trim((string) ($cuerpo["nombre"] ?? ""));
 $email = trim((string) ($cuerpo["email"] ?? ""));
 $direccion = trim((string) ($cuerpo["direccion"] ?? ""));

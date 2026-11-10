@@ -462,6 +462,7 @@ body.carrito-con-modal {
     font-size: 0.85rem;
     font-weight: 600;
     letter-spacing: 0.02em;
+    white-space: nowrap;
     cursor: pointer;
     transition: color 0.2s ease;
 }
@@ -562,6 +563,7 @@ body.carrito-con-modal {
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+    white-space: nowrap;
     cursor: pointer;
     transition: filter 0.2s ease, transform 0.2s ease;
 }
@@ -585,6 +587,7 @@ body.carrito-con-modal {
     font-size: 0.95rem;
     font-weight: 600;
     text-decoration: none;
+    white-space: nowrap;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -641,6 +644,7 @@ body.carrito-con-modal {
     font-weight: 700;
     letter-spacing: 0.03em;
     text-decoration: none;
+    white-space: nowrap;
     transition: filter 0.2s ease;
 }
 
@@ -863,6 +867,7 @@ body.carrito-con-modal {
     font-size: 0.92rem;
     font-weight: 700;
     letter-spacing: 0.03em;
+    white-space: nowrap;
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, filter 0.2s ease;
 }
@@ -1166,6 +1171,22 @@ body.carrito-con-modal {
 
     #titulo {
         font-size: clamp(1.6rem, 9vw, 2rem);
+    }
+}
+
+/* En teléfonos angostos la barra superior cabe en una sola línea. */
+@media (max-width: 380px) {
+    .barra-superior {
+        gap: 8px;
+        padding: 0 12px;
+    }
+
+    .logotipo-superior {
+        font-size: 16px;
+    }
+
+    .enlace-volver {
+        font-size: 14px;
     }
 }
 
