@@ -214,7 +214,7 @@ button {
 }
 
 .menu-desplegable:hover .flecha-desplegable,
-.menu-desplegable:focus-within .flecha-desplegable {
+.menu-desplegable.menu-abierto-teclado .flecha-desplegable {
     transform: rotate(180deg);
 }
 
@@ -1296,6 +1296,38 @@ button {
 }
 
 .lista-detalle li::marker {
+    color: var(--color-acento);
+}
+
+/* Solo se muestran las primeras 4 filas hasta pulsar "Mostrar más". */
+.listas-detalles-producto.listas-colapsadas .lista-detalle li:nth-child(n + 5) {
+    display: none;
+}
+
+/* Botón "Mostrar más" del modal, igual al del catálogo de accesorios. */
+.boton-mostrar-mas {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    margin-top: 18px;
+    padding: 8px 24px;
+    background: transparent;
+    border: 1px solid #3a3a3a;
+    border-radius: 999px;
+    color: #e5e5e5;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: var(--transicion-estandar);
+}
+
+.boton-mostrar-mas[hidden] { display: none; }
+
+.boton-mostrar-mas:hover,
+.boton-mostrar-mas:focus-visible {
+    border-color: var(--color-acento);
     color: var(--color-acento);
 }
 

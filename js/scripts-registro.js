@@ -121,13 +121,42 @@ formularioEl.addEventListener("submit", async function (evento) {
                 redirigir = localStorage.getItem("redirigirTrasLogin") || "index.html";
                 localStorage.removeItem("redirigirTrasLogin");
             } catch (error) {}
-            window.location.href = redirigir;
+
+            // Momento grande: tarjeta centrada de bienvenida. La cuenta ya
+            // vive en MySQL y la sesión quedó abierta con este registro.
+            const primerNombre = nombre.split(" ")[0];
+            if (window.Notificaciones) {
+                Notificaciones.tarjeta({
+                    tipo: "exito",
+                    titulo: "¡Tu cuenta se creó con éxito!",
+                    texto: "Bienvenido, " + primerNombre + ". Tu cuenta quedó lista y tu sesión ya está abierta: puedes comprar en Computlalte cuando quieras.",
+                    textoBoton: redirigir === "carrito.html" ? "Ir a mi carrito" : "Continuar",
+                    alCerrar: function () {
+                        window.location.href = redirigir;
+                    }
+                });
+            } else {
+                window.location.href = redirigir;
+            }
             return;
         }
     } catch (error) {
         // Si falla el auto-login, redirigir a login normal
     }
 
-    alert(resultado.mensaje || "Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
-    window.location.href = "login.html";
+    // Cuenta creada pero sin sesión automática: la tarjeta avisa y manda a iniciar sesión.
+    if (window.Notificaciones) {
+        Notificaciones.tarjeta({
+            tipo: "exito",
+            titulo: "¡Tu cuenta se creó con éxito!",
+            texto: (resultado.mensaje || "Cuenta registrada con éxito.") + " Inicia sesión con tu correo y tu contraseña para entrar.",
+            textoBoton: "Iniciar sesión",
+            alCerrar: function () {
+                window.location.href = "login.html";
+            }
+        });
+    } else {
+        alert(resultado.mensaje || "Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
+        window.location.href = "login.html";
+    }
 });

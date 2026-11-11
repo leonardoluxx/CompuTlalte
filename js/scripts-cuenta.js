@@ -27,6 +27,8 @@ const claveActualEl      = document.getElementById("clave-actual");
 const claveNuevaEl       = document.getElementById("clave-nueva");
 const claveConfirmarEl   = document.getElementById("clave-confirmar");
 const mensajeSeguridadEl = document.getElementById("mensaje-seguridad");
+const alternarClavesEl   = document.getElementById("alternar-claves");
+const textoAlternarClavesEl = document.getElementById("texto-alternar-claves");
 
 const formularioPagoEl   = document.getElementById("formulario-pago-cuenta");
 const metodosPagoCuenta  = [...document.querySelectorAll('input[name="metodo-pago-cuenta"]')];
@@ -86,6 +88,78 @@ function borrarTarjeta(email) {
 function mostrarMensaje(elemento, texto, tipo) {
     elemento.textContent = texto;
     elemento.className = "mensaje-cuenta" + (tipo ? " mensaje-" + tipo : "");
+}
+
+// ------------------------------------------------- seguridad de las peticiones
+// El servidor exige un token CSRF en cada POST. La página lo toma del <meta>
+// que inyecta api/bootstrap.php y, si el servidor lo rechaza (sesión renovada,
+// token vencido), lo pide de nuevo a api/csrf.php y reintenta UNA vez en
+// automático: nunca hace falta recargar la página.
+function tokenCsrfActual() {
+    return document.querySelector('meta[name="csrf-token"]')?.content || "";
+}
+
+async function renovarTokenCsrf() {
+    try {
+        const respuesta = await fetch("api/csrf.php", { headers: { "Accept": "application/json" } });
+        const datos = await respuesta.json();
+        if (respuesta.ok && datos.ok && datos.csrf) {
+            let meta = document.querySelector('meta[name="csrf-token"]');
+            if (!meta) {
+                meta = document.createElement("meta");
+                meta.name = "csrf-token";
+                document.head.appendChild(meta);
+            }
+            meta.content = datos.csrf;
+        }
+    } catch (error) {
+        // Sin renovación se reintenta con el token que ya se tenía.
+    }
+    return tokenCsrfActual();
+}
+
+function falloDeCsrf(respuesta, datos) {
+    return respuesta.status === 403 || /CSRF/i.test((datos && datos.mensaje) || "");
+}
+
+// POST central de la cuenta: adjunta el token y lo renueva si el servidor
+// lo rechaza, reintentando la operación una sola vez antes de avisar.
+async function enviarCuenta(cuerpo, elementoMensaje, mensajeRed) {
+    let token = tokenCsrfActual();
+    if (!token) {
+        token = await renovarTokenCsrf();
+    }
+
+    for (let intento = 0; intento < 2; intento++) {
+        let respuesta;
+        let datos;
+        try {
+            respuesta = await fetch("api/cuenta.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(Object.assign({ csrf: token }, cuerpo))
+            });
+            datos = await respuesta.json();
+        } catch (error) {
+            mostrarMensaje(elementoMensaje, mensajeRed, "error");
+            return null;
+        }
+
+        if (datos.ok) {
+            return datos;
+        }
+
+        if (intento === 0 && falloDeCsrf(respuesta, datos)) {
+            // Token vencido o sesión nueva: se renueva y se reintenta solo.
+            token = await renovarTokenCsrf();
+            continue;
+        }
+
+        mostrarMensaje(elementoMensaje, datos.mensaje || "No se pudo completar la operación.", "error");
+        return null;
+    }
+
+    return null;
 }
 
 // Solo se aceptan los dos métodos reales del checkout.
@@ -389,28 +463,16 @@ formularioDatosEl.addEventListener("submit", async function (evento) {
         return;
     }
 
-    let resultado;
-    try {
-        const respuesta = await fetch("api/cuenta.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                accion: "datos",
-                nombre: nombre,
-                email: correo,
-                direccion: direccion,
-                telefono: telefono,
-                rfc: rfc
-            })
-        });
-        resultado = await respuesta.json();
-    } catch (error) {
-        mostrarMensaje(mensajeDatosEl, "No se pudo conectar con el servidor.", "error");
-        return;
-    }
+    let resultado = await enviarCuenta({
+        accion: "datos",
+        nombre: nombre,
+        email: correo,
+        direccion: direccion,
+        telefono: telefono,
+        rfc: rfc
+    }, mensajeDatosEl, "No se pudo conectar con el servidor.");
 
-    if (!resultado.ok) {
-        mostrarMensaje(mensajeDatosEl, resultado.mensaje || "No se pudieron guardar los datos.", "error");
+    if (!resultado) {
         return;
     }
 
@@ -419,7 +481,11 @@ formularioDatosEl.addEventListener("submit", async function (evento) {
     usuarioActual.nombre = nombre;
     perfilCorreoEl.textContent = correo;
     actualizarEncabezado(nombre);
+    // Doble confirmación: texto verde junto al formulario + toast elegante.
     mostrarMensaje(mensajeDatosEl, resultado.mensaje || "Tus datos se guardaron correctamente.", "exito");
+    if (window.Notificaciones) {
+        Notificaciones.avisoTexto(resultado.mensaje || "Tus datos se guardaron correctamente.");
+    }
 });
 
 // Seguridad: el cambio de contraseña se valida y hashea en el servidor.
@@ -449,32 +515,48 @@ formularioSeguridadEl.addEventListener("submit", async function (evento) {
         return;
     }
 
-    let resultado;
-    try {
-        const respuesta = await fetch("api/cuenta.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                accion: "clave",
-                actual: claveActual,
-                nueva: claveNueva
-            })
-        });
-        resultado = await respuesta.json();
-    } catch (error) {
-        mostrarMensaje(mensajeSeguridadEl, "No se pudo conectar con el servidor.", "error");
-        return;
-    }
+    let resultado = await enviarCuenta({
+        accion: "clave",
+        actual: claveActual,
+        nueva: claveNueva
+    }, mensajeSeguridadEl, "No se pudo conectar con el servidor.");
 
-    if (!resultado.ok) {
-        mostrarMensaje(mensajeSeguridadEl, resultado.mensaje || "No se pudo actualizar la contraseña.", "error");
+    if (!resultado) {
         return;
     }
 
     claveActualEl.value = "";
     claveNuevaEl.value = "";
     claveConfirmarEl.value = "";
+    // Por seguridad, si las contraseñas se estaban mostrando se vuelven a ocultar.
+    ocultarClaves();
+    // Doble confirmación: texto verde junto al formulario + toast elegante.
     mostrarMensaje(mensajeSeguridadEl, resultado.mensaje || "Tu contraseña se actualizó correctamente.", "exito");
+    if (window.Notificaciones) {
+        Notificaciones.avisoTexto(resultado.mensaje || "Tu contraseña se actualizó correctamente.");
+    }
+});
+
+// Accesibilidad: un solo botón muestra u oculta las tres contraseñas del
+// apartado de seguridad, para que no haya que memorizarlas a ciegas.
+const camposClave = [claveActualEl, claveNuevaEl, claveConfirmarEl];
+
+function ocultarClaves() {
+    camposClave.forEach(function (campo) {
+        campo.type = "password";
+    });
+    alternarClavesEl.setAttribute("aria-pressed", "false");
+    textoAlternarClavesEl.textContent = "Mostrar contraseñas";
+}
+
+alternarClavesEl.addEventListener("click", function () {
+    const visible = alternarClavesEl.getAttribute("aria-pressed") !== "true";
+
+    camposClave.forEach(function (campo) {
+        campo.type = visible ? "text" : "password";
+    });
+    alternarClavesEl.setAttribute("aria-pressed", String(visible));
+    textoAlternarClavesEl.textContent = visible ? "Ocultar contraseñas" : "Mostrar contraseñas";
 });
 
 // Métodos de pago: la preferencia vive en la base de datos.
@@ -489,21 +571,12 @@ formularioPagoEl.addEventListener("submit", async function (evento) {
         ? normalizarMetodo(metodoSeleccionado.value)
         : "";
 
-    let resultado;
-    try {
-        const respuesta = await fetch("api/cuenta.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ accion: "metodo", metodo: metodoPago })
-        });
-        resultado = await respuesta.json();
-    } catch (error) {
-        mostrarMensaje(mensajePagoEl, "No se pudo conectar con el servidor.", "error");
-        return;
-    }
+    let resultado = await enviarCuenta({
+        accion: "metodo",
+        metodo: metodoPago
+    }, mensajePagoEl, "No se pudo conectar con el servidor.");
 
-    if (!resultado.ok) {
-        mostrarMensaje(mensajePagoEl, resultado.mensaje || "No se pudo guardar el método.", "error");
+    if (!resultado) {
         return;
     }
 
@@ -511,7 +584,11 @@ formularioPagoEl.addEventListener("submit", async function (evento) {
     if (perfilMetodoEl) {
         perfilMetodoEl.textContent = metodoPago ? ETIQUETAS_METODO[metodoPago] : "Sin definir";
     }
+    // Doble confirmación: texto verde junto al formulario + toast elegante.
     mostrarMensaje(mensajePagoEl, "Tu método de pago se guardó correctamente.", "exito");
+    if (window.Notificaciones) {
+        Notificaciones.avisoTexto("Tu método de pago se guardó correctamente.");
+    }
 });
 
 quitarTarjetaEl.addEventListener("click", function () {
@@ -522,7 +599,11 @@ quitarTarjetaEl.addEventListener("click", function () {
     borrarTarjeta(usuarioActual.correo);
     usuarioActual.tarjetaGuardada = null;
     mostrarTarjetaGuardada(usuarioActual);
+    // Doble confirmación: texto verde junto al formulario + toast elegante.
     mostrarMensaje(mensajePagoEl, "Quitamos la tarjeta guardada de tu cuenta.", "exito");
+    if (window.Notificaciones) {
+        Notificaciones.avisoTexto("Quitamos la tarjeta guardada de tu cuenta.");
+    }
 });
 
 // El estado cambia al instante al elegir, aunque todavía haya que guardar.

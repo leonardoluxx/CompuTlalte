@@ -155,33 +155,64 @@
         return datos;
     }
 
+    // Pide un token CSRF vigente a la API y actualiza el <meta> de la página.
+    // Se usa cuando el servidor rechaza la operación por token vencido.
+    async function renovarTokenCsrf() {
+        try {
+            const respuesta = await fetch("api/csrf.php", { headers: { "Accept": "application/json" } });
+            const datos = await respuesta.json();
+            if (respuesta.ok && datos.ok && datos.csrf) {
+                let meta = document.querySelector('meta[name="csrf-token"]');
+                if (!meta) {
+                    meta = document.createElement("meta");
+                    meta.name = "csrf-token";
+                    document.head.appendChild(meta);
+                }
+                meta.content = datos.csrf;
+            }
+        } catch (error) {
+            // Si no se pudo renovar, se reintenta con el token ya conocido.
+        }
+        return document.querySelector('meta[name="csrf-token"]')?.content || "";
+    }
+
     // Petición POST con JSON; siempre devuelve { ok, ... } para no romper
     // a quien llama, aunque el servidor esté caído.
     async function peticion(url, cuerpo) {
-        try {
-            // CSRF token desde meta tag (inyectado por bootstrap.php o layout)
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || "";
-            const headers = { "Content-Type": "application/json" };
-            if (csrfToken) {
-                headers["X-CSRF-Token"] = csrfToken;
-            }
-            const respuesta = await fetch(url, {
-                method: "POST",
-                headers,
-                body: JSON.stringify({ ...cuerpo, csrf: csrfToken })
-            });
+        // CSRF token desde meta tag (inyectado por bootstrap.php o layout)
+        let csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || "";
 
-            const datos = await respuesta.json();
-            if (!respuesta.ok || !datos.ok) {
-                return { ok: false, mensaje: datos.mensaje || "El servidor rechazó la operación." };
-            }
+        for (let intento = 0; intento < 2; intento++) {
+            try {
+                const headers = { "Content-Type": "application/json" };
+                if (csrfToken) {
+                    headers["X-CSRF-Token"] = csrfToken;
+                }
+                const respuesta = await fetch(url, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify({ ...cuerpo, csrf: csrfToken })
+                });
 
-            return datos;
-        } catch (error) {
-            return {
-                ok: false,
-                mensaje: "No se pudo conectar con el servidor. Verifica que XAMPP (Apache y MySQL) esté corriendo."
-            };
+                const datos = await respuesta.json();
+                if (!respuesta.ok || !datos.ok) {
+                    // Token vencido (p. ej. la sesión se renovó en otra
+                    // pestaña): se pide uno nuevo y se reintenta UNA vez en
+                    // automático, sin obligar a recargar la página.
+                    if (intento === 0 && (respuesta.status === 403 || /CSRF/i.test((datos && datos.mensaje) || ""))) {
+                        csrfToken = await renovarTokenCsrf();
+                        continue;
+                    }
+                    return { ok: false, mensaje: datos.mensaje || "El servidor rechazó la operación." };
+                }
+
+                return datos;
+            } catch (error) {
+                return {
+                    ok: false,
+                    mensaje: "No se pudo conectar con el servidor. Verifica que XAMPP (Apache y MySQL) esté corriendo."
+                };
+            }
         }
     }
 
@@ -439,6 +470,78 @@
     // La API ya entregó los datos (bootstrap.php corre antes que este
     // archivo), así que el núcleo está listo de inmediato.
     aplicarImagenes();
+
+    // ------------------------------------------------ conexión obligatoria
+    // La tienda trabaja SIEMPRE con datos de MySQL: si api/bootstrap.php no
+    // llegó (Apache o MySQL apagados) la página se avisa en pantalla y se
+    // reintenta automáticamente hasta reconectar. Nunca se muestra una
+    // tienda vacía en silencio ni se recurre a datos locales de respaldo.
+    function crearAvisoConexion() {
+        const aviso = document.createElement("div");
+        aviso.id = "aviso-sin-conexion";
+        aviso.setAttribute("role", "alert");
+        aviso.style.cssText = "position:fixed;left:16px;right:16px;top:16px;z-index:9999;"
+            + "display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 18px;"
+            + "background:#2b0d13;border:1px solid #ff0033;border-radius:10px;color:#ffd9de;"
+            + "font-family:system-ui,sans-serif;font-size:14px;box-shadow:0 12px 40px rgb(0 0 0 / 55%);";
+
+        const texto = document.createElement("span");
+        texto.style.cssText = "flex:1;min-width:220px;line-height:1.5;";
+        texto.textContent = "No hay conexión con la base de datos. Verifica que XAMPP "
+            + "(Apache y MySQL) esté encendido: la tienda se reconectará sola en cuanto vuelva.";
+
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.textContent = "Reintentar ahora";
+        boton.style.cssText = "padding:8px 16px;border:0;border-radius:7px;background:#ff0033;"
+            + "color:#fff;font-weight:700;font-size:14px;cursor:pointer;";
+        boton.addEventListener("click", reconectar);
+
+        aviso.append(texto, boton);
+        document.body.appendChild(aviso);
+        return aviso;
+    }
+
+    // Vuelve a pedir el paquete completo a la API. Devuelve true si MySQL
+    // respondió con datos (aunque la base esté recién instalada y vacía).
+    async function reconectar() {
+        try {
+            await refrescar();
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function vigilarConexion() {
+        // bootstrap.php entregó el paquete: la conexión ya está garantizada.
+        if (Array.isArray(DatosBD.productos)) {
+            return;
+        }
+
+        let aviso = null;
+        let temporizador = null;
+
+        async function intentar() {
+            const conectada = await reconectar();
+            if (conectada) {
+                clearInterval(temporizador);
+                if (aviso) {
+                    aviso.remove();
+                    aviso = null;
+                }
+            } else if (!aviso || !aviso.isConnected) {
+                aviso = crearAvisoConexion();
+            }
+        }
+
+        if (document.body) {
+            intentar();
+            temporizador = setInterval(intentar, 5000);
+        }
+    }
+
+    vigilarConexion();
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", montarEnlacesSesion);

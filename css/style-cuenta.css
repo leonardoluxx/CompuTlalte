@@ -595,6 +595,51 @@ body {
     border-color: var(--color-acento);
 }
 
+/* Botón accesible para mostrar u ocultar las contraseñas del apartado
+   de seguridad: anunciado con aria-pressed para lectores de pantalla. */
+.boton-mostrar-clave {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 14px;
+    padding: 7px 14px;
+    background: #141414;
+    border: 1px solid #3f3f3f;
+    border-radius: 999px;
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.boton-mostrar-clave svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.boton-mostrar-clave:hover {
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
+.boton-mostrar-clave:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+.boton-mostrar-clave[aria-pressed="true"] {
+    border-color: var(--color-acento);
+    background: rgb(255 0 51 / 12%);
+    color: #ffffff;
+}
+
 /* Oculta el texto solo a la vista, pero lo deja disponible para lectores de pantalla. */
 .sr-only {
     position: absolute;
@@ -960,6 +1005,8 @@ body {
 
 .mensaje-exito {
     color: var(--color-exito);
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .acciones-cuenta {

@@ -1,0 +1,369 @@
+/* =========================================================
+   notificaciones.css — Sistema de avisos de Computlalte
+   ---------------------------------------------------------
+   Dos formatos de aviso, mismos materiales del sitio
+   (tokens.css: vidrio, sombras, radios y movimiento):
+
+   1. Tarjeta centrada: para los momentos grandes
+      (cuenta creada, compra confirmada). Con velo que
+      oscurece la página y la tarjeta al centro.
+   2. Toast: esquinas inferiores para confirmaciones
+      rápidas (guardado, agregado al carrito, quitado).
+
+   Tipos de aviso: exito (verde), error (rojo), aviso
+   (ámbar) e info (neutro). Sin JavaScript ni CSS el
+   sitio sigue funcionando: esto solo embellece.
+   ========================================================= */
+
+/* ------------------------------------------------ tarjeta centrada */
+.aviso-velo {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: var(--espacio-4);
+    background: rgb(0 0 0 / 62%);
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    backdrop-filter: blur(6px) saturate(120%);
+    animation: aviso-velo-entrada var(--duracion-media) var(--curva-suave) both;
+}
+
+.aviso-tarjeta {
+    position: relative;
+    overflow: hidden;
+    width: min(100%, 440px);
+    padding: var(--espacio-7) var(--espacio-6) var(--espacio-6);
+    text-align: center;
+    background: var(--vidrio-forte);
+    -webkit-backdrop-filter: var(--vidrio-desenfoque);
+    backdrop-filter: var(--vidrio-desenfoque);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: var(--radio-grande);
+    box-shadow: var(--sombra-3);
+    color: var(--color-texto, #f5f5f5);
+    animation: aviso-tarjeta-entrada var(--duracion-media) var(--curva-rebote) both;
+}
+
+/* Línea de luz superior, como en las tarjetas del sitio. */
+.aviso-tarjeta::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    border-radius: var(--radio-grande) var(--radio-grande) 0 0;
+    background: linear-gradient(90deg, transparent, var(--vidrio-brillo), transparent);
+    pointer-events: none;
+}
+
+/* Insignia circular con el icono del tipo de aviso. */
+.aviso-insignia {
+    display: grid;
+    place-items: center;
+    width: 74px;
+    height: 74px;
+    margin: 0 auto var(--espacio-5);
+    border-radius: var(--radio-perla);
+    animation: aviso-insignia-entrada var(--duracion-media) var(--curva-rebote) 90ms both;
+}
+
+.aviso-insignia svg {
+    width: 34px;
+    height: 34px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.aviso-exito .aviso-insignia {
+    color: #0d2818;
+    background: linear-gradient(145deg, var(--color-exito), #46b381);
+    box-shadow: 0 10px 34px rgb(112 214 162 / 32%);
+}
+
+.aviso-error .aviso-insignia {
+    color: #2b0508;
+    background: linear-gradient(145deg, #ff4d6b, var(--color-acento));
+    box-shadow: var(--sombra-acento);
+}
+
+.aviso-aviso .aviso-insignia {
+    color: #241703;
+    background: linear-gradient(145deg, var(--color-aviso), #d98f0f);
+    box-shadow: 0 10px 34px rgb(255 176 32 / 30%);
+}
+
+.aviso-info .aviso-insignia {
+    color: #f5f5f5;
+    background: linear-gradient(145deg, #333333, #1f1f1f);
+    border: 1px solid var(--vidrio-borde);
+}
+
+/* La palomita del éxito se dibuja trazo a trazo. */
+.aviso-exito .aviso-insignia svg path {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: aviso-trazo 520ms var(--curva-suave) 240ms forwards;
+}
+
+.aviso-titulo {
+    margin: 0 0 var(--espacio-2);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    line-height: 1.25;
+}
+
+.aviso-texto {
+    margin: 0 0 var(--espacio-6);
+    color: var(--color-atenuado, #a3a3a3);
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-wrap: break-word;
+}
+
+.aviso-acciones {
+    display: grid;
+    gap: var(--espacio-2);
+}
+
+.aviso-boton {
+    padding: 13px var(--espacio-5);
+    border: 0;
+    border-radius: var(--radio-chico);
+    background: linear-gradient(135deg, var(--color-acento), #d90029);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    box-shadow: var(--sombra-acento);
+    transition: filter var(--duracion-instante) ease, transform var(--duracion-instante) ease;
+}
+
+.aviso-boton:hover {
+    filter: brightness(1.12);
+}
+
+.aviso-boton:active {
+    transform: scale(0.985);
+}
+
+.aviso-boton:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 3px;
+}
+
+/* Botón secundario (opcional, p. ej. "Decidir después"). */
+.aviso-boton-secundario {
+    background: #262626;
+    box-shadow: none;
+    border: 1px solid #3a3a3a;
+}
+
+/* Salida suave al cerrar. */
+.aviso-saliendo .aviso-velo,
+.aviso-saliendo.aviso-velo {
+    animation: aviso-velo-salida var(--duracion-rapida) ease both;
+}
+
+.aviso-saliendo .aviso-tarjeta {
+    animation: aviso-tarjeta-salida var(--duracion-rapida) ease both;
+}
+
+/* -------------------------------------------------------- toasts */
+.aviso-toasts {
+    position: fixed;
+    right: var(--espacio-5);
+    bottom: var(--espacio-5);
+    z-index: 10001;
+    display: grid;
+    gap: var(--espacio-2);
+    width: min(100% - var(--espacio-6), 380px);
+    pointer-events: none;
+}
+
+.aviso-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--espacio-3);
+    padding: var(--espacio-3) var(--espacio-4);
+    background: var(--vidrio-forte);
+    -webkit-backdrop-filter: var(--vidrio-desenfoque);
+    backdrop-filter: var(--vidrio-desenfoque);
+    border: 1px solid var(--vidrio-borde);
+    border-radius: var(--radio-medio);
+    box-shadow: var(--sombra-2);
+    color: var(--color-texto, #f5f5f5);
+    pointer-events: auto;
+    animation: aviso-toast-entrada var(--duracion-media) var(--curva-rebote) both;
+}
+
+/* Barra de color del tipo de aviso. */
+.aviso-toast::before {
+    content: "";
+    align-self: stretch;
+    width: 3px;
+    border-radius: var(--radio-perla);
+    background: var(--color-exito);
+}
+
+.aviso-toast.aviso-error::before { background: var(--color-acento); }
+.aviso-toast.aviso-aviso::before { background: var(--color-aviso); }
+.aviso-toast.aviso-info::before  { background: #7ab8ff; }
+
+.aviso-icono-toast {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    color: var(--color-exito);
+}
+
+.aviso-error .aviso-icono-toast { color: var(--color-acento); }
+.aviso-aviso .aviso-icono-toast { color: var(--color-aviso); }
+.aviso-info .aviso-icono-toast  { color: #7ab8ff; }
+
+.aviso-cuerpo-toast {
+    flex: 1;
+    min-width: 0;
+}
+
+.aviso-titulo-toast {
+    margin: 0 0 2px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.aviso-texto-toast {
+    margin: 0;
+    color: var(--color-atenuado, #a3a3a3);
+    font-size: 13.5px;
+    line-height: 1.55;
+    overflow-wrap: break-word;
+}
+
+.aviso-cerrar-toast {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    margin: -2px -4px 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radio-perla);
+    background: transparent;
+    color: var(--color-atenuado, #a3a3a3);
+    cursor: pointer;
+    transition: background var(--duracion-instante) ease, color var(--duracion-instante) ease;
+}
+
+.aviso-cerrar-toast svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+.aviso-cerrar-toast:hover {
+    background: var(--vidrio-resalte);
+    color: #ffffff;
+}
+
+.aviso-cerrar-toast:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+}
+
+.aviso-toast.aviso-saliendo {
+    animation: aviso-toast-salida var(--duracion-rapida) ease both;
+}
+
+/* --------------------------------------------------- animaciones */
+@keyframes aviso-velo-entrada {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes aviso-velo-salida {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes aviso-tarjeta-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(26px) scale(0.94);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes aviso-tarjeta-salida {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.95); }
+}
+
+@keyframes aviso-insignia-entrada {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes aviso-trazo {
+    to { stroke-dashoffset: 0; }
+}
+
+@keyframes aviso-toast-entrada {
+    from {
+        opacity: 0;
+        transform: translateX(40px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes aviso-toast-salida {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(40px); }
+}
+
+/* --------------------------------------- pantallas y movimiento */
+@media (max-width: 560px) {
+    .aviso-toasts {
+        right: var(--espacio-3);
+        left: var(--espacio-3);
+        bottom: var(--espacio-3);
+        width: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .aviso-velo,
+    .aviso-tarjeta,
+    .aviso-insignia,
+    .aviso-toast {
+        animation-duration: 1ms;
+        animation-iteration-count: 1;
+    }
+
+    .aviso-exito .aviso-insignia svg path {
+        animation: none;
+        stroke-dashoffset: 0;
+    }
+}

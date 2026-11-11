@@ -24,13 +24,30 @@
     visibility: hidden;
 }
 
+/* El panel se abre al pasar el cursor o cuando el JavaScript marca que el
+   foco llegó por teclado (.menu-abierto-teclado). Sin :focus-within: al
+   hacer clic en un enlace el foco se quedaba en él y el panel quedaba
+   pegado en pantalla aunque el cursor saliera. */
 .menu-mega:hover .contenido-mega,
-.menu-mega:focus-within .contenido-mega {
+.menu-mega.menu-abierto-teclado .contenido-mega {
     opacity: 1;
     pointer-events: auto;
     transform: translate(-50%, 0);
     transition: opacity 0.28s ease, transform 0.28s ease;
     visibility: visible;
+}
+
+/* Cierre forzado tras hacer clic en un enlace del panel: se cierra aunque
+   el cursor siga encima. El JavaScript retira la clase al salir del menú,
+   así la siguiente pasada del cursor lo vuelve a abrir con normalidad. */
+.menu-mega.mega-cerrado-forzado .contenido-mega,
+.menu-mega:hover.mega-cerrado-forzado .contenido-mega,
+.menu-mega.menu-abierto-teclado.mega-cerrado-forzado .contenido-mega {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0s linear 0.28s;
+    visibility: hidden;
 }
 
 .mega-cuadricula {
@@ -169,13 +186,26 @@
     visibility: hidden;
 }
 
+/* Mismo comportamiento que el mega panel: hover o foco de teclado; sin
+   :focus-within para que un clic no deje el panel pegado. */
 .menu-ofertas:hover .contenido-ofertas,
-.menu-ofertas:focus-within .contenido-ofertas {
+.menu-ofertas.menu-abierto-teclado .contenido-ofertas {
     opacity: 1;
     pointer-events: auto;
     transform: translate(-50%, 0);
     transition: opacity 0.28s ease, transform 0.28s ease;
     visibility: visible;
+}
+
+/* Cierre forzado tras hacer clic en un enlace del panel. */
+.menu-ofertas.mega-cerrado-forzado .contenido-ofertas,
+.menu-ofertas:hover.mega-cerrado-forzado .contenido-ofertas,
+.menu-ofertas.menu-abierto-teclado.mega-cerrado-forzado .contenido-ofertas {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0s linear 0.28s;
+    visibility: hidden;
 }
 
 .contenido-ofertas li + li {

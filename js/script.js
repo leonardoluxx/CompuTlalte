@@ -83,6 +83,59 @@ document.addEventListener("keydown", (evento) => {
     }
 });
 
+// ============================================================= mega menú
+// El panel de escritorio se abre al pasar el cursor (CSS) o cuando el foco
+// llega por teclado (la clase .menu-abierto-teclado la pone este bloque).
+// Un clic en un enlace debe cerrarlo de inmediato: antes el foco quedaba
+// en el enlace y el panel se quedaba pegado en pantalla tras el clic.
+const menusEscritorio = document.querySelectorAll(".menu-mega, .menu-ofertas");
+
+menusEscritorio.forEach((menu) => {
+    const panel = menu.querySelector(".contenido-mega, .contenido-ofertas");
+    if (!panel) {
+        return;
+    }
+
+    // Teclado: al llegar el foco por Tab el panel se abre; al salir, se cierra.
+    menu.addEventListener("focusin", (evento) => {
+        if (evento.target.matches(":focus-visible")) {
+            menu.classList.add("menu-abierto-teclado");
+            menu.classList.remove("mega-cerrado-forzado");
+        }
+    });
+
+    menu.addEventListener("focusout", () => {
+        menu.classList.remove("menu-abierto-teclado");
+    });
+
+    // Escape cierra el panel y devuelve el foco al enlace principal del menú.
+    menu.addEventListener("keydown", (evento) => {
+        if (evento.key !== "Escape") {
+            return;
+        }
+        menu.classList.remove("menu-abierto-teclado");
+        const enlacePrincipal = menu.querySelector(":scope > a");
+        if (enlacePrincipal) {
+            enlacePrincipal.focus();
+        }
+    });
+
+    // Clic en un enlace del panel: navega y cierra el menú aunque el cursor
+    // siga encima. El cierre forzado se retira al salir del área del menú,
+    // así la siguiente pasada del cursor lo vuelve a abrir con normalidad.
+    panel.querySelectorAll("a").forEach((enlace) => {
+        enlace.addEventListener("click", () => {
+            menu.classList.remove("menu-abierto-teclado");
+            menu.classList.add("mega-cerrado-forzado");
+            enlace.blur();
+        });
+    });
+
+    menu.addEventListener("mouseleave", () => {
+        menu.classList.remove("mega-cerrado-forzado");
+    });
+});
+
 // Si la ventana pasa a escritorio, cierra el panel y reinicia el acordeón.
 window.matchMedia("(min-width: 769px)").addEventListener("change", (cambio) => {
     if (cambio.matches && menuMovil.classList.contains("esta-abierto")) {
@@ -978,7 +1031,9 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
     }
     actualizarPrecioProducto();
 
-    const detallesVisiblesIniciales = 8;
+    // Igual que en el catálogo de accesorios: la lista queda colapsada
+    // mostrando 4 filas por columna en cuanto alguna la rebasa.
+    const detallesVisiblesIniciales = 4;
     const hayDetallesExtra = producto.caracteristicasClave.length > detallesVisiblesIniciales
         || producto.especificacionesTecnicas.length > detallesVisiblesIniciales;
 
@@ -1381,6 +1436,15 @@ function añadirProductoAlCarrito(
 
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
     window.dispatchEvent(new Event("carrito-actualizado"));
+
+    // Confirmación elegante: toast con el nombre del producto agregado.
+    if (window.Notificaciones) {
+        Notificaciones.toast({
+            tipo: "exito",
+            titulo: "Agregado al carrito",
+            texto: producto.nombre
+        });
+    }
 }
 
 // Añade el producto al carrito con el precio final de la configuración elegida.

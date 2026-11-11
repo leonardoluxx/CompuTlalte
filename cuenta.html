@@ -9,8 +9,9 @@
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
     <link rel="stylesheet" href="css/tokens.css?v=1">
-    <link rel="stylesheet" href="css/style-cuenta.css?v=8">
+    <link rel="stylesheet" href="css/style-cuenta.css?v=10">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
+    <link rel="stylesheet" href="css/notificaciones.css?v=1">
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -152,6 +153,11 @@
 
                     <div class="contenido-acordeon">
                         <form id="formulario-seguridad" novalidate>
+                            <button class="boton-mostrar-clave" id="alternar-claves" type="button" aria-pressed="false">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" /><circle cx="12" cy="12" r="3" /></svg>
+                                <span id="texto-alternar-claves">Mostrar contraseñas</span>
+                            </button>
+
                             <div class="rejilla-campos">
                                 <div class="campo campo-completo">
                                     <label for="clave-actual">Contraseña actual</label>
@@ -290,7 +296,8 @@
 
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
     <script src="api/bootstrap.php?v=1"></script>
-    <script src="js/tienda-datos.js?v=4"></script>
-    <script src="js/scripts-cuenta.js?v=8"></script>
+    <script src="js/tienda-datos.js?v=5"></script>
+    <script src="js/notificaciones.js?v=1"></script>
+    <script src="js/scripts-cuenta.js?v=11"></script>
 </body>
 </html>

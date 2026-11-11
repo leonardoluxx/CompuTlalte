@@ -209,7 +209,8 @@ button { color: inherit; font: inherit; }
 }
 
 .menu-desplegable:hover .flecha-desplegable,
-.menu-desplegable:focus-within .flecha-desplegable { transform: rotate(180deg); }
+.menu-desplegable:hover .flecha-desplegable,
+.menu-desplegable.menu-abierto-teclado .flecha-desplegable { transform: rotate(180deg); }
 
 .contenido-desplegable {
     position: absolute;

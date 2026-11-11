@@ -211,7 +211,18 @@ function contarArticulos() {
     return carrito.reduce((total, item) => total + item.cantidad, 0);
 }
 
-function mostrarAviso(mensaje) {
+// Avisos del carrito: viajan por el sistema de notificaciones del sitio
+// (toasts con vidrio y acento). Si ese guion no cargó, se conserva el
+// aviso en línea de siempre para no perder el mensaje.
+function mostrarAviso(mensaje, tipo) {
+    if (window.Notificaciones) {
+        Notificaciones.toast({
+            tipo: tipo === "aviso" ? "aviso" : "exito",
+            texto: mensaje
+        });
+        return;
+    }
+
     avisoEl.textContent = mensaje;
     avisoEl.classList.add("visible");
     clearTimeout(temporizadorAviso);
@@ -718,7 +729,7 @@ formularioEditar.addEventListener("submit", guardarEdicion);
 
 pagarEl.addEventListener("click", () => {
     if (carrito.length === 0) {
-        mostrarAviso("Tu carrito está vacío. Añade un producto para continuar.");
+        mostrarAviso("Tu carrito está vacío. Añade un producto para continuar.", "aviso");
         return;
     }
 
@@ -726,7 +737,7 @@ pagarEl.addEventListener("click", () => {
     const usuario = window.Tienda ? Tienda.sesion() : null;
 
     if (!usuario) {
-        mostrarAviso("Inicia sesión para continuar con el pago.");
+        mostrarAviso("Inicia sesión para continuar con el pago.", "aviso");
         try {
             localStorage.setItem("redirigirTrasLogin", "carrito");
         } catch (error) {}

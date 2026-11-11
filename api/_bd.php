@@ -41,11 +41,18 @@ function csrf_verificar(string $token): bool
 function csrf_exigir(): void
 {
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        // El token puede viajar en el cuerpo JSON o en la cabecera
+        // X-CSRF-Token: se aceptan los dos canales para que ninguna página
+        // válida quede bloqueada. La comprobación sigue siendo estricta
+        // (hash_equals); solo se flexibiliza de dónde se lee.
         $cuerpo = leer_cuerpo();
         $token = (string) ($cuerpo["csrf"] ?? "");
+        if ($token === "") {
+            $token = (string) ($_SERVER["HTTP_X_CSRF_TOKEN"] ?? "");
+        }
         if (!csrf_verificar($token)) {
             http_response_code(403);
-            responder_error("Token CSRF inválido. Recarga la página.", 403);
+            responder_error("La verificación de seguridad falló. Intenta de nuevo: el token se renueva automáticamente.", 403);
         }
     }
 }
