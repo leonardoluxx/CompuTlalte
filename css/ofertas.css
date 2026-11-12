@@ -175,6 +175,14 @@
     text-decoration: line-through;
 }
 
+@media (max-width: 1024px) {
+    /* En tabletas la rejilla de ofertas se adapta: mantiene 3 columnas
+       mientras las tarjetas tienen espacio y pasa a 2 antes de 850px. */
+    .rejilla-ofertas {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .pagina-ofertas .seccion-anuncio.anuncio-ofertas {
         background-image:

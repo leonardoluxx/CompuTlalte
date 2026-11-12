@@ -6,6 +6,11 @@
 
 declare(strict_types=1);
 
+// Lo primero es saber con qué PHP estamos: _compat.php detecta la versión y
+// corta con un mensaje claro si es demasiado antigua (antes de tocar MySQL).
+require_once __DIR__ . "/api/_compat.php";
+exigir_php_compatible();
+
 const DB_HOST   = "localhost";
 const DB_USUARIO = "root";
 const DB_CLAVE   = "";

@@ -1,36 +1,8 @@
-/* Catálogo de accesorios: estilos optimizados basados en styles.css */
-
-@font-face {
-    font-family: 'Orbitron';
-    src: url('../fonts/Orbitron/Orbitron-VariableFont_wght.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 400 900;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Rajdhani';
-    src: url('../fonts/Rajdhani/Rajdhani-Regular.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 400;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Rajdhani';
-    src: url('../fonts/Rajdhani/Rajdhani-Bold.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 700;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Chakra Petch';
-    src: url('../fonts/ChakraPetch/ChakraPetch-Regular.woff2') format('woff2');
-    font-style: normal;
-    font-weight: 400;
-    font-display: block;
-}
+/* Catálogo de accesorios: estilos optimizados basados en styles.css.
+   Las tipografías NO se declaran aquí: css/fuentes.css las trae incrustadas
+   (base64) y se carga antes que esta hoja en todas las páginas. Así se evita
+   duplicar @font-face y depender de rutas de archivo que fallan en Linux por
+   mayúsculas/minúsculas. */
 
 :root {
     color-scheme: dark;
@@ -43,7 +15,7 @@
     --color-acento: #ff0033;
     --color-acento-boton: #d9002b;
     --color-precio: #70d6a2;
-    --separacion-boton-compra-modal: 20px;
+    --separacion-boton-compra-modal: 14px;
     --ancho-modal-busqueda: 620px;
     --alto-max-resultados-busqueda: min(45vh, 420px);
     --separacion-resultados-busqueda: 10px;
@@ -51,7 +23,7 @@
     --fuente-interfaz: 'Rajdhani', sans-serif;
     --fuente-lectura: 'Chakra Petch', sans-serif;
     --alto-encabezado: 70px;
-    --transicion-estandar: color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    --transicion-estandar: color 0.3s var(--curva-suave), background-color 0.3s var(--curva-suave), opacity 0.3s var(--curva-suave), transform 0.3s var(--curva-suave);
     --texto-logotipo: 18px;
     --texto-enlace-navegacion: 17px;
     --texto-opcion-desplegable: 14px;
@@ -77,7 +49,9 @@ html {
 }
 
 body {
-    min-width: 320px;
+    /* Sin ancho mínimo fijo para no generar scroll horizontal en móviles
+       pequeños o cuando la barra de desplazamiento resta ancho. */
+    min-width: 0;
     min-height: 100vh;
     margin: 0;
     background: var(--color-fondo);
@@ -188,7 +162,7 @@ button { color: inherit; font: inherit; }
     content: "";
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.3s ease;
+    transition: transform 0.34s var(--curva-suave);
 }
 
 .enlace-navegacion:hover,
@@ -205,7 +179,7 @@ button { color: inherit; font: inherit; }
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.7;
-    transition: transform 0.3s ease;
+    transition: transform 0.34s var(--curva-suave);
 }
 
 .menu-desplegable:hover .flecha-desplegable,
@@ -472,27 +446,39 @@ button { color: inherit; font: inherit; }
     column-gap: 32px;
     row-gap: 24px;
     width: min(100%, 1280px);
+    min-width: 0;
     margin: 0 auto;
     padding: 16px 32px 88px;
+    /* Al ocultar/mostrar filtros, el catálogo se reacomoda con suavidad. */
+    transition: grid-template-columns 0.42s var(--curva-suave), column-gap 0.42s var(--curva-suave);
 }
 
-/* Estado oculto: el panel desaparece y el catálogo ocupa todo el ancho */
+/* Estado oculto: la columna se colapsa a 0 y el catálogo se reacomoda */
 .contenedor-catalogo-con-filtros.filtros-ocultos {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 0px minmax(0, 1fr);
+    column-gap: 0px;
     grid-template-areas:
-        "controles"
-        "catalogo";
+        "filtros controles"
+        "filtros catalogo";
 }
 
-.contenedor-catalogo-con-filtros.filtros-ocultos .panel-filtros { display: none; }
+.contenedor-catalogo-con-filtros.filtros-ocultos .panel-filtros {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    /* La visibilidad se retira al final, para que el desvanecido se vea. */
+    transition: opacity 0.3s var(--curva-suave), visibility 0s linear 0.35s;
+}
 
 /* Barra superior de controles */
 .barra-controles-catalogo {
-    display: grid;
-    grid-area: controles;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 15px;
+    grid-area: controles;
+    min-width: 0;
     padding: 12px 16px;
     background: #111111;
     border: 1px solid #2b2b2b;
@@ -501,6 +487,9 @@ button { color: inherit; font: inherit; }
 
 .boton-alternar-filtros {
     display: inline-flex;
+    flex: 0 0 auto;
+    min-width: 0;
+    max-width: 100%;
     align-items: center;
     justify-self: start;
     gap: 9px;
@@ -536,6 +525,8 @@ button { color: inherit; font: inherit; }
 
 .grupo-orden {
     display: flex;
+    flex: 1 1 240px;
+    flex-wrap: wrap;
     min-width: 0;
     align-items: center;
     justify-content: center;
@@ -543,6 +534,7 @@ button { color: inherit; font: inherit; }
 }
 
 .etiqueta-orden {
+    flex: 0 0 auto;
     color: #c3c3c3;
     font-family: var(--fuente-interfaz);
     font-size: 15px;
@@ -551,14 +543,18 @@ button { color: inherit; font: inherit; }
 }
 
 .barra-controles-catalogo .campo-orden {
+    flex: 1 1 180px;
     width: auto;
-    min-width: 210px;
+    min-width: 0;
+    max-width: 260px;
     padding: 9px 12px;
     font-size: 14px;
 }
 
 .barra-controles-catalogo .conteo-resultado {
-    justify-self: end;
+    flex: 0 0 auto;
+    min-width: 0;
+    margin-left: auto;
     text-align: right;
     white-space: nowrap;
 }
@@ -569,10 +565,29 @@ button { color: inherit; font: inherit; }
     top: 24px;
     grid-area: filtros;
     align-self: start;
-    padding: 24px;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
     background: #111111;
     border: 1px solid #2b2b2b;
     border-radius: 6px;
+    transition: opacity 0.3s var(--curva-suave);
+}
+
+/* Contenido del panel a ancho fijo: al ocultar filtros, la columna se
+   achica y el texto interno solo se recorta y desvanece; no se reacomoda
+   letra por letra ni se aplasta mientras la tarjeta se cierra. */
+.interior-panel-filtros {
+    width: 280px;
+    padding: 24px;
+    /* El texto muere antes (0.25s) que la columna (0.35s) y se desliza
+       acompañando al borde: el cierre se ve suave, sin letras aplastadas. */
+    transition: opacity 0.26s var(--curva-suave), transform 0.42s var(--curva-suave);
+}
+
+.contenedor-catalogo-con-filtros.filtros-ocultos .interior-panel-filtros {
+    opacity: 0;
+    transform: translateX(-26px);
 }
 
 .grupo-filtros {
@@ -750,23 +765,25 @@ button { color: inherit; font: inherit; }
 
 /* Copia exacta de los estilos de tarjeta, modal y búsqueda desde styles.css */
 .tarjeta-producto {
+    min-width: 0;
     overflow: hidden;
     background: #111111;
     border: 1px solid #2b2b2b;
     border-radius: 4px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    transition: border-color 0.3s var(--curva-suave), transform 0.35s var(--curva-suave);
 }
 
 .tarjeta-producto:hover,
 .tarjeta-producto:focus-within {
     border-color: rgb(255 0 51 / 55%);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 }
 
 .boton-tarjeta-producto {
     display: flex;
     width: 100%;
     height: 100%;
+    min-width: 0;
     flex-direction: column;
     padding: 0;
     background: transparent;
@@ -789,7 +806,7 @@ button { color: inherit; font: inherit; }
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: transform 0.35s ease;
+    transition: transform 0.55s var(--curva-suave);
 }
 
 .tarjeta-producto:hover .imagen-tarjeta-producto img { transform: scale(1.035); }
@@ -811,6 +828,7 @@ button { color: inherit; font: inherit; }
 .contenido-tarjeta-producto {
     display: flex;
     flex: 1;
+    min-width: 0;
     flex-direction: column;
     padding: 16px;
 }
@@ -926,14 +944,27 @@ button { color: inherit; font: inherit; }
 .tarjeta-producto:hover .accion-ver-detalles { color: var(--color-acento); }
 .tarjeta-producto:hover .accion-ver-detalles svg { transform: translateX(3px); }
 
+/* El dialog cerrado NO se pinta: sin este guard, display:flex pisa el
+   display:none del navegador y el modal aparece como tarjeta fantasma
+   al final de la página. */
+.modal-producto:not([open]) {
+    display: none;
+}
+
 /* Modal de producto */
 .modal-producto {
     width: min(1040px, calc(100% - 36px));
     max-width: none;
-    max-height: min(88vh, 820px);
+    /* Altura acotada: la tarjeta crece con su contenido hasta el tope y,
+       a partir de ahí, la columna de texto es quien recorre por dentro. */
+    max-height: min(85vh, 820px);
     margin: auto;
     padding: 0;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* El scroll del modal nunca se "pasa" a la página de fondo. */
+    overscroll-behavior: contain;
     background: #111111;
     border: 1px solid #343434;
     border-radius: 6px;
@@ -947,16 +978,20 @@ button { color: inherit; font: inherit; }
 
 .contenido-modal-producto {
     display: grid;
+    flex: 1 1 auto;
     min-height: 0;
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-rows: minmax(0, 1fr);
 }
 
 .galeria-producto {
     display: flex;
     min-width: 0;
+    min-height: 0;
     flex-direction: column;
     justify-content: flex-start;
     padding: 14px 24px 24px;
+    overflow: hidden;
     background: #0c0c0c;
     border-right: 1px solid #292929;
 }
@@ -967,7 +1002,8 @@ button { color: inherit; font: inherit; }
     width: min(100%, 400px);
     height: 400px;
     margin-inline: auto;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: hidden;
     background: #080808;
 }
@@ -1000,7 +1036,9 @@ button { color: inherit; font: inherit; }
     transition: opacity 0.25s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-/* Las flechas solo aparecen al pasar el mouse sobre ellas o con el teclado. */
+/* Las flechas se muestran unos segundos al abrir el producto para que se
+   descubran, luego se ocultan y reaparecen con el mouse o el teclado. */
+.galeria-producto.flechas-visibles .control-galeria,
 .control-galeria:hover,
 .control-galeria:focus-visible {
     opacity: 1;
@@ -1085,8 +1123,34 @@ button { color: inherit; font: inherit; }
 .informacion-producto {
     display: flex;
     min-width: 0;
+    min-height: 0;
     flex-direction: column;
-    padding: 26px 28px;
+    padding: 26px 28px 22px;
+    /* La columna derecha es la que recorre el contenido del modal; su
+       scroll queda contenido y no arrastra a la página de fondo. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #303030 transparent;
+}
+
+/* Barra de scroll sutil y oscura para el modal. */
+.informacion-producto::-webkit-scrollbar {
+    width: 9px;
+}
+
+.informacion-producto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.informacion-producto::-webkit-scrollbar-thumb {
+    background: #2e2e2e;
+    border-radius: 8px;
+}
+
+.informacion-producto::-webkit-scrollbar-thumb:hover {
+    background-color: #404040;
 }
 
 .encabezado-detalle-producto {
@@ -1094,6 +1158,19 @@ button { color: inherit; font: inherit; }
     align-items: flex-start;
     justify-content: space-between;
     gap: 18px;
+    /* La X nunca se pierde: al crecer la tarjeta ("Mostrar más") o al
+       recorrerla, el encabezado queda pegado arriba y el botón de cerrar
+       sigue a la vista. Cubre el padding de la columna con el mismo fondo
+       del modal para que el contenido pase por debajo. */
+    position: sticky;
+    /* El tope negativo compensa el margen superior negativo: la banda
+       queda alineada con el borde del scrollport en vez de desplazarse
+       hacia abajo (así no tapaba el precio con el título). */
+    top: -26px;
+    z-index: 5;
+    margin: -26px -28px 0;
+    padding: 26px 28px 10px;
+    background: #111111;
 }
 
 .categoria-producto {
@@ -1160,7 +1237,7 @@ button { color: inherit; font: inherit; }
 }
 
 .descripcion-producto {
-    margin: 0 0 18px;
+    margin: 0 0 14px;
     color: #c3c3c3;
     font-size: 14px;
     line-height: 1.6;
@@ -1173,8 +1250,43 @@ button { color: inherit; font: inherit; }
     gap: 20px;
 }
 
-/* Solo se muestran las primeras 4 filas hasta pulsar "Mostrar más" */
-.listas-detalles-producto.listas-colapsadas .lista-detalle li:nth-child(n + 5) {
+/* Las filas a partir de la quinta viven en su propio contenedor:
+   "Mostrar más" anima grid-template-rows de 0fr a 1fr, de modo que el
+   contenido se despliega empujando lo de abajo suavemente y sin saltos. */
+.contenedor-filas-extra {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease-in-out;
+}
+
+/* Durante la medición inicial del modal el plegado debe ser instantáneo:
+   así no se ve una animación de cierre justo al abrir el producto. */
+.listas-detalles-producto.sin-transicion .contenedor-filas-extra {
+    transition: none;
+}
+
+.listas-detalles-producto:not(.listas-colapsadas) .contenedor-filas-extra {
+    grid-template-rows: 1fr;
+}
+
+.contenedor-filas-extra > ul {
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* El primer renglón extra conserva el ritmo de 6px entre filas. Va ADENTRO
+   del ul (con margen 0) porque el margen del propio ul cuenta como tamaño
+   mínimo de la pista y dejaría asomar una franja fantasma de 6px plegado;
+   así el overflow del ul lo recorta y la pista queda en 0px reales. */
+.contenedor-filas-extra > ul > li:first-child {
+    margin-top: 6px;
+}
+
+/* Compactación extra: si al abrir el modal la columna todavía scrollea
+   (pantallas menos altas), se deja una fila menos por lista para que la
+   vista inicial quede completa, siempre dentro del rango de 3 a 4 filas. */
+.listas-detalles-producto.listas-compactas.listas-colapsadas .lista-detalle li:nth-child(n + 4) {
     display: none;
 }
 
@@ -1188,12 +1300,12 @@ button { color: inherit; font: inherit; }
 
 .lista-detalle ul {
     display: grid;
-    gap: 8px;
+    gap: 6px;
     margin: 0;
     padding-left: 18px;
     color: #b8b8b8;
     font-size: 12px;
-    line-height: 1.5;
+    line-height: 1.45;
 }
 
 .lista-detalle li::marker { color: var(--color-acento); }
@@ -1202,7 +1314,7 @@ button { color: inherit; font: inherit; }
     display: inline-flex;
     align-items: center;
     align-self: center;
-    margin-top: 18px;
+    margin-top: 12px;
     padding: 8px 24px;
     background: transparent;
     border: 1px solid #3a3a3a;
@@ -1226,11 +1338,11 @@ button { color: inherit; font: inherit; }
 
 .boton-comprar-modal {
     display: flex;
-    min-height: 52px;
+    min-height: 48px;
     align-items: center;
     justify-content: center;
     margin-top: var(--separacion-boton-compra-modal);
-    padding: 14px 22px;
+    padding: 12px 22px;
     background: var(--color-acento-boton);
     border: 0;
     border-radius: 3px;
@@ -1250,7 +1362,7 @@ button { color: inherit; font: inherit; }
 }
 
 .estado-compra-producto {
-    margin: 10px 0 0;
+    margin: 6px 0 0;
     color: #ff708a;
     font-size: 13px;
     line-height: 1.5;
@@ -1619,16 +1731,61 @@ button { color: inherit; font: inherit; }
             "controles"
             "filtros"
             "catalogo";
+        /* En una sola columna no hay pistas que animar; además se evitan
+           estados intermedios raros al cruzar el breakpoint. */
+        transition: none;
     }
+    /* Reafirma UNA sola pista: la regla base .filtros-ocultos declara
+       2 pistas con más especificidad y, sin esto, el catálogo cae en la
+       pista de 0px (se ve en blanco). */
     .contenedor-catalogo-con-filtros.filtros-ocultos {
+        grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
             "controles"
             "catalogo";
     }
+    /* En columna única el panel sigue desapareciendo del layout, pero
+       al aparecer entra con un pequeño deslizamiento. */
+    .contenedor-catalogo-con-filtros.filtros-ocultos .panel-filtros { display: none; }
+    .contenedor-catalogo-con-filtros:not(.filtros-ocultos) .panel-filtros {
+        animation: entrada-filtros 0.3s ease-in-out;
+    }
     .panel-filtros {
         position: static;
+        padding: 0;
+    }
+    .interior-panel-filtros {
+        width: 100%;
         padding: 20px;
     }
+}
+
+/* Mientras el JavaScript reacomoda las tarjetas, la rejilla no anima su
+   ancho: primero se fija el destino y después las tarjetas se deslizan. */
+.contenedor-catalogo-con-filtros.reacomodo-instantaneo {
+    transition: none;
+}
+
+@keyframes entrada-filtros {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* En tablets (≤1024) el modal pasa a una sola columna: imagen arriba,
+   texto abajo; la tarjeta entera scrollea y nada se encima. */
+@media (max-width: 1024px) {
+    .modal-producto {
+        display: block;
+        max-height: 90vh;
+    }
+    .contenido-modal-producto {
+        flex: none;
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto;
+    }
+    .informacion-producto { padding: 20px 18px 18px; overflow: visible; }
+    .encabezado-detalle-producto { margin: -20px -18px 0; padding: 20px 18px 10px; top: -20px; }
 }
 
 @media (max-width: 768px) {
@@ -1652,7 +1809,7 @@ button { color: inherit; font: inherit; }
     }
     .contenedor-catalogo-con-filtros { padding: 0 20px 64px; gap: 20px; }
     .seccion-catalogo { padding: 0 0 64px; }
-    .rejilla-productos { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); justify-content: center; gap: 20px; }
+    .rejilla-productos { grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); justify-content: center; gap: 20px; }
     .barra-controles-catalogo {
         display: flex;
         flex-direction: column;
@@ -1661,18 +1818,22 @@ button { color: inherit; font: inherit; }
     }
     .boton-alternar-filtros { justify-content: center; }
     .barra-controles-catalogo .conteo-resultado {
+        flex: 0 0 auto;
+        min-width: 0;
+        margin-left: 0;
         font-size: 13px;
         text-align: center;
     }
     .grupo-orden {
+        flex: 0 0 auto;
         flex-direction: column;
         align-items: stretch;
         justify-content: flex-start;
         gap: 6px;
     }
-    .barra-controles-catalogo .campo-orden { width: 100%; min-width: 0; }
+    .barra-controles-catalogo .campo-orden { flex: 0 0 auto; width: 100%; min-width: 0; max-width: none; }
     .panel-filtros { padding: 16px; }
-    .contenido-modal-producto { grid-template-columns: minmax(0, 1fr); }
+    .interior-panel-filtros { width: 100%; padding: 16px; }
     .galeria-producto { padding: 12px 14px 0; border-right: 0; }
     .marco-imagen-producto {
         width: 100%;
@@ -1685,7 +1846,6 @@ button { color: inherit; font: inherit; }
     .control-galeria { width: 40px; height: 40px; }
     .control-galeria-anterior { left: 6px; }
     .control-galeria-siguiente { right: 6px; }
-    .informacion-producto { padding: 20px 18px 18px; }
     .boton-comprar-modal { margin-top: var(--separacion-boton-compra-modal); }
 }
 

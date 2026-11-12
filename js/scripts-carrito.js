@@ -247,7 +247,7 @@ function crearEstadoVacio() {
     const texto = crearElemento(
         "p",
         "",
-        "Cuando agregues un equipo o un accesorio, aparecerá aquí con sus especificaciones y mejoras."
+        "Cuando agregues un equipo o un accesorio, aparecerá aquí con sus especificaciones y mejoras. Mientras tanto, este carrito pesa tan poco que casi flota."
     );
     const enlace = crearElemento("a", "boton-explorar boton-brillante", "Explorar computadoras");
     enlace.href = "index.html";

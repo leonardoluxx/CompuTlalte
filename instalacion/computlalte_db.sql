@@ -48,10 +48,8 @@ CREATE TABLE `bitacora` (
 -- Dumping data for table `bitacora`
 --
 
-LOCK TABLES `bitacora` WRITE;
 /*!40000 ALTER TABLE `bitacora` DISABLE KEYS */;
 /*!40000 ALTER TABLE `bitacora` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `categorias`
@@ -65,22 +63,24 @@ CREATE TABLE `categorias` (
   `nombre` varchar(80) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_categorias_nombre` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `categorias`
 --
 
-LOCK TABLES `categorias` WRITE;
 /*!40000 ALTER TABLE `categorias` DISABLE KEYS */;
 INSERT INTO `categorias` VALUES
+(5,'Audio'),
 (2,'Desarrollo'),
+(6,'Energía y Cables'),
 (1,'Juegos'),
+(8,'Monitores'),
 (4,'Mouse'),
+(7,'Teclados'),
 (3,'Uso Diario');
 /*!40000 ALTER TABLE `categorias` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `configuracion`
@@ -100,7 +100,6 @@ CREATE TABLE `configuracion` (
 -- Dumping data for table `configuracion`
 --
 
-LOCK TABLES `configuracion` WRITE;
 /*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
 INSERT INTO `configuracion` VALUES
 ('hero_imagen','imagenes/anuncios/imagen-procesador-add.jpg'),
@@ -108,7 +107,6 @@ INSERT INTO `configuracion` VALUES
 ('imagen_ofertas','imagenes/anuncios/imagen-ofertas-add.jpg'),
 ('margen_global','35');
 /*!40000 ALTER TABLE `configuracion` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cupones`
@@ -131,14 +129,12 @@ CREATE TABLE `cupones` (
 -- Dumping data for table `cupones`
 --
 
-LOCK TABLES `cupones` WRITE;
 /*!40000 ALTER TABLE `cupones` DISABLE KEYS */;
 INSERT INTO `cupones` VALUES
 (1,'COMPU10',10,1),
 (2,'BIENVENIDA15',15,1),
 (3,'VENCIDO20',20,0);
 /*!40000 ALTER TABLE `cupones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `detalle_ventas`
@@ -166,13 +162,11 @@ CREATE TABLE `detalle_ventas` (
 -- Dumping data for table `detalle_ventas`
 --
 
-LOCK TABLES `detalle_ventas` WRITE;
 /*!40000 ALTER TABLE `detalle_ventas` DISABLE KEYS */;
 INSERT INTO `detalle_ventas` VALUES
 (1,1,2,'ATTACK SHARK R3 Magnesium Alloy Gaming Mouse 8K',1,3888.00),
 (2,1,1,'PC para juegos VENGEANCE a7500 — 1 TB, 32 GB, Negro Espacial',1,44500.00);
 /*!40000 ALTER TABLE `detalle_ventas` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `especificaciones`
@@ -189,14 +183,13 @@ CREATE TABLE `especificaciones` (
   PRIMARY KEY (`id`),
   KEY `idx_especificaciones_producto` (`producto_id`),
   CONSTRAINT `fk_especificaciones_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2257 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `especificaciones`
 --
 
-LOCK TABLES `especificaciones` WRITE;
 /*!40000 ALTER TABLE `especificaciones` DISABLE KEYS */;
 INSERT INTO `especificaciones` VALUES
 (1,1,'clave','Gabinete semitorre 3500X ARGB con un atractivo diseño envolvente de vidrio'),
@@ -213,7 +206,7 @@ INSERT INTO `especificaciones` VALUES
 (12,3,'clave','16 GB de memoria LPDDR5X y SSD NVMe de 1 TB'),
 (13,3,'clave','Conectividad Wi-Fi 7 y teclado retroiluminado'),
 (14,3,'clave','Diseño ultraligero ideal para programar y multitarea'),
-(15,3,'tecnica','Windows 11 Home'),
+(15,3,'clave','Windows 11 Home'),
 (16,3,'tecnica','Intel Core Ultra 5 225H'),
 (17,3,'tecnica','14\" OLED WUXGA Táctil'),
 (18,3,'tecnica','16 GB RAM LPDDR5X'),
@@ -247,9 +240,2089 @@ INSERT INTO `especificaciones` VALUES
 (46,2,'tecnica','Tasa de sondeo: 8000 Hz'),
 (47,2,'tecnica','Durabilidad: 80 millones de clics'),
 (48,2,'tecnica','Encoder: TTC'),
-(49,2,'tecnica','Garantía: Un año');
+(49,2,'tecnica','Garantía: Un año'),
+(50,5,'clave','Procesador AMD Ryzen 5'),
+(51,5,'clave','Gráfica AMD Radeon Graphics'),
+(52,5,'clave','16 GB de memoria RAM'),
+(53,5,'clave','Almacenamiento 512 GB SSD'),
+(54,5,'clave','Pantalla 1920 px x 1080 px'),
+(55,5,'clave','Windows 11 Home'),
+(56,5,'clave','Color: Plateado'),
+(57,5,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics'),
+(58,5,'tecnica','Linea de la tarjeta gráfica integrada: Radeon'),
+(59,5,'tecnica','Edición del sistema operativo: Home'),
+(60,5,'tecnica','Versión del sistema operativo: 11'),
+(61,5,'tecnica','Nombre del sistema operativo: Windows'),
+(62,5,'tecnica','Modelo del procesador: 40'),
+(63,5,'tecnica','Línea del procesador: Ryzen 5'),
+(64,5,'tecnica','Marca del procesador: AMD'),
+(65,5,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(66,5,'tecnica','Capacidad de disco SSD: 512 GB'),
+(67,5,'tecnica','Memoria RAM: 16 GB'),
+(68,5,'clave','Con pantalla táctil: No'),
+(69,5,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(70,6,'clave','Procesador AMD Ryzen 5 7430U'),
+(71,6,'clave','Gráfica AMD Radeon RX Vega 7'),
+(72,6,'clave','16 GB de memoria RAM'),
+(73,6,'clave','Almacenamiento 512 GB'),
+(74,6,'clave','Pantalla 15.6 pulgadas'),
+(75,6,'clave','Color Gris'),
+(76,6,'tecnica','Color: Gris'),
+(77,6,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon RX Vega 7'),
+(78,6,'tecnica','Modelo del procesador: AMD Ryzen™ 5 7430U Processor'),
+(79,6,'tecnica','Línea del procesador: Ryzen'),
+(80,6,'tecnica','Marca del procesador: AMD'),
+(81,6,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(82,6,'tecnica','Capacidad del disco duro: 512 GB'),
+(83,6,'tecnica','Memoria RAM: 16 GB'),
+(84,7,'clave','Procesador AMD Ryzen 5 4500U'),
+(85,7,'clave','8 GB de memoria RAM'),
+(86,7,'clave','Almacenamiento 256 GB SSD'),
+(87,7,'clave','Pantalla 1920x1080 Full HD'),
+(88,7,'clave','Windows 11 Pro'),
+(89,7,'clave','Color Plateado'),
+(90,7,'tecnica','Color: Plateado'),
+(91,7,'clave','Estado del reacondicionado: Excelente'),
+(92,7,'tecnica','Edición del sistema operativo: Pro'),
+(93,7,'tecnica','Versión del sistema operativo: 11'),
+(94,7,'tecnica','Nombre del sistema operativo: Windows'),
+(95,7,'tecnica','Modelo del procesador: 4500U'),
+(96,7,'tecnica','Línea del procesador: Ryzen 5'),
+(97,7,'tecnica','Marca del procesador: AMD'),
+(98,7,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(99,7,'tecnica','Capacidad de disco SSD: 256 GB'),
+(100,7,'tecnica','Memoria RAM: 8 GB'),
+(101,7,'tecnica','Resolución de pantalla: 1920x1080 Full HD'),
+(102,7,'tecnica','Estado: Reacondicionado excelente'),
+(103,8,'clave','Procesador AMD Ryzen 5 7520U'),
+(104,8,'clave','8 GB de memoria RAM'),
+(105,8,'clave','Almacenamiento 512 GB'),
+(106,8,'clave','Windows 11 Home'),
+(107,8,'clave','Color Plateado'),
+(108,8,'tecnica','Color: Plateado'),
+(109,8,'tecnica','Edición del sistema operativo: Home'),
+(110,8,'tecnica','Versión del sistema operativo: 11'),
+(111,8,'tecnica','Nombre del sistema operativo: Windows'),
+(112,8,'tecnica','Modelo del procesador: 7520U'),
+(113,8,'tecnica','Línea del procesador: Ryzen 5'),
+(114,8,'tecnica','Marca del procesador: AMD'),
+(115,8,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(116,8,'tecnica','Capacidad del disco duro: 512 GB'),
+(117,8,'tecnica','Memoria RAM: 8 GB'),
+(118,8,'clave','Con pantalla táctil: No'),
+(119,9,'clave','Procesador AMD Ryzen 5 4650'),
+(120,9,'clave','32 GB de memoria RAM'),
+(121,9,'clave','Almacenamiento 256 GB SSD'),
+(122,9,'clave','Pantalla 1920px x1080px'),
+(123,9,'clave','Windows 11 Pro'),
+(124,9,'clave','Color Negro'),
+(125,9,'tecnica','Color: Negro'),
+(126,9,'tecnica','Estado del reacondicionado: Excelente'),
+(127,9,'clave','Linea de la tarjeta gráfica integrada: AMD Radeon RX Vega 6'),
+(128,9,'tecnica','Edición del sistema operativo: Pro'),
+(129,9,'tecnica','Versión del sistema operativo: 11'),
+(130,9,'tecnica','Nombre del sistema operativo: Windows'),
+(131,9,'tecnica','Modelo del procesador: 4650'),
+(132,9,'tecnica','Línea del procesador: Ryzen 5'),
+(133,9,'tecnica','Marca del procesador: AMD'),
+(134,9,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(135,9,'tecnica','Capacidad de disco SSD: 256 GB'),
+(136,9,'tecnica','Memoria RAM: 32 GB'),
+(137,9,'clave','Con pantalla táctil: No'),
+(138,9,'tecnica','Resolución de pantalla: 1920px x1080px'),
+(139,9,'tecnica','Estado: Reacondicionado excelente'),
+(140,10,'clave','Procesador AMD Ryzen 7 7735HS'),
+(141,10,'clave','Gráfica RTX 4050'),
+(142,10,'clave','16 GB de memoria RAM'),
+(143,10,'clave','Almacenamiento 512 GB SSD'),
+(144,10,'clave','Pantalla 1920 px x 1080 px'),
+(145,10,'clave','Windows 11 Home'),
+(146,10,'clave','Color: Gris'),
+(147,10,'tecnica','Modelo de la tarjeta gráfica dedicada: RTX 4050'),
+(148,10,'tecnica','Línea de la tarjeta gráfica dedicada: GeForce'),
+(149,10,'tecnica','Marca de la tarjeta gráfica dedicada: NVIDIA'),
+(150,10,'tecnica','Modelo de la tarjeta gráfica integrada: Radeon'),
+(151,10,'tecnica','Linea de la tarjeta gráfica integrada: Graficos integrados'),
+(152,10,'tecnica','Marca de la tarjeta gráfica integrada: AMD Integrados'),
+(153,10,'tecnica','Edición del sistema operativo: Home'),
+(154,10,'tecnica','Versión del sistema operativo: 11'),
+(155,10,'tecnica','Nombre del sistema operativo: Windows'),
+(156,10,'tecnica','Modelo del procesador: 7735HS'),
+(157,10,'tecnica','Línea del procesador: Ryzen 7'),
+(158,10,'tecnica','Marca del procesador: AMD'),
+(159,10,'clave','Frecuencia de actualización de la pantalla: 144 Hz'),
+(160,10,'tecnica','Capacidad de disco SSD: 512 GB'),
+(161,10,'clave','Con pantalla táctil: No'),
+(162,10,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(163,11,'clave','Procesador AMD Ryzen 5 7430u'),
+(164,11,'clave','Gráfica AMD Radeon Graphics'),
+(165,11,'clave','16 GB de memoria RAM'),
+(166,11,'clave','Almacenamiento 512 GB SSD'),
+(167,11,'clave','Pantalla 1920 px x 1080 px'),
+(168,11,'clave','Windows 11 Pro Pro'),
+(169,11,'clave','Color: Gris'),
+(170,11,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics'),
+(171,11,'tecnica','Edición del sistema operativo: Pro'),
+(172,11,'tecnica','Versión del sistema operativo: 11 Pro'),
+(173,11,'tecnica','Nombre del sistema operativo: Windows'),
+(174,11,'tecnica','Modelo del procesador: Ryzen 5 7430u'),
+(175,11,'tecnica','Línea del procesador: Ryzen 5'),
+(176,11,'tecnica','Marca del procesador: AMD'),
+(177,11,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(178,11,'tecnica','Capacidad de disco SSD: 512 GB'),
+(179,11,'tecnica','Memoria RAM: 16 GB'),
+(180,11,'clave','Con pantalla táctil: No'),
+(181,11,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(182,12,'clave','Procesador AMD Ryzen 7 7730u'),
+(183,12,'clave','16 GB de memoria RAM'),
+(184,12,'clave','Almacenamiento 512 GB SSD'),
+(185,12,'clave','Pantalla 1920 px x 1080 px'),
+(186,12,'clave','Windows 11 Home'),
+(187,12,'clave','Color Plateado'),
+(188,12,'tecnica','Color: Plateado'),
+(189,12,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(190,12,'clave','Con pantalla táctil: No'),
+(191,12,'tecnica','Capacidad de disco SSD: 512 GB'),
+(192,12,'tecnica','Marca del procesador: AMD'),
+(193,12,'tecnica','Nombre del sistema operativo: Windows'),
+(194,12,'tecnica','Versión del sistema operativo: 11'),
+(195,12,'tecnica','Edición del sistema operativo: Home'),
+(196,12,'tecnica','Modelo del procesador: 7730u'),
+(197,12,'tecnica','Línea del procesador: Ryzen 7'),
+(198,12,'tecnica','Memoria RAM: 16 GB'),
+(199,13,'clave','Procesador AMD Ryzen 7 7730U'),
+(200,13,'clave','Gráfica AMD Radeon Graphics'),
+(201,13,'clave','16 GB de memoria RAM'),
+(202,13,'clave','Almacenamiento 512 GB SSD'),
+(203,13,'clave','Pantalla 1920 px x 1080 px'),
+(204,13,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics'),
+(205,13,'tecnica','Modelo del procesador: Ryzen 7 7730U'),
+(206,13,'tecnica','Línea del procesador: Ryzen 7'),
+(207,13,'tecnica','Marca del procesador: AMD'),
+(208,13,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(209,13,'tecnica','Capacidad de disco SSD: 512 GB'),
+(210,13,'tecnica','Memoria RAM: 16 GB'),
+(211,13,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(226,15,'clave','Procesador AMD Ryzen 5 7430U'),
+(227,15,'clave','Gráfica AMD Radeon Graphics'),
+(228,15,'clave','8 GB de memoria RAM'),
+(229,15,'clave','Almacenamiento 512 GB SSD'),
+(230,15,'clave','Pantalla 1920 px x 1080 px'),
+(231,15,'clave','Windows 11 Home'),
+(232,15,'clave','Color: Gris'),
+(233,15,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics'),
+(234,15,'tecnica','Edición del sistema operativo: Home'),
+(235,15,'tecnica','Versión del sistema operativo: 11'),
+(236,15,'tecnica','Nombre del sistema operativo: Windows'),
+(237,15,'tecnica','Modelo del procesador: 7430U'),
+(238,15,'tecnica','Línea del procesador: Ryzen 5'),
+(239,15,'tecnica','Marca del procesador: AMD'),
+(240,15,'tecnica','Capacidad de disco SSD: 512 GB'),
+(241,15,'tecnica','Memoria RAM: 8 GB'),
+(242,15,'clave','Con pantalla táctil: No'),
+(243,15,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(244,16,'clave','Procesador Intel Core i5 13450Hx'),
+(245,16,'clave','Gráfica RTX 5050'),
+(246,16,'clave','32 GB de memoria RAM'),
+(247,16,'clave','Almacenamiento 512 GB SSD'),
+(248,16,'clave','Pantalla 1920 px x 1080 px'),
+(249,16,'clave','Windows 11 Home'),
+(250,16,'clave','Color: Gris Luna'),
+(251,16,'tecnica','Modelo de la tarjeta gráfica dedicada: RTX 5050'),
+(252,16,'tecnica','Línea de la tarjeta gráfica dedicada: GeForce'),
+(253,16,'tecnica','Marca de la tarjeta gráfica dedicada: NVIDIA'),
+(254,16,'tecnica','Modelo de la tarjeta gráfica integrada: Inegrados Intel'),
+(255,16,'tecnica','Linea de la tarjeta gráfica integrada: Gráficos Intel®'),
+(256,16,'tecnica','Marca de la tarjeta gráfica integrada: Integrados INTEL'),
+(257,16,'tecnica','Edición del sistema operativo: Home'),
+(258,16,'tecnica','Versión del sistema operativo: 11'),
+(259,16,'tecnica','Nombre del sistema operativo: Windows'),
+(260,16,'tecnica','Modelo del procesador: 13450Hx'),
+(261,16,'tecnica','Línea del procesador: Core i5'),
+(262,16,'tecnica','Marca del procesador: Intel'),
+(263,16,'clave','Frecuencia de actualización de la pantalla: 144 Hz'),
+(264,16,'tecnica','Capacidad de disco SSD: 512 GB'),
+(265,16,'tecnica','Memoria RAM: 32 GB'),
+(266,16,'clave','Con pantalla táctil: No'),
+(267,16,'tecnica','Resolución de pantalla: 1920 px x 1080 px'),
+(268,17,'clave','Procesador Intel Core Ultra 7'),
+(269,17,'clave','Gráfica Integrados Intel UHD'),
+(270,17,'clave','24 GB de memoria RAM'),
+(271,17,'clave','Almacenamiento 1 TB SSD'),
+(272,17,'clave','Pantalla 1920 px x 1200 px'),
+(273,17,'clave','Windows 11 Home'),
+(274,17,'clave','Color: Gris'),
+(275,17,'tecnica','Modelo de la tarjeta gráfica dedicada: Integrados Intel UHD'),
+(276,17,'tecnica','Línea de la tarjeta gráfica dedicada: UHD GRAPHICS'),
+(277,17,'tecnica','Marca de la tarjeta gráfica dedicada: UHD'),
+(278,17,'tecnica','Modelo de la tarjeta gráfica integrada: Graficos integrados'),
+(279,17,'tecnica','Linea de la tarjeta gráfica integrada: Integrados'),
+(280,17,'tecnica','Marca de la tarjeta gráfica integrada: Graphic Intel'),
+(281,17,'tecnica','Edición del sistema operativo: Home'),
+(282,17,'tecnica','Versión del sistema operativo: 11'),
+(283,17,'tecnica','Nombre del sistema operativo: Windows'),
+(284,17,'tecnica','Modelo del procesador: 355'),
+(285,17,'tecnica','Línea del procesador: Core Ultra 7'),
+(286,17,'tecnica','Marca del procesador: Intel'),
+(287,17,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(288,17,'tecnica','Capacidad de disco SSD: 1 TB'),
+(289,17,'tecnica','Memoria RAM: 24 GB'),
+(290,17,'clave','Con pantalla táctil: No'),
+(291,17,'tecnica','Resolución de pantalla: 1920 px x 1200 px'),
+(292,18,'clave','Procesador Intel Core 3 Series 304'),
+(293,18,'clave','8 GB de memoria RAM'),
+(294,18,'clave','Almacenamiento 512 GB SSD'),
+(295,18,'clave','Pantalla 1920x1200'),
+(296,18,'clave','Windows 11 Home'),
+(297,18,'clave','Color Gris'),
+(298,18,'tecnica','Color: Gris'),
+(299,18,'tecnica','Edición del sistema operativo: Home'),
+(300,18,'tecnica','Versión del sistema operativo: 11'),
+(301,18,'tecnica','Nombre del sistema operativo: Windows'),
+(302,18,'tecnica','Modelo del procesador: Series 304'),
+(303,18,'tecnica','Línea del procesador: CORE 3'),
+(304,18,'tecnica','Marca del procesador: Intel'),
+(305,18,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(306,18,'tecnica','Capacidad de disco SSD: 512 GB'),
+(307,18,'tecnica','Memoria RAM: 8 GB'),
+(308,18,'tecnica','Resolución de pantalla: 1920x1200'),
+(309,19,'clave','Procesador Intel Core i5'),
+(310,19,'clave','16 GB de memoria RAM'),
+(311,19,'clave','Almacenamiento 256 GB SSD'),
+(312,19,'tecnica','Procesador: Intel Core i5'),
+(313,19,'tecnica','Memoria RAM: 16 GB'),
+(314,19,'tecnica','Almacenamiento: 256 GB SSD'),
+(315,20,'clave','Procesador Intel Core i5 1245U'),
+(316,20,'clave','Gráfica Intel Iris Xe Graphics'),
+(317,20,'clave','16 GB de memoria RAM'),
+(318,20,'clave','Almacenamiento 256 GB SSD'),
+(319,20,'clave','Pantalla 1920 px x 1200 px táctil'),
+(320,20,'clave','Windows 11 Pro'),
+(321,20,'clave','Color: Negro'),
+(322,20,'tecnica','Modelo de la tarjeta gráfica integrada: Intel Iris Xe Graphics'),
+(323,20,'tecnica','Edición del sistema operativo: Pro'),
+(324,20,'tecnica','Versión del sistema operativo: 11'),
+(325,20,'tecnica','Nombre del sistema operativo: Windows'),
+(326,20,'tecnica','Modelo del procesador: 1245U'),
+(327,20,'tecnica','Línea del procesador: Core i5'),
+(328,20,'tecnica','Marca del procesador: Intel'),
+(329,20,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(330,20,'tecnica','Capacidad de disco SSD: 256 GB'),
+(331,20,'tecnica','Memoria RAM: 16 GB'),
+(332,20,'clave','Con pantalla táctil: Sí'),
+(333,20,'tecnica','Resolución de pantalla: 1920 px x 1200 px'),
+(334,21,'clave','Procesador Intel Core i5 12600h'),
+(335,21,'clave','24 GB de memoria RAM'),
+(336,21,'clave','Almacenamiento 512 GB SSD'),
+(337,21,'clave','Pantalla 15.6 pulgadas'),
+(338,21,'tecnica','Procesador: Intel Core i5 12600h'),
+(339,21,'tecnica','Memoria RAM: 24 GB'),
+(340,21,'tecnica','Almacenamiento: 512 GB SSD'),
+(341,21,'tecnica','Pantalla: 15.6 pulgadas'),
+(342,22,'clave','Procesador Qualcomm Snapdragon X X1-26-100'),
+(343,22,'clave','Gráfica Qualcomm Adreno'),
+(344,22,'clave','24 GB de memoria RAM'),
+(345,22,'clave','Almacenamiento 512 GB SSD'),
+(346,22,'clave','Pantalla 1920 px x 1200 px'),
+(347,22,'clave','Windows 11 Home'),
+(348,22,'clave','Color: Gris Luna'),
+(349,22,'tecnica','Modelo de la tarjeta gráfica dedicada: Adreno Qualcomm Adreno Int'),
+(350,22,'tecnica','Línea de la tarjeta gráfica dedicada: Qualcomm integrada'),
+(351,22,'tecnica','Marca de la tarjeta gráfica dedicada: Integrados GPU'),
+(352,22,'tecnica','Modelo de la tarjeta gráfica integrada: Qualcomm Adreno'),
+(353,22,'tecnica','Linea de la tarjeta gráfica integrada: Graficos integrados'),
+(354,22,'tecnica','Marca de la tarjeta gráfica integrada: GPU'),
+(355,22,'tecnica','Edición del sistema operativo: Home'),
+(356,22,'tecnica','Versión del sistema operativo: 11'),
+(357,22,'tecnica','Nombre del sistema operativo: Windows'),
+(358,22,'tecnica','Modelo del procesador: X1-26-100'),
+(359,22,'tecnica','Línea del procesador: Snapdragon X'),
+(360,22,'tecnica','Marca del procesador: Qualcomm'),
+(361,22,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(362,22,'tecnica','Capacidad de disco SSD: 512 GB'),
+(363,22,'tecnica','Memoria RAM: 24 GB'),
+(364,22,'clave','Con pantalla táctil: No'),
+(365,22,'tecnica','Resolución de pantalla: 1920 px x 1200 px'),
+(366,23,'clave','Procesador AMD Ryzen 7 8840HS'),
+(367,23,'clave','Gráfica Radeon 780M'),
+(368,23,'clave','16 GB de memoria RAM'),
+(369,23,'clave','Almacenamiento 512 GB SSD'),
+(370,23,'clave','Pantalla 1920x1200'),
+(371,23,'clave','Windows 11 Home'),
+(372,23,'clave','Color: Gris'),
+(373,23,'tecnica','Modelo de la tarjeta gráfica integrada: Radeon 780M'),
+(374,23,'tecnica','Linea de la tarjeta gráfica integrada: Radeon'),
+(375,23,'tecnica','Edición del sistema operativo: Home'),
+(376,23,'tecnica','Versión del sistema operativo: 11'),
+(377,23,'tecnica','Nombre del sistema operativo: Windows'),
+(378,23,'tecnica','Modelo del procesador: 8840HS'),
+(379,23,'tecnica','Línea del procesador: Ryzen 7'),
+(380,23,'tecnica','Marca del procesador: AMD'),
+(381,23,'clave','Frecuencia de actualización de la pantalla: 60 Hz'),
+(382,23,'tecnica','Capacidad de disco SSD: 512 GB'),
+(383,23,'tecnica','Memoria RAM: 16 GB'),
+(384,23,'clave','Con pantalla táctil: No'),
+(385,23,'tecnica','Resolución de pantalla: 1920x1200'),
+(410,25,'clave','Procesador AMD Ryzen 9 5900X'),
+(411,25,'clave','Gráfica RTX 5070 12GB'),
+(412,25,'clave','32 GB de memoria RAM'),
+(413,25,'clave','Almacenamiento 1 TB SSD'),
+(414,25,'tecnica','Tarjeta gráfica: RTX 5070 12GB'),
+(415,25,'tecnica','Memoria RAM: 32 GB'),
+(416,25,'tecnica','Modelo del procesador: 5900X'),
+(417,25,'tecnica','Línea del procesador: Ryzen 9'),
+(418,25,'tecnica','Marca del procesador: AMD'),
+(419,26,'clave','Procesador AMD Ryzen 7 9700X'),
+(420,26,'clave','Gráfica GeForce RTX 5060'),
+(421,26,'clave','32 GB de memoria RAM'),
+(422,26,'clave','Almacenamiento 1 TB'),
+(423,26,'tecnica','Tarjeta gráfica: GeForce RTX 5060'),
+(424,26,'tecnica','Capacidad del disco: 1 TB'),
+(425,26,'tecnica','Memoria RAM: 32 GB'),
+(426,26,'tecnica','Modelo del procesador: Ryzen 7 9700X'),
+(427,26,'tecnica','Marca del procesador: AMD'),
+(428,27,'clave','Procesador Ryzen 9 5900x'),
+(429,27,'clave','Gráfica RTX 5060 8GB'),
+(430,27,'clave','32 GB de memoria RAM'),
+(431,27,'clave','Almacenamiento 1 TB'),
+(432,27,'tecnica','Tarjeta gráfica: RTX 5060 8GB'),
+(433,27,'tecnica','Capacidad del disco: 1 TB'),
+(434,27,'tecnica','Memoria RAM: 32 GB'),
+(435,27,'tecnica','Modelo del procesador: 5900X'),
+(436,27,'tecnica','Marca del procesador: AMD'),
+(437,28,'clave','Procesador AMD Ryzen 7 5700X'),
+(438,28,'clave','Gráfica AMD Radeon RX 7600'),
+(439,28,'clave','16 GB de memoria RAM'),
+(440,28,'clave','Almacenamiento 512 GB'),
+(441,28,'clave','Windows 11 Home (Versión de Prueba)'),
+(442,28,'tecnica','Pc Powerbit Vortex: R7, 16gb, M.2 512gb, Rx7600, Wi-fi'),
+(443,28,'tecnica','Tarjeta gráfica: AMD Radeon RX 7600'),
+(444,28,'tecnica','Capacidad del disco: 512 GB'),
+(445,28,'tecnica','Memoria RAM: 16 GB'),
+(446,28,'tecnica','Modelo del procesador: Ryzen 7 5700X'),
+(447,28,'tecnica','Marca del procesador: AMD'),
+(448,28,'tecnica','Sistema operativo: Windows 11 Home (Versión de Prueba)'),
+(449,29,'clave','Procesador AMD Ryzen 7 5700X'),
+(450,29,'clave','Gráfica NVIDIA GeForce RTX 5050'),
+(451,29,'clave','16 GB de memoria RAM'),
+(452,29,'clave','Almacenamiento 512 GB'),
+(453,29,'clave','Windows 11 Home (Versión de Prueba)'),
+(454,29,'tecnica','Pc Gamer Powerbit Phantom: R7, 16gb, M.2 512gb, Rtx 5050'),
+(455,29,'tecnica','Tarjeta gráfica: NVIDIA® GeForce RTX™ 5050'),
+(456,29,'tecnica','Capacidad del disco: 512 GB'),
+(457,29,'tecnica','Memoria RAM: 16 GB'),
+(458,29,'tecnica','Modelo del procesador: Ryzen 7 5700X'),
+(459,29,'tecnica','Marca del procesador: AMD'),
+(460,29,'tecnica','Sistema operativo: Windows 11 Home (Versión de Prueba)'),
+(461,30,'clave','Procesador AMD Ryzen 5 5500'),
+(462,30,'clave','Gráfica RTX 5060'),
+(463,30,'clave','16 GB de memoria RAM'),
+(464,30,'clave','Almacenamiento 1 TB SSD'),
+(465,30,'tecnica','Memoria RAM: 16 GB'),
+(466,30,'tecnica','Modelo del procesador: 5500'),
+(467,30,'tecnica','Línea del procesador: Ryzen 5'),
+(468,30,'tecnica','Marca del procesador: AMD'),
+(469,30,'tecnica','Incluye: sistema operativo instalado, no activado Windows 11 Home Trial'),
+(470,31,'clave','Procesador Intel Core i5 12400F'),
+(471,31,'clave','Gráfica NVIDIA GeForce RTX 5060'),
+(472,31,'clave','16 GB de memoria RAM'),
+(473,31,'clave','Almacenamiento 1 TB'),
+(474,31,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 5060'),
+(475,31,'tecnica','Capacidad del disco: 1 TB'),
+(476,31,'tecnica','Memoria RAM: 16 GB'),
+(477,31,'tecnica','Modelo del procesador: 12400F'),
+(478,31,'tecnica','Línea del procesador: Core i5'),
+(479,31,'tecnica','Marca del procesador: Intel'),
+(480,32,'clave','Procesador Intel Core i5 12400F'),
+(481,32,'clave','Gráfica NVIDIA GeForce RTX 5060'),
+(482,32,'clave','16 GB de memoria RAM'),
+(483,32,'clave','Almacenamiento 1 TB SSD'),
+(484,32,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 5060'),
+(485,32,'tecnica','Memoria RAM: 16 GB'),
+(486,32,'tecnica','Modelo del procesador: 12400F'),
+(487,32,'tecnica','Línea del procesador: Core i5'),
+(488,32,'tecnica','Marca del procesador: Intel'),
+(489,32,'clave','Incluye: sistema operativo instalado, no activado Windows 11 Home Trial'),
+(490,33,'clave','Procesador Intel Core Ultra 7'),
+(491,33,'clave','Gráfica RTX 5060 Ti'),
+(492,33,'clave','16 GB de memoria RAM'),
+(493,33,'clave','Almacenamiento 1 TB SSD'),
+(494,33,'tecnica','Incluye: sistema operativo instalado, no activado Windows 11 Home Trial'),
+(495,33,'tecnica','Procesador: Intel Core Ultra 7'),
+(496,33,'tecnica','Gráfica: RTX 5060 Ti'),
+(497,33,'tecnica','Memoria RAM: 16 GB'),
+(498,33,'tecnica','Almacenamiento: 1 TB SSD'),
+(499,34,'clave','Procesador Intel Core i7'),
+(500,34,'clave','Gráfica NVIDIA GeForce RTX 4060 Ti ó RTX 5060'),
+(501,34,'clave','64 GB de memoria RAM'),
+(502,34,'clave','Almacenamiento 1 TB'),
+(503,34,'tecnica','Memoria RAM: 64 GB'),
+(504,34,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 4060 Ti ó RTX 5060'),
+(505,34,'tecnica','Capacidad del disco: 1 TB'),
+(506,34,'tecnica','Modelo del procesador: Intel Core i7'),
+(507,34,'tecnica','Línea del procesador: i7'),
+(508,34,'tecnica','Marca del procesador: Intel'),
+(509,35,'clave','Procesador Intel Core i9 14900KF'),
+(510,35,'clave','Gráfica NVIDIA GeForce RTX 5070'),
+(511,35,'clave','32 GB de memoria RAM'),
+(512,35,'clave','Almacenamiento 1 TB'),
+(513,35,'clave','Windows 10 Pro'),
+(514,35,'tecnica','Memoria RAM: 32 GB'),
+(515,35,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 5070'),
+(516,35,'tecnica','Capacidad del disco: 1 TB'),
+(517,35,'tecnica','Modelo del procesador: 14900KF'),
+(518,35,'tecnica','Marca del procesador: Intel'),
+(519,35,'tecnica','Sistema operativo: Windows 10 Pro'),
+(520,36,'clave','Procesador Intel Core i9 12900F'),
+(521,36,'clave','Gráfica Nvidia RTX 5070'),
+(522,36,'clave','32 GB de memoria RAM'),
+(523,36,'clave','Almacenamiento 2 TB'),
+(524,36,'clave','Windows 11 Pro'),
+(525,36,'tecnica','Tarjeta gráfica: Nvidia RTX 5070'),
+(526,36,'tecnica','Capacidad del disco: 2 TB'),
+(527,36,'tecnica','Memoria RAM: 32 GB'),
+(528,36,'tecnica','Modelo del procesador: Core i9 12900F'),
+(529,36,'tecnica','Marca del procesador: Intel'),
+(530,36,'tecnica','Sistema operativo: Windows 11 Pro'),
+(531,37,'clave','Procesador AMD Ryzen 9 5900XT'),
+(532,37,'clave','Gráfica RTX 5060'),
+(533,37,'clave','32 GB de memoria RAM'),
+(534,37,'clave','Almacenamiento 2 TB'),
+(535,37,'tecnica','Tarjeta gráfica: RTX 5060'),
+(536,37,'tecnica','Capacidad del disco: 2 TB'),
+(537,37,'tecnica','Memoria RAM: 32 GB'),
+(538,37,'tecnica','Modelo del procesador: Ryzen 9 5900XT'),
+(539,37,'tecnica','Marca del procesador: AMD'),
+(540,38,'clave','Procesador Ryzen 7 5700'),
+(541,38,'clave','Gráfica RTX 5050'),
+(542,38,'clave','32 GB de memoria RAM'),
+(543,38,'clave','Almacenamiento 1 TB'),
+(544,38,'tecnica','Memoria RAM: 32 GB'),
+(545,38,'tecnica','Tarjeta gráfica: RTX 5050'),
+(546,38,'tecnica','Capacidad del disco: 1 TB'),
+(547,38,'tecnica','Modelo del procesador: 5700'),
+(548,38,'tecnica','Marca del procesador: AMD'),
+(549,39,'clave','Procesador AMD Ryzen 7 5700'),
+(550,39,'clave','Gráfica Radeon Rx 9060 Xt'),
+(551,39,'clave','16 GB de memoria RAM'),
+(552,39,'clave','Almacenamiento 1 TB'),
+(553,39,'clave','Windows 11 Pro'),
+(554,39,'tecnica','Tarjeta gráfica: Radeon Rx 9060 Xt'),
+(555,39,'tecnica','Capacidad del disco: 1 TB'),
+(556,39,'tecnica','Memoria RAM: 16 GB'),
+(557,39,'tecnica','Modelo del procesador: Ryzen 7 5700'),
+(558,39,'tecnica','Marca del procesador: AMD'),
+(559,39,'tecnica','Sistema operativo: Windows 11 Pro'),
+(571,41,'clave','Procesador AMD Ryzen 7 5700X'),
+(572,41,'clave','Gráfica RTX 5060'),
+(573,41,'clave','32 GB de memoria RAM'),
+(574,41,'clave','Almacenamiento 1 TB'),
+(575,41,'tecnica','Tarjeta gráfica: RTX 5060'),
+(576,41,'tecnica','Capacidad del disco: 1 TB'),
+(577,41,'tecnica','Memoria RAM: 32 GB'),
+(578,41,'tecnica','Modelo del procesador: Ryzen 7 5700X'),
+(579,41,'tecnica','Marca del procesador: AMD'),
+(580,42,'clave','Procesador Intel Core i9 14900KF'),
+(581,42,'clave','Gráfica RTX 5080'),
+(582,42,'clave','32 GB de memoria RAM'),
+(583,42,'clave','Almacenamiento 1 TB SSD'),
+(584,42,'tecnica','Memoria RAM: 32 GB'),
+(585,42,'tecnica','Modelo del procesador: 14900KF'),
+(586,42,'tecnica','Línea del procesador: Core i9'),
+(587,42,'tecnica','Marca del procesador: Intel'),
+(588,43,'clave','Procesador Intel Core i9 14900KF'),
+(589,43,'clave','Gráfica RTX 4060 TI 8 GB'),
+(590,43,'clave','128 GB de memoria RAM'),
+(591,43,'clave','Almacenamiento 1 TB SSD'),
+(592,43,'tecnica','Tarjeta gráfica: RTX 4060 TI 8 GB'),
+(593,43,'tecnica','Memoria RAM: 128 GB'),
+(594,43,'tecnica','Modelo del procesador: 14900KF'),
+(595,43,'tecnica','Línea del procesador: Core i9'),
+(596,43,'tecnica','Marca del procesador: Intel'),
+(597,44,'clave','Procesador Intel Core i7 12900KF'),
+(598,44,'clave','Gráfica RTX 5060 8GB'),
+(599,44,'clave','32 GB de memoria RAM'),
+(600,44,'clave','Almacenamiento 1 TB SSD'),
+(601,44,'tecnica','Tarjeta gráfica: RTX 5060 8GB'),
+(602,44,'tecnica','Memoria RAM: 32 GB'),
+(603,44,'tecnica','Modelo del procesador: 12900KF'),
+(604,44,'tecnica','Línea del procesador: Core i7'),
+(605,44,'tecnica','Marca del procesador: Intel'),
+(606,45,'tecnica','Primer auricular electrostático con amplificador integrado'),
+(607,45,'tecnica','Carcasa de mármol de Carrara y vidrio hecho a mano'),
+(608,45,'clave','Amplificador Cool Class A MOS-FET de alta tensión'),
+(609,45,'tecnica','8 DACs internos ESS SABRE ES9018'),
+(610,45,'clave','Diafragmas vaporizados de platino de 2.4 micrómetros'),
+(611,45,'tecnica','Transductores de cerámica vaporizados en oro'),
+(612,45,'tecnica','Cables de cobre plateado OFC al 99.9%'),
+(613,45,'clave','Respuesta de frecuencia: 8 Hz a >100 kHz'),
+(614,45,'tecnica','Distorsión ultra baja: 0.01% a 1 kHz'),
+(615,46,'tecnica','Teclado magnético 65% (68 teclas)'),
+(616,46,'tecnica','Switch Ice Blade Magnetic'),
+(617,46,'tecnica','Rapid Trigger de 0.01 mm de precisión'),
+(618,46,'tecnica','Polling rate de 8000 Hz'),
+(619,46,'tecnica','Estructura Gasket Mount'),
+(620,46,'tecnica','Iluminación RGB'),
+(621,46,'clave','Teclas PBT de doble inyección'),
+(622,46,'clave','Conectividad USB Type-C'),
+(623,46,'tecnica','Dimensiones: 329 x 111 x 44 mm'),
+(624,46,'tecnica','Peso: 740 g ± 50 g'),
+(625,46,'clave','Vida útil del switch: 100 millones de clics'),
+(626,47,'tecnica','Panel QD-OLED de 32 pulgadas'),
+(627,47,'tecnica','Resolución 4K UHD (3840 x 2160)'),
+(628,47,'tecnica','Tasa de refresco de 240 Hz'),
+(629,47,'tecnica','Tiempo de respuesta de 0.03 ms'),
+(630,47,'clave','Compatible con G-Sync y FreeSync'),
+(631,47,'tecnica','Certificación VESA DisplayHDR 400 True Black'),
+(632,47,'clave','Cobertura de color 99% DCI-P3'),
+(633,47,'tecnica','Disipador térmico personalizado con película de grafeno'),
+(634,47,'clave','Entradas HDMI 2.1, DisplayPort y USB-C con entrega de energía de 90 W'),
+(635,48,'tecnica','Potencia: 1600 W continuos'),
+(636,48,'tecnica','Certificación 80 PLUS Titanium (más del 94% de eficiencia)'),
+(637,48,'clave','Totalmente modular'),
+(638,48,'tecnica','Transistores de Nitruro de Galio (GaN) Totem-pole PFC'),
+(639,48,'tecnica','Ventilador FDB de 140 mm con modo Zero RPM'),
+(640,48,'tecnica','Monitoreo digital y sincronización RGB mediante CORSAIR iCUE'),
+(641,48,'clave','Capacitores electrolíticos japoneses de 105 °C'),
+(642,48,'clave','Protecciones: OVP, UVP, SCP, OTP y OPP'),
+(644,48,'clave','Garantía de 10 años'),
+(645,48,'tecnica','Dimensiones: 150 x 86 x 200 mm'),
+(646,45,'clave','Amplificador integrado en mármol'),
+(647,45,'clave','Tubos de vacío protegidos con cuarzo'),
+(648,45,'clave','8 DACs ESS SABRE'),
+(649,45,'clave','Cables OFC plateados'),
+(650,46,'clave','Switches magnéticos Ice Blade'),
+(651,46,'clave','Rapid Trigger 0.01 mm'),
+(652,46,'clave','Polling rate 8000 Hz'),
+(653,46,'clave','Estructura Gasket Mount'),
+(654,47,'clave','Panel QD-OLED 4K'),
+(655,47,'clave','240 Hz y 0.03 ms'),
+(656,47,'clave','Disipador de grafeno'),
+(657,47,'clave','Certificación HDR 400 True Black'),
+(658,48,'clave','1600 W Titanium'),
+(659,48,'clave','Transistores GaN'),
+(660,48,'clave','Modo Zero RPM'),
+(661,48,'clave','Monitoreo CORSAIR iCUE'),
+(662,50,'clave','Transductores angulados de 42 mm con diafragma de 38 mm'),
+(663,50,'clave','Diseño cerrado con escenario sonoro panorámico tipo altavoz'),
+(664,50,'clave','Detalle de referencia con bajos controlados y dinámica ágil'),
+(665,50,'clave','Diadema metálica y almohadillas de terciopelo para uso prolongado'),
+(666,50,'clave','Cable desmontable de 1.8 m con enchufe de 3.5 mm y adaptador de 6.3 mm'),
+(667,50,'clave','Garantía de dos años'),
+(668,50,'tecnica','Tipo: circumaural cerrado, dinámico'),
+(669,50,'tecnica','Transductor: 42 mm (diafragma de 38 mm)'),
+(670,50,'tecnica','Respuesta de frecuencia: 6 Hz a 30,000 Hz'),
+(671,50,'tecnica','Impedancia: 150 Ω'),
+(672,50,'tecnica','SPL: 105 dB (1 kHz / 1 Vrms)'),
+(673,50,'tecnica','Distorsión: menor a 0.05 % (1 kHz / 90 dB SPL)'),
+(674,50,'tecnica','Peso: 326 g'),
+(675,50,'tecnica','Conector: 3.5 mm con adaptador de 6.3 mm'),
+(676,51,'clave','Driver dinámico de 42 mm inspirado en el HD 600'),
+(677,51,'clave','Cancelación de ruido híbrida adaptativa con 8 micrófonos MEMS'),
+(678,51,'clave','Audio espacial Dolby Atmos con seguimiento de cabeza'),
+(679,51,'clave','Hasta 57 horas de reproducción con ANC activo'),
+(680,51,'clave','Batería de 700 mAh intercambiable por el usuario'),
+(681,51,'clave','Modo Transparencia Natural y llamadas con formación de haz'),
+(682,51,'tecnica','Tipo: circumaural cerrado, inalámbrico'),
+(683,51,'tecnica','Transductor: 42 mm dinámico'),
+(684,51,'tecnica','Respuesta de frecuencia: 6 Hz a 40 kHz (USB y Bluetooth)'),
+(685,51,'tecnica','SPL: 108 dB a 1 kHz / 0 dB FS'),
+(686,51,'tecnica','Impedancia activa: 520 Ω'),
+(687,51,'tecnica','Micrófonos: 8 MEMS, 4 por lado con formación de haz'),
+(688,51,'tecnica','Bluetooth 5.4, alcance de 10 m'),
+(689,51,'tecnica','Batería: 700 mAh, carga USB-C'),
+(690,51,'tecnica','Peso: aproximadamente 290 g'),
+(691,52,'clave','Domo de aluminio y magnesio de 40 mm en forma de M'),
+(692,52,'clave','Diseño abierto con imagen estéreo amplia'),
+(693,52,'clave','Yugo de magnesio que ajusta la presión de forma uniforme'),
+(694,52,'clave','Fabricados en Francia con acabado en tonos marrón'),
+(695,52,'clave','Cable mini-jack de 1.8 m con adaptador de 6.3 mm'),
+(696,52,'clave','Garantía de dos años'),
+(697,52,'tecnica','Tipo: circumaural abierto, dinámico'),
+(698,52,'tecnica','Transductor: 40 mm con domo M de aluminio y magnesio'),
+(699,52,'tecnica','Respuesta de frecuencia: 25 Hz a 22 kHz'),
+(700,52,'tecnica','Impedancia: 26 Ω'),
+(701,52,'tecnica','Sensibilidad: 100 dB SPL / 1 mW a 1 kHz'),
+(702,52,'tecnica','Distorsión: 0.2 % a 1 kHz / 100 dB SPL'),
+(703,52,'tecnica','Peso: 294 g sin estuche'),
+(704,52,'tecnica','Cable: 1.8 m mini-jack con adaptador de 6.3 mm'),
+(705,53,'clave','Driver dinámico de 50 mm con bobina de alta eficiencia'),
+(706,53,'clave','Diseño abierto con balance tonal versátil para todo género'),
+(707,53,'clave','Estructura de aleación de zinc con componentes recubiertos en PVD'),
+(708,53,'clave','Almohadillas de terciopelo reemplazables'),
+(709,53,'clave','Solo 336 g de peso para uso prolongado'),
+(710,53,'clave','Cable desmontable y diadema autoajustable'),
+(711,53,'tecnica','Tipo: circumaural abierto, dinámico'),
+(712,53,'tecnica','Transductor: 50 mm'),
+(713,53,'tecnica','Respuesta de frecuencia: 5 Hz a 30 kHz'),
+(714,53,'tecnica','Impedancia: 42 Ω'),
+(715,53,'tecnica','Sensibilidad: 112 dB SPL a 1 kHz / 1 mW'),
+(716,53,'tecnica','Peso: 336 g'),
+(717,53,'tecnica','Almohadillas: terciopelo'),
+(718,53,'tecnica','Cable: desmontable'),
+(719,54,'clave','Diseño abierto sin rejilla para eliminar reflexiones internas'),
+(720,54,'clave','Diafragma de espesor nanométrico con conductor de plata metálica'),
+(721,54,'clave','Escenario amplio con imagen precisa y transitorios rápidos'),
+(722,54,'clave','Velo magnético de protección incluido para el diafragma'),
+(723,54,'clave','Cable de 1.5 m con enchufe de 6.3 mm, reemplazable por el usuario'),
+(724,54,'clave','Almohadillas asimétricas que reparten el peso alrededor de la oreja'),
+(725,54,'tecnica','Tipo: circumaural abierto, planar magnético'),
+(726,54,'tecnica','Respuesta de frecuencia: 8 Hz a 65 kHz'),
+(727,54,'tecnica','Impedancia: 27 Ω'),
+(728,54,'tecnica','Sensibilidad: 94 dB'),
+(729,54,'tecnica','Peso neto: 413 g sin velos ni cable'),
+(730,54,'tecnica','Cable: 1.5 m con enchufe de 6.3 mm'),
+(731,54,'tecnica','Incluye: par de velos magnéticos y par de almohadillas'),
+(732,54,'tecnica','Garantía: un año'),
+(733,55,'clave','Drivers planares magnéticos de 90 mm con arreglos Fluxor'),
+(734,55,'clave','Gestión de fase Fazor y diafragma Uniforce'),
+(735,55,'clave','Audio inalámbrico de baja latencia para PC, consola y móvil'),
+(736,55,'clave','Dolby Atmos y mezcla independiente de juego y chat'),
+(737,55,'clave','Micrófono con procesamiento inteligente y cancelación de ruido'),
+(738,55,'clave','Conexión USB-C, Bluetooth 5.3 y cable analógico de 3.5 mm'),
+(739,55,'tecnica','Tipo: circumaural cerrado, planar magnético, inalámbrico'),
+(740,55,'tecnica','Transductor: 90 mm planar'),
+(741,55,'tecnica','Respuesta de frecuencia: 10 Hz a 50 kHz'),
+(742,55,'tecnica','SPL máximo: mayor a 115 dB'),
+(743,55,'tecnica','Distorsión: menor a 0.1 % a 100 dB'),
+(744,55,'tecnica','Peso: 560 g'),
+(745,55,'tecnica','Conectividad: USB-C de baja latencia, Bluetooth 5.3, 3.5 mm TRRS'),
+(746,55,'tecnica','Cable analógico incluido: 1.2 m'),
+(747,56,'clave','Estructura híbrida de tres vías con crossover pasivo'),
+(748,56,'clave','Driver dinámico de 10 mm con diafragma PU y domo LCP'),
+(749,56,'clave','Cuatro balanced armature para medios y agudos'),
+(750,56,'clave','Conector de 0.78 mm de dos pines con cable de cobre monocristalino'),
+(751,56,'clave','Aislamiento pasivo alto gracias al diseño de doble brida'),
+(752,56,'clave','Incluye tres pares de puntas de silicona, dos de doble brida y una de espuma'),
+(753,56,'tecnica','Configuración: 1 driver dinámico + 4 balanced armature'),
+(754,56,'tecnica','Driver dinámico: 10 mm, diafragma PU con domo LCP'),
+(755,56,'tecnica','Crossover: tres vías'),
+(756,56,'tecnica','Respuesta de frecuencia: 8 Hz a 40 kHz'),
+(757,56,'tecnica','Respuesta efectiva: 20 Hz a 20 kHz (IEC60318-4, -3 dB)'),
+(758,56,'tecnica','Sensibilidad: 123 dB/Vrms a 1 kHz'),
+(759,56,'tecnica','Distorsión: menor o igual a 1 % a 1 kHz (94 dB)'),
+(760,56,'tecnica','Conector: 0.78 mm de dos pines, cable de 4 hilos y 448 núcleos'),
+(761,57,'clave','Ocho micrófonos y dos procesadores para cancelación líder'),
+(762,57,'clave','Optimizador automático de cancelación según el entorno'),
+(763,57,'clave','Hasta 30 horas de batería con ANC activo'),
+(764,57,'clave','Carga rápida: 3 horas de reproducción en 3 minutos'),
+(765,57,'clave','Audio de alta resolución y DSEE Extreme'),
+(766,57,'clave','Modo Ambiente y conexión multipunto'),
+(767,57,'tecnica','Tipo: circumaural cerrado, inalámbrico'),
+(768,57,'tecnica','Transductor: 30 mm con diafragma compuesto de fibra de carbono'),
+(769,57,'tecnica','Micrófonos: 8 en total'),
+(770,57,'tecnica','Bluetooth 5.2 con LDAC, AAC y SBC'),
+(771,57,'tecnica','Batería: hasta 30 horas con ANC, hasta 40 horas sin ANC'),
+(772,57,'tecnica','Carga: USB-C, 3 horas de reproducción en 3 minutos'),
+(773,57,'tecnica','Peso: aproximadamente 250 g'),
+(774,57,'tecnica','Incluye estuche de transporte y cable de 3.5 mm'),
+(775,58,'clave','Chasis de aluminio con montaje gasket y placa de policarbonato'),
+(776,58,'clave','Switches Gateron Jupiter intercambiables en caliente'),
+(777,58,'clave','Conectividad triple: 2.4 GHz, Bluetooth para 3 equipos y cable'),
+(778,58,'clave','Tasa de sondeo de 1000 Hz y N-key rollover en ambos modos'),
+(779,58,'clave','Firmware QMK y app web Keychron Launcher para macros'),
+(780,58,'clave','Keycaps KSA de PBT con doble inyección y RGB orientado al sur'),
+(781,58,'tecnica','Formato: 75 % ANSI con perilla'),
+(782,58,'tecnica','Conectividad: 2.4 GHz, Bluetooth (3 dispositivos) y USB-C'),
+(783,58,'tecnica','Tasa de sondeo: 1000 Hz'),
+(784,58,'tecnica','Switches: Gateron Jupiter Brown, Red o Banana, hot-swap'),
+(785,58,'tecnica','Batería: 4000 mAh, hasta 180 horas'),
+(786,58,'tecnica','Iluminación: RGB LED orientado al sur'),
+(787,58,'tecnica','Peso: 1724 g ± 10 g'),
+(788,58,'tecnica','Dimensiones: 145 x 327.5 mm'),
+(789,58,'tecnica','Software: QMK, Keychron Launcher (macOS, Windows, Linux)'),
+(790,59,'clave','Formato TKL 80 % sin teclado numérico'),
+(791,59,'clave','Conectividad triple con 2.4 GHz a 1000 Hz y Bluetooth 5.1'),
+(792,59,'clave','Switches Keychron Super Brown, Red o Banana con hot-swap'),
+(793,59,'clave','Firmware QMK y app web Keychron Launcher'),
+(794,59,'clave','Batería de 4000 mAh para hasta 190 horas'),
+(795,59,'clave','22 modos de retroiluminación RGB y keycaps de PBT de doble inyección'),
+(796,59,'tecnica','Formato: 80 % ANSI (TKL)'),
+(797,59,'tecnica','Conectividad: 2.4 GHz, Bluetooth 5.1 (3 dispositivos) y USB-C'),
+(798,59,'tecnica','Tasa de sondeo: 1000 Hz'),
+(799,59,'tecnica','Switches: Keychron Super Red, Brown o Banana, hot-swap'),
+(800,59,'tecnica','Estructura: ABS con marco de aluminio'),
+(801,59,'tecnica','Keycaps: PBT de doble inyección'),
+(802,59,'tecnica','Batería: 4000 mAh, hasta 190 horas'),
+(803,59,'tecnica','Peso: 1158 g'),
+(804,59,'tecnica','Dimensiones: 354.21 x 124.18 mm'),
+(805,60,'clave','Formato 100 % completo con teclado numérico y perilla'),
+(806,60,'clave','Montaje gasket con placa de policarbonato'),
+(807,60,'clave','Switches Gateron Jupiter Red, Brown o Banana intercambiables'),
+(808,60,'clave','2.4 GHz y Bluetooth con sondeo de 1000 Hz'),
+(809,60,'clave','QMK y VIA para reasignar cualquier tecla o crear macros'),
+(810,60,'clave','Batería de 4000 mAh para hasta 190 horas'),
+(811,60,'tecnica','Formato: 100 % ANSI con perilla'),
+(812,60,'tecnica','Conectividad: 2.4 GHz y Bluetooth (3 dispositivos)'),
+(813,60,'tecnica','Tasa de sondeo: 1000 Hz'),
+(814,60,'tecnica','Switches: Gateron Jupiter Red, Brown o Banana, hot-swap'),
+(815,60,'tecnica','Estructura: ABS con montaje gasket y placa de PC'),
+(816,60,'tecnica','Keycaps: PBT de doble inyección, perfil normal'),
+(817,60,'tecnica','Batería: 4000 mAh, hasta 190 horas'),
+(818,60,'tecnica','Peso: 1110 g ± 10 g'),
+(819,60,'tecnica','Estabilizadores: screw-in montados en PCB'),
+(820,61,'clave','Switches magnéticos Gateron Double-Rail Nebula V2'),
+(821,61,'clave','Rapid Trigger con accionamiento ajustable de 0.2 a 3.8 mm'),
+(822,61,'clave','Hasta dos puntos de actuación por tecla con QMK'),
+(823,61,'clave','Chasis de aluminio con montaje de bandeja'),
+(824,61,'clave','2.4 GHz y Bluetooth para 3 dispositivos a 1000 Hz'),
+(825,61,'clave','Keycaps Cherry de doble inyección con luz a través de la leyenda'),
+(826,61,'tecnica','Formato: 75 % ANSI'),
+(827,61,'tecnica','Conectividad: 2.4 GHz, Bluetooth (3 dispositivos) y USB-C'),
+(828,61,'tecnica','Tasa de sondeo: 1000 Hz'),
+(829,61,'tecnica','Switches: Gateron Double-Rail Magnetic Nebula V2, hot-swap'),
+(830,61,'tecnica','Accionamiento ajustable: 0.2 a 3.8 mm'),
+(831,61,'tecnica','Estructura: aluminio, montaje de bandeja'),
+(832,61,'tecnica','Batería: 4000 mAh, hasta 110 horas'),
+(833,61,'tecnica','Iluminación: RGB orientado al norte'),
+(834,61,'tecnica','Peso: 980 g / Dimensiones: 316.4 x 126.7 mm'),
+(835,62,'clave','Formato 100 % con teclado numérico completo'),
+(836,62,'clave','Switches K Pro Red, Brown o Banana con hot-swap'),
+(837,62,'clave','QMK y VIA para reasignar teclas y crear macros'),
+(838,62,'clave','Keycaps de PBT de doble inyección en perfil normal'),
+(839,62,'clave','Incluye keycaps para macOS y Windows'),
+(840,62,'clave','Conexión inalámbrica y por cable USB-C'),
+(841,62,'tecnica','Formato: 100 % completo'),
+(842,62,'tecnica','Switches: Keychron K Pro Red, Brown o Banana, hot-swap'),
+(843,62,'tecnica','Estructura: plástico con montaje de bandeja'),
+(844,62,'tecnica','Keycaps: PBT de doble inyección, perfil normal'),
+(845,62,'tecnica','Batería: 4000 mAh'),
+(846,62,'tecnica','Software: QMK y Keychron Launcher'),
+(847,62,'tecnica','Compatibilidad: macOS y Windows'),
+(848,62,'tecnica','Conexión: inalámbrica y USB-C'),
+(849,63,'clave','Switches magnéticos Gateron Double-Rail Nebula'),
+(850,63,'clave','Rapid Trigger y accionamiento ajustable de 0.2 a 3.8 mm'),
+(851,63,'clave','Dynamic Keystrokes: hasta 4 acciones por tecla'),
+(852,63,'clave','Chasis totalmente metálico con montaje gasket y placa de aluminio'),
+(853,63,'clave','Espuma acústica avanzada y keycaps Cherry de PBT'),
+(854,63,'clave','2.4 GHz y Bluetooth con sondeo de 1000 Hz'),
+(855,63,'tecnica','Formato: 75 % ANSI con perilla'),
+(856,63,'tecnica','Conectividad: 2.4 GHz y Bluetooth, 1000 Hz'),
+(857,63,'tecnica','Switches: Gateron Double-Rail Magnetic Nebula, hot-swap'),
+(858,63,'tecnica','Accionamiento ajustable: 0.2 a 3.8 mm'),
+(859,63,'tecnica','Estructura: metal, montaje gasket, placa de aluminio'),
+(860,63,'tecnica','Keycaps: PBT de doble inyección, perfil Cherry'),
+(861,63,'tecnica','Batería: 4000 mAh, hasta 100 horas'),
+(862,63,'tecnica','Iluminación: 22 modos RGB'),
+(863,63,'tecnica','Software: QMK y Lemokey Launcher'),
+(864,64,'clave','Perfil bajo con chasis de aluminio y madera'),
+(865,64,'clave','Sondeo de 8000 Hz por 2.4 GHz para latencia mínima'),
+(866,64,'clave','Switches Keychron Milk POM de perfil bajo, hot-swap'),
+(867,64,'clave','Firmware ZMK y app web Keychron Launcher'),
+(868,64,'clave','Batería de 2600 mAh para hasta 370 horas'),
+(869,64,'clave','Keycaps LSA de PBT de doble inyección y placa de aluminio anodizado'),
+(870,64,'tecnica','Formato: 100 % de perfil bajo'),
+(871,64,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable, sondeo de 8000 Hz'),
+(872,64,'tecnica','Switches: Keychron Milk POM Red, Brown o Banana, hot-swap'),
+(873,64,'tecnica','Estructura: aluminio y madera con placa de aluminio anodizado'),
+(874,64,'tecnica','Keycaps: LSA de PBT de doble inyección'),
+(875,64,'tecnica','Batería: 2600 mAh, hasta 370 horas'),
+(876,64,'tecnica','Peso: 720 g ± 10 g'),
+(877,64,'tecnica','Dimensiones: 436.6 x 128.29 mm'),
+(878,65,'clave','Formato compacto 75 % con 77 teclas'),
+(879,65,'clave','Perfil ultra delgado y solo 425 g de peso'),
+(880,65,'clave','2.4 GHz, Bluetooth 5.2 y conexión por cable'),
+(881,65,'clave','Soporte de firmware ZMK'),
+(882,65,'clave','Compatible con macOS, iOS, Windows, Android y Linux'),
+(883,65,'clave','Batería de 800 mAh y diseño sin retroiluminación'),
+(884,65,'tecnica','Formato: 75 %, 77 teclas'),
+(885,65,'tecnica','Conectividad: 2.4 GHz, Bluetooth 5.2 y cable'),
+(886,65,'tecnica','Estructura: ABS'),
+(887,65,'tecnica','Keycaps: ABS'),
+(888,65,'tecnica','Batería: 800 mAh'),
+(889,65,'tecnica','Retroiluminación: no incluye'),
+(890,65,'tecnica','Peso: 425 g'),
+(891,65,'tecnica','Dimensiones: 296 x 130 mm'),
+(892,66,'clave','Solo 47 g con chasis sin perforaciones y base abierta'),
+(893,66,'clave','Sensor PixArt PAW3950 de 30,000 DPI y 750 IPS'),
+(894,66,'clave','Receptor de 8000 Hz incluido y 1000 Hz por cable'),
+(895,66,'clave','Switches ópticos Omron D2FP-FN2 para 70 millones de clics'),
+(896,66,'clave','Forma simétrica con joroba central para agarre de garra o palma'),
+(897,66,'clave','Skates de PTFE puro y driver web Aurora'),
+(898,66,'tecnica','Sensor: PixArt PAW3950, óptico'),
+(899,66,'tecnica','Resolución: 50 a 30,000 DPI'),
+(900,66,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(901,66,'tecnica','Aceleración máxima: 50 G'),
+(902,66,'tecnica','Tasa de sondeo: hasta 8000 Hz inalámbrico y 1000 Hz por cable'),
+(903,66,'tecnica','MCU: Nordic nRF52840'),
+(904,66,'tecnica','Switches principales: Omron ópticos, 70 millones de clics'),
+(905,66,'tecnica','Batería: 300 mAh, hasta 80 horas a 1000 Hz'),
+(906,66,'tecnica','Dimensiones: 124 x 64 x 40 mm'),
+(907,66,'tecnica','Peso: 47 g'),
+(908,67,'clave','Forma ergonómica asimétrica afinada para FPS'),
+(909,67,'clave','Sensor PAW NEXT I con 50,000 DPI y ajuste de 1 en 1'),
+(910,67,'clave','Sondeo nativo de 8000 Hz por cable y por 2.4 GHz'),
+(911,67,'clave','Switches ópticos Kailh V2 para 150 millones de clics'),
+(912,67,'clave','Encoder de rueda óptico y latencia de clic de 0.176 ms'),
+(913,67,'clave','Receptor Orbiter con indicador de DPI y sondeo en vivo'),
+(914,67,'tecnica','Sensor: PixArt PAW NEXT I, óptico'),
+(915,67,'tecnica','Resolución: hasta 50,000 DPI en pasos de 1 DPI'),
+(916,67,'tecnica','Velocidad de seguimiento: 880 IPS'),
+(917,67,'tecnica','Aceleración máxima: 80 G'),
+(918,67,'tecnica','MCU: Nordic nRF54H20 en mouse y receptor'),
+(919,67,'tecnica','Tasa de sondeo: 8000 Hz nativo, cable y 2.4 GHz'),
+(920,67,'tecnica','Switches: Kailh Optical V2, 150 millones de clics'),
+(921,67,'tecnica','Batería: 300 mAh, cerca de 30 horas a 8000 Hz'),
+(922,67,'tecnica','Dimensiones: 124 x 66 x 42 mm'),
+(923,67,'tecnica','Peso: 55 g'),
+(924,68,'clave','Forma simétrica compacta para manos chicas y agarre de garra'),
+(925,68,'clave','Sensor PixArt PAW3395 de 26,000 DPI y 650 IPS'),
+(926,68,'clave','Compatible con receptor de 4000 Hz, se vende por separado'),
+(927,68,'clave','Switches Huano para 80 millones de clics y encoder TTC'),
+(928,68,'clave','Solo 51 g con base de PTFE y bolsa de transporte incluida'),
+(929,68,'clave','Driver web LAMZU Aurora sin instalación'),
+(930,68,'tecnica','Sensor: PixArt PAW3395, óptico'),
+(931,68,'tecnica','Resolución: hasta 26,000 DPI'),
+(932,68,'tecnica','Velocidad de seguimiento: 650 IPS'),
+(933,68,'tecnica','Aceleración máxima: 50 G'),
+(934,68,'tecnica','Tasa de sondeo: 1000 Hz incluida, 4000 Hz con receptor 4K aparte'),
+(935,68,'tecnica','MCU: Nordic nRF52840'),
+(936,68,'tecnica','Switches principales: Huano mecánicos, 80 millones de clics'),
+(937,68,'tecnica','Batería: hasta 100 horas de uso'),
+(938,68,'tecnica','Dimensiones: 117 x 63 x 37 mm'),
+(939,68,'tecnica','Peso: 51 g'),
+(940,69,'clave','Ergonomía compacta de 48 g para agarre relajado'),
+(941,69,'clave','Sensor PixArt PAW3950 de 30,000 DPI'),
+(942,69,'clave','Receptor de 8000 Hz incluido en la caja'),
+(943,69,'clave','Switches ópticos Omron y encoder óptico de rueda'),
+(944,69,'clave','Cable paracord de 1.8 m con conector USB-C'),
+(945,69,'clave','Configuración por LAMZU Aurora o driver web'),
+(946,69,'tecnica','Sensor: PixArt PAW3950, óptico'),
+(947,69,'tecnica','Resolución: hasta 30,000 DPI'),
+(948,69,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(949,69,'tecnica','MCU: Nordic nRF52840'),
+(950,69,'tecnica','Switches principales: Omron ópticos'),
+(951,69,'tecnica','Encoder: óptico'),
+(952,69,'tecnica','Dimensiones: 120 x 65 x 40 mm'),
+(953,69,'tecnica','Peso: 48 g ± 2 g'),
+(954,69,'tecnica','Cable: 1.8 m paracord'),
+(955,69,'tecnica','Garantía: un año'),
+(956,70,'clave','Solo 39 g de peso para reducir la fatiga de muñeca'),
+(957,70,'clave','Sensor insignia XS-1 con 32,000 DPI y 750 IPS'),
+(958,70,'clave','Sondeo de 8000 Hz para respuesta de baja latencia'),
+(959,70,'clave','Switches ópticos calificados para 100 millones de clics'),
+(960,70,'clave','Forma simétrica del X2 con laterales rectos'),
+(961,70,'clave','Ideal para FPS con sensibilidad baja'),
+(962,70,'tecnica','Sensor: Pulsar XS-1, óptico'),
+(963,70,'tecnica','Resolución: hasta 32,000 DPI'),
+(964,70,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(965,70,'tecnica','Aceleración máxima: 50 G'),
+(966,70,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(967,70,'tecnica','Switches: ópticos, 100 millones de clics'),
+(968,70,'tecnica','Conexión: 2.4 GHz inalámbrica y USB-C'),
+(969,70,'tecnica','Peso: 39 g'),
+(970,71,'clave','Silueta ergonómica para mano derecha'),
+(971,71,'clave','Sensor XS-1 de 32,000 DPI con 750 IPS'),
+(972,71,'clave','Solo 54 g de peso con estructura sólida'),
+(973,71,'clave','Sondeo de hasta 8000 Hz'),
+(974,71,'clave','Conexión inalámbrica de 2.4 GHz y carga USB-C'),
+(975,71,'clave','Ajustes de DPI, sondeo y macros por software'),
+(976,71,'tecnica','Sensor: Pulsar XS-1, óptico'),
+(977,71,'tecnica','Resolución: hasta 32,000 DPI'),
+(978,71,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(979,71,'tecnica','Aceleración máxima: 50 G'),
+(980,71,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(981,71,'tecnica','Conexión: 2.4 GHz inalámbrica'),
+(982,71,'tecnica','Peso: 54 g'),
+(983,71,'tecnica','Ergonomía: mano derecha'),
+(984,72,'clave','Edición Signature desarrollada con TenZ'),
+(985,72,'clave','42 g en formato mini de 114 mm'),
+(986,72,'clave','Hasta 42,000 DPI con 800 IPS y 70 G'),
+(987,72,'clave','Sondeo de hasta 8000 Hz'),
+(988,72,'clave','Forma simétrica compacta para agarre de garra'),
+(989,72,'clave','Acabado y empaque de edición especial'),
+(990,72,'tecnica','Sensor: óptico de alta gama'),
+(991,72,'tecnica','Resolución: hasta 42,000 DPI'),
+(992,72,'tecnica','Velocidad de seguimiento: 800 IPS'),
+(993,72,'tecnica','Aceleración máxima: 70 G'),
+(994,72,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(995,72,'tecnica','Dimensiones: 114 x 61 x 38 mm'),
+(996,72,'tecnica','Peso: 42 g ± 2 g'),
+(997,72,'tecnica','Conexión: inalámbrica 2.4 GHz y USB-C'),
+(998,73,'clave','Switches magnéticos MagOptic con Rapid Trigger'),
+(999,73,'clave','Punto de actuación ajustable por software'),
+(1000,73,'clave','Chasis de fibra de carbono de solo 47 g'),
+(1001,73,'clave','Sensor PixArt 3955 de alta precisión'),
+(1002,73,'clave','Sondeo de 8000 Hz para latencia mínima'),
+(1003,73,'clave','Configuración por la app web Keychron Launcher'),
+(1004,73,'tecnica','Sensor: PixArt 3955, óptico'),
+(1005,73,'tecnica','Switches: MagOptic magnéticos con Rapid Trigger'),
+(1006,73,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1007,73,'tecnica','Estructura: fibra de carbono'),
+(1008,73,'tecnica','Peso: 47 g'),
+(1009,73,'tecnica','Conexión: 2.4 GHz inalámbrica'),
+(1010,73,'tecnica','Software: Keychron Launcher'),
+(1011,74,'clave','Resolución 4K UHD de 3840 x 2160 en 27 pulgadas'),
+(1012,74,'clave','Panel Fast IPS con 160 Hz de refresco'),
+(1013,74,'clave','Tiempo de respuesta de 1 ms GTG'),
+(1014,74,'clave','Diseño plano sin marcos que ahorra espacio'),
+(1015,74,'clave','Compatible con soportes VESA para brazo de monitor'),
+(1016,74,'clave','Garantía limitada de tres años'),
+(1017,74,'tecnica','Tamaño: 27 pulgadas'),
+(1018,74,'tecnica','Panel: Fast IPS'),
+(1019,74,'tecnica','Resolución: 3840 x 2160 (4K UHD)'),
+(1020,74,'tecnica','Frecuencia de refresco: 160 Hz'),
+(1021,74,'tecnica','Tiempo de respuesta: 1 ms GTG'),
+(1022,74,'tecnica','Relación de aspecto: 16:9'),
+(1023,74,'tecnica','Entradas: HDMI y DisplayPort'),
+(1024,74,'tecnica','Montaje VESA: compatible'),
+(1025,75,'clave','Panel OLED con negros absolutos y contraste alto'),
+(1026,75,'clave','1440p a 240 Hz con 0.03 ms GTG'),
+(1027,75,'clave','Brillo de 250 cd/m² típico y 800 cd/m² en HDR'),
+(1028,75,'clave','USB-C con DisplayPort Alt Mode y 65 W de carga'),
+(1029,75,'clave','Dos HDMI 2.1 y un DisplayPort 1.4 a 240 Hz'),
+(1030,75,'clave','Bocinas de 5 W por canal y ajuste de altura de 110 mm'),
+(1031,75,'tecnica','Tamaño: 27 pulgadas'),
+(1032,75,'tecnica','Panel: OLED'),
+(1033,75,'tecnica','Resolución: 2560 x 1440 (WQHD)'),
+(1034,75,'tecnica','Frecuencia de refresco: 240 Hz'),
+(1035,75,'tecnica','Tiempo de respuesta: 0.03 ms GTG'),
+(1036,75,'tecnica','Brillo: 250 cd/m² típico, 400 cd/m² pico, 800 cd/m² HDR'),
+(1037,75,'tecnica','Entradas: 2 x HDMI 2.1, 1 x DisplayPort 1.4, 1 x USB-C'),
+(1038,75,'tecnica','Bocinas: 2 x 5 W'),
+(1039,75,'tecnica','Ajuste de altura: 0 a 110 mm'),
+(1040,75,'tecnica','Montaje VESA: 100 x 100 mm'),
+(1041,76,'clave','24 pulgadas en Full HD de 1920 x 1080'),
+(1042,76,'clave','Panel Fast IPS con 200 Hz y 1 ms GTG'),
+(1043,76,'clave','Ideal para FPS por su tamaño y velocidad'),
+(1044,76,'clave','Diseño sin marcos que ahorra espacio'),
+(1045,76,'clave','Compatible con brazos de monitor VESA'),
+(1046,76,'clave','Garantía limitada de tres años'),
+(1047,76,'tecnica','Tamaño: 24 pulgadas'),
+(1048,76,'tecnica','Panel: Fast IPS'),
+(1049,76,'tecnica','Resolución: 1920 x 1080 (FHD)'),
+(1050,76,'tecnica','Frecuencia de refresco: 200 Hz'),
+(1051,76,'tecnica','Tiempo de respuesta: 1 ms GTG'),
+(1052,76,'tecnica','Relación de aspecto: 16:9'),
+(1053,76,'tecnica','Entradas: HDMI y DisplayPort'),
+(1054,76,'tecnica','Montaje VESA: compatible'),
+(1055,77,'clave','Doble modo de resolución en el mismo panel'),
+(1056,77,'clave','4K UHD hasta 160 Hz para detalle y productividad'),
+(1057,77,'clave','Full HD hasta 320 Hz para juego competitivo'),
+(1058,77,'clave','Panel Fast IPS de 27 pulgadas'),
+(1059,77,'clave','Entradas HDMI y DisplayPort'),
+(1060,77,'clave','Cambio de modo desde el menú del monitor'),
+(1061,77,'tecnica','Tamaño: 27 pulgadas'),
+(1062,77,'tecnica','Panel: Fast IPS'),
+(1063,77,'tecnica','Resolución: 3840 x 2160 (UHD) o 1920 x 1080 (FHD)'),
+(1064,77,'tecnica','Frecuencia de refresco: hasta 160 Hz en UHD, hasta 320 Hz en FHD'),
+(1065,77,'tecnica','Entradas: HDMI y DisplayPort'),
+(1066,77,'tecnica','Relación de aspecto: 16:9'),
+(1067,77,'tecnica','Soporte: incluye ajuste de inclinación'),
+(1068,78,'clave','Panel OLED de 31.5 pulgadas con negros reales'),
+(1069,78,'clave','Resolución 4K UHD de 3840 x 2160'),
+(1070,78,'clave','Refresco de hasta 240 Hz para movimiento fluido'),
+(1071,78,'clave','Contraste alto y tiempos de respuesta mínimos'),
+(1072,78,'clave','Entradas HDMI y DisplayPort'),
+(1073,78,'clave','Diseño delgado con base de escritorio'),
+(1074,78,'tecnica','Tamaño: 31.5 pulgadas'),
+(1075,78,'tecnica','Panel: OLED'),
+(1076,78,'tecnica','Resolución: 3840 x 2160 (UHD)'),
+(1077,78,'tecnica','Frecuencia de refresco: hasta 240 Hz'),
+(1078,78,'tecnica','Relación de aspecto: 16:9'),
+(1079,78,'tecnica','Entradas: HDMI y DisplayPort'),
+(1080,78,'tecnica','Soporte: base de escritorio incluida'),
+(1081,79,'clave','Panel QD-OLED con 166.25 píxeles por pulgada'),
+(1082,79,'clave','4K UHD a 240 Hz con 0.03 ms GtG'),
+(1083,79,'clave','10 bits y 1.07 mil millones de colores'),
+(1084,79,'clave','USB-C con DisplayPort Alt Mode y 65 W de carga'),
+(1085,79,'clave','Base con altura de 120 mm, giro, pivote y pivote vertical'),
+(1086,79,'clave','HDR con hasta 250 nits típicos y cobertura amplia de color'),
+(1087,79,'tecnica','Tamaño: 27 pulgadas'),
+(1088,79,'tecnica','Panel: QD-OLED'),
+(1089,79,'tecnica','Resolución: 3840 x 2160 (4K UHD)'),
+(1090,79,'tecnica','Densidad: 166.25 PPI'),
+(1091,79,'tecnica','Frecuencia de refresco: 48 a 240 Hz'),
+(1092,79,'tecnica','Tiempo de respuesta: 0.03 ms GtG'),
+(1093,79,'tecnica','Brillo: 250 nits típicos, 200 nits mínimo'),
+(1094,79,'tecnica','Color: 10 bits, 1.07 mil millones de colores, 99 % de cobertura'),
+(1095,79,'tecnica','Ángulos de visión: 178° horizontal y vertical'),
+(1096,79,'tecnica','Entradas: USB-C 3.1 Gen 1 con 65 W PD, HDMI y DisplayPort'),
+(1097,79,'tecnica','Ajustes: inclinación de -5° a 20°, giro ±22.5°, pivote 90°, altura 120 mm'),
+(1098,79,'tecnica','Consumo: 75 W típico, 220 W máximo'),
+(1099,79,'tecnica','Montaje VESA: 100 x 100 mm'),
+(1100,79,'tecnica','Peso: 5.7 kg neto'),
+(1101,80,'clave','Formato superultrawide 32:9 de 49 pulgadas'),
+(1102,80,'clave','Resolución DQHD de 5120 x 1440'),
+(1103,80,'clave','Retroiluminación Mini-LED con 450 nits'),
+(1104,80,'clave','Refresco de 165 Hz y respuesta de 2 ms'),
+(1105,80,'clave','USB-C con 95 W de carga para laptop'),
+(1106,80,'clave','Bocinas integradas de 5 W por canal'),
+(1107,80,'tecnica','Tamaño: 49 pulgadas'),
+(1108,80,'tecnica','Resolución: 5120 x 1440 (DQHD 32:9)'),
+(1109,80,'tecnica','Panel: Mini-LED'),
+(1110,80,'tecnica','Frecuencia de refresco: 165 Hz'),
+(1111,80,'tecnica','Tiempo de respuesta: 2 ms'),
+(1112,80,'tecnica','Brillo: 450 nits'),
+(1113,80,'tecnica','Color: 8 bits'),
+(1114,80,'tecnica','Bocinas: 2 x 5 W'),
+(1115,80,'tecnica','Entradas: USB-C con 95 W, HDMI y DisplayPort'),
+(1116,80,'tecnica','Consumo: 240 W máximo'),
+(1117,80,'tecnica','Montaje VESA: 100 x 100 mm'),
+(1118,80,'tecnica','Peso: 13.3 kg'),
+(1119,81,'clave','Resolución 2560 x 1600 en formato 16:10'),
+(1120,81,'clave','Cobertura de color del 123 % de sRGB'),
+(1121,81,'clave','Solo 1.7 libras (unos 770 g) para viaje'),
+(1122,81,'clave','Acabado en aluminio y perfil delgado'),
+(1123,81,'clave','Funda con soporte que permite orientación vertical'),
+(1124,81,'clave','Conexión por USB-C o mini HDMI'),
+(1125,81,'tecnica','Tamaño: 16 pulgadas'),
+(1126,81,'tecnica','Resolución: 2560 x 1600 (2.5K)'),
+(1127,81,'tecnica','Relación de aspecto: 16:10'),
+(1128,81,'tecnica','Cobertura de color: 123 % sRGB'),
+(1129,81,'tecnica','Peso: 1.7 libras (aproximadamente 770 g)'),
+(1130,81,'tecnica','Acabado: aluminio'),
+(1131,81,'tecnica','Entradas: USB-C y mini HDMI'),
+(1132,81,'tecnica','Soporte: funda con modo vertical'),
+(1133,82,'clave','850 W continuos con certificación Cybenetics Gold'),
+(1134,82,'clave','Compatible con ATX 3.1 y PCIe 5.1'),
+(1135,82,'clave','Totalmente modular con conectores Type-4'),
+(1136,82,'clave','Modo Zero RPM para funcionamiento casi silencioso'),
+(1137,82,'clave','Condensadores electrolíticos japoneses de 105 °C'),
+(1138,82,'clave','Garantía de diez años'),
+(1139,82,'tecnica','Potencia: 850 W continuos'),
+(1140,82,'tecnica','Certificación: Cybenetics Gold'),
+(1141,82,'tecnica','Estándar: ATX 3.1, compatible PCIe 5.1'),
+(1142,82,'tecnica','Modularidad: totalmente modular, conectores Type-4'),
+(1143,82,'tecnica','Ventilador: modo Zero RPM con carga baja'),
+(1144,82,'tecnica','Condensadores: japoneses de 105 °C'),
+(1145,82,'tecnica','Factor de forma: ATX'),
+(1146,82,'tecnica','Garantía: 10 años'),
+(1147,83,'clave','1000 W continuos con eficiencia 80 PLUS Gold'),
+(1148,83,'clave','Totalmente modular para un cableado limpio'),
+(1149,83,'clave','Ventilador de levitación magnética con modo Zero RPM'),
+(1150,83,'clave','Condensadores japoneses de 105 °C'),
+(1151,83,'clave','Compatible con GPUs NVIDIA serie 4000 y AMD Ryzen 7000'),
+(1152,83,'clave','Garantía de diez años'),
+(1153,83,'tecnica','Potencia: 1000 W continuos'),
+(1154,83,'tecnica','Certificación: 80 PLUS Gold'),
+(1155,83,'tecnica','Modularidad: totalmente modular'),
+(1156,83,'tecnica','Ventilador: levitación magnética con Zero RPM'),
+(1157,83,'tecnica','Condensadores: japoneses de 105 °C'),
+(1158,83,'tecnica','Factor de forma: ATX'),
+(1159,83,'tecnica','Garantía: 10 años'),
+(1160,84,'clave','1200 W con eficiencia Platinum'),
+(1161,84,'clave','Certificación ATX 3.1 y compatibilidad PCIe 5.1'),
+(1162,84,'clave','Dos cables 12V-2x6 incluidos para tarjetas de gama alta'),
+(1163,84,'clave','Ventilador de rodamiento dinámico fluido con Zero RPM'),
+(1164,84,'clave','Monitoreo digital de consumo y voltajes con iCUE'),
+(1165,84,'clave','Condensadores japoneses de 105 °C y garantía de diez años'),
+(1166,84,'tecnica','Potencia: 1200 W continuos'),
+(1167,84,'tecnica','Certificación: 80 PLUS Platinum'),
+(1168,84,'tecnica','Estándar: ATX 3.1, PCIe 5.1'),
+(1169,84,'tecnica','Modularidad: totalmente modular'),
+(1170,84,'tecnica','Conectores: 2 x 12V-2x6'),
+(1171,84,'tecnica','Ventilador: rodamiento dinámico fluido con Zero RPM'),
+(1172,84,'tecnica','Monitoreo: digital mediante iCUE'),
+(1173,84,'tecnica','Garantía: 10 años'),
+(1174,85,'clave','750 W continuos con eficiencia 80 PLUS Gold'),
+(1175,85,'clave','Cumple ATX 3.1 y PCIe 5.1'),
+(1176,85,'clave','Totalmente modular para reducir el desorden de cables'),
+(1177,85,'clave','Ventilador de 120 mm de bajo ruido'),
+(1178,85,'clave','Protecciones eléctricas completas'),
+(1179,85,'clave','Garantía de siete años'),
+(1180,85,'tecnica','Potencia: 750 W continuos'),
+(1181,85,'tecnica','Certificación: 80 PLUS Gold'),
+(1182,85,'tecnica','Estándar: ATX 3.1, PCIe 5.1'),
+(1183,85,'tecnica','Modularidad: totalmente modular'),
+(1184,85,'tecnica','Ventilador: 120 mm de bajo ruido'),
+(1185,85,'tecnica','Factor de forma: ATX'),
+(1186,85,'tecnica','Garantía: 7 años'),
+(1187,86,'clave','750 W en formato SFX para equipos compactos'),
+(1188,86,'clave','Eficiencia 80 PLUS Platinum'),
+(1189,86,'clave','Cumple ATX 3.1 y PCIe 5.1'),
+(1190,86,'clave','Conectores Type-5 Micro-Fit totalmente modulares'),
+(1191,86,'clave','Ventilador PWM de 92 mm con modo Zero RPM'),
+(1192,86,'clave','Garantía de diez años'),
+(1193,86,'tecnica','Potencia: 750 W continuos'),
+(1194,86,'tecnica','Certificación: 80 PLUS Platinum'),
+(1195,86,'tecnica','Factor de forma: SFX'),
+(1196,86,'tecnica','Estándar: ATX 3.1, PCIe 5.1'),
+(1197,86,'tecnica','Modularidad: totalmente modular, Type-5 Micro-Fit'),
+(1198,86,'tecnica','Ventilador: 92 mm PWM con Zero RPM'),
+(1199,86,'tecnica','Garantía: 10 años'),
+(1200,87,'clave','Interfaz lateral patentada para acceso rápido a los cables'),
+(1201,87,'clave','1200 W continuos con eficiencia 80 PLUS Gold'),
+(1202,87,'clave','Cumple ATX 3.1 y PCIe 5.1'),
+(1203,87,'clave','Totalmente modular'),
+(1204,87,'clave','Ventilador con modo Zero RPM a cargas bajas'),
+(1205,87,'clave','Garantía de diez años'),
+(1206,87,'tecnica','Potencia: 1200 W continuos'),
+(1207,87,'tecnica','Certificación: 80 PLUS Gold'),
+(1208,87,'tecnica','Estándar: ATX 3.1, PCIe 5.1'),
+(1209,87,'tecnica','Modularidad: totalmente modular con interfaz lateral SHIFT'),
+(1210,87,'tecnica','Factor de forma: ATX'),
+(1211,87,'tecnica','Ventilador: modo Zero RPM'),
+(1212,87,'tecnica','Garantía: 10 años'),
+(1213,88,'clave','750 W de potencia continua garantizada'),
+(1214,88,'clave','Eficiencia 80 PLUS Bronze de hasta 88 %'),
+(1215,88,'clave','Ventilador de 120 mm de bajo ruido'),
+(1216,88,'clave','Cuerpo compacto de 125 mm de longitud'),
+(1217,88,'clave','Cableado fijo en diseño ATX estándar'),
+(1218,88,'clave','Garantía de tres años'),
+(1219,88,'tecnica','Potencia: 750 W continuos'),
+(1220,88,'tecnica','Certificación: 80 PLUS Bronze, hasta 88 % de eficiencia'),
+(1221,88,'tecnica','Ventilador: 120 mm de bajo ruido'),
+(1222,88,'tecnica','Longitud: 125 mm'),
+(1223,88,'tecnica','Factor de forma: ATX'),
+(1224,88,'tecnica','Garantía: 3 años'),
+(1225,89,'clave','1500 W continuos con eficiencia Platinum'),
+(1226,89,'clave','Certificación ATX 3.1 y PCIe 5.1'),
+(1227,89,'clave','Monitoreo digital de consumo, voltaje y temperatura en iCUE'),
+(1228,89,'clave','Ventilador de rodamiento dinámico fluido con Zero RPM'),
+(1229,89,'clave','Condensadores japoneses de 105 °C'),
+(1230,89,'clave','Garantía de diez años'),
+(1231,89,'tecnica','Potencia: 1500 W continuos'),
+(1232,89,'tecnica','Certificación: 80 PLUS Platinum'),
+(1233,89,'tecnica','Estándar: ATX 3.1, PCIe 5.1'),
+(1234,89,'tecnica','Modularidad: totalmente modular'),
+(1235,89,'tecnica','Ventilador: rodamiento dinámico fluido con Zero RPM'),
+(1236,89,'tecnica','Monitoreo: digital mediante iCUE'),
+(1237,89,'tecnica','Garantía: 10 años'),
+(1238,90,'clave','Procesador Intel Core i5-12600H de 12 núcleos'),
+(1239,90,'clave','Gráficos Intel Iris Xe integrados'),
+(1240,90,'clave','32 GB de memoria para multitarea y máquinas virtuales'),
+(1241,90,'clave','SSD de 1 TB para proyectos y librerías'),
+(1242,90,'clave','Chasis compacto compatible con monitor externo'),
+(1243,90,'clave','Enfriamiento activo para cargas sostenidas'),
+(1244,90,'tecnica','Procesador: Intel Core i5-12600H (12 núcleos, 16 hilos)'),
+(1245,90,'tecnica','Gráficos: Intel Iris Xe'),
+(1246,90,'tecnica','Memoria: 32 GB'),
+(1247,90,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1248,90,'tecnica','Formato: mini estación de trabajo'),
+(1249,90,'tecnica','Sistema operativo: no incluido, lo instala el usuario'),
+(1250,90,'tecnica','Uso recomendado: desarrollo, virtualización y ofimática pesada'),
+(1251,91,'clave','AMD Ryzen 7 H255 de 8 núcleos y 16 hilos'),
+(1252,91,'clave','Gráficos Radeon 780M de 12 núcleos a 2600 MHz'),
+(1253,91,'clave','24 GB de LPDDR5X a 6400 MT/s soldada'),
+(1254,91,'clave','USB4 de 40 Gbps con Thunderbolt 3, PD y DisplayPort 1.4'),
+(1255,91,'clave','Salida de video hasta 4K a 240 Hz'),
+(1256,91,'clave','Micrófono integrado con captación omnidireccional'),
+(1257,91,'tecnica','Procesador: AMD Ryzen 7 H255 (8 núcleos, 16 hilos)'),
+(1258,91,'tecnica','Frecuencias: 3.8 GHz base, 4.9 GHz boost'),
+(1259,91,'tecnica','Caché L3: 16 MB'),
+(1260,91,'tecnica','Gráficos: AMD Radeon 780M, 12 núcleos a 2600 MHz'),
+(1261,91,'tecnica','Memoria: 24 GB LPDDR5X a 6400 MT/s (soldada)'),
+(1262,91,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1263,91,'tecnica','Conectividad: USB4 a 40 Gbps'),
+(1264,91,'tecnica','Color: Frost Silver'),
+(1265,92,'clave','AMD Ryzen 9 8945HS de 8 núcleos y 16 hilos'),
+(1266,92,'clave','Gráficos Radeon 780M integrados'),
+(1267,92,'clave','32 GB de memoria para desarrollo y virtualización'),
+(1268,92,'clave','SSD NVMe de 1 TB'),
+(1269,92,'clave','Chasis compacto con enfriamiento activo'),
+(1270,92,'clave','Ideal para escritorio de desarrollo'),
+(1271,92,'tecnica','Procesador: AMD Ryzen 9 8945HS (8 núcleos, 16 hilos)'),
+(1272,92,'tecnica','Gráficos: AMD Radeon 780M'),
+(1273,92,'tecnica','Memoria: 32 GB'),
+(1274,92,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1275,92,'tecnica','Formato: mini PC'),
+(1276,92,'tecnica','Uso recomendado: desarrollo, contenedores y edición'),
+(1277,93,'clave','AMD Ryzen AI 9 HX 370 de 12 núcleos y 24 hilos'),
+(1278,93,'clave','Gráficos Radeon 890M de nueva generación'),
+(1279,93,'clave','Unidad NPU para IA local'),
+(1280,93,'clave','32 GB de memoria y SSD de 1 TB'),
+(1281,93,'clave','Formato mini PC de escritorio'),
+(1282,93,'clave','Enfriamiento activo para cargas prolongadas'),
+(1283,93,'tecnica','Procesador: AMD Ryzen AI 9 HX 370 (12 núcleos, 24 hilos)'),
+(1284,93,'tecnica','Gráficos: AMD Radeon 890M'),
+(1285,93,'tecnica','Memoria: 32 GB'),
+(1286,93,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1287,93,'tecnica','Formato: mini PC'),
+(1288,93,'tecnica','Uso recomendado: IA local, desarrollo y render ligero'),
+(1289,94,'clave','Dos pantallas horizontales en un solo equipo'),
+(1290,94,'clave','Bisagra de 360° para modo laptop, carpa y tablet'),
+(1291,94,'clave','Intel Core i7-1255U de 10 núcleos'),
+(1292,94,'clave','16 GB de memoria y SSD de 1 TB'),
+(1293,94,'clave','Gráficos Intel Iris Xe'),
+(1294,94,'clave','Ideal para programar con documentación a la vista'),
+(1295,94,'tecnica','Procesador: Intel Core i7-1255U (10 núcleos, 12 hilos)'),
+(1296,94,'tecnica','Gráficos: Intel Iris Xe'),
+(1297,94,'tecnica','Memoria: 16 GB'),
+(1298,94,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1299,94,'tecnica','Pantallas: doble panel horizontal'),
+(1300,94,'tecnica','Bisagra: 360°'),
+(1301,94,'tecnica','Formato: laptop convertible'),
+(1302,95,'clave','AMD Ryzen 9 270 de 8 núcleos y 16 hilos'),
+(1303,95,'clave','Gráficos Radeon 780M'),
+(1304,95,'clave','24 GB de memoria LPDDR5'),
+(1305,95,'clave','SSD de 1 TB'),
+(1306,95,'clave','Chasis compacto para escritorio'),
+(1307,95,'clave','Bajo consumo frente a una torre'),
+(1308,95,'tecnica','Procesador: AMD Ryzen 9 270 (8 núcleos, 16 hilos)'),
+(1309,95,'tecnica','Gráficos: AMD Radeon 780M'),
+(1310,95,'tecnica','Memoria: 24 GB LPDDR5'),
+(1311,95,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1312,95,'tecnica','Formato: mini PC'),
+(1313,95,'tecnica','Uso recomendado: desarrollo, datos y oficina'),
+(1314,96,'clave','AMD Ryzen 9 8945HS de 8 núcleos y 16 hilos'),
+(1315,96,'clave','Gráficos Radeon 780M'),
+(1316,96,'clave','32 GB de memoria ampliable'),
+(1317,96,'clave','SSD de 1 TB'),
+(1318,96,'clave','Formato mini PC de escritorio'),
+(1319,96,'clave','Compatible con montaje VESA'),
+(1320,96,'tecnica','Procesador: AMD Ryzen 9 8945HS (8 núcleos, 16 hilos)'),
+(1321,96,'tecnica','Gráficos: AMD Radeon 780M'),
+(1322,96,'tecnica','Memoria: 32 GB'),
+(1323,96,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1324,96,'tecnica','Formato: mini PC'),
+(1325,96,'tecnica','Uso recomendado: desarrollo y productividad'),
+(1326,97,'clave','Intel Core i7-13620H de 10 núcleos hasta 4.9 GHz'),
+(1327,97,'clave','32 GB de DDR4 en doble canal (2 x 16 GB)'),
+(1328,97,'clave','Dos ranuras M.2 PCIe 4.0 de hasta 4 TB cada una'),
+(1329,97,'clave','Fuente de poder interna de 85 W'),
+(1330,97,'clave','Gráficos Intel UHD a 1.5 GHz'),
+(1331,97,'clave','Caché Intel Smart de 24 MB'),
+(1332,97,'tecnica','Procesador: Intel Core i7-13620H (10 núcleos, 16 hilos)'),
+(1333,97,'tecnica','Frecuencia máxima: 4.9 GHz'),
+(1334,97,'tecnica','Caché: 24 MB Intel Smart Cache'),
+(1335,97,'tecnica','Gráficos: Intel UHD Graphics a 1.5 GHz'),
+(1336,97,'tecnica','Memoria: 32 GB DDR4 (2 x 16 GB) doble canal'),
+(1337,97,'tecnica','Almacenamiento: SSD de 500 GB, 2 ranuras M.2 PCIe 4.0'),
+(1338,97,'tecnica','Fuente: interna de 85 W'),
+(1339,97,'tecnica','Formato: mini PC'),
+(1340,98,'clave','Intel Core Ultra 9 285H de 16 núcleos'),
+(1341,98,'clave','Gráficos Intel Arc integrados'),
+(1342,98,'clave','32 GB de memoria'),
+(1343,98,'clave','SSD de 1 TB'),
+(1344,98,'clave','Formato mini PC con enfriamiento activo'),
+(1345,98,'clave','Uso recomendado para desarrollo e IA local'),
+(1346,98,'tecnica','Procesador: Intel Core Ultra 9 285H (16 núcleos)'),
+(1347,98,'tecnica','Gráficos: Intel Arc'),
+(1348,98,'tecnica','Memoria: 32 GB'),
+(1349,98,'tecnica','Almacenamiento: SSD de 1 TB'),
+(1350,98,'tecnica','Formato: mini PC'),
+(1351,98,'tecnica','Sistema operativo: se instala por el usuario'),
+(1352,99,'clave','Intel Core Ultra 7 258V de bajo consumo'),
+(1353,99,'clave','Gráficos Intel Arc 140V'),
+(1354,99,'clave','32 GB de memoria'),
+(1355,99,'clave','SSD de 1 TB ampliable a 2 TB'),
+(1356,99,'clave','Diseño compacto y silencioso'),
+(1357,99,'clave','Ideal para escritorio de desarrollo'),
+(1358,99,'tecnica','Procesador: Intel Core Ultra 7 258V'),
+(1359,99,'tecnica','Gráficos: Intel Arc 140V'),
+(1360,99,'tecnica','Memoria: 32 GB'),
+(1361,99,'tecnica','Almacenamiento: SSD de 1 TB (opción de 2 TB)'),
+(1362,99,'tecnica','Formato: mini PC'),
+(1363,99,'tecnica','Uso recomendado: desarrollo y productividad'),
+(1364,100,'clave','Pantalla de 15.6 pulgadas'),
+(1365,100,'clave','Intel N150 con gráficos Intel UHD'),
+(1366,100,'clave','16 GB de memoria DDR4'),
+(1367,100,'clave','SSD M.2 de 512 GB y ranura para tarjeta TF de hasta 128 GB'),
+(1368,100,'clave','Batería de 38 Wh para más de 8 horas'),
+(1369,100,'clave','Windows 11 preinstalado, 1.6 kg y 0.66\" de grosor'),
+(1370,100,'tecnica','Procesador: Intel N150 (4 núcleos)'),
+(1371,100,'tecnica','Gráficos: Intel UHD integrados'),
+(1372,100,'tecnica','Memoria: 16 GB DDR4'),
+(1373,100,'tecnica','Almacenamiento: SSD M.2 de 512 GB'),
+(1374,100,'tecnica','Expansión: tarjeta TF de hasta 128 GB'),
+(1375,100,'tecnica','Pantalla: 15.6 pulgadas'),
+(1376,100,'tecnica','Batería: 38 Wh, más de 8 horas de uso'),
+(1377,100,'tecnica','Conectividad: Bluetooth 5.0'),
+(1378,100,'tecnica','Peso: 1.6 kg, 0.66 pulgadas de grosor'),
+(1379,100,'tecnica','Sistema operativo: Windows 11'),
+(1380,101,'clave','Pantalla de 16.1 pulgadas'),
+(1381,101,'clave','AMD Ryzen 7 5700U de 8 núcleos y 16 hilos'),
+(1382,101,'clave','Gráficos Radeon Vega 8'),
+(1383,101,'clave','16 GB de memoria'),
+(1384,101,'clave','SSD de 512 GB'),
+(1385,101,'clave','Formato grande para oficina y estudio'),
+(1386,101,'tecnica','Procesador: AMD Ryzen 7 5700U (8 núcleos, 16 hilos)'),
+(1387,101,'tecnica','Gráficos: AMD Radeon Vega 8'),
+(1388,101,'tecnica','Memoria: 16 GB'),
+(1389,101,'tecnica','Almacenamiento: SSD de 512 GB'),
+(1390,101,'tecnica','Pantalla: 16.1 pulgadas'),
+(1391,101,'tecnica','Formato: laptop de uso general'),
+(1392,102,'clave','AMD Ryzen 5 7430U de 6 núcleos y 12 hilos'),
+(1393,102,'clave','Gráficos Radeon Vega 7'),
+(1394,102,'clave','16 GB de memoria LPDDR4'),
+(1395,102,'clave','SSD de 512 GB'),
+(1396,102,'clave','Pantalla de 15.6 pulgadas'),
+(1397,102,'clave','Diseño delgado para llevar'),
+(1398,102,'tecnica','Procesador: AMD Ryzen 5 7430U (6 núcleos, 12 hilos)'),
+(1399,102,'tecnica','Gráficos: AMD Radeon Vega 7'),
+(1400,102,'tecnica','Memoria: 16 GB LPDDR4'),
+(1401,102,'tecnica','Almacenamiento: SSD de 512 GB'),
+(1402,102,'tecnica','Pantalla: 15.6 pulgadas'),
+(1403,102,'tecnica','Formato: laptop de uso general'),
+(1404,103,'clave','Pantalla de 17.3 pulgadas'),
+(1405,103,'clave','AMD Ryzen 3 4300U de 4 núcleos'),
+(1406,103,'clave','Gráficos Radeon Vega 5'),
+(1407,103,'clave','16 GB de memoria'),
+(1408,103,'clave','SSD de 512 GB'),
+(1409,103,'clave','Ideal para oficina, estudio y navegación'),
+(1410,103,'tecnica','Procesador: AMD Ryzen 3 4300U (4 núcleos, 4 hilos)'),
+(1411,103,'tecnica','Gráficos: AMD Radeon Vega 5'),
+(1412,103,'tecnica','Memoria: 16 GB'),
+(1413,103,'tecnica','Almacenamiento: SSD de 512 GB'),
+(1414,103,'tecnica','Pantalla: 17.3 pulgadas'),
+(1415,103,'tecnica','Formato: laptop de uso general'),
+(1416,104,'clave','Pantalla de 18.5 pulgadas'),
+(1417,104,'clave','Intel Twin Lake N150 de 4 núcleos'),
+(1418,104,'clave','Gráficos Intel UHD'),
+(1419,104,'clave','16 GB de memoria'),
+(1420,104,'clave','SSD de 512 GB'),
+(1421,104,'clave','Pensada para escritorio doméstico y estudio'),
+(1422,104,'tecnica','Procesador: Intel Twin Lake N150 (4 núcleos)'),
+(1423,104,'tecnica','Gráficos: Intel UHD integrados'),
+(1424,104,'tecnica','Memoria: 16 GB'),
+(1425,104,'tecnica','Almacenamiento: SSD de 512 GB'),
+(1426,104,'tecnica','Pantalla: 18.5 pulgadas'),
+(1427,104,'tecnica','Formato: laptop de uso general'),
+(1428,105,'clave','Pantalla de 15.6 pulgadas'),
+(1429,105,'clave','Intel N97 de 4 núcleos'),
+(1430,105,'clave','Gráficos Intel UHD de 24 EU'),
+(1431,105,'clave','8 GB de memoria'),
+(1432,105,'clave','SSD de 256 GB'),
+(1433,105,'clave','La laptop más económica del catálogo'),
+(1434,105,'tecnica','Procesador: Intel N97 (4 núcleos)'),
+(1435,105,'tecnica','Gráficos: Intel UHD Graphics 24 EU'),
+(1436,105,'tecnica','Memoria: 8 GB'),
+(1437,105,'tecnica','Almacenamiento: SSD de 256 GB'),
+(1438,105,'tecnica','Pantalla: 15.6 pulgadas'),
+(1439,105,'tecnica','Formato: laptop de uso general'),
+(1440,106,'clave','Intel N150 de bajo consumo'),
+(1441,106,'clave','Gráficos Intel UHD'),
+(1442,106,'clave','16 GB de memoria'),
+(1443,106,'clave','SSD de 512 GB'),
+(1444,106,'clave','Formato mini PC para cualquier escritorio'),
+(1445,106,'clave','Consumo mínimo y funcionamiento silencioso'),
+(1446,106,'tecnica','Procesador: Intel N150 (4 núcleos)'),
+(1447,106,'tecnica','Gráficos: Intel UHD integrados'),
+(1448,106,'tecnica','Memoria: 16 GB'),
+(1449,106,'tecnica','Almacenamiento: SSD de 512 GB'),
+(1450,106,'tecnica','Formato: mini PC'),
+(1451,106,'tecnica','Uso recomendado: oficina, estudio y multimedia'),
+(1452,107,'clave','Intel N150 de 4 núcleos con TDP de 25 W'),
+(1453,107,'clave','16 GB de DDR4 y 500 GB de SSD'),
+(1454,107,'clave','Doble LAN de 2.5 Gbps'),
+(1455,107,'clave','Dos ranuras M.2 PCIe 3.0 de hasta 8 TB combinadas'),
+(1456,107,'clave','Gráficos Intel UHD de 24 EU'),
+(1457,107,'clave','Color Navy Blue'),
+(1458,107,'tecnica','Procesador: Intel Twin Lake N150 (4 núcleos)'),
+(1459,107,'tecnica','TDP: 25 W'),
+(1460,107,'tecnica','Gráficos: Intel UHD Graphics 24 EU'),
+(1461,107,'tecnica','Memoria: 16 GB DDR4 (1 x 16 GB)'),
+(1462,107,'tecnica','Almacenamiento: SSD de 500 GB, 2 ranuras M.2 PCIe 3.0 hasta 8 TB'),
+(1463,107,'tecnica','Red: doble LAN 2.5 Gbps'),
+(1464,107,'tecnica','Color: Navy Blue'),
+(1465,107,'tecnica','Formato: mini PC'),
+(1466,108,'clave','AMD Ryzen 5 7640HS de 6 núcleos y 12 hilos'),
+(1467,108,'clave','Gráficos Radeon 760M'),
+(1468,108,'clave','16 GB de memoria'),
+(1469,108,'clave','SSD de 512 GB'),
+(1470,108,'clave','Formato mini PC de escritorio'),
+(1471,108,'clave','Buen equilibrio entre precio y rendimiento'),
+(1472,108,'tecnica','Procesador: AMD Ryzen 5 7640HS (6 núcleos, 12 hilos)'),
+(1473,108,'tecnica','Gráficos: AMD Radeon 760M'),
+(1474,108,'tecnica','Memoria: 16 GB'),
+(1475,108,'tecnica','Almacenamiento: SSD de 512 GB'),
+(1476,108,'tecnica','Formato: mini PC'),
+(1477,108,'tecnica','Uso recomendado: oficina, estudio y multimedia'),
+(1478,109,'clave','AMD Ryzen 5 6600H de 6 núcleos y 12 hilos'),
+(1479,109,'clave','Gráficos Radeon 660M'),
+(1480,109,'clave','24 GB de memoria LPDDR5 (2 x 12 GB)'),
+(1481,109,'clave','SSD de 500 GB'),
+(1482,109,'clave','Doble LAN 2.5 Gbps para separar redes'),
+(1483,109,'clave','Ideal para home office y servidor doméstico'),
+(1484,109,'tecnica','Procesador: AMD Ryzen 5 6600H (6 núcleos, 12 hilos)'),
+(1485,109,'tecnica','Gráficos: AMD Radeon 660M'),
+(1486,109,'tecnica','Memoria: 24 GB LPDDR5 (2 x 12 GB)'),
+(1487,109,'tecnica','Almacenamiento: SSD de 500 GB'),
+(1488,109,'tecnica','Red: doble LAN 2.5 Gbps'),
+(1489,109,'tecnica','Formato: mini PC'),
+(1490,109,'tecnica','Uso recomendado: home office, estudio y multimedia'),
+(1491,110,'clave','Solo 46 g con skates de punto (48 g con skates estándar)'),
+(1492,110,'clave','Sensor Pulsar XS-1 de 32,000 DPI y 750 IPS'),
+(1493,110,'clave','Sondeo de hasta 8000 Hz'),
+(1494,110,'clave','Switches ópticos Pulsar para 100 millones de clics'),
+(1495,110,'clave','Forma para agarre de palma con la mano derecha'),
+(1496,110,'clave','Ajuste de DPI en incrementos de 10'),
+(1497,110,'tecnica','Sensor: Pulsar XS-1, óptico'),
+(1498,110,'tecnica','Resolución: hasta 32,000 DPI (ajuste en pasos de 10)'),
+(1499,110,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(1500,110,'tecnica','Aceleración máxima: 50 G'),
+(1501,110,'tecnica','Tasa de sondeo: 1000 Hz de base, hasta 8000 Hz'),
+(1502,110,'tecnica','Switches: ópticos Pulsar, 100 millones de clics'),
+(1503,110,'tecnica','Peso: 46 g ± 2 g'),
+(1504,110,'tecnica','Colores: Jet Black, Uyuni White y Desert'),
+(1505,111,'clave','38 g con skates de punto (40 g con skates estándar)'),
+(1506,111,'clave','Sensor Pulsar XS-1 de 32,000 DPI y 750 IPS'),
+(1507,111,'clave','Listo para sondeo de 8000 Hz'),
+(1508,111,'clave','Switches ópticos de 100 millones de clics'),
+(1509,111,'clave','Chasis simétrico en tamaño mini'),
+(1510,111,'clave','Ajuste fino de DPI en pasos de 10'),
+(1511,111,'tecnica','Sensor: Pulsar XS-1, óptico'),
+(1512,111,'tecnica','Resolución: hasta 32,000 DPI'),
+(1513,111,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(1514,111,'tecnica','Aceleración máxima: 50 G'),
+(1515,111,'tecnica','Tasa de sondeo: 1000 Hz de base, hasta 8000 Hz'),
+(1516,111,'tecnica','Switches: ópticos, 100 millones de clics'),
+(1517,111,'tecnica','Peso: 38 g ± 2 g'),
+(1518,111,'tecnica','Colores: Jet Black, Uyuni White y Ocean'),
+(1519,112,'clave','53 g sin cable'),
+(1520,112,'clave','Joroba alta para mejor apoyo de palma'),
+(1521,112,'clave','Sensor XS-1 de 32,000 DPI y 750 IPS'),
+(1522,112,'clave','Switches ópticos sin doble clic'),
+(1523,112,'clave','Hasta 8000 Hz de sondeo con receptor 8K'),
+(1524,112,'clave','Formato simétrico mediano'),
+(1525,112,'tecnica','Sensor: Pulsar XS-1, óptico'),
+(1526,112,'tecnica','Resolución: hasta 32,000 DPI'),
+(1527,112,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(1528,112,'tecnica','Aceleración máxima: 50 G'),
+(1529,112,'tecnica','Tasa de sondeo: 1000 Hz de base, hasta 8000 Hz con receptor 8K opcional'),
+(1530,112,'tecnica','Switches: ópticos preseleccionados en 3 etapas'),
+(1531,112,'tecnica','Peso: 53 g ± 1 g'),
+(1532,112,'tecnica','Colores: negro y blanco'),
+(1533,113,'clave','51 g sin cable'),
+(1534,113,'clave','Cuerpo mini con joroba alta'),
+(1535,113,'clave','Sensor XS-1 de 32,000 DPI'),
+(1536,113,'clave','Switches ópticos de larga vida'),
+(1537,113,'clave','Sondeo de hasta 8000 Hz con receptor 8K'),
+(1538,113,'clave','Acabado en negro o blanco'),
+(1539,113,'tecnica','Sensor: Pulsar XS-1, óptico'),
+(1540,113,'tecnica','Resolución: hasta 32,000 DPI'),
+(1541,113,'tecnica','Velocidad de seguimiento: 750 IPS'),
+(1542,113,'tecnica','Aceleración máxima: 50 G'),
+(1543,113,'tecnica','Tasa de sondeo: 1000 Hz de base, hasta 8000 Hz con receptor 8K opcional'),
+(1544,113,'tecnica','Peso: 51 g ± 1 g'),
+(1545,113,'tecnica','Colores: negro y blanco'),
+(1546,114,'clave','58 g con diseño ergonómico para diestros'),
+(1547,114,'clave','Sensor PAW3395 de 26,000 DPI y 650 IPS'),
+(1548,114,'clave','Hasta 100 horas de batería a 1000 Hz'),
+(1549,114,'clave','Sistema de clic dividido para menor latencia'),
+(1550,114,'clave','Ruedas con baleros de precisión'),
+(1551,114,'clave','Listo para sondeo de 4000 Hz'),
+(1552,114,'tecnica','Sensor: PixArt PAW3395, óptico'),
+(1553,114,'tecnica','Resolución: hasta 26,000 DPI'),
+(1554,114,'tecnica','Velocidad de seguimiento: 650 IPS'),
+(1555,114,'tecnica','Aceleración máxima: 50 G'),
+(1556,114,'tecnica','Tasa de sondeo: 1000 Hz de base, listo para 4000 Hz'),
+(1557,114,'tecnica','Batería: hasta 100 horas a 1000 Hz'),
+(1558,114,'tecnica','Peso: 58 g ± 1 g'),
+(1559,114,'tecnica','Colores: negro y blanco'),
+(1560,115,'clave','52 g en formato ergonómico mini'),
+(1561,115,'clave','Sensor PAW3395 de 26,000 DPI'),
+(1562,115,'clave','Hasta 100 horas de batería a 1000 Hz'),
+(1563,115,'clave','Clic dividido izquierdo y derecho'),
+(1564,115,'clave','Compatible con receptor de 4000 Hz'),
+(1565,115,'clave','Disponible en negro y blanco'),
+(1566,115,'tecnica','Sensor: PixArt PAW3395, óptico'),
+(1567,115,'tecnica','Resolución: hasta 26,000 DPI'),
+(1568,115,'tecnica','Velocidad de seguimiento: 650 IPS'),
+(1569,115,'tecnica','Aceleración máxima: 50 G'),
+(1570,115,'tecnica','Tasa de sondeo: 1000 Hz de base, listo para 4000 Hz'),
+(1571,115,'tecnica','Batería: hasta 100 horas a 1000 Hz'),
+(1572,115,'tecnica','Peso: 52 g ± 1 g'),
+(1573,116,'clave','Sensor PixArt 3950 de 30,000 DPI'),
+(1574,116,'clave','Sondeo de hasta 8000 Hz en 2.4 GHz'),
+(1575,116,'clave','Peso de 43 a 55 g según variante'),
+(1576,116,'clave','Hasta 162 horas de batería'),
+(1577,116,'clave','Conexión 2.4 GHz y cable'),
+(1578,116,'clave','Botones y rueda configurables'),
+(1579,116,'tecnica','Sensor: PixArt 3950'),
+(1580,116,'tecnica','Resolución: hasta 30,000 DPI'),
+(1581,116,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(1582,116,'tecnica','Conectividad: 2.4 GHz y cable'),
+(1583,116,'tecnica','Peso: 43 a 55 g'),
+(1584,116,'tecnica','Batería: hasta 162 horas'),
+(1585,117,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1586,117,'clave','Sensor PixArt 3950, 3395 o 3311 según versión'),
+(1587,117,'clave','Hasta 30,000 DPI y 8000 Hz de sondeo'),
+(1588,117,'clave','Hasta 140 horas de batería'),
+(1589,117,'clave','Iluminación RGB opcional'),
+(1590,117,'clave','Disponible en negro y blanco'),
+(1591,117,'tecnica','Sensor: PixArt 3950 / 3395 / 3311'),
+(1592,117,'tecnica','Resolución: hasta 30,000 DPI'),
+(1593,117,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(1594,117,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1595,117,'tecnica','Batería: hasta 140 horas'),
+(1596,117,'tecnica','Iluminación: RGB opcional'),
+(1597,118,'clave','Forma ergonómica para uso prolongado'),
+(1598,118,'clave','Switches micro silenciosos opcionales'),
+(1599,118,'clave','Sensor PixArt 3950 o 3311 hasta 30,000 DPI'),
+(1600,118,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1601,118,'clave','Hasta 140 horas de batería'),
+(1602,118,'clave','Peso de 95 g'),
+(1603,118,'tecnica','Sensor: PixArt 3950 / 3311'),
+(1604,118,'tecnica','Resolución: hasta 30,000 DPI'),
+(1605,118,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(1606,118,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1607,118,'tecnica','Peso: 95 g'),
+(1608,118,'tecnica','Batería: hasta 140 horas'),
+(1609,118,'tecnica','Switches: silenciosos o de clic'),
+(1610,119,'clave','Sensor PixArt 3950, 3395 o 3311'),
+(1611,119,'clave','Hasta 30,000 DPI y 8000 Hz'),
+(1612,119,'clave','Rueda premium opcional'),
+(1613,119,'clave','Switches micro silenciosos'),
+(1614,119,'clave','Hasta 180 horas de batería'),
+(1615,119,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1616,119,'tecnica','Sensor: PixArt 3950 / 3395 / 3311'),
+(1617,119,'tecnica','Resolución: hasta 30,000 DPI'),
+(1618,119,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(1619,119,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1620,119,'tecnica','Peso: 78 a 86 g'),
+(1621,119,'tecnica','Batería: hasta 180 horas'),
+(1622,120,'clave','Formato compacto para viaje y escritorio'),
+(1623,120,'clave','Sensor PixArt 3950 o 3395'),
+(1624,120,'clave','Hasta 30,000 DPI'),
+(1625,120,'clave','Sondeo de hasta 8000 Hz'),
+(1626,120,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1627,120,'clave','Hasta 67 horas de batería'),
+(1628,120,'tecnica','Sensor: PixArt 3950 / 3395'),
+(1629,120,'tecnica','Resolución: hasta 30,000 DPI'),
+(1630,120,'tecnica','Tasa de sondeo: hasta 8000 Hz'),
+(1631,120,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1632,120,'tecnica','Batería: hasta 67 horas'),
+(1633,120,'tecnica','Colores: negro y blanco'),
+(1634,121,'clave','Formato 75% ANSI con perilla de volumen'),
+(1635,121,'clave','Chasis de aluminio mecanizado'),
+(1636,121,'clave','Conexión 2.4 GHz, Bluetooth y cable con 8000 Hz'),
+(1637,121,'clave','Firmware QMK para remapear cualquier tecla'),
+(1638,121,'clave','Batería de 4000 mAh y hasta 660 horas'),
+(1639,121,'clave','Switches Keychron Silk POM en rojo, café o banana'),
+(1640,121,'tecnica','Formato: 75% ANSI con perilla'),
+(1641,121,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1642,121,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1643,121,'tecnica','Firmware: QMK'),
+(1644,121,'tecnica','Batería: 4000 mAh, hasta 660 horas'),
+(1645,121,'tecnica','Peso: 1724 g ± 10 g'),
+(1646,121,'tecnica','Dimensiones: 145 x 327.6 mm'),
+(1647,121,'tecnica','Colores: negro y blanco'),
+(1648,122,'clave','Formato 80% TKL con perilla'),
+(1649,122,'clave','Chasis de aluminio mecanizado'),
+(1650,122,'clave','8000 Hz de sondeo en 2.4 GHz y cable'),
+(1651,122,'clave','Bluetooth para hasta 3 dispositivos'),
+(1652,122,'clave','Hasta 660 horas con batería de 4000 mAh'),
+(1653,122,'clave','Compatible con QMK para personalización total'),
+(1654,122,'tecnica','Formato: 80% TKL ANSI con perilla'),
+(1655,122,'tecnica','Conectividad: 2.4 GHz, Bluetooth (3 dispositivos) y cable'),
+(1656,122,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1657,122,'tecnica','Batería: 4000 mAh, hasta 660 horas'),
+(1658,122,'tecnica','Peso: 1787 g ± 10 g'),
+(1659,122,'tecnica','Dimensiones: 137 x 365 mm'),
+(1660,123,'clave','Formato 100% con teclado numérico y perilla'),
+(1661,123,'clave','Chasis de aluminio mecanizado'),
+(1662,123,'clave','Sondeo de 8000 Hz'),
+(1663,123,'clave','QMK para macros y remapeo'),
+(1664,123,'clave','Hasta 660 horas de batería'),
+(1665,123,'clave','Ideal para contabilidad y hojas de cálculo'),
+(1666,123,'tecnica','Formato: 100% ANSI con perilla'),
+(1667,123,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1668,123,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1669,123,'tecnica','Batería: 4000 mAh, hasta 660 horas'),
+(1670,123,'tecnica','Peso: 2238 g ± 10 g'),
+(1671,123,'tecnica','Dimensiones: 137 x 446 mm'),
+(1672,124,'clave','Diseño dividido en dos mitades sin cable entre ellas'),
+(1673,124,'clave','Formato 75% con perilla'),
+(1674,124,'clave','Sincronización inalámbrica 2.4 GHz a 8000 Hz'),
+(1675,124,'clave','QMK para programar cada mitad'),
+(1676,124,'clave','Hasta 160 horas de batería'),
+(1677,124,'clave','Mejor postura de hombros y muñecas'),
+(1678,124,'tecnica','Formato: 75% dividido con perilla'),
+(1679,124,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1680,124,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1681,124,'tecnica','Batería: 4000 mAh, hasta 160 horas'),
+(1682,124,'tecnica','Peso: 1724 g ± 10 g'),
+(1683,124,'tecnica','Dimensiones: 133.97 x 345.08 mm'),
+(1684,125,'clave','Perfil bajo en formato 75%'),
+(1685,125,'clave','Solo 566 g, fácil de transportar'),
+(1686,125,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1687,125,'clave','Sondeo de 8000 Hz'),
+(1688,125,'clave','Hasta 550 horas con batería de 2600 mAh'),
+(1689,125,'clave','Switches Keychron Milk POM'),
+(1690,125,'tecnica','Formato: 75% de perfil bajo'),
+(1691,125,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1692,125,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1693,125,'tecnica','Batería: 2600 mAh, hasta 550 horas'),
+(1694,125,'tecnica','Peso: 566 g ± 10 g'),
+(1695,125,'tecnica','Dimensiones: 320.62 x 126 mm'),
+(1696,125,'tecnica','Opciones de distribución: ANSI e ISO'),
+(1697,126,'clave','Formato 75% compacto'),
+(1698,126,'clave','Switches Keychron Apex en rojo, café o banana'),
+(1699,126,'clave','Hasta 760 horas de batería'),
+(1700,126,'clave','Sondeo de 8000 Hz'),
+(1701,126,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1702,126,'clave','Peso de 1084 g'),
+(1703,126,'tecnica','Formato: 75%'),
+(1704,126,'tecnica','Switches: Keychron Apex'),
+(1705,126,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1706,126,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1707,126,'tecnica','Batería: 4000 mAh, hasta 760 horas'),
+(1708,126,'tecnica','Peso: 1084 g ± 10 g'),
+(1709,126,'tecnica','Dimensiones: 311.5 x 121.54 mm'),
+(1723,128,'clave','Conexión 2.4 GHz, Bluetooth 5.3 y cable'),
+(1724,128,'clave','Cuatro opciones de switch, incluido Silent Red'),
+(1725,128,'clave','Sondeo de 8000 Hz'),
+(1726,128,'clave','Chasis rígido para escritorio'),
+(1727,128,'clave','Compatible con remapeo por software'),
+(1728,128,'clave','Teclas PBT de doble inyección'),
+(1729,128,'tecnica','Conectividad: 2.4 GHz, Bluetooth 5.3 y cable'),
+(1730,128,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1731,128,'tecnica','Switches: Red, Brown, Banana o Silent Red'),
+(1732,128,'tecnica','Formato: completo con bloque de funciones'),
+(1733,128,'tecnica','Color: negro'),
+(1734,128,'tecnica','Tipo: mecánico inalámbrico'),
+(1735,129,'clave','Formato 100% con numérico y perilla'),
+(1736,129,'clave','Switches Keychron Silk POM'),
+(1737,129,'clave','Sondeo de 8000 Hz'),
+(1738,129,'clave','Hasta 660 horas de batería'),
+(1739,129,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(1740,129,'clave','Peso contenido de 1130 g'),
+(1741,129,'tecnica','Formato: 100% ANSI con perilla'),
+(1742,129,'tecnica','Switches: Keychron Silk POM'),
+(1743,129,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1744,129,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1745,129,'tecnica','Batería: 4000 mAh, hasta 660 horas'),
+(1746,129,'tecnica','Peso: 1130 g ± 10 g'),
+(1747,129,'tecnica','Dimensiones: 149 x 447.9 mm'),
+(1748,130,'clave','Distribución ergonómica Alice'),
+(1749,130,'clave','Formato 75% con perilla'),
+(1750,130,'clave','Sondeo de 8000 Hz'),
+(1751,130,'clave','Switches Keychron Silk POM'),
+(1752,130,'clave','Hasta 660 horas de batería'),
+(1753,130,'clave','Peso de 950 g'),
+(1754,130,'tecnica','Formato: 75% Alice ANSI con perilla'),
+(1755,130,'tecnica','Switches: Keychron Silk POM'),
+(1756,130,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1757,130,'tecnica','Tasa de sondeo: 8000 Hz'),
+(1758,130,'tecnica','Batería: 4000 mAh, hasta 660 horas'),
+(1759,130,'tecnica','Peso: 950 g ± 10 g'),
+(1760,130,'tecnica','Dimensiones: 162.2 x 389.6 mm'),
+(1761,131,'clave','Switches magnéticos Gateron Double-Rail Nebula'),
+(1762,131,'clave','Rapid Trigger con actuación de 0.2 a 3.8 mm'),
+(1763,131,'clave','Formato 80% TKL ANSI'),
+(1764,131,'clave','Conexión 2.4 GHz, Bluetooth y cable a 1000 Hz'),
+(1765,131,'clave','Hasta 120 horas de batería'),
+(1766,131,'clave','Versión con teclas translúcidas disponible'),
+(1767,131,'tecnica','Formato: 80% TKL ANSI'),
+(1768,131,'tecnica','Switches: Gateron Double-Rail Magnetic Nebula'),
+(1769,131,'tecnica','Actuación ajustable: 0.2 a 3.8 mm con Rapid Trigger'),
+(1770,131,'tecnica','Tasa de sondeo: 1000 Hz'),
+(1771,131,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(1772,131,'tecnica','Batería: 4000 mAh, hasta 120 horas'),
+(1773,131,'tecnica','Peso: 1910 g ± 50 g'),
+(1774,131,'tecnica','Dimensiones: 137.7 x 362.2 mm'),
+(1775,132,'clave','Diseño abierto con imagen estéreo amplia'),
+(1776,132,'clave','Impedancia de 300 Ω para amplificadores dedicados'),
+(1777,132,'clave','Respuesta de frecuencia de 12 Hz a 39 kHz'),
+(1778,132,'clave','97 dB de presión sonora'),
+(1779,132,'clave','Cable OFC desmontable de 3 metros'),
+(1780,132,'clave','Conector de 6.3 mm chapado en oro'),
+(1781,132,'tecnica','Tipo: circumaural abierto, dinámico'),
+(1782,132,'tecnica','Impedancia: 300 Ω'),
+(1783,132,'tecnica','Respuesta de frecuencia: 12 Hz a 39 kHz'),
+(1784,132,'tecnica','SPL: 97 dB'),
+(1785,132,'tecnica','Cable: OFC desmontable de 3 m (9.8 pies)'),
+(1786,132,'tecnica','Conector: jack estéreo de 6.3 mm chapado en oro'),
+(1787,132,'tecnica','Incluye: adaptador de 6.3 mm'),
+(1788,133,'clave','Drivers seleccionados por pares con tolerancia de ±1 dB'),
+(1789,133,'clave','Respuesta de 10 Hz a 41 kHz'),
+(1790,133,'clave','300 Ω de impedancia'),
+(1791,133,'clave','103 dB de sensibilidad (1 V)'),
+(1792,133,'clave','Diseño abierto con almohadillas de terciopelo'),
+(1793,133,'clave','Cable desmontable con conector de 6.35 mm'),
+(1794,133,'tecnica','Tipo: circumaural abierto, dinámico'),
+(1795,133,'tecnica','Impedancia: 300 Ω'),
+(1796,133,'tecnica','Respuesta de frecuencia: 10 Hz a 41 kHz'),
+(1797,133,'tecnica','SPL: 103 dB (1 V)'),
+(1798,133,'tecnica','Conector: jack estéreo de 6.35 mm'),
+(1799,133,'tecnica','Cable: desmontable, incluye adaptador de 3.5 mm'),
+(1800,134,'clave','150 Ω, más fácil de mover que la serie 600'),
+(1801,134,'clave','Respuesta de 5 Hz a 39.5 kHz'),
+(1802,134,'clave','Distorsión armónica menor al 0.2 %'),
+(1803,134,'clave','106.7 dB de sensibilidad'),
+(1804,134,'clave','Cable desmontable de 1.8 m'),
+(1805,134,'clave','Incluye adaptador roscado de 3.5 a 6.35 mm'),
+(1806,134,'tecnica','Tipo: circumaural abierto'),
+(1807,134,'tecnica','Impedancia: 150 Ω'),
+(1808,134,'tecnica','Respuesta de frecuencia: 5 Hz a 39.5 kHz'),
+(1809,134,'tecnica','Distorsión: menor al 0.2 %'),
+(1810,134,'tecnica','SPL: 106.7 dB'),
+(1811,134,'tecnica','Cable: desmontable de 1.8 m con plug de 3.5 mm'),
+(1812,135,'clave','Drivers de cúpula de magnesio de 40 mm hechos en Francia'),
+(1813,135,'clave','Cancelación activa con 8 micrófonos'),
+(1814,135,'clave','Modo USB-DAC hasta 24 bits / 192 kHz'),
+(1815,135,'clave','Bluetooth 5.2 con multipunto'),
+(1816,135,'clave','Hasta 42 horas en USB-DAC y 30 con ANC'),
+(1817,135,'clave','Carga rápida: 15 minutos para 5 horas'),
+(1818,135,'tecnica','Drivers: 40 mm de cúpula de magnesio'),
+(1819,135,'tecnica','Respuesta de frecuencia: 10 Hz a 22 kHz (±3 dB)'),
+(1820,135,'tecnica','Distorsión: menor al 0.2 % a 1 kHz'),
+(1821,135,'tecnica','Resolución USB-DAC: hasta 24 bits / 192 kHz'),
+(1822,135,'tecnica','Bluetooth: 5.2 con multipunto'),
+(1823,135,'tecnica','Micrófonos: 8 en total'),
+(1824,135,'tecnica','Batería: 1060 mAh, 30 h con ANC y 35 h por cable'),
+(1825,135,'tecnica','Colores: Brown y Grey'),
+(1826,136,'clave','Drivers planar magnéticos de gran diafragma'),
+(1827,136,'clave','Impedancia baja de 18 Ω'),
+(1828,136,'clave','Respuesta de 8 Hz a 50 kHz'),
+(1829,136,'clave','92 dB de sensibilidad'),
+(1830,136,'clave','Diadema de metal con almohadillas de piel sintética'),
+(1831,136,'clave','Diseño abierto con escena amplia'),
+(1832,136,'tecnica','Tipo: circumaural abierto, planar magnético'),
+(1833,136,'tecnica','Impedancia: 18 Ω'),
+(1834,136,'tecnica','Respuesta de frecuencia: 8 Hz a 50 kHz'),
+(1835,136,'tecnica','Sensibilidad: 92 dB'),
+(1836,136,'tecnica','Cable: desmontable de 1.5 m'),
+(1837,137,'clave','Copas de madera con acabado natural'),
+(1838,137,'clave','Drivers dinámicos de 40 mm y 16 Ω'),
+(1839,137,'clave','Absorbedores acústicos para dos afinados'),
+(1840,137,'clave','Cable de Kevlar trenzado de 1.8 m'),
+(1841,137,'clave','Incluye dongle USB-C con DAC/amplificador'),
+(1842,137,'clave','Peso de 290 g'),
+(1843,137,'tecnica','Tipo: circumaural cerrado, dinámico'),
+(1844,137,'tecnica','Drivers: 40 mm'),
+(1845,137,'tecnica','Respuesta de frecuencia: 15 Hz a 25 kHz'),
+(1846,137,'tecnica','Impedancia: 16 Ω'),
+(1847,137,'tecnica','SPL: 103 dB/mW a 1 kHz'),
+(1848,137,'tecnica','Distorsión: menor al 0.1 % a 1 kHz'),
+(1849,137,'tecnica','Conexión: doble jack TS de 3.5 mm'),
+(1850,137,'tecnica','Peso: 290 g'),
+(1851,137,'tecnica','Cable: 1.8 m de Kevlar con OFC y jack de 3.5 mm'),
+(1852,138,'clave','Drivers planar magnéticos de 90 mm con neodimio N50'),
+(1853,138,'clave','Respuesta de 5 Hz a 50 kHz'),
+(1854,138,'clave','Distorsión menor al 0.1 % a 100 dB SPL'),
+(1855,138,'clave','18 Ω de impedancia, fácil de amplificar'),
+(1856,138,'clave','102 dB/1mW de sensibilidad'),
+(1857,138,'clave','Afinado orientado a mezcla y referencia'),
+(1858,138,'tecnica','Tipo: circumaural abierto, planar magnético'),
+(1859,138,'tecnica','Drivers: 90 mm con imanes de neodimio N50'),
+(1860,138,'tecnica','Respuesta de frecuencia: 5 Hz a 50 kHz'),
+(1861,138,'tecnica','Impedancia: 18 Ω'),
+(1862,138,'tecnica','Sensibilidad: 102 dB/1mW en el punto de referencia'),
+(1863,138,'tecnica','Distorsión: menor al 0.1 % a 100 dB SPL, 1 kHz'),
+(1864,138,'tecnica','SPL máximo: mayor a 130 dB'),
+(1865,138,'tecnica','Potencia mínima recomendada: 100 mW'),
+(1866,139,'clave','Diseño cerrado planar magnético'),
+(1867,139,'clave','Cable Dummer incluido'),
+(1868,139,'clave','Tres terminaciones: 3.5/6.3 mm, XLR de 4 pines y 4.4 mm'),
+(1869,139,'clave','Aislamiento para escuchar sin fugas'),
+(1870,139,'clave','Diadema acolchada para sesiones largas'),
+(1871,139,'clave','Fabricación en Estados Unidos'),
+(1872,139,'tecnica','Tipo: circumaural cerrado, planar magnético'),
+(1873,139,'tecnica','Cable: Dummer con puntas de 3.5 y 6.3 mm'),
+(1874,139,'tecnica','Terminaciones opcionales: 4 pines XLR y 4.4 mm balanceada'),
+(1875,139,'tecnica','Largo de cable: 2 m'),
+(1876,139,'tecnica','Uso: monitoreo y escucha en entornos ruidosos'),
+(1877,140,'clave','Bluetooth 5.4 con Auracast y LE Audio'),
+(1878,140,'clave','Sistema de 6 micrófonos para llamadas'),
+(1879,140,'clave','Códecs de última generación'),
+(1880,140,'clave','Estuche de carga compacto'),
+(1881,140,'clave','Compatible con asistentes de voz'),
+(1882,140,'clave','Colores Black Copper, Black Graphite y White Silver'),
+(1883,140,'tecnica','Tipo: intraurales true wireless'),
+(1884,140,'tecnica','Bluetooth: 5.4'),
+(1885,140,'tecnica','Micrófonos: 6'),
+(1886,140,'tecnica','Tecnologías: Auracast y LE Audio'),
+(1887,140,'tecnica','Colores: Black Copper, Black Graphite y White Silver'),
+(1888,141,'clave','Drivers de cono de carbono de 40 mm'),
+(1889,141,'clave','Cancelación activa de ruido'),
+(1890,141,'clave','Procesamiento DSP de alta resolución'),
+(1891,141,'clave','Acabados en piel con memoria de forma'),
+(1892,141,'clave','Controles táctiles integrados'),
+(1893,141,'clave','Colores Black y Tan'),
+(1894,141,'tecnica','Tipo: circumaural cerrado inalámbrico'),
+(1895,141,'tecnica','Drivers: cono de carbono de 40 mm'),
+(1896,141,'tecnica','Cancelación: activa de ruido'),
+(1897,141,'tecnica','Procesamiento: DSP de alta resolución'),
+(1898,141,'tecnica','Colores: Black y Tan'),
+(1899,142,'clave','Diseño híbrido de 10 drivers en 4 vías'),
+(1900,142,'clave','Dos dinámicos IMPACT2 de 8 mm para subgraves'),
+(1901,142,'clave','Seis armaduras balanceadas y dos EST Sonion'),
+(1902,142,'clave','Carcasa de aluminio aeronáutico T6'),
+(1903,142,'clave','Cable modular con 4.4 mm balanceado y 3.5 mm'),
+(1904,142,'clave','Respuesta de 10 Hz a 44 kHz'),
+(1905,142,'tecnica','Configuración: 2 dinámicos IMPACT2 de 8 mm, 6 BA, 2 EST (Sonion E50 y 28UAP)'),
+(1906,142,'tecnica','Crossover: 4 vías'),
+(1907,142,'tecnica','Respuesta de frecuencia: 10 Hz a 44 kHz'),
+(1908,142,'tecnica','Impedancia: 10 / 9 Ω (±1 Ω) a 1 kHz'),
+(1909,142,'tecnica','Sensibilidad: 100 dB ±1 dB a 1 kHz'),
+(1910,142,'tecnica','Distorsión: menor al 1 % a 1 kHz'),
+(1911,142,'tecnica','Carcasa: aleación de aluminio T6'),
+(1912,142,'tecnica','Cable: modular con plugs de 4.4 mm y 3.5 mm'),
+(1913,143,'clave','Panel Mini LED Fast-IPS de 27 pulgadas'),
+(1914,143,'clave','Modo dual: 4K a 160 Hz o FHD a 320 Hz'),
+(1915,143,'clave','Certificación VESA HDR1000 con picos de 1000 nits'),
+(1916,143,'clave','HDMI 2.1 y DisplayPort 1.4'),
+(1917,143,'clave','FreeSync con HDR para juego sin tearing'),
+(1918,143,'clave','Acabado blanco'),
+(1919,143,'tecnica','Tamaño: 27 pulgadas'),
+(1920,143,'tecnica','Panel: Mini LED Fast-IPS, plano'),
+(1921,143,'tecnica','Resolución: UHD 4K (160 Hz) y FHD 1920x1080 (320 Hz)'),
+(1922,143,'tecnica','Brillo HDR: hasta 1000 nits, VESA DisplayHDR 1000'),
+(1923,143,'tecnica','Conectividad: HDMI 2.1 y DisplayPort 1.4'),
+(1924,143,'tecnica','Sincronización: FreeSync compatible con HDR'),
+(1925,143,'tecnica','Color: blanco'),
+(1926,144,'clave','34 pulgadas con curvatura envolvente'),
+(1927,144,'clave','Panel Fast VA con 3440 x 1440'),
+(1928,144,'clave','Refresco de 180 Hz'),
+(1929,144,'clave','Formato 21:9 para multitarea'),
+(1930,144,'clave','Disponible en negro y blanco'),
+(1931,144,'clave','Compatible con soportes VESA'),
+(1932,144,'tecnica','Tamaño: 34 pulgadas'),
+(1933,144,'tecnica','Panel: Fast VA curvo'),
+(1934,144,'tecnica','Resolución: 3440 x 1440 (21:9)'),
+(1935,144,'tecnica','Tasa de refresco: 180 Hz'),
+(1936,144,'tecnica','Colores: negro y blanco'),
+(1937,144,'tecnica','Uso: productividad y gaming'),
+(1949,146,'clave','27 pulgadas Full HD'),
+(1950,146,'clave','Panel Fast IPS'),
+(1951,146,'clave','Refresco de 240 Hz'),
+(1952,146,'clave','Ideal para juego y uso diario'),
+(1953,146,'clave','Compatible con soportes VESA'),
+(1954,146,'clave','Acabado sobrio en negro'),
+(1955,146,'tecnica','Tamaño: 27 pulgadas'),
+(1956,146,'tecnica','Panel: Fast IPS'),
+(1957,146,'tecnica','Resolución: 1920 x 1080 (FHD)'),
+(1958,146,'tecnica','Tasa de refresco: 240 Hz'),
+(1959,146,'tecnica','Uso: gaming y productividad'),
+(1960,147,'clave','27 pulgadas con 2560 x 1440'),
+(1961,147,'clave','Panel Fast IPS de 320 Hz'),
+(1962,147,'clave','Certificación HDR400'),
+(1963,147,'clave','Tiempo de respuesta de 1 ms'),
+(1964,147,'clave','Compatible con FreeSync y G-Sync'),
+(1965,147,'clave','Base ajustable con soporte VESA'),
+(1966,147,'tecnica','Tamaño: 27 pulgadas'),
+(1967,147,'tecnica','Panel: Fast IPS'),
+(1968,147,'tecnica','Resolución: 2560 x 1440 (QHD)'),
+(1969,147,'tecnica','Tasa de refresco: hasta 320 Hz'),
+(1970,147,'tecnica','HDR: DisplayHDR 400'),
+(1971,147,'tecnica','Conectividad: HDMI y DisplayPort'),
+(1972,148,'clave','34 pulgadas con curvatura 1500R'),
+(1973,148,'clave','Panel VA en 3440 x 1440'),
+(1974,148,'clave','Refresco de 240 Hz'),
+(1975,148,'clave','Formato 21:9 para juego y trabajo'),
+(1976,148,'clave','Entradas HDMI y DisplayPort'),
+(1977,148,'clave','Compatible con montaje VESA'),
+(1978,148,'tecnica','Tamaño: 34 pulgadas'),
+(1979,148,'tecnica','Panel: VA curvo 1500R'),
+(1980,148,'tecnica','Resolución: 3440 x 1440 (UWQHD)'),
+(1981,148,'tecnica','Tasa de refresco: hasta 240 Hz'),
+(1982,148,'tecnica','Conectividad: HDMI y DisplayPort'),
+(1983,149,'clave','Retroiluminación QD-Mini LED'),
+(1984,149,'clave','Modo dual: UHD 3840 x 2160 a 160 Hz'),
+(1985,149,'clave','Modo competitivo: FHD a 320 Hz'),
+(1986,149,'clave','Panel IPS de 27 pulgadas'),
+(1987,149,'clave','Compatible con HDR'),
+(1988,149,'clave','Compatible con VESA'),
+(1989,149,'tecnica','Tamaño: 27 pulgadas'),
+(1990,149,'tecnica','Panel: IPS con QD-Mini LED'),
+(1991,149,'tecnica','Resolución: UHD 3840 x 2160 y FHD 1920 x 1080'),
+(1992,149,'tecnica','Tasa de refresco: hasta 160 Hz en UHD y 320 Hz en FHD'),
+(1993,149,'tecnica','Conectividad: HDMI y DisplayPort'),
+(1994,150,'clave','24 pulgadas con 2560 x 1440'),
+(1995,150,'clave','Panel Fast IPS de 180 Hz'),
+(1996,150,'clave','Alta densidad de píxeles para texto nítido'),
+(1997,150,'clave','Ideal para escritorios compactos'),
+(1998,150,'clave','Compatible con soportes VESA'),
+(1999,150,'clave','Entradas HDMI y DisplayPort'),
+(2000,150,'tecnica','Tamaño: 24 pulgadas'),
+(2001,150,'tecnica','Panel: Fast IPS'),
+(2002,150,'tecnica','Resolución: 2560 x 1440 (QHD)'),
+(2003,150,'tecnica','Tasa de refresco: hasta 180 Hz'),
+(2004,150,'tecnica','Conectividad: HDMI y DisplayPort'),
+(2005,151,'clave','32 pulgadas en 4K'),
+(2006,151,'clave','144 Hz, ampliable a 160 Hz por overclock'),
+(2007,151,'clave','USB-C con 90 W de carga'),
+(2008,151,'clave','Certificación HDR400'),
+(2009,151,'clave','DisplayPort 1.4'),
+(2010,151,'clave','Montaje VESA de 100 x 100 mm'),
+(2011,151,'tecnica','Tamaño: 32 pulgadas'),
+(2012,151,'tecnica','Panel: IPS'),
+(2013,151,'tecnica','Resolución: 3840 x 2160 (4K)'),
+(2014,151,'tecnica','Tasa de refresco: 144 Hz (160 Hz en overclock)'),
+(2015,151,'tecnica','HDR: DisplayHDR 400'),
+(2016,151,'tecnica','Conectividad: USB-C 90 W y DisplayPort 1.4'),
+(2017,151,'tecnica','Montaje VESA: 100 x 100 mm'),
+(2018,152,'clave','34 pulgadas en 21:9 con 5120 x 2160'),
+(2019,152,'clave','Refresco de 120 Hz'),
+(2020,152,'clave','USB-C de un solo cable para video y carga'),
+(2021,152,'clave','Soporte HDR'),
+(2022,152,'clave','Adaptive Sync'),
+(2023,152,'clave','Montaje VESA de 100 x 100 mm'),
+(2024,152,'tecnica','Tamaño: 34 pulgadas'),
+(2025,152,'tecnica','Formato: 21:9 ultrawide'),
+(2026,152,'tecnica','Resolución: 5120 x 2160 (5K2K)'),
+(2027,152,'tecnica','Tasa de refresco: 120 Hz'),
+(2028,152,'tecnica','HDR: compatible'),
+(2029,152,'tecnica','Sincronización: Adaptive Sync'),
+(2030,152,'tecnica','Montaje VESA: 100 x 100 mm'),
+(2042,154,'clave','1200 W con 80 PLUS y Cybenetics Platinum'),
+(2043,154,'clave','Certificación ATX 3.1'),
+(2044,154,'clave','Cable 12V-2x6 de 600 W para la GPU'),
+(2045,154,'clave','Modo Zero RPM con ventilador de 140 mm FDB'),
+(2046,154,'clave','Capacitores japoneses de 105 °C'),
+(2047,154,'clave','Seis protecciones y 10 años de garantía'),
+(2048,154,'tecnica','Potencia: 1200 W'),
+(2049,154,'tecnica','Certificación: 80 PLUS Platinum y Cybenetics Platinum'),
+(2050,154,'tecnica','Estándar: ATX 3.1'),
+(2051,154,'tecnica','Conector GPU: 12V-2x6 de 600 W'),
+(2052,154,'tecnica','Ventilador: 140 mm de rodamiento dinámico (FDB)'),
+(2053,154,'tecnica','Modo Zero RPM: sí, con interruptor'),
+(2054,154,'tecnica','Capacitores: japoneses de 105 °C'),
+(2055,154,'tecnica','Protecciones: seis'),
+(2056,154,'tecnica','Garantía: 10 años'),
+(2057,154,'tecnica','Colores: blanco y negro'),
+(2058,155,'clave','1500 W con ATX 3.1 y PCIe 5.1'),
+(2059,155,'clave','Dos cables 12V-2x6 de más de 600 W'),
+(2060,155,'clave','Eficiencia del 94 %, por encima de Platinum'),
+(2061,155,'clave','Ventilador de 140 mm de levitación magnética'),
+(2062,155,'clave','Formato compacto de 180 mm'),
+(2063,155,'clave','Capacitores japoneses de 105 °C'),
+(2064,155,'tecnica','Potencia: 1500 W'),
+(2065,155,'tecnica','Eficiencia: 94 %, superior a 80 PLUS Platinum'),
+(2066,155,'tecnica','Estándar: ATX 3.1 y PCIe 5.1'),
+(2067,155,'tecnica','Conectores GPU: dos 12V-2x6 de más de 600 W'),
+(2068,155,'tecnica','Ventilador: 140 mm de levitación magnética'),
+(2069,155,'tecnica','Longitud: 180 mm'),
+(2070,155,'tecnica','Capacitores: japoneses de 105 °C'),
+(2071,155,'tecnica','Color: negro'),
+(2072,156,'clave','1000 W con 80 PLUS Gold'),
+(2073,156,'clave','Certificación ATX 3.1'),
+(2074,156,'clave','Conector 12V-2x6 de 600 W'),
+(2075,156,'clave','Modo Zero Fan bajo el 50 % de carga'),
+(2076,156,'clave','Ventilador de 135 mm FDB'),
+(2077,156,'clave','Capacitores japoneses y 10 años de garantía'),
+(2078,156,'tecnica','Potencia: 1000 W'),
+(2079,156,'tecnica','Certificación: 80 PLUS Gold'),
+(2080,156,'tecnica','Estándar: ATX 3.1'),
+(2081,156,'tecnica','Conector GPU: 12V-2x6 de 600 W'),
+(2082,156,'tecnica','Ventilador: 135 mm FDB con Zero Fan Mode'),
+(2083,156,'tecnica','Capacitores: japoneses premium'),
+(2084,156,'tecnica','Garantía: 10 años'),
+(2085,156,'tecnica','Colores: blanco y negro'),
+(2086,157,'clave','1200 W con 80 PLUS Gold'),
+(2087,157,'clave','ATX 3.1 con 12V-2x6 de 600 W'),
+(2088,157,'clave','Ventilador de 135 mm FDB'),
+(2089,157,'clave','Zero Fan Mode bajo el 50 % de carga'),
+(2090,157,'clave','Capacitores japoneses premium'),
+(2091,157,'clave','10 años de garantía'),
+(2092,157,'tecnica','Potencia: 1200 W'),
+(2093,157,'tecnica','Certificación: 80 PLUS Gold'),
+(2094,157,'tecnica','Estándar: ATX 3.1'),
+(2095,157,'tecnica','Conector GPU: 12V-2x6 de 600 W'),
+(2096,157,'tecnica','Ventilador: 135 mm FDB con Zero Fan Mode'),
+(2097,157,'tecnica','Garantía: 10 años'),
+(2098,157,'tecnica','Colores: blanco y negro'),
+(2099,158,'clave','850 W con 80 PLUS Gold'),
+(2100,158,'clave','Certificación ATX 3.1'),
+(2101,158,'clave','12V-2x6 de 600 W para la GPU'),
+(2102,158,'clave','Modo Zero Fan bajo el 50 % de carga'),
+(2103,158,'clave','Capacitores japoneses'),
+(2104,158,'clave','10 años de garantía'),
+(2105,158,'tecnica','Potencia: 850 W'),
+(2106,158,'tecnica','Certificación: 80 PLUS Gold'),
+(2107,158,'tecnica','Estándar: ATX 3.1'),
+(2108,158,'tecnica','Conector GPU: 12V-2x6 de 600 W'),
+(2109,158,'tecnica','Ventilador: 135 mm FDB con Zero Fan Mode'),
+(2110,158,'tecnica','Garantía: 10 años'),
+(2111,158,'tecnica','Colores: blanco y negro'),
+(2112,159,'clave','1000 W con 80 PLUS Gold'),
+(2113,159,'clave','Ruido certificado Cybenetics A+ (15 a 20 dBA)'),
+(2114,159,'clave','Compatible con 12V-2x6 o tres 8 pines'),
+(2115,159,'clave','Capacitores de 105 °C'),
+(2116,159,'clave','Diseño enfocado en bajo ruido'),
+(2117,159,'clave','Ideal para equipos de trabajo silenciosos'),
+(2118,159,'tecnica','Potencia: 1000 W'),
+(2119,159,'tecnica','Certificación: 80 PLUS Gold'),
+(2120,159,'tecnica','Ruido: Cybenetics A+ (15 a 20 dBA)'),
+(2121,159,'tecnica','Conectores GPU: 12V-2x6 o hasta tres 8 pines'),
+(2122,159,'tecnica','Capacitores: 105 °C'),
+(2123,159,'tecnica','Color: negro'),
+(2136,161,'clave','850 W en formato SFX compacto'),
+(2137,161,'clave','Certificación ATX 3.1'),
+(2138,161,'clave','Conector 12V-2x6 de 600 W'),
+(2139,161,'clave','Ideal para gabinetes ITX'),
+(2140,161,'clave','Certificación 80 PLUS Gold'),
+(2141,161,'clave','Acabado negro'),
+(2142,161,'tecnica','Potencia: 850 W'),
+(2143,161,'tecnica','Formato: SFX'),
+(2144,161,'tecnica','Certificación: 80 PLUS Gold'),
+(2145,161,'tecnica','Estándar: ATX 3.1'),
+(2146,161,'tecnica','Conector GPU: 12V-2x6 de 600 W'),
+(2147,161,'tecnica','Color: negro'),
+(2148,162,'clave','Extensión de 24 pines para la placa madre'),
+(2149,162,'clave','RGB direccionable en todo el cable'),
+(2150,162,'clave','Recubrimiento de silicona flexible'),
+(2151,162,'clave','Más delgado que el trenzado tradicional'),
+(2152,162,'clave','Compatible con controladoras ARGB'),
+(2153,162,'clave','Instalación sin herramientas'),
+(2154,162,'tecnica','Tipo: extensión de alimentación 24 pines'),
+(2155,162,'tecnica','Iluminación: RGB direccionable'),
+(2156,162,'tecnica','Material: silicona de alta gama'),
+(2157,162,'tecnica','Compatibilidad: fuentes ATX estándar'),
+(2158,163,'clave','Extensión PCIe de 8 pines'),
+(2159,163,'clave','RGB direccionable integrado'),
+(2160,163,'clave','Silicona flexible en lugar de malla trenzada'),
+(2161,163,'clave','Compatible con controladoras ARGB'),
+(2162,163,'clave','Fácil de instalar en cualquier gabinete'),
+(2163,163,'clave','Acabado limpio para builds con ventana'),
+(2164,163,'tecnica','Tipo: extensión PCIe de 8 pines'),
+(2165,163,'tecnica','Iluminación: RGB direccionable'),
+(2166,163,'tecnica','Material: silicona flexible'),
+(2167,163,'tecnica','Compatibilidad: tarjetas gráficas con alimentación de 8 pines'),
+(2168,164,'clave','Extensión triple de 8 pines'),
+(2169,164,'clave','Compatible con RTX 3080 y 3090'),
+(2170,164,'clave','RGB direccionable en los tres cables'),
+(2171,164,'clave','Silicona flexible de alta gama'),
+(2172,164,'clave','Compatible con controladoras ARGB'),
+(2173,164,'clave','Pensado para GPUs de tres conectores'),
+(2174,164,'tecnica','Tipo: extensión triple PCIe de 8 pines'),
+(2175,164,'tecnica','Iluminación: RGB direccionable'),
+(2176,164,'tecnica','Material: silicona flexible'),
+(2177,164,'tecnica','Compatibilidad: tarjetas gráficas de tres conectores'),
+(2178,165,'clave','Formato 80% TKL ANSI'),
+(2179,165,'clave','Firmware ZMK de código abierto'),
+(2180,165,'clave','Sondeo de 8000 Hz'),
+(2181,165,'clave','Conexión 2.4 GHz, Bluetooth y cable'),
+(2182,165,'clave','Hasta 760 horas de batería'),
+(2183,165,'clave','Switches Keychron Apex'),
+(2184,165,'tecnica','Formato: 80% TKL ANSI'),
+(2185,165,'tecnica','Firmware: ZMK'),
+(2186,165,'tecnica','Conectividad: 2.4 GHz, Bluetooth y cable'),
+(2187,165,'tecnica','Tasa de sondeo: 8000 Hz'),
+(2188,165,'tecnica','Batería: 4000 mAh, hasta 760 horas'),
+(2189,165,'tecnica','Peso: 1299 g ± 10 g'),
+(2190,165,'tecnica','Dimensiones: 359.2 x 129.2 mm'),
+(2220,168,'clave','Dos pantallas de 15.6 pulgadas Full HD'),
+(2221,168,'clave','Diseño plegable y portátil'),
+(2222,168,'clave','Conexión USB-C y HDMI'),
+(2223,168,'clave','Triple espacio de trabajo con la laptop'),
+(2224,168,'clave','Ideal para viajes y ferias'),
+(2225,168,'clave','Alimentación por USB-C'),
+(2226,168,'tecnica','Pantallas: 2 de 15.6 pulgadas'),
+(2227,168,'tecnica','Resolución: 1920 x 1080 (FHD) por pantalla'),
+(2228,168,'tecnica','Formato: plegable de doble panel'),
+(2229,168,'tecnica','Conectividad: USB-C y HDMI'),
+(2230,168,'tecnica','Uso: trabajo móvil y presentaciones'),
+(2231,169,'clave','27 pulgadas con 1920 x 1080'),
+(2232,169,'clave','Panel VA de 240 Hz'),
+(2233,169,'clave','Buen contraste para juego y video'),
+(2234,169,'clave','Opción de entrada para alta tasa de refresco'),
+(2235,169,'clave','Formato de escritorio grande'),
+(2236,169,'clave','Compatible con soportes VESA'),
+(2237,169,'tecnica','Tamaño: 27 pulgadas'),
+(2238,169,'tecnica','Panel: VA'),
+(2239,169,'tecnica','Resolución: 1920 x 1080 (FHD)'),
+(2240,169,'tecnica','Tasa de refresco: hasta 240 Hz'),
+(2241,169,'tecnica','Uso: gaming y entretenimiento'),
+(2242,170,'clave','750 W con 80 PLUS Gold y Cybenetics Platinum'),
+(2243,170,'clave','ATX 3.1 y PCIe 5.1'),
+(2244,170,'clave','Conector 12V-2x6 de 300 W o hasta tres 8 pines'),
+(2245,170,'clave','Ruido certificado Cybenetics A++ (menos de 15 dBA)'),
+(2246,170,'clave','Ventilador de 135 mm FDB con Zero RPM'),
+(2247,170,'clave','Capacitores de 105 °C y 7 años de garantía'),
+(2248,170,'tecnica','Potencia: 750 W'),
+(2249,170,'tecnica','Eficiencia: 80 PLUS Gold y Cybenetics Platinum'),
+(2250,170,'tecnica','Estándar: ATX 3.1 y PCIe 5.1'),
+(2251,170,'tecnica','Conector GPU: 12V-2x6 de 300 W'),
+(2252,170,'tecnica','Ventilador: 135 mm FDB con Zero RPM'),
+(2253,170,'tecnica','Ruido: Cybenetics A++ (menos de 15 dBA)'),
+(2254,170,'tecnica','Capacitadores: 105 °C'),
+(2255,170,'tecnica','Garantía: 7 años'),
+(2256,170,'tecnica','Color: negro');
 /*!40000 ALTER TABLE `especificaciones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `imagenes_producto`
@@ -266,14 +2339,13 @@ CREATE TABLE `imagenes_producto` (
   PRIMARY KEY (`id`),
   KEY `idx_imagenes_producto` (`producto_id`),
   CONSTRAINT `fk_imagenes_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `imagenes_producto`
 --
 
-LOCK TABLES `imagenes_producto` WRITE;
 /*!40000 ALTER TABLE `imagenes_producto` DISABLE KEYS */;
 INSERT INTO `imagenes_producto` VALUES
 (1,1,'imagenes/computadoras-gaming/pc-vengeance/pc-juego-corsair-vengeance-a7500-01.avif',1),
@@ -300,18 +2372,936 @@ INSERT INTO `imagenes_producto` VALUES
 (22,4,'imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-size-select-202610-16inch_AV1_GEO_MX.webp',6),
 (23,4,'imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-size-select-202610-16inch_AV2.webp',7),
 (24,4,'imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-chip-select-202610-16inch.webp',8),
-(25,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-resumen.webp',1),
-(26,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-aleacion-magnesio.webp',2),
-(27,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-sensor-paw3395.webp',3),
-(28,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-conectividad.webp',4),
-(29,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-dimensiones.webp',5),
-(30,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-ultraligero.webp',6),
-(31,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-software.webp',7),
-(32,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-switch-tcc.webp',8),
-(33,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-vista-superior.webp',9),
-(34,2,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-vista-lateral.webp',10);
+(25,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-resumen.webp',1),
+(26,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-aleacion-magnesio.webp',2),
+(27,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-sensor-paw3395.webp',3),
+(28,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-conectividad.webp',4),
+(29,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-dimensiones.webp',5),
+(30,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-ultraligero.webp',6),
+(31,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-software.webp',7),
+(32,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-switch-tcc.webp',8),
+(33,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-vista-superior.webp',9),
+(34,2,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-vista-lateral.webp',10),
+(35,5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-01.png',1),
+(36,5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-02.png',2),
+(37,5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-03.png',3),
+(38,5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-04.png',4),
+(39,5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-05.png',5),
+(40,5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-06.png',6),
+(41,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-01.png',1),
+(42,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-02.png',2),
+(43,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-03.png',3),
+(44,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-04.png',4),
+(45,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-05.png',5),
+(46,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-06.png',6),
+(47,6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-07.png',7),
+(48,7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-01.png',1),
+(49,7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-02.png',2),
+(50,7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-03.png',3),
+(51,7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-04.png',4),
+(52,7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-05.png',5),
+(53,7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-06.png',6),
+(54,8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-01.png',1),
+(55,8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-02.png',2),
+(56,8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-03.png',3),
+(57,8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-04.png',4),
+(58,8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-05.png',5),
+(59,8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-06.png',6),
+(60,9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-01.png',1),
+(61,9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-02.png',2),
+(62,9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-03.png',3),
+(63,9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-04.png',4),
+(64,10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-01.png',1),
+(65,10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-02.png',2),
+(66,10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-03.png',3),
+(67,10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-04.png',4),
+(68,10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-05.png',5),
+(69,11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-01.png',1),
+(70,11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-02.png',2),
+(71,11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-03.png',3),
+(72,11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-04.png',4),
+(73,11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-05.png',5),
+(74,11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-06.png',6),
+(75,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-01.png',1),
+(76,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-02.png',2),
+(77,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-03.png',3),
+(78,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-04.png',4),
+(79,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-05.png',5),
+(80,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-06.png',6),
+(81,12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-07.png',7),
+(82,13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-01.png',1),
+(83,13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-02.png',2),
+(84,13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-03.png',3),
+(85,13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-04.png',4),
+(86,13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-05.png',5),
+(87,13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-06.png',6),
+(94,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-01.png',1),
+(95,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-02.png',2),
+(96,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-03.png',3),
+(97,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-04.png',4),
+(98,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-05.png',5),
+(99,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-06.png',6),
+(100,15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-07.png',7),
+(101,16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-01.png',1),
+(102,16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-02.png',2),
+(103,16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-03.png',3),
+(104,16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-04.png',4),
+(105,17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-01.png',1),
+(106,17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-02.png',2),
+(107,17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-03.png',3),
+(108,17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-04.png',4),
+(109,17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-05.png',5),
+(110,18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-01.png',1),
+(111,18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-02.png',2),
+(112,18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-03.png',3),
+(113,18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-04.png',4),
+(114,18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-05.png',5),
+(115,18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-06.png',6),
+(116,19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-01.png',1),
+(117,19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-02.png',2),
+(118,19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-03.png',3),
+(119,19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-04.png',4),
+(120,20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-01.png',1),
+(121,20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-02.png',2),
+(122,20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-03.png',3),
+(123,20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-04.png',4),
+(124,20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-05.png',5),
+(125,21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-01.png',1),
+(126,21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-02.png',2),
+(127,21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-03.png',3),
+(128,21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-04.png',4),
+(129,22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-01.png',1),
+(130,22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-02.png',2),
+(131,22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-03.png',3),
+(132,22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-04.png',4),
+(133,22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-05.png',5),
+(134,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-01.png',1),
+(135,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-02.png',2),
+(136,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-03.png',3),
+(137,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-04.png',4),
+(138,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-05.png',5),
+(139,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-06.png',6),
+(140,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-07.png',7),
+(141,23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-08.png',8),
+(146,25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-01.png',1),
+(147,25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-02.png',2),
+(148,25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-03.png',3),
+(149,25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-04.png',4),
+(150,25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-05.png',5),
+(151,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-01.png',1),
+(152,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-02.png',2),
+(153,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-03.png',3),
+(154,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-04.png',4),
+(155,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-05.png',5),
+(156,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-06.png',6),
+(157,26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-07.png',7),
+(158,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-01.png',1),
+(159,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-02.png',2),
+(160,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-03.png',3),
+(161,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-04.png',4),
+(162,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-05.png',5),
+(163,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-06.png',6),
+(164,27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-07.png',7),
+(165,28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-01.png',1),
+(166,28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-02.png',2),
+(167,28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-03.png',3),
+(168,28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-04.png',4),
+(169,29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-01.png',1),
+(170,29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-02.png',2),
+(171,29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-03.png',3),
+(172,29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-04.png',4),
+(173,30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-01.png',1),
+(174,30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-02.png',2),
+(175,30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-03.png',3),
+(176,30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-04.png',4),
+(177,30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-05.png',5),
+(178,30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-06.png',6),
+(179,31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-01.png',1),
+(180,31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-02.png',2),
+(181,31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-03.png',3),
+(182,31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-04.png',4),
+(183,31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-05.png',5),
+(184,31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-06.png',6),
+(185,32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-01.png',1),
+(186,32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-02.png',2),
+(187,32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-03.png',3),
+(188,32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-04.png',4),
+(189,32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-05.png',5),
+(190,33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-01.png',1),
+(191,33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-02.png',2),
+(192,33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-03.png',3),
+(193,33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-04.png',4),
+(194,33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-05.png',5),
+(195,34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-01.png',1),
+(196,34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-02.png',2),
+(197,34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-03.png',3),
+(198,34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-04.png',4),
+(199,34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-05.png',5),
+(200,34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-06.png',6),
+(201,35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-01.png',1),
+(202,35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-02.png',2),
+(203,35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-03.png',3),
+(204,35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-04.png',4),
+(205,36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-01.png',1),
+(206,36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-02.png',2),
+(207,36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-03.png',3),
+(208,36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-04.png',4),
+(209,37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-01.png',1),
+(210,37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-02.png',2),
+(211,37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-03.png',3),
+(212,37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-04.png',4),
+(213,37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-05.png',5),
+(214,37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-06.png',6),
+(215,38,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-01.png',1),
+(216,38,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-02.png',2),
+(217,38,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-03.png',3),
+(218,39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-01.png',1),
+(219,39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-02.png',2),
+(220,39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-03.png',3),
+(221,39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-04.png',4),
+(225,41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-01.png',1),
+(226,41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-02.png',2),
+(227,41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-03.png',3),
+(228,41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-04.png',4),
+(229,41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-05.png',5),
+(230,42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-01.png',1),
+(231,42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-02.png',2),
+(232,42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-03.png',3),
+(233,42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-04.png',4),
+(234,42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-05.png',5),
+(235,42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-06.png',6),
+(236,43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-01.png',1),
+(237,43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-02.png',2),
+(238,43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-03.png',3),
+(239,43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-04.png',4),
+(240,43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-05.png',5),
+(241,44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-01.png',1),
+(242,44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-02.png',2),
+(243,44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-03.png',3),
+(244,44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-04.png',4),
+(245,44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-05.png',5),
+(246,45,'imagenes/imagenes-accesorios/audio/sennheiser-he1.jpg',1),
+(247,45,'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (1).jpg',2),
+(248,45,'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (2).jpg',3),
+(249,45,'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (3).jpg',4),
+(250,45,'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (4).jpg',5),
+(251,45,'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (5).jpg',6),
+(252,46,'imagenes/imagenes-accesorios/teclados/teclado-cool-68-1.jpg',1),
+(253,46,'imagenes/imagenes-accesorios/teclados/cool-68/3-11-7cf792b0356b65b19717754851489783-1024-1024.webp',2),
+(254,46,'imagenes/imagenes-accesorios/teclados/cool-68/5-12-cfa01d8f450c6d5f1317754851502718-1024-1024.webp',3),
+(255,46,'imagenes/imagenes-accesorios/teclados/cool-68/6-11-d79b2d5e3ee8e8a19717754851488859-1024-1024.webp',4),
+(256,46,'imagenes/imagenes-accesorios/teclados/cool-68/actuacion-de-efecto-hall-65-switch-magnetico-2-638fb7c4e42676ea1017754851493474-1024-1024.webp',5),
+(257,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-01-orig.jpg',1),
+(258,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-02-orig.jpg',2),
+(259,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-03-orig.jpg',3),
+(260,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-04-orig.jpg',4),
+(261,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-05-orig.jpg',5),
+(262,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-06-orig.jpg',6),
+(263,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-07-orig.jpg',7),
+(264,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-08-orig.jpg',8),
+(265,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-09-orig.jpg',9),
+(266,47,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-10-orig.jpg',10),
+(267,48,'imagenes/imagenes-accesorios/energia-y-cables/fuente-corsair-ax1600i-1.jpg',1),
+(268,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_02.avif',2),
+(269,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_03.avif',3),
+(270,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_05.avif',4),
+(271,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_06.avif',5),
+(272,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_07.avif',6),
+(273,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_08.avif',7),
+(274,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_09.avif',8),
+(275,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_10.avif',9),
+(276,48,'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_11.avif',10),
+(277,50,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-1.webp',1),
+(278,50,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-2.jpg',2),
+(279,50,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-3.jpg',3),
+(280,50,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-4.webp',4),
+(281,50,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-5.webp',5),
+(282,50,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-6.webp',6),
+(283,51,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-1.webp',1),
+(284,51,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-2.webp',2),
+(285,51,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-3.webp',3),
+(286,51,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-4.webp',4),
+(287,51,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-5.webp',5),
+(288,51,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-6.jpg',6),
+(289,52,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-1.webp',1),
+(290,52,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-2.webp',2),
+(291,52,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-3.webp',3),
+(292,52,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-4.webp',4),
+(293,52,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-5.webp',5),
+(294,52,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-6.webp',6),
+(295,53,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-1.jpg',1),
+(296,53,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-2.webp',2),
+(297,53,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-3.webp',3),
+(298,53,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-4.webp',4),
+(299,53,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-5.jpg',5),
+(300,53,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-6.webp',6),
+(301,54,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-1.jpg',1),
+(302,54,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-2.webp',2),
+(303,54,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-3.webp',3),
+(304,54,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-4.jpg',4),
+(305,54,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-5.jpg',5),
+(306,54,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-6.jpg',6),
+(307,55,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-1.webp',1),
+(308,55,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-2.webp',2),
+(309,55,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-3.webp',3),
+(310,55,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-4.webp',4),
+(311,55,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-5.webp',5),
+(312,55,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-6.webp',6),
+(313,56,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-1.jpg',1),
+(314,56,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-2.jpg',2),
+(315,56,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-3.jpg',3),
+(316,56,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-4.jpg',4),
+(317,56,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-5.webp',5),
+(318,56,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-6.webp',6),
+(319,57,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-1.webp',1),
+(320,57,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-2.webp',2),
+(321,57,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-3.webp',3),
+(322,57,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-4.webp',4),
+(323,57,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-5.jpg',5),
+(324,57,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-6.webp',6),
+(325,58,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-1.webp',1),
+(326,58,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-2.webp',2),
+(327,58,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-3.webp',3),
+(328,58,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-4.webp',4),
+(329,58,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-5.webp',5),
+(330,58,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-6.webp',6),
+(331,59,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-1.webp',1),
+(332,59,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-2.webp',2),
+(333,59,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-3.webp',3),
+(334,59,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-4.webp',4),
+(335,59,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-5.webp',5),
+(336,59,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-6.webp',6),
+(337,60,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-1.webp',1),
+(338,60,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-2.webp',2),
+(339,60,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-3.webp',3),
+(340,60,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-4.webp',4),
+(341,60,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-5.webp',5),
+(342,60,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-6.webp',6),
+(343,61,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-1.webp',1),
+(344,61,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-2.webp',2),
+(345,61,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-3.webp',3),
+(346,61,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-4.webp',4),
+(347,61,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-5.webp',5),
+(348,61,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-6.webp',6),
+(349,62,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-1.webp',1),
+(350,62,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-2.webp',2),
+(351,62,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-3.webp',3),
+(352,62,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-4.webp',4),
+(353,62,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-5.webp',5),
+(354,62,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-6.webp',6),
+(355,63,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-1.webp',1),
+(356,63,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-2.webp',2),
+(357,63,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-3.webp',3),
+(358,63,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-4.webp',4),
+(359,63,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-5.webp',5),
+(360,63,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-6.webp',6),
+(361,64,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-1.webp',1),
+(362,64,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-2.webp',2),
+(363,64,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-3.webp',3),
+(364,64,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-4.webp',4),
+(365,64,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-5.webp',5),
+(366,64,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-6.webp',6),
+(367,65,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-1.webp',1),
+(368,65,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-2.webp',2),
+(369,65,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-3.webp',3),
+(370,65,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-4.webp',4),
+(371,65,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-5.webp',5),
+(372,65,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-6.webp',6),
+(373,66,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-1.webp',1),
+(374,66,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-2.webp',2),
+(375,66,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-3.webp',3),
+(376,66,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-4.webp',4),
+(377,66,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-5.webp',5),
+(378,66,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-6.webp',6),
+(379,67,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-1.webp',1),
+(380,67,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-2.webp',2),
+(381,67,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-3.webp',3),
+(382,67,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-4.webp',4),
+(383,67,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-5.webp',5),
+(384,67,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-6.webp',6),
+(385,68,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-1.webp',1),
+(386,68,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-2.webp',2),
+(387,68,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-3.webp',3),
+(388,68,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-4.webp',4),
+(389,68,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-5.webp',5),
+(390,68,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-6.webp',6),
+(391,69,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-1.webp',1),
+(392,69,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-2.webp',2),
+(393,69,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-3.webp',3),
+(394,69,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-4.webp',4),
+(395,69,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-5.webp',5),
+(396,69,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-6.webp',6),
+(397,70,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-1.webp',1),
+(398,70,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-2.webp',2),
+(399,70,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-3.webp',3),
+(400,70,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-4.webp',4),
+(401,70,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-5.webp',5),
+(402,70,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-6.webp',6),
+(403,71,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-1.webp',1),
+(404,71,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-2.webp',2),
+(405,71,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-3.webp',3),
+(406,71,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-4.webp',4),
+(407,71,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-5.webp',5),
+(408,71,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-6.webp',6),
+(409,72,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-1.webp',1),
+(410,72,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-2.webp',2),
+(411,72,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-3.webp',3),
+(412,72,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-4.webp',4),
+(413,72,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-5.webp',5),
+(414,72,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-6.webp',6),
+(415,73,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-1.webp',1),
+(416,73,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-2.webp',2),
+(417,73,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-3.webp',3),
+(418,73,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-4.webp',4),
+(419,73,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-5.webp',5),
+(420,73,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-6.webp',6),
+(421,74,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-1.webp',1),
+(422,74,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-2.webp',2),
+(423,74,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-3.webp',3),
+(424,74,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-4.webp',4),
+(425,74,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-5.webp',5),
+(426,74,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-6.webp',6),
+(427,75,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-1.webp',1),
+(428,75,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-2.webp',2),
+(429,75,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-3.webp',3),
+(430,75,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-4.webp',4),
+(431,75,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-5.webp',5),
+(432,75,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-6.webp',6),
+(433,76,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-1.webp',1),
+(434,76,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-2.webp',2),
+(435,76,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-3.webp',3),
+(436,76,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-4.webp',4),
+(437,76,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-5.webp',5),
+(438,76,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-6.webp',6),
+(439,77,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-1.webp',1),
+(440,77,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-2.webp',2),
+(441,77,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-3.webp',3),
+(442,77,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-4.webp',4),
+(443,77,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-5.webp',5),
+(444,77,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-6.webp',6),
+(445,78,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-1.webp',1),
+(446,78,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-2.webp',2),
+(447,78,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-3.webp',3),
+(448,78,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-4.webp',4),
+(449,78,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-5.webp',5),
+(450,78,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-6.webp',6),
+(451,79,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-1.webp',1),
+(452,79,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-2.webp',2),
+(453,79,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-3.webp',3),
+(454,79,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-4.webp',4),
+(455,79,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-5.webp',5),
+(456,79,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-6.webp',6),
+(457,80,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-1.webp',1),
+(458,80,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-2.webp',2),
+(459,80,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-3.webp',3),
+(460,80,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-4.webp',4),
+(461,80,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-5.webp',5),
+(462,80,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-6.webp',6),
+(463,81,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-1.webp',1),
+(464,81,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-2.webp',2),
+(465,81,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-3.webp',3),
+(466,81,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-4.webp',4),
+(467,81,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-5.webp',5),
+(468,81,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-6.webp',6),
+(469,82,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-1.avif',1),
+(470,82,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-2.avif',2),
+(471,82,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-3.avif',3),
+(472,82,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-4.avif',4),
+(473,82,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-5.avif',5),
+(474,82,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-6.avif',6),
+(475,83,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-1.avif',1),
+(476,83,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-2.avif',2),
+(477,83,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-3.avif',3),
+(478,83,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-4.avif',4),
+(479,83,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-5.avif',5),
+(480,83,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-6.avif',6),
+(481,84,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-1.avif',1),
+(482,84,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-2.avif',2),
+(483,84,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-3.avif',3),
+(484,84,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-4.avif',4),
+(485,84,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-5.avif',5),
+(486,84,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-6.avif',6),
+(487,85,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-1.avif',1),
+(488,85,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-2.avif',2),
+(489,85,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-3.avif',3),
+(490,85,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-4.avif',4),
+(491,85,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-5.avif',5),
+(492,85,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-6.avif',6),
+(493,86,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-1.avif',1),
+(494,86,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-2.avif',2),
+(495,86,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-3.avif',3),
+(496,86,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-4.avif',4),
+(497,86,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-5.avif',5),
+(498,86,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-6.avif',6),
+(499,87,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-1.avif',1),
+(500,87,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-2.avif',2),
+(501,87,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-3.avif',3),
+(502,87,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-4.avif',4),
+(503,87,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-5.avif',5),
+(504,87,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-6.avif',6),
+(505,88,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-1.avif',1),
+(506,88,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-2.avif',2),
+(507,88,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-3.avif',3),
+(508,88,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-4.avif',4),
+(509,89,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-1.avif',1),
+(510,89,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-2.avif',2),
+(511,89,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-3.avif',3),
+(512,89,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-4.avif',4),
+(513,89,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-5.avif',5),
+(514,89,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-6.avif',6),
+(515,88,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-5.png',5),
+(516,88,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-6.png',6),
+(517,90,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-1.webp',1),
+(518,90,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-2.webp',2),
+(519,90,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-3.webp',3),
+(520,90,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-4.webp',4),
+(521,90,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-5.webp',5),
+(522,90,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-6.webp',6),
+(523,91,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-1.webp',1),
+(524,91,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-2.webp',2),
+(525,91,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-3.webp',3),
+(526,91,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-4.webp',4),
+(527,91,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-5.webp',5),
+(528,91,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-6.webp',6),
+(529,92,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-1.webp',1),
+(530,92,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-2.webp',2),
+(531,92,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-3.webp',3),
+(532,92,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-4.webp',4),
+(533,92,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-5.webp',5),
+(534,92,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-6.webp',6),
+(535,93,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-1.webp',1),
+(536,93,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-2.webp',2),
+(537,93,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-3.webp',3),
+(538,93,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-4.webp',4),
+(539,93,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-5.webp',5),
+(540,93,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-6.webp',6),
+(541,94,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-1.webp',1),
+(542,94,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-2.webp',2),
+(543,94,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-3.webp',3),
+(544,94,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-4.webp',4),
+(545,94,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-5.webp',5),
+(546,94,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-6.webp',6),
+(547,95,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-1.webp',1),
+(548,95,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-2.webp',2),
+(549,95,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-3.webp',3),
+(550,95,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-4.webp',4),
+(551,95,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-5.webp',5),
+(552,95,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-6.webp',6),
+(553,96,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-1.webp',1),
+(554,96,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-2.webp',2),
+(555,96,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-3.webp',3),
+(556,96,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-4.webp',4),
+(557,96,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-5.png',5),
+(558,96,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-6.webp',6),
+(559,97,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-1.webp',1),
+(560,97,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-2.webp',2),
+(561,97,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-3.webp',3),
+(562,97,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-4.webp',4),
+(563,97,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-5.webp',5),
+(564,97,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-6.webp',6),
+(565,98,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-1.webp',1),
+(566,98,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-2.webp',2),
+(567,98,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-3.webp',3),
+(568,98,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-4.webp',4),
+(569,98,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-5.webp',5),
+(570,98,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-6.webp',6),
+(571,99,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-1.webp',1),
+(572,99,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-2.webp',2),
+(573,99,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-3.webp',3),
+(574,99,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-4.webp',4),
+(575,99,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-5.webp',5),
+(576,99,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-6.webp',6),
+(577,100,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-1.webp',1),
+(578,100,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-2.webp',2),
+(579,100,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-3.webp',3),
+(580,100,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-4.webp',4),
+(581,100,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-5.webp',5),
+(582,100,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-6.webp',6),
+(583,101,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-1.webp',1),
+(584,101,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-2.webp',2),
+(585,101,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-3.webp',3),
+(586,101,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-4.webp',4),
+(587,101,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-5.webp',5),
+(588,101,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-6.webp',6),
+(589,102,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-1.webp',1),
+(590,102,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-2.webp',2),
+(591,102,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-3.webp',3),
+(592,102,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-4.webp',4),
+(593,102,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-5.webp',5),
+(594,102,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-6.webp',6),
+(595,103,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-1.webp',1),
+(596,103,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-2.webp',2),
+(597,103,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-3.webp',3),
+(598,103,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-4.webp',4),
+(599,103,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-5.webp',5),
+(600,103,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-6.webp',6),
+(601,104,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-1.webp',1),
+(602,104,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-2.webp',2),
+(603,104,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-3.jpg',3),
+(604,104,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-4.jpg',4),
+(605,104,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-5.jpg',5),
+(606,104,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-6.webp',6),
+(607,105,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-1.webp',1),
+(608,105,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-2.jpg',2),
+(609,105,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-3.webp',3),
+(610,105,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-4.webp',4),
+(611,105,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-5.webp',5),
+(612,105,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-6.jpg',6),
+(613,106,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-1.webp',1),
+(614,106,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-2.webp',2),
+(615,106,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-3.webp',3),
+(616,106,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-4.webp',4),
+(617,106,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-5.webp',5),
+(618,106,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-6.webp',6),
+(619,107,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-1.webp',1),
+(620,107,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-2.webp',2),
+(621,107,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-3.webp',3),
+(622,107,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-4.webp',4),
+(623,107,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-5.webp',5),
+(624,107,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-6.webp',6),
+(625,108,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-1.webp',1),
+(626,108,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-2.webp',2),
+(627,108,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-3.webp',3),
+(628,108,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-4.webp',4),
+(629,108,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-5.webp',5),
+(630,108,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-6.webp',6),
+(631,109,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-1.webp',1),
+(632,109,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-2.webp',2),
+(633,109,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-3.webp',3),
+(634,109,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-4.webp',4),
+(635,109,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-5.webp',5),
+(636,109,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-6.webp',6),
+(637,110,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-1.webp',1),
+(638,110,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-2.webp',2),
+(639,110,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-3.webp',3),
+(640,110,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-4.webp',4),
+(641,110,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-5.webp',5),
+(642,110,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-6.webp',6),
+(643,111,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-1.webp',1),
+(644,111,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-2.webp',2),
+(645,111,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-3.webp',3),
+(646,111,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-4.webp',4),
+(647,111,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-5.webp',5),
+(648,111,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-6.webp',6),
+(649,112,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-1.webp',1),
+(650,112,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-2.webp',2),
+(651,112,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-3.webp',3),
+(652,112,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-4.webp',4),
+(653,112,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-5.webp',5),
+(654,112,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-6.webp',6),
+(655,113,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-1.webp',1),
+(656,113,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-2.webp',2),
+(657,113,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-3.webp',3),
+(658,113,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-4.webp',4),
+(659,113,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-5.webp',5),
+(660,113,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-6.webp',6),
+(661,114,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-1.webp',1),
+(662,114,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-2.webp',2),
+(663,114,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-3.webp',3),
+(664,114,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-4.webp',4),
+(665,114,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-5.webp',5),
+(666,114,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-6.webp',6),
+(667,115,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-1.webp',1),
+(668,115,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-2.webp',2),
+(669,115,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-3.webp',3),
+(670,115,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-4.webp',4),
+(671,115,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-5.webp',5),
+(672,115,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-6.webp',6),
+(673,116,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-1.webp',1),
+(674,116,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-2.webp',2),
+(675,116,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-3.webp',3),
+(676,116,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-4.webp',4),
+(677,116,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-5.webp',5),
+(678,116,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-6.webp',6),
+(679,117,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-1.webp',1),
+(680,117,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-2.webp',2),
+(681,117,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-3.webp',3),
+(682,117,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-4.webp',4),
+(683,117,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-5.webp',5),
+(684,117,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-6.webp',6),
+(685,118,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-1.webp',1),
+(686,118,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-2.webp',2),
+(687,118,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-3.webp',3),
+(688,118,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-4.webp',4),
+(689,118,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-5.webp',5),
+(690,118,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-6.webp',6),
+(691,119,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-1.webp',1),
+(692,119,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-2.webp',2),
+(693,119,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-3.webp',3),
+(694,119,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-4.webp',4),
+(695,119,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-5.webp',5),
+(696,119,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-6.webp',6),
+(697,120,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-1.webp',1),
+(698,120,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-2.webp',2),
+(699,120,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-3.webp',3),
+(700,120,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-4.webp',4),
+(701,120,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-5.webp',5),
+(702,120,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-6.webp',6),
+(703,121,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-1.webp',1),
+(704,121,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-2.webp',2),
+(705,121,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-3.webp',3),
+(706,121,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-4.webp',4),
+(707,121,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-5.webp',5),
+(708,121,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-6.webp',6),
+(709,122,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-1.webp',1),
+(710,122,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-2.webp',2),
+(711,122,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-3.webp',3),
+(712,122,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-4.webp',4),
+(713,122,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-5.webp',5),
+(714,122,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-6.webp',6),
+(715,123,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-1.webp',1),
+(716,123,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-2.webp',2),
+(717,123,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-3.webp',3),
+(718,123,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-4.webp',4),
+(719,123,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-5.webp',5),
+(720,123,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-6.webp',6),
+(721,124,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-1.webp',1),
+(722,124,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-2.webp',2),
+(723,124,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-3.webp',3),
+(724,124,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-4.webp',4),
+(725,124,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-5.webp',5),
+(726,124,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-6.webp',6),
+(727,125,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-1.webp',1),
+(728,125,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-2.webp',2),
+(729,125,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-3.webp',3),
+(730,125,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-4.webp',4),
+(731,125,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-5.webp',5),
+(732,125,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-6.webp',6),
+(733,126,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-1.webp',1),
+(734,126,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-2.webp',2),
+(735,126,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-3.webp',3),
+(736,126,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-4.webp',4),
+(737,126,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-5.webp',5),
+(738,126,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-6.webp',6),
+(745,128,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-1.webp',1),
+(746,128,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-2.webp',2),
+(747,128,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-3.webp',3),
+(748,128,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-4.webp',4),
+(749,128,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-5.webp',5),
+(750,128,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-6.webp',6),
+(751,129,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-1.webp',1),
+(752,129,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-2.webp',2),
+(753,129,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-3.webp',3),
+(754,129,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-4.webp',4),
+(755,129,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-5.webp',5),
+(756,129,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-6.webp',6),
+(757,130,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-1.webp',1),
+(758,130,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-2.webp',2),
+(759,130,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-3.webp',3),
+(760,130,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-4.webp',4),
+(761,130,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-5.webp',5),
+(762,130,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-6.webp',6),
+(763,131,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-1.webp',1),
+(764,131,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-2.webp',2),
+(765,131,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-3.webp',3),
+(766,131,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-4.webp',4),
+(767,131,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-5.webp',5),
+(768,131,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-6.webp',6),
+(769,132,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-1.jpg',1),
+(770,132,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-2.jpg',2),
+(771,132,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-3.jpg',3),
+(772,132,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-4.jpg',4),
+(773,132,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-5.jpg',5),
+(774,132,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-6.webp',6),
+(775,133,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-1.jpg',1),
+(776,133,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-2.jpg',2),
+(777,133,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-3.jpg',3),
+(778,133,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-4.jpg',4),
+(779,133,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-5.webp',5),
+(780,133,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-6.jpg',6),
+(781,134,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-1.jpg',1),
+(782,134,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-2.jpg',2),
+(783,134,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-3.jpg',3),
+(784,134,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-4.jpg',4),
+(785,134,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-5.jpg',5),
+(786,134,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-6.jpg',6),
+(787,135,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-1.jpg',1),
+(788,135,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-2.jpg',2),
+(789,135,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-3.jpg',3),
+(790,135,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-4.webp',4),
+(791,135,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-5.jpg',5),
+(792,135,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-6.jpg',6),
+(793,136,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-1.jpg',1),
+(794,136,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-2.jpg',2),
+(795,136,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-3.jpg',3),
+(796,136,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-4.jpg',4),
+(797,136,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-5.jpg',5),
+(798,136,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-6.jpg',6),
+(799,137,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-1.jpg',1),
+(800,137,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-2.jpg',2),
+(801,137,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-3.jpg',3),
+(802,137,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-4.jpg',4),
+(803,137,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-5.jpg',5),
+(804,137,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-6.jpg',6),
+(805,138,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-1.jpg',1),
+(806,138,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-2.jpg',2),
+(807,138,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-3.webp',3),
+(808,138,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-4.webp',4),
+(809,138,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-5.webp',5),
+(810,138,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-6.webp',6),
+(811,139,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-1.webp',1),
+(812,139,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-2.webp',2),
+(813,139,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-3.webp',3),
+(814,139,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-4.webp',4),
+(815,139,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-5.webp',5),
+(816,139,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-6.jpg',6),
+(817,140,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-1.jpg',1),
+(818,140,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-2.jpg',2),
+(819,140,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-3.jpg',3),
+(820,140,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-4.jpg',4),
+(821,140,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-5.jpg',5),
+(822,140,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-6.jpg',6),
+(823,141,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-1.webp',1),
+(824,141,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-2.webp',2),
+(825,141,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-3.webp',3),
+(826,141,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-4.webp',4),
+(827,141,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-5.webp',5),
+(828,141,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-6.webp',6),
+(829,142,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-1.webp',1),
+(830,142,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-2.webp',2),
+(831,142,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-3.jpg',3),
+(832,142,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-4.jpg',4),
+(833,142,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-5.jpg',5),
+(834,142,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-6.webp',6),
+(835,143,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-1.webp',1),
+(836,143,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-2.webp',2),
+(837,143,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-3.webp',3),
+(838,143,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-4.webp',4),
+(839,143,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-5.webp',5),
+(840,143,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-6.webp',6),
+(841,144,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-1.webp',1),
+(842,144,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-2.webp',2),
+(843,144,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-3.webp',3),
+(844,144,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-4.webp',4),
+(845,144,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-5.webp',5),
+(846,144,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-6.webp',6),
+(853,146,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-1.webp',1),
+(854,146,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-2.webp',2),
+(855,146,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-3.webp',3),
+(856,146,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-4.webp',4),
+(857,146,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-5.webp',5),
+(858,146,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-6.webp',6),
+(859,147,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-1.webp',1),
+(860,147,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-2.webp',2),
+(861,147,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-3.webp',3),
+(862,147,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-4.webp',4),
+(863,147,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-5.webp',5),
+(864,147,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-6.webp',6),
+(865,148,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-1.webp',1),
+(866,148,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-2.webp',2),
+(867,148,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-3.webp',3),
+(868,148,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-4.webp',4),
+(869,148,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-5.webp',5),
+(870,148,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-6.webp',6),
+(871,149,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-1.webp',1),
+(872,149,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-2.webp',2),
+(873,149,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-3.webp',3),
+(874,149,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-4.webp',4),
+(875,149,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-5.webp',5),
+(876,149,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-6.webp',6),
+(877,150,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-1.webp',1),
+(878,150,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-2.webp',2),
+(879,150,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-3.webp',3),
+(880,150,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-4.webp',4),
+(881,150,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-5.webp',5),
+(882,150,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-6.webp',6),
+(883,151,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-1.webp',1),
+(884,151,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-2.webp',2),
+(885,151,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-3.webp',3),
+(886,151,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-4.webp',4),
+(887,151,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-5.webp',5),
+(888,151,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-6.webp',6),
+(889,152,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-1.webp',1),
+(890,152,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-2.webp',2),
+(891,152,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-3.webp',3),
+(892,152,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-4.webp',4),
+(893,152,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-5.webp',5),
+(894,152,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-6.webp',6),
+(901,154,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-1.webp',1),
+(902,154,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-2.webp',2),
+(903,154,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-3.webp',3),
+(904,154,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-4.webp',4),
+(905,154,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-5.webp',5),
+(906,154,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-6.webp',6),
+(907,155,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-1.webp',1),
+(908,155,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-2.webp',2),
+(909,155,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-3.webp',3),
+(910,155,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-4.webp',4),
+(911,155,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-5.webp',5),
+(912,155,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-6.webp',6),
+(913,156,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-1.webp',1),
+(914,156,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-2.webp',2),
+(915,156,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-3.webp',3),
+(916,156,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-4.webp',4),
+(917,156,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-5.webp',5),
+(918,156,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-6.webp',6),
+(919,157,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-1.webp',1),
+(920,157,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-2.webp',2),
+(921,157,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-3.webp',3),
+(922,157,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-4.webp',4),
+(923,157,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-5.webp',5),
+(924,157,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-6.webp',6),
+(925,158,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-1.webp',1),
+(926,158,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-2.webp',2),
+(927,158,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-3.webp',3),
+(928,158,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-4.webp',4),
+(929,158,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-5.webp',5),
+(930,158,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-6.webp',6),
+(931,159,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-1.webp',1),
+(932,159,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-2.webp',2),
+(933,159,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-3.webp',3),
+(934,159,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-4.webp',4),
+(935,159,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-5.webp',5),
+(936,159,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-6.webp',6),
+(943,161,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-1.webp',1),
+(944,161,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-2.webp',2),
+(945,161,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-3.webp',3),
+(946,161,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-4.webp',4),
+(947,161,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-5.webp',5),
+(948,161,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-6.webp',6),
+(949,162,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-1.webp',1),
+(950,162,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-2.webp',2),
+(951,162,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-3.webp',3),
+(952,162,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-4.webp',4),
+(953,162,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-5.webp',5),
+(954,162,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-6.webp',6),
+(955,163,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-1.webp',1),
+(956,163,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-2.webp',2),
+(957,163,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-3.webp',3),
+(958,163,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-4.webp',4),
+(959,163,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-5.webp',5),
+(960,163,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-6.webp',6),
+(961,164,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-1.webp',1),
+(962,164,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-2.webp',2),
+(963,164,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-3.webp',3),
+(964,164,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-4.webp',4),
+(965,164,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-5.webp',5),
+(966,164,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-6.webp',6),
+(967,165,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-1.webp',1),
+(968,165,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-2.webp',2),
+(969,165,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-3.webp',3),
+(970,165,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-4.webp',4),
+(971,165,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-5.webp',5),
+(972,165,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-6.webp',6),
+(985,168,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-1.webp',1),
+(986,168,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-2.webp',2),
+(987,168,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-3.webp',3),
+(988,168,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-4.webp',4),
+(989,168,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-5.webp',5),
+(990,168,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-6.webp',6),
+(991,169,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-1.webp',1),
+(992,169,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-2.webp',2),
+(993,169,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-3.webp',3),
+(994,169,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-4.webp',4),
+(995,169,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-5.webp',5),
+(996,169,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-6.webp',6),
+(997,170,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-1.webp',1),
+(998,170,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-2.webp',2),
+(999,170,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-3.webp',3),
+(1000,170,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-4.webp',4),
+(1001,170,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-5.webp',5),
+(1002,170,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-6.webp',6);
 /*!40000 ALTER TABLE `imagenes_producto` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `productos`
@@ -349,22 +3339,176 @@ CREATE TABLE `productos` (
   PRIMARY KEY (`id`),
   KEY `idx_productos_categoria` (`categoria_id`),
   CONSTRAINT `fk_productos_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `productos`
 --
 
-LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
 INSERT INTO `productos` VALUES
-(1,'PC para juegos VENGEANCE a7500','Lleva tu experiencia de juego al siguiente nivel con una PC CORSAIR VENGEANCE serie a7500, ensamblada con componentes CORSAIR reconocidos y equipada con un procesador AMD Ryzen serie 9000 y gráficos NVIDIA GeForce RTX serie 40.','AMD Ryzen 7 9700X, GeForce RTX 4070 Ti SUPER, 32 GB DDR5, SSD M.2 de 1 TB y Windows 11 Home',1,30000.00,40500.00,NULL,'imagenes/computadoras-gaming/pc-vengeance/pc-juego-corsair-vengeance-a7500-01.avif',NULL,7,'activo','CORSAIR','computadora','',0,0,0,0,0,NULL,'[\"ben\",\"ven\",\"corsair\",\"computadora gaming\",\"pc gamer\"]','[{\"grupo\":\"almacenamiento\",\"grupoEtiqueta\":\"Almacenamiento\",\"opciones\":[{\"valor\":\"1-tb\",\"etiqueta\":\"1 TB\",\"extra\":0},{\"valor\":\"2-tb\",\"etiqueta\":\"2 TB\",\"extra\":2000}]},{\"grupo\":\"memoria\",\"grupoEtiqueta\":\"Memoria RAM\",\"opciones\":[{\"valor\":\"16-gb\",\"etiqueta\":\"16 GB\",\"extra\":0},{\"valor\":\"32-gb\",\"etiqueta\":\"32 GB\",\"extra\":3500}]},{\"grupo\":\"color\",\"grupoEtiqueta\":\"Color\",\"opciones\":[{\"valor\":\"plata\",\"etiqueta\":\"Plata\",\"extra\":0},{\"valor\":\"negro-espacial\",\"etiqueta\":\"Negro Espacial\",\"extra\":500}]}]','2026-11-04 18:09:39','2026-11-04 18:09:40'),
-(2,'ATTACK SHARK R3 Magnesium Alloy Gaming Mouse 8K','El ATTACK SHARK R3 redefine la velocidad y precisión con un cuerpo de aleación de magnesio de 46 g, sensor óptico PixArt PAW3395, tasa de sondeo de 8000 Hz y modos de conexión triple (BT / 2.4 G / cable). Incluye 207 reseñas verificadas y está respaldado por 80 millones de clics en sus switches TTC, con un encoder TTC y un driver autodesarrollado para personalización avanzada. Diseño ergonómico con modo de suspensión inteligente.','46g Magnesium Alloy SUPERLIGHT Mouse, 8000Hz Wireless Polling Rate, 6 Adjustable DPI up to 26000, PixArt PAW3395 Gaming Sensor, BT/2.4G Wireless/Wired.',4,3200.00,4320.00,NULL,'imagenes/imagenes-accesorios/raton-attack-shark/raton-attack-shark-r3-resumen.webp',NULL,24,'activo','ATTACK SHARK','accesorio','En existencia',1,1,10,207,340,'2026-09-12','[\"raton\",\"ratones\",\"mouse\",\"attack shark\",\"gaming\",\"r3\",\"magnesio\",\"8k\",\"magnesium\"]',NULL,'2026-11-04 18:09:39','2026-11-04 18:09:40'),
-(3,'ASUS Zenbook 14 OLED','Laptop ultraligera con pantalla táctil OLED y procesador Intel de última generación. Ideal para programar y multitarea.','Intel Core Ultra 5 225H, pantalla de 14\" OLED WUXGA táctil, 16 GB LPDDR5X, SSD de 1 TB, Wi-Fi 7 y Windows 11 Home.',2,23500.00,31725.00,NULL,'imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg',NULL,6,'activo','ASUS','computadora','',0,0,0,0,0,NULL,'[\"asus\",\"zenbook\",\"zenbook 14\",\"oled\",\"laptop\",\"portatil\",\"desarrollo\",\"programacion\",\"intel\",\"core ultra\",\"ultra 5\"]','[{\"grupo\":\"almacenamiento\",\"grupoEtiqueta\":\"Almacenamiento\",\"opciones\":[{\"valor\":\"1-tb\",\"etiqueta\":\"1 TB\",\"extra\":0},{\"valor\":\"2-tb\",\"etiqueta\":\"2 TB\",\"extra\":2000}]},{\"grupo\":\"memoria\",\"grupoEtiqueta\":\"Memoria RAM\",\"opciones\":[{\"valor\":\"16-gb\",\"etiqueta\":\"16 GB\",\"extra\":0},{\"valor\":\"32-gb\",\"etiqueta\":\"32 GB\",\"extra\":3500}]},{\"grupo\":\"color\",\"grupoEtiqueta\":\"Color\",\"opciones\":[{\"valor\":\"plata\",\"etiqueta\":\"Plata\",\"extra\":0},{\"valor\":\"negro-espacial\",\"etiqueta\":\"Negro Espacial\",\"extra\":500}]}]','2026-11-04 18:09:39','2026-11-04 18:09:39'),
-(4,'MacBook Pro 16\" M5 Max','La bestia definitiva de Apple para creadores. Pantalla increíble y el nuevo chip M5 Max.','Chip M5 Max de 18 núcleos de CPU y 40 de GPU, 128 GB de memoria unificada, 8 TB de almacenamiento y pantalla de 16\" nanotexturizada.',3,95000.00,128250.00,NULL,'imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp',NULL,3,'activo','APPLE','computadora','',0,0,0,0,0,NULL,'[\"apple\",\"mac\",\"macbook\",\"macbook pro\",\"m5\",\"m5 max\",\"creadores\",\"uso diario\",\"16 pulgadas\"]','[{\"grupo\":\"almacenamiento\",\"grupoEtiqueta\":\"Almacenamiento\",\"opciones\":[{\"valor\":\"1-tb\",\"etiqueta\":\"1 TB\",\"extra\":0},{\"valor\":\"2-tb\",\"etiqueta\":\"2 TB\",\"extra\":2000}]},{\"grupo\":\"memoria\",\"grupoEtiqueta\":\"Memoria RAM\",\"opciones\":[{\"valor\":\"16-gb\",\"etiqueta\":\"16 GB\",\"extra\":0},{\"valor\":\"32-gb\",\"etiqueta\":\"32 GB\",\"extra\":3500}]},{\"grupo\":\"color\",\"grupoEtiqueta\":\"Color\",\"opciones\":[{\"valor\":\"plata\",\"etiqueta\":\"Plata\",\"extra\":0},{\"valor\":\"negro-espacial\",\"etiqueta\":\"Negro Espacial\",\"extra\":500}]}]','2026-11-04 18:09:39','2026-11-04 18:09:39');
+(1,'Corsair Vengeance a7500','Lleva tu experiencia de juego al siguiente nivel con una PC CORSAIR VENGEANCE serie a7500, ensamblada con componentes CORSAIR reconocidos y equipada con un procesador AMD Ryzen serie 9000 y gráficos NVIDIA GeForce RTX serie 40.','AMD Ryzen 7 9700X, GeForce RTX 4070 Ti SUPER, 32 GB DDR5, SSD M.2 de 1 TB y Windows 11 Home',1,30000.00,40500.00,NULL,'imagenes/computadoras-gaming/pc-vengeance/pc-juego-corsair-vengeance-a7500-01.avif',NULL,7,'activo','CORSAIR','computadora','',0,0,0,0,0,NULL,'[\"ben\",\"ven\",\"corsair\",\"computadora gaming\",\"pc gamer\"]','[{\"grupo\": \"refrigeracion\", \"grupoEtiqueta\": \"Refrigeración líquida\", \"opciones\": [{\"valor\": \"aire-incluido\", \"etiqueta\": \"Refrigeración incluida\", \"extra\": 0}, {\"valor\": \"custom-loop\", \"etiqueta\": \"Refrigeración Líquida Custom\", \"extra\": 5000}]}, {\"grupo\": \"almacenamiento\", \"grupoEtiqueta\": \"Almacenamiento SSD\", \"opciones\": [{\"valor\": \"1tb-nvme\", \"etiqueta\": \"SSD NVMe 1 TB\", \"extra\": 0}, {\"valor\": \"50tb-ssd\", \"etiqueta\": \"50 TB SSD\", \"extra\": 15000}]}, {\"grupo\": \"memoria\", \"grupoEtiqueta\": \"Memoria RAM\", \"opciones\": [{\"valor\": \"32gb-ddr5\", \"etiqueta\": \"32 GB DDR5\", \"extra\": 0}, {\"valor\": \"128gb-ddr5\", \"etiqueta\": \"128 GB RAM\", \"extra\": 8000}]}, {\"grupo\": \"iluminacion\", \"grupoEtiqueta\": \"Iluminación del sistema\", \"opciones\": [{\"valor\": \"rgb-controlado\", \"etiqueta\": \"RGB sincronizado\", \"extra\": 0}, {\"valor\": \"rgb-extremo\", \"etiqueta\": \"Iluminación RGB Extrema\", \"extra\": 3500}]}]','2026-11-04 18:09:39','2026-11-11 23:35:04'),
+(2,'ATTACK SHARK R3 Magnesium Alloy Gaming Mouse 8K','El ATTACK SHARK R3 redefine la velocidad y precisión con un cuerpo de aleación de magnesio de 46 g, sensor óptico PixArt PAW3395, tasa de sondeo de 8000 Hz y modos de conexión triple (BT / 2.4 G / cable). Incluye 207 reseñas verificadas y está respaldado por 80 millones de clics en sus switches TTC, con un encoder TTC y un driver autodesarrollado para personalización avanzada. Diseño ergonómico con modo de suspensión inteligente.','46g Magnesium Alloy SUPERLIGHT Mouse, 8000Hz Wireless Polling Rate, 6 Adjustable DPI up to 26000, PixArt PAW3395 Gaming Sensor, BT/2.4G Wireless/Wired.',4,3200.00,4320.00,NULL,'imagenes/imagenes-accesorios/mouse/raton-attack-shark/raton-attack-shark-r3-resumen.webp',NULL,24,'activo','ATTACK SHARK','accesorio','En existencia',1,1,10,207,340,'2026-09-12','[\"raton\",\"ratones\",\"mouse\",\"attack shark\",\"gaming\",\"r3\",\"magnesio\",\"8k\",\"magnesium\"]',NULL,'2026-11-04 18:09:39','2026-11-11 23:35:04'),
+(3,'ASUS Zenbook 14 OLED','Laptop ultraligera con pantalla táctil OLED y procesador Intel de última generación. Ideal para programar y multitarea.','Intel Core Ultra 5 225H, pantalla de 14\" OLED WUXGA táctil, 16 GB LPDDR5X, SSD de 1 TB, Wi-Fi 7 y Windows 11 Home.',2,23500.00,31725.00,NULL,'imagenes/computadoras-uso-diario/asus-zeenbok-14/asus-zenbook-3.jpg',NULL,6,'activo','ASUS','computadora','',0,0,0,0,0,NULL,'[\"asus\",\"zenbook\",\"zenbook 14\",\"oled\",\"laptop\",\"portatil\",\"desarrollo\",\"programacion\",\"intel\",\"core ultra\",\"ultra 5\"]','[{\"grupo\": \"pantalla\", \"grupoEtiqueta\": \"Pantalla\", \"opciones\": [{\"valor\": \"oled-wuxga\", \"etiqueta\": \"OLED WUXGA\", \"extra\": 0}, {\"valor\": \"oled-4k\", \"etiqueta\": \"Pantalla 4K OLED\", \"extra\": 6000}]}, {\"grupo\": \"monitores\", \"grupoEtiqueta\": \"Espacio de trabajo\", \"opciones\": [{\"valor\": \"monitor-integrado\", \"etiqueta\": \"Pantalla integrada\", \"extra\": 0}, {\"valor\": \"doble-monitor\", \"etiqueta\": \"Doble Monitor Externo\", \"extra\": 10000}]}, {\"grupo\": \"acoplamiento\", \"grupoEtiqueta\": \"Conectividad de escritorio\", \"opciones\": [{\"valor\": \"adaptador-usb-c\", \"etiqueta\": \"Adaptador USB-C\", \"extra\": 0}, {\"valor\": \"estacion-acoplamiento\", \"etiqueta\": \"Estación de Acoplamiento\", \"extra\": 3000}]}]','2026-11-04 18:09:39','2026-11-11 23:35:04'),
+(4,'MacBook Pro 16\" M5 Max','La bestia definitiva de Apple para creadores. Pantalla increíble y el nuevo chip M5 Max.','Chip M5 Max de 18 núcleos de CPU y 40 de GPU, 128 GB de memoria unificada, 8 TB de almacenamiento y pantalla de 16\" nanotexturizada.',3,95000.00,128250.00,NULL,'imagenes/computadoras-desarrollo/mac-macbook-pro-16/mac-macbook-pro-finish-select-202610-16inch-spaceblack.webp',NULL,3,'activo','APPLE','computadora','',0,0,0,0,0,NULL,'[\"apple\",\"mac\",\"macbook\",\"macbook pro\",\"m5\",\"m5 max\",\"creadores\",\"uso diario\",\"16 pulgadas\"]','[{\"grupo\": \"proteccion\", \"grupoEtiqueta\": \"Cobertura Apple\", \"opciones\": [{\"valor\": \"garantia-estandar\", \"etiqueta\": \"Garantía estándar\", \"extra\": 0}, {\"valor\": \"apple-care-plus\", \"etiqueta\": \"Apple Care+\", \"extra\": 8000}]}, {\"grupo\": \"chip\", \"grupoEtiqueta\": \"Procesador\", \"opciones\": [{\"valor\": \"m5-pro\", \"etiqueta\": \"Chip M5 Pro\", \"extra\": 0}, {\"valor\": \"m5-max\", \"etiqueta\": \"Chip M5 Max\", \"extra\": 25000}]}, {\"grupo\": \"memoria-unificada\", \"grupoEtiqueta\": \"Memoria unificada\", \"opciones\": [{\"valor\": \"36gb-unificada\", \"etiqueta\": \"36 GB unificada\", \"extra\": 0}, {\"valor\": \"128gb-unificada\", \"etiqueta\": \"Memoria Unificada 128 GB\", \"extra\": 20000}]}, {\"grupo\": \"teclado\", \"grupoEtiqueta\": \"Teclado y acceso\", \"opciones\": [{\"valor\": \"touch-id-incluido\", \"etiqueta\": \"Teclado estándar\", \"extra\": 0}, {\"valor\": \"touch-id\", \"etiqueta\": \"Teclado con Touch ID\", \"extra\": 3500}]}]','2026-11-04 18:09:39','2026-11-11 23:35:04'),
+(5,'Acer Aspire Lite 16','Acer Aspire Lite 16 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',3,9268.17,12512.03,NULL,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-01.png',NULL,8,'activo','ACER','computadora','',0,0,0,2,0,'2026-11-10','[\"laptop\",\"aspire\",\"lite\",\"fhd\",\"amd\",\"ryzen\",\"16gb\",\"512gb\",\"plateado\",\"acer\",\"desarrollo\"]','[{\"grupo\": \"equipo-5-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-5-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-5-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 5935}]}, {\"grupo\": \"equipo-5-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-5-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-5-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 3965}]}, {\"grupo\": \"equipo-5-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-5-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-5-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 2855}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(6,'Acemagic Gamer Ryzen 5','Acemagic Gamer Ryzen 5 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon RX Vega 7, 16 GB de memoria RAM, Almacenamiento 512 GB, Pantalla 15.6 pulgadas. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon RX Vega 7, 16 GB de memoria RAM, Almacenamiento 512 GB',2,7532.00,10168.20,NULL,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-01.png',NULL,8,'activo','ACEMAGIC','computadora','',0,0,0,10,0,'2026-11-10','[\"laptop\",\"gamer\",\"acemagic\",\"amd\",\"ryzen\",\"7430u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"win11\",\"pro\",\"laptops\",\"desarrollo\"]','[{\"grupo\": \"equipo-6-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-6-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-6-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 6882}]}, {\"grupo\": \"equipo-6-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-6-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-6-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 4578}]}, {\"grupo\": \"equipo-6-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-6-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-6-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 3286}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(7,'HP ProBook 445 G7','HP ProBook 445 G7 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 4500U, 8 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920x1080 Full HD, Windows 11 Pro. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 4500U, 8 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920x1080 Full HD',3,3951.91,5335.08,NULL,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-01.png',NULL,8,'activo','HP','computadora','',0,0,0,0,0,'2026-11-10','[\"laptop\",\"probook\",\"445\",\"ryzen\",\"económica\",\"8gb\",\"ram\",\"256gb\",\"ssd\",\"reacondicionado\",\"desarrollo\"]','[{\"grupo\": \"equipo-7-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-7-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-7-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 7829}]}, {\"grupo\": \"equipo-7-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-7-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-7-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 5191}]}, {\"grupo\": \"equipo-7-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-7-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-7-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 3717}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(8,'Dell 15 DC15255','Dell 15 DC15255 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7520U, 8 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home, Color Plateado. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7520U, 8 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home',3,7406.67,9999.00,NULL,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-01.png',NULL,8,'activo','DELL','computadora','',0,0,0,15,0,'2026-11-10','[\"laptop\",\"dell\",\"dc15255\",\"ryzen\",\"8gb\",\"512gb\",\"full\",\"ssd\",\"plateado\",\"desarrollo\"]','[{\"grupo\": \"equipo-8-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-8-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-8-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 8776}]}, {\"grupo\": \"equipo-8-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-8-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-8-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 5804}]}, {\"grupo\": \"equipo-8-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-8-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-8-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 4148}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(9,'Lenovo ThinkPad X13 Gen 1','Lenovo ThinkPad X13 Gen 1 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 4650, 32 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920px x1080px, Windows 11 Pro. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 4650, 32 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920px x1080px',2,5628.89,7599.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-01.png',NULL,1,'activo','LENOVO','computadora','',0,0,0,20,0,'2026-11-10','[\"laptop\",\"lenovo\",\"thinkpad\",\"x13g1\",\"amd\",\"ryzen\",\"4650\",\"32gb\",\"256gb\",\"ssd\",\"reacondicionado\",\"desarrollo\"]','[{\"grupo\": \"equipo-9-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-9-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-9-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 9723}]}, {\"grupo\": \"equipo-9-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-9-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-9-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 6417}]}, {\"grupo\": \"equipo-9-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-9-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-9-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 4579}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(10,'Lenovo LOQ 15 RTX 4050','Lenovo LOQ 15 RTX 4050 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 7735HS, Gráfica RTX 4050, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 7735HS, Gráfica RTX 4050, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,17663.56,23845.81,NULL,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,20,0,'2026-11-10','[\"laptop\",\"gaming\",\"loq15arp10\",\"amd\",\"ryzen\",\"16gb\",\"512gb\",\"lenovo\",\"desarrollo\"]','[{\"grupo\": \"equipo-10-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-10-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-10-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 10670}]}, {\"grupo\": \"equipo-10-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-10-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-10-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 7030}]}, {\"grupo\": \"equipo-10-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-10-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-10-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 5010}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(11,'Computlalte Gamer Ryzen 5','Computlalte Gamer Ryzen 5 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430u, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430u, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,7694.81,10388.00,NULL,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,31,0,'2026-11-10','[\"laptop\",\"games\",\"amd\",\"ryzen\",\"7430u\",\"512gb\",\"win11\",\"gris\",\"computlalte\",\"desarrollo\"]','[{\"grupo\": \"equipo-11-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-11-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-11-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 11617}]}, {\"grupo\": \"equipo-11-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-11-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-11-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 7643}]}, {\"grupo\": \"equipo-11-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-11-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-11-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 5441}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(12,'Acer Aspire A325-42','Acer Aspire A325-42 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 7730u, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px, Windows 11 Home. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 7730u, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px',3,9628.89,12999.00,NULL,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-01.png',NULL,8,'activo','ACER','computadora','',0,0,0,1386,0,'2026-11-10','[\"notebook\",\"acer\",\"aspire\",\"a325\",\"ryzen\",\"7730u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"pantalla\",\"full\",\"windows\",\"home\",\"color\",\"plateado\",\"desarrollo\"]','[{\"grupo\": \"equipo-12-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-12-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-12-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 12564}]}, {\"grupo\": \"equipo-12-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-12-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-12-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 8256}]}, {\"grupo\": \"equipo-12-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-12-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-12-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 5872}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(13,'Computlalte Gamer Ryzen 7','Computlalte Gamer Ryzen 7 es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 7730U, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 7730U, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,8657.78,11688.00,NULL,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,150,0,'2026-11-10','[\"laptop\",\"games\",\"amd\",\"ryzen\",\"7730u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"fhd\",\"windows\",\"pro\",\"computlalte\",\"desarrollo\"]','[{\"grupo\": \"equipo-13-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-13-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-13-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 13511}]}, {\"grupo\": \"equipo-13-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-13-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-13-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 8869}]}, {\"grupo\": \"equipo-13-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-13-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-13-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 6303}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(15,'Acer Gadget Erbook','Acer Gadget Erbook es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon Graphics, 8 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon Graphics, 8 GB de memoria RAM, Almacenamiento 512 GB SSD',3,7057.04,9527.01,NULL,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-01.png',NULL,8,'activo','ACER','computadora','',0,0,0,13,0,'2026-11-10','[\"notebook\",\"acer\",\"gadget\",\"erbook\",\"ryzen\",\"8gb\",\"512gb\",\"gris\",\"fhd\",\"desarrollo\"]','[{\"grupo\": \"equipo-15-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-15-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-15-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 2605}]}, {\"grupo\": \"equipo-15-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-15-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-15-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 10095}]}, {\"grupo\": \"equipo-15-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-15-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-15-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 7165}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(16,'Lenovo LOQ 15 RTX 5050','Lenovo LOQ 15 RTX 5050 es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 13450Hx, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 13450Hx, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 512 GB SSD',2,22188.53,29954.52,NULL,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,40,0,'2026-11-10','[\"laptop\",\"gamer\",\"loq\",\"32gb\",\"ram\",\"512gb\",\"ssd\",\"rtx\",\"5050\",\"gris\",\"lenovo\",\"desarrollo\"]','[{\"grupo\": \"equipo-16-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-16-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-16-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 3552}]}, {\"grupo\": \"equipo-16-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-16-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-16-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 908}]}, {\"grupo\": \"equipo-16-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-16-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-16-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 7596}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(17,'Lenovo IdeaPad Slim 3 Ultra 7','Lenovo IdeaPad Slim 3 Ultra 7 es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core Ultra 7, Gráfica Integrados Intel UHD, 24 GB de memoria RAM, Almacenamiento 1 TB SSD, Pantalla 1920 px x 1200 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core Ultra 7, Gráfica Integrados Intel UHD, 24 GB de memoria RAM, Almacenamiento 1 TB SSD',3,17237.40,23270.49,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,8,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"slim3\",\"core\",\"ultra7\",\"serie\",\"24gb\",\"1tb\",\"ssd\",\"gris\",\"desarrollo\"]','[{\"grupo\": \"equipo-17-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-17-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-17-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 4499}]}, {\"grupo\": \"equipo-17-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-17-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-17-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 1521}]}, {\"grupo\": \"equipo-17-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-17-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-17-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 8027}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(18,'Lenovo IdeaPad Slim 3 Core 3','Lenovo IdeaPad Slim 3 Core 3 es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core 3 Series 304, 8 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920x1200, Windows 11 Home. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core 3 Series 304, 8 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920x1200',3,11110.37,14999.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,0,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"slim\",\"intel\",\"core\",\"gen\",\"8gb\",\"512gb\",\"desarrollo\"]','[{\"grupo\": \"equipo-18-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-18-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-18-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 5446}]}, {\"grupo\": \"equipo-18-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-18-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-18-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 2134}]}, {\"grupo\": \"equipo-18-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-18-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-18-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 858}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(19,'Lenovo ThinkPad T14','Lenovo ThinkPad T14 es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5, 16 GB de memoria RAM, Almacenamiento 256 GB SSD. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5, 16 GB de memoria RAM, Almacenamiento 256 GB SSD',2,4796.96,6475.90,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,36,0,'2026-11-10','[\"laptop\",\"lenovo\",\"thinkpad\",\"t14\",\"16gb\",\"256gb\",\"win11\",\"pro\",\"desarrollo\"]','[{\"grupo\": \"equipo-19-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-19-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-19-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 6393}]}, {\"grupo\": \"equipo-19-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-19-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-19-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 2747}]}, {\"grupo\": \"equipo-19-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-19-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-19-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 1289}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(20,'Lenovo ThinkPad T14 Gen 3','Lenovo ThinkPad T14 Gen 3 es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 1245U, Gráfica Intel Iris Xe Graphics, 16 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920 px x 1200 px táctil. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 1245U, Gráfica Intel Iris Xe Graphics, 16 GB de memoria RAM, Almacenamiento 256 GB SSD',2,6375.33,8606.70,NULL,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,0,0,'2026-11-10','[\"lenovo\",\"thinkpad\",\"t14\",\"gen\",\"pantalla\",\"táctil\",\"portátil\",\"intel\",\"core\",\"1245u\",\"iris\",\"gráficos\",\"16gb\",\"ram\",\"256gb\",\"ssd\",\"windows\",\"pro\",\"notabook\",\"para\",\"juegos\",\"estudios\",\"negocios\",\"desarrollo\"]','[{\"grupo\": \"equipo-20-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-20-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-20-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 7340}]}, {\"grupo\": \"equipo-20-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-20-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-20-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 3360}]}, {\"grupo\": \"equipo-20-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-20-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-20-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 1720}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(21,'Acemagic 15.6 Core i5','Acemagic 15.6 Core i5 es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 12600h, 24 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 15.6 pulgadas. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 12600h, 24 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 15.6 pulgadas',2,8628.53,11648.52,NULL,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-01.png',NULL,5,'activo','ACEMAGIC','computadora','',0,0,0,26,0,'2026-11-10','[\"laptop\",\"acemagic\",\"intel\",\"12600h\",\"24gb\",\"ram\",\"512gb\",\"ssd\",\"desarrollo\"]','[{\"grupo\": \"equipo-21-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-21-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-21-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 8287}]}, {\"grupo\": \"equipo-21-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-21-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-21-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 3973}]}, {\"grupo\": \"equipo-21-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-21-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-21-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 2151}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(22,'Lenovo IdeaPad Snapdragon X','Lenovo IdeaPad Snapdragon X es un equipo de la categoría Desarrollo. Incluye Procesador Qualcomm Snapdragon X X1-26-100, Gráfica Qualcomm Adreno, 24 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1200 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Qualcomm Snapdragon X X1-26-100, Gráfica Qualcomm Adreno, 24 GB de memoria RAM, Almacenamiento 512 GB SSD',3,14814.07,19999.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,92,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"snapdragon\",\"24gb\",\"512gb\",\"con\",\"desarrollo\"]','[{\"grupo\": \"equipo-22-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-22-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-22-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 9234}]}, {\"grupo\": \"equipo-22-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-22-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-22-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 4586}]}, {\"grupo\": \"equipo-22-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-22-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-22-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 2582}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(23,'Lenovo IdeaPad Slim 3 Touch','Lenovo IdeaPad Slim 3 Touch es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 8840HS, Gráfica Radeon 780M, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920x1200. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 8840HS, Gráfica Radeon 780M, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',3,12962.22,17499.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,10,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"slim\",\"touch\",\"ryzen\",\"16gb\",\"512gb\",\"ssd\",\"desarrollo\"]','[{\"grupo\": \"equipo-23-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-23-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-23-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 10181}]}, {\"grupo\": \"equipo-23-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-23-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-23-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 5199}]}, {\"grupo\": \"equipo-23-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-23-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-23-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 3013}]}]','2026-11-09 17:54:21','2026-11-11 17:35:04'),
+(25,'Computlalte RTX 4070 Super','Computlalte RTX 4070 Super es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 9 5900X, Gráfica RTX 5070 12GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 9 5900X, Gráfica RTX 5070 12GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD',1,35480.74,47899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"rtx\",\"4070\",\"super\",\"ryzen\",\"torre\",\"cooler\",\"32gb\",\"1tb\",\"ir02\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-25-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-25-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-25-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 12075}]}, {\"grupo\": \"equipo-25-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-25-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-25-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 6425}]}, {\"grupo\": \"equipo-25-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-25-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-25-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 3875}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(26,'MSI RTX 5060 Ryzen 7','MSI RTX 5060 Ryzen 7 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 9700X, Gráfica GeForce RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 9700X, Gráfica GeForce RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB',1,28988.64,39134.67,NULL,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-01.png',NULL,8,'activo','MSI','computadora','',0,0,0,5,0,'2026-11-10','[\"gamer\",\"rgb\",\"amd\",\"ryzen\",\"9700x\",\"32gb\",\"ddr5\",\"1tb\",\"ssd\",\"rtx\",\"5060\",\"msi\",\"juegos\"]','[{\"grupo\": \"equipo-26-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-26-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-26-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 13022}]}, {\"grupo\": \"equipo-26-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-26-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-26-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 7038}]}, {\"grupo\": \"equipo-26-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-26-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-26-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 4306}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(27,'Computlalte RTX 5060 Ryzen 9','Computlalte RTX 5060 Ryzen 9 es un equipo de la categoría Juegos. Incluye Procesador Ryzen 9 5900x, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Ryzen 9 5900x, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB',1,28443.70,38399.00,NULL,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"rtx\",\"5060\",\"ryzen\",\"5900x\",\"ram\",\"32gb\",\"1tb\",\"tcu\",\"liquido\",\"360\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-27-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-27-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-27-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 13969}]}, {\"grupo\": \"equipo-27-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-27-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-27-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 7651}]}, {\"grupo\": \"equipo-27-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-27-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-27-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 4737}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(28,'PowerBit Vortex RX 7600','PowerBit Vortex RX 7600 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700X, Gráfica AMD Radeon RX 7600, 16 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home (Versión de Prueba). Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700X, Gráfica AMD Radeon RX 7600, 16 GB de memoria RAM, Almacenamiento 512 GB',1,11851.11,15999.00,NULL,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-01.png',NULL,8,'activo','POWERBIT','computadora','',0,0,0,0,0,'2026-11-10','[\"powerbit\",\"vortex\",\"16gb\",\"512gb\",\"rx7600\",\"juegos\"]','[{\"grupo\": \"equipo-28-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-28-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-28-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 2116}]}, {\"grupo\": \"equipo-28-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-28-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-28-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 8264}]}, {\"grupo\": \"equipo-28-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-28-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-28-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 5168}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(29,'PowerBit Phantom RTX 5050','PowerBit Phantom RTX 5050 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700X, Gráfica NVIDIA GeForce RTX 5050, 16 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home (Versión de Prueba). Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700X, Gráfica NVIDIA GeForce RTX 5050, 16 GB de memoria RAM, Almacenamiento 512 GB',1,13110.37,17699.00,NULL,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-01.png',NULL,8,'activo','POWERBIT','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"powerbit\",\"phantom\",\"16gb\",\"512gb\",\"rtx\",\"5050\",\"juegos\"]','[{\"grupo\": \"equipo-29-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-29-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-29-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 3063}]}, {\"grupo\": \"equipo-29-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-29-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-29-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 8877}]}, {\"grupo\": \"equipo-29-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-29-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-29-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 5599}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(30,'ASUS TUF RTX 5060','ASUS TUF RTX 5060 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 5 5500, Gráfica RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 5 5500, Gráfica RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD',1,16962.22,22899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-01.png',NULL,1,'activo','ASUS','computadora','',0,0,0,3,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"asus\",\"tuf\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"amd\",\"ryzen\",\"5500\",\"16gb\",\"ssd\",\"1tb\",\"wifi\",\"white\",\"1080p\",\"estudios\",\"multitarea\",\"juegos\"]','[{\"grupo\": \"equipo-30-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-30-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-30-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 4010}]}, {\"grupo\": \"equipo-30-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-30-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-30-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 9490}]}, {\"grupo\": \"equipo-30-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-30-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-30-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 6030}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(31,'Computlalte RTX 5060 i5','Computlalte RTX 5060 i5 es un equipo de la categoría Juegos. Incluye Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB',1,17184.44,23199.00,NULL,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-01.png',NULL,1,'activo','COMPUTLALTE','computadora','',0,0,0,23,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"intel\",\"core\",\"12400f\",\"16gb\",\"ssd\",\"1tb\",\"wifi\",\"white\",\"1080p\",\"estudios\",\"multitarea\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-31-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-31-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-31-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 4957}]}, {\"grupo\": \"equipo-31-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-31-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-31-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 10103}]}, {\"grupo\": \"equipo-31-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-31-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-31-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 6461}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(32,'ASUS TUF RTX 5060 Black','ASUS TUF RTX 5060 Black es un equipo de la categoría Juegos. Incluye Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD',1,18369.63,24799.00,NULL,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-01.png',NULL,2,'activo','ASUS','computadora','',0,0,0,11,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"asus\",\"tuf\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"intel\",\"core\",\"12400f\",\"16gb\",\"ssd\",\"1tb\",\"wifi\",\"black\",\"1080p\",\"estudios\",\"multitarea\",\"juegos\"]','[{\"grupo\": \"equipo-32-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-32-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-32-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 5904}]}, {\"grupo\": \"equipo-32-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-32-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-32-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 916}]}, {\"grupo\": \"equipo-32-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-32-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-32-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 6892}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(33,'ASUS RTX 5060 Ti','ASUS RTX 5060 Ti es un equipo de la categoría Juegos. Incluye Procesador Intel Core Ultra 7, Gráfica RTX 5060 Ti, 16 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core Ultra 7, Gráfica RTX 5060 Ti, 16 GB de memoria RAM, Almacenamiento 1 TB SSD',1,25110.37,33899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-01.png',NULL,1,'activo','ASUS','computadora','',0,0,0,6,0,'2026-11-10','[\"gamer\",\"entry\",\"xtreme\",\"gaming\",\"asus\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"intel\",\"core\",\"ultra\",\"16gb\",\"ddr5\",\"ssd\",\"1tb\",\"wifi\",\"white\",\"pba\",\"productividad\",\"versátil\",\"acelerada\",\"con\",\"juegos\"]','[{\"grupo\": \"equipo-33-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-33-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-33-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 6851}]}, {\"grupo\": \"equipo-33-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-33-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-33-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 1529}]}, {\"grupo\": \"equipo-33-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-33-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-33-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 7323}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(34,'Computlalte RTX 4060 Ti','Computlalte RTX 4060 Ti es un equipo de la categoría Juegos. Incluye Procesador Intel Core i7, Gráfica NVIDIA GeForce RTX 4060 Ti ó RTX 5060, 64 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i7, Gráfica NVIDIA GeForce RTX 4060 Ti ó RTX 5060, 64 GB de memoria RAM, Almacenamiento 1 TB',1,34725.93,46880.00,NULL,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"blanca\",\"enfriamiento\",\"líquido\",\"corei7\",\"rtx\",\"4060\",\"64gb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-34-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-34-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-34-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 7798}]}, {\"grupo\": \"equipo-34-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-34-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-34-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 2142}]}, {\"grupo\": \"equipo-34-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-34-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-34-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 7754}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(35,'Computlalte RTX 5070 i9','Computlalte RTX 5070 i9 es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 14900KF, Gráfica NVIDIA GeForce RTX 5070, 32 GB de memoria RAM, Almacenamiento 1 TB, Windows 10 Pro. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 14900KF, Gráfica NVIDIA GeForce RTX 5070, 32 GB de memoria RAM, Almacenamiento 1 TB',1,47022.22,63480.00,NULL,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"blanca\",\"vram\",\"intel\",\"rtx\",\"5070\",\"32gb\",\"ddr5\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-35-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-35-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-35-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 8745}]}, {\"grupo\": \"equipo-35-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-35-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-35-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 2755}]}, {\"grupo\": \"equipo-35-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-35-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-35-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 8185}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(36,'Computlalte Grizzly RTX 5070','Computlalte Grizzly RTX 5070 es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 12900F, Gráfica Nvidia RTX 5070, 32 GB de memoria RAM, Almacenamiento 2 TB, Windows 11 Pro. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 12900F, Gráfica Nvidia RTX 5070, 32 GB de memoria RAM, Almacenamiento 2 TB',1,40665.93,54899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"grizzly\",\"intel\",\"12900f\",\"rtx5070\",\"ram\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-36-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-36-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-36-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 9692}]}, {\"grupo\": \"equipo-36-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-36-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-36-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 3368}]}, {\"grupo\": \"equipo-36-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-36-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-36-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 1016}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(37,'Computlalte Grizzly RTX 5060','Computlalte Grizzly RTX 5060 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 9 5900XT, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 2 TB. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 9 5900XT, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 2 TB',1,30517.78,41199.00,NULL,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-01.png',NULL,3,'activo','COMPUTLALTE','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"grizzly\",\"amd\",\"ryzen\",\"rtx5060\",\"ram\",\"ssd\",\"2tb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-37-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-37-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-37-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 10639}]}, {\"grupo\": \"equipo-37-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-37-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-37-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 3981}]}, {\"grupo\": \"equipo-37-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-37-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-37-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 1447}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(38,'Computlalte RTX 4060/5050','Computlalte RTX 4060/5050 es un equipo de la categoría Juegos. Incluye Procesador Ryzen 7 5700, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Ryzen 7 5700, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 1 TB',1,20725.93,27980.00,NULL,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"blanca\",\"ryzen\",\"5700\",\"enf\",\"líquido\",\"rtx\",\"4060\",\"5050\",\"32gb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-38-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-38-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-38-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 11586}]}, {\"grupo\": \"equipo-38-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-38-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-38-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 4594}]}, {\"grupo\": \"equipo-38-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-38-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-38-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 1878}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(39,'Computlalte RX 9060 XT','Computlalte RX 9060 XT es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700, Gráfica Radeon Rx 9060 Xt, 16 GB de memoria RAM, Almacenamiento 1 TB, Windows 11 Pro. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700, Gráfica Radeon Rx 9060 Xt, 16 GB de memoria RAM, Almacenamiento 1 TB',1,15347.30,20718.86,NULL,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gaming\",\"amd\",\"ryzen\",\"9060\",\"16gb\",\"1tb\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-39-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-39-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-39-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 12533}]}, {\"grupo\": \"equipo-39-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-39-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-39-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 5207}]}, {\"grupo\": \"equipo-39-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-39-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-39-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 2309}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(41,'Computlalte RTX 5060 Ryzen 7','Computlalte RTX 5060 Ryzen 7 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700X, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700X, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB',1,18369.63,24799.00,NULL,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"ryzen\",\"5700x\",\"rtx\",\"5060\",\"ram\",\"32gb\",\"1tb\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-41-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-41-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-41-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 1627}]}, {\"grupo\": \"equipo-41-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-41-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-41-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 6433}]}, {\"grupo\": \"equipo-41-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-41-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-41-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 3171}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(42,'MSI RTX 5080 Core i9','MSI RTX 5080 Core i9 es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 14900KF, Gráfica RTX 5080, 32 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 14900KF, Gráfica RTX 5080, 32 GB de memoria RAM, Almacenamiento 1 TB SSD',1,54740.00,73899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-01.png',NULL,2,'activo','MSI','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"msi\",\"nvidia\",\"geforce\",\"rtx\",\"5080\",\"intel\",\"core\",\"32gb\",\"ddr5\",\"ssd\",\"1tb\",\"sistema\",\"liquido\",\"wifi\",\"black\",\"productividad\",\"profesional\",\"impulsada\",\"por\",\"avanzada\",\"juegos\"]','[{\"grupo\": \"equipo-42-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-42-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-42-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 2574}]}, {\"grupo\": \"equipo-42-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-42-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-42-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 7046}]}, {\"grupo\": \"equipo-42-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-42-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-42-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 3602}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(43,'Computlalte RTX 4060 Ti i9','Computlalte RTX 4060 Ti i9 es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 14900KF, Gráfica RTX 4060 TI 8 GB, 128 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 14900KF, Gráfica RTX 4060 TI 8 GB, 128 GB de memoria RAM, Almacenamiento 1 TB SSD',1,87654.82,118334.01,NULL,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-01.png',NULL,1,'activo','COMPUTLALTE','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"2024\",\"rtx\",\"4060\",\"core\",\"14900k\",\"ram\",\"128gb\",\"ddr5\",\"1tb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-43-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-43-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-43-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 3521}]}, {\"grupo\": \"equipo-43-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-43-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-43-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 7659}]}, {\"grupo\": \"equipo-43-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-43-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-43-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 4033}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(44,'Computlalte RTX 4060 NZXT','Computlalte RTX 4060 NZXT es un equipo de la categoría Juegos. Incluye Procesador Intel Core i7 12900KF, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i7 12900KF, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD',1,33777.04,45599.00,NULL,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-01.png',NULL,3,'activo','COMPUTLALTE','computadora','',0,0,0,5,0,'2026-11-10','[\"gamer\",\"moderna\",\"rtx\",\"4060intel\",\"core\",\"ram\",\"nzxt\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-44-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-44-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-44-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 4468}]}, {\"grupo\": \"equipo-44-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-44-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-44-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 8272}]}, {\"grupo\": \"equipo-44-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-44-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-44-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 4464}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32'),
+(45,'Sennheiser HE1 Orpheus','El pináculo del audio. Sistema electrostático de referencia con amplificador de alta tensión integrado, carcasa de mármol de Carrara y DACs ESS SABRE.','El pináculo del audio. Primer sistema electrostático con amplificador de alta tensión integrado, mármol de Carrara y DACs ESS SABRE.',5,808518.52,1091500.00,NULL,'imagenes/imagenes-accesorios/audio/sennheiser-he1.jpg',NULL,1,'activo','Sennheiser','accesorio','Audio de referencia',1,1,5,64,21,NULL,'[\"sennheiser\",\"he1\",\"orpheus\",\"audifonos\",\"auriculares\",\"electrostatico\",\"audio premium\"]',NULL,'2026-11-11 23:35:04','2026-11-11 23:35:04'),
+(46,'Teclado Magnético Cool 68','Teclado magnético compacto DAREU COOL68, diseñado para juegos competitivos con actuación precisa, Rapid Trigger y sondeo de alta velocidad.','Teclado magnético 65% de 68 teclas, Rapid Trigger de 0.01 mm, polling rate de 8000 Hz e iluminación RGB.',7,5135.60,6933.06,35.00,'imagenes/imagenes-accesorios/teclados/teclado-cool-68-1.jpg',NULL,5,'activo','DAREU','accesorio','Teclado magnético',1,1,8,132,215,NULL,'[\"dareu\",\"cool 68\",\"cool68\",\"teclado magnetico\",\"teclado gaming\",\"rapid trigger\"]',NULL,'2026-11-11 23:35:04','2026-11-11 23:35:04'),
+(47,'Monitor ASUS ROG Swift PG32UCDM','Monitor gaming ASUS ROG Swift de 32 pulgadas con panel QD-OLED 4K UHD, frecuencia de 240 Hz y conectividad HDMI 2.1 y USB-C.','QD-OLED 4K UHD de 32 pulgadas, 240 Hz, 0.03 ms, DisplayHDR 400 True Black y USB-C con entrega de energía de 90 W.',8,16449.00,22206.15,35.00,'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-01-orig.jpg',NULL,3,'activo','ASUS ROG','accesorio','QD-OLED 4K 240 Hz',1,1,12,89,98,NULL,'[\"asus\",\"rog swift\",\"pg32ucdm\",\"monitor gaming\",\"qd-oled\",\"4k\",\"240hz\"]',NULL,'2026-11-11 23:35:04','2026-11-11 18:41:42'),
+(48,'Fuente de Poder Corsair AX1600i','Fuente de poder digital Corsair AX1600i de 1600 W, certificación 80 PLUS Titanium, plataforma GaN y operación totalmente modular.','1600 W continuos, 80 PLUS Titanium, totalmente modular, monitoreo digital iCUE y garantía de 10 años.',6,10078.20,13605.57,35.00,'imagenes/imagenes-accesorios/energia-y-cables/fuente-corsair-ax1600i-1.jpg',NULL,2,'activo','CORSAIR','accesorio','1600 W Titanium',1,1,15,57,76,NULL,'[\"corsair\",\"ax1600i\",\"fuente de poder\",\"fuente 1600w\",\"80 plus titanium\",\"gan\"]',NULL,'2026-11-11 23:35:04','2026-11-11 23:35:04'),
+(50,'Audífonos Sennheiser HD 620S','El HD 620S combina el aislamiento de un diseño cerrado con la amplitud que normalmente se reserva a los audífonos abiertos. Sus transductores angulados construyen un escenario sonoro panorámico y su diadema metálica con almohadillas de terciopelo permite sesiones largas. Pensado para estudio, mezcla y escucha crítica donde no se puede dejar entrar el ruido.','Audífonos cerrados con transductores angulados de 42 mm, 150 Ω y un escenario sonoro panorámico tipo altavoz.',5,6073.33,8199.00,35.00,'imagenes/imagenes-accesorios/audio/sennheiser-hd-620s/sennheiser-hd-620s-1.webp',NULL,7,'activo','Sennheiser','accesorio','Cerrados de referencia',1,1,10,148,96,NULL,'[\"sennheiser\", \"hd 620s\", \"hd620s\", \"audifonos cerrados\", \"audifonos de estudio\", \"audio\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(51,'Audífonos Sennheiser MOMENTUM 5 Wireless','El MOMENTUM 5 lleva el sonido de referencia de Sennheiser a un formato inalámbrico. Monta ocho micrófonos MEMS con formación de haz, cancelación híbrida adaptativa, audio espacial Dolby Atmos con seguimiento de cabeza y una batería de 700 mAh intercambiable. Ideal para viajes, oficina y escucha diaria.','Audífonos inalámbricos con driver de 42 mm inspirado en el HD 600, ANC híbrido adaptativo y hasta 57 horas de batería.',5,6073.33,8199.00,35.00,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-5-wireless/sennheiser-momentum-5-wireless-1.webp',NULL,9,'activo','Sennheiser','accesorio','Bluetooth con ANC',1,1,12,212,143,NULL,'[\"sennheiser\", \"momentum 5\", \"momentum\", \"anc\", \"bluetooth\", \"audifonos inalambricos\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(52,'Audífonos Focal Hadenys','El Hadenys es la puerta de entrada a la alta fidelidad de Focal: domo en forma de M de aluminio y magnesio, yugo de magnesio y almohadillas de memoria que reparten el peso. Su curva tonal cálida y detallada funciona igual de bien con música acústica que con grabaciones densas.','Audífonos abiertos fabricados en Francia con domo de aluminio y magnesio de 40 mm y 26 Ω de impedancia.',5,11406.67,15399.00,35.00,'imagenes/imagenes-accesorios/audio/focal-hadenys/focal-hadenys-1.webp',NULL,3,'activo','Focal','accesorio','Abiertos de alta fidelidad',0,1,8,64,38,NULL,'[\"focal\", \"hadenys\", \"audifonos abiertos\", \"alta fidelidad\", \"audifonos focal\", \"audio\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(53,'Audífonos Meze Audio 105 AER','El 105 AER equilibra comodidad y musicalidad. Su driver dinámico de 50 mm entrega bajos con cuerpo y medios limpios, mientras la estructura de aleación de zinc, los herrajes con recubrimiento PVD y las almohadillas de terciopelo mantienen el peso en 336 g para sesiones largas.','Audífonos abiertos con driver dinámico de 50 mm, 336 g de peso y acabados en aleación de zinc con PVD.',5,4591.85,6199.00,35.00,'imagenes/imagenes-accesorios/audio/meze-audio-105-aer/meze-audio-105-aer-1.jpg',NULL,6,'activo','Meze Audio','accesorio','Abiertos equilibrados',0,1,10,118,74,NULL,'[\"meze\", \"105 aer\", \"meze audio\", \"audifonos abiertos\", \"audio\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(54,'Audífonos HIFIMAN Arya Unveiled','El Arya Unveiled elimina la rejilla trasera para evitar reflexiones que ensucian la imagen sonora. Hereda la idea del SUSVARA: un escenario amplio y transparente con transitorios rápidos. Incluye velos magnéticos para proteger el diafragma cuando no se usa.','Planar magnéticos abiertos sin rejilla trasera, diafragma de escala nanométrica y 8 Hz a 65 kHz de respuesta.',5,13702.96,18499.00,35.00,'imagenes/imagenes-accesorios/audio/hifiman-arya-unveiled/hifiman-arya-unveiled-1.jpg',NULL,3,'activo','HIFIMAN','accesorio','Planar magnético abierto',0,1,5,47,25,NULL,'[\"hifiman\", \"arya\", \"arya unveiled\", \"planar magnetico\", \"audifonos planar\", \"audio\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(55,'Audífonos Audeze Maxwell 2 Wireless','El Maxwell 2 monta los drivers planares más grandes de Audeze en un headset inalámbrico. Usa arreglos Fluxor, gestión de fase Fazor, diafragmas Uniforce y afinación SLAM para bajos profundos y medios limpios, con micrófono de procesamiento inteligente y mezcla de juego y chat.','Headset gaming con drivers planares de 90 mm, audio inalámbrico de baja latencia y Dolby Atmos.',5,5036.30,6799.01,35.00,'imagenes/imagenes-accesorios/audio/audeze-maxwell-2/audeze-maxwell-2-1.webp',NULL,8,'activo','Audeze','accesorio','Gaming planar inalámbrico',1,1,10,176,121,NULL,'[\"audeze\", \"maxwell 2\", \"maxwell\", \"headset gaming\", \"audifonos gaming\", \"audio\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(56,'Audífonos TRUTHEAR NOVA In-Ear','El NOVA reparte el trabajo: un dinámico de 10 mm con diafragma compuesto de PU y LCP se encarga del bajo, mientras los balanced armature cubren medios y agudos a través de un crossover de tres vías. Conector de 0.78 mm de dos pines para cambiar cable cuando quieras.','Monitores in-ear híbridos con un driver dinámico de 10 mm, cuatro balanced armature y crossover de tres vías.',5,2295.56,3099.01,35.00,'imagenes/imagenes-accesorios/audio/truthear-nova/truthear-nova-1.jpg',NULL,15,'activo','TRUTHEAR','accesorio','In-ear híbrido 1DD+4BA',0,1,15,258,187,NULL,'[\"truthear\", \"nova\", \"truthear nova\", \"in ear\", \"iem\", \"audifonos in ear\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(57,'Audífonos Sony WH-1000XM5 Wireless','El WH-1000XM5 usa dos procesadores y ocho micrófonos para limpiar el ruido de avión, oficina y voces. El Optimizador Automático de NC ajusta la cancelación según el entorno y la forma en que llevas puestos los audífonos, con audio de alta resolución y llamadas nítidas.','Audífonos inalámbricos con ocho micrófonos, dos procesadores de cancelación y 30 horas de autonomía.',5,6073.33,8199.00,35.00,'imagenes/imagenes-accesorios/audio/sony-wh-1000xm5/sony-wh-1000xm5-1.webp',NULL,10,'activo','Sony','accesorio','ANC insignia',1,1,18,342,264,NULL,'[\"sony\", \"wh-1000xm5\", \"xm5\", \"anc\", \"audifonos bluetooth\", \"audio\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(58,'Teclado Keychron Q1 Max QMK/VIA Inalámbrico','El Q1 Max es un teclado custom listo para usar: chasis de aluminio con montaje gasket, placa de policarbonato y switches Gateron Jupiter intercambiables en caliente. Conecta hasta tres equipos por Bluetooth, transmite a 1000 Hz por 2.4 GHz y se configura con QMK o la app web de Keychron.','Teclado 75% totalmente metálico con montaje gasket, perilla, 2.4 GHz a 1000 Hz y batería de 4000 mAh.',7,3480.74,4699.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-q1-max/keychron-q1-max-1.webp',NULL,6,'activo','Keychron','accesorio','75% aluminio gasket',1,1,10,143,88,NULL,'[\"keychron\", \"q1 max\", \"teclado 75\", \"teclado mecanico\", \"qmk\", \"via\", \"gasket\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(59,'Teclado Keychron K8 Max QMK Inalámbrico','El K8 Max toma el formato tenkeyless y lo lleva a la conectividad moderna: 2.4 GHz a 1000 Hz, Bluetooth 5.1 para tres dispositivos y cable USB-C cuando quieras cero latencia. Se reprograma con QMK y acepta cualquier switch MX de perfil normal sin soldar.','Teclado TKL 80% con 2.4 GHz, Bluetooth 5.1, QMK y switches Keychron Super hot-swap.',7,1925.19,2599.01,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k8-max/keychron-k8-max-1.webp',NULL,12,'activo','Keychron','accesorio','TKL inalámbrico',0,1,12,186,132,NULL,'[\"keychron\", \"k8 max\", \"teclado tkl\", \"teclado 80\", \"teclado mecanico\", \"qmk\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(60,'Teclado Keychron V6 Max QMK/VIA Inalámbrico','El V6 Max ofrece el formato 100 % con teclado numérico y perilla de volumen, en un chasis de ABS con montaje gasket y placa de policarbonato que suaviza el golpe de tecla. Bluetooth para tres equipos, 2.4 GHz a 1000 Hz y programación total con VIA.','Teclado de tamaño completo con perilla, montaje gasket, 2.4 GHz y switches Gateron Jupiter hot-swap.',7,1851.11,2499.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-v6-max/keychron-v6-max-1.webp',NULL,10,'activo','Keychron','accesorio','Full size con perilla',0,1,10,121,96,NULL,'[\"keychron\", \"v6 max\", \"teclado full size\", \"teclado 100\", \"teclado numerico\", \"qmk\", \"via\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(61,'Teclado Keychron K2 HE Magnético Inalámbrico','El K2 HE cambia el mecanismo por switches magnéticos de efecto Hall: sin contacto físico, con punto de accionamiento ajustable, Rapid Trigger y doble actuación por tecla. Chasis de aluminio, keycaps Cherry de doble inyección y conexión para tres equipos.','Teclado 75% con switches magnéticos de efecto Hall, Rapid Trigger y accionamiento ajustable de 0.2 a 3.8 mm.',7,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k2-he/keychron-k2-he-1.webp',NULL,8,'activo','Keychron','accesorio','Magnético Rapid Trigger',1,1,12,134,79,NULL,'[\"keychron\", \"k2 he\", \"teclado magnetico\", \"hall effect\", \"rapid trigger\", \"teclado 75\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(62,'Teclado Keychron K10 Pro QMK/VIA Inalámbrico','El K10 Pro es la opción sensata para quien quiere teclado completo, programable y desmontable en caliente sin gastar de más. Incluye keycaps para Windows y macOS, switches K Pro de perfil normal y firmware QMK con la app web de Keychron.','Teclado de tamaño completo con switches K Pro intercambiables, QMK/VIA y keycaps para Mac y Windows.',7,1258.52,1699.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k10-pro/keychron-k10-pro-1.webp',NULL,14,'activo','Keychron','accesorio','Full size económico',0,1,15,208,164,NULL,'[\"keychron\", \"k10 pro\", \"teclado full size\", \"teclado economico\", \"qmk\", \"via\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(63,'Teclado Lemokey P1 HE Magnético Gaming','El P1 HE está pensado para competir: chasis metálico con montaje gasket, espuma acústica avanzada y switches magnéticos Gateron Double-Rail. Rapid Trigger, accionamiento de 0.2 a 3.8 mm y Dynamic Keystrokes para cuatro acciones en una tecla.','Teclado gaming 75% totalmente metálico con switches magnéticos, Rapid Trigger y Dynamic Keystrokes.',7,2591.85,3499.00,35.00,'imagenes/imagenes-accesorios/teclados/lemokey-p1-he/lemokey-p1-he-1.webp',NULL,6,'activo','Lemokey','accesorio','Gaming metálico 75%',0,1,10,87,51,NULL,'[\"lemokey\", \"p1 he\", \"teclado magnetico\", \"teclado gaming\", \"rapid trigger\", \"hall effect\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(64,'Teclado Keychron K5 Ultra 8K Inalámbrico','El K5 Ultra 8K combina perfil bajo, formato completo y latencia mínima: 2.4 GHz a 8000 Hz, switches Keychron Milk POM de perfil bajo intercambiables y firmware ZMK. Su batería de 2600 mAh alcanza hasta 370 horas de uso.','Teclado de perfil bajo y tamaño completo con sondeo de 8000 Hz, ZMK y 370 horas de batería.',7,1777.04,2399.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k5-ultra-8k/keychron-k5-ultra-8k-1.webp',NULL,9,'activo','Keychron','accesorio','Low profile 8000 Hz',0,1,12,96,62,NULL,'[\"keychron\", \"k5 ultra\", \"teclado perfil bajo\", \"8000 hz\", \"low profile\", \"teclado inalambrico\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(65,'Teclado Keychron B1 Pro Ultra Slim','El B1 Pro es el teclado para llevar: 75 % compacto, cuerpo de ABS de 425 g y altura mínima. Conecta por 2.4 GHz, Bluetooth o cable, se configura con ZMK y funciona con macOS, iOS, Windows, Android y Linux.','Teclado ultra delgado de 75% y 77 teclas, con 2.4 GHz, Bluetooth y soporte ZMK.',7,665.93,899.01,35.00,'imagenes/imagenes-accesorios/teclados/keychron-b1-pro/keychron-b1-pro-1.webp',NULL,20,'activo','Keychron','accesorio','Ultra delgado 75%',0,1,15,264,231,NULL,'[\"keychron\", \"b1 pro\", \"teclado delgado\", \"teclado compacto\", \"teclado bluetooth\", \"zmk\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(66,'Mouse LAMZU MAYA X Inalámbrico 8K','El MAYA X es la versión grande del Maya: 124 mm de largo y 47 g sin perforaciones en el chasis. Monta el PAW3950 con 30,000 DPI y 750 IPS, switches ópticos Omron y receptor de 8000 Hz en la caja. Se configura desde el driver web Aurora sin instalar nada.','Mouse simétrico de 47 g con sensor PixArt PAW3950, 30,000 DPI y receptor de 8000 Hz incluido.',4,1851.11,2499.00,35.00,'imagenes/imagenes-accesorios/mouse/lamzu-maya-x/lamzu-maya-x-1.webp',NULL,10,'activo','LAMZU','accesorio','Simétrico 47 g',1,1,10,167,118,NULL,'[\"lamzu\", \"maya x\", \"mouse inalambrico\", \"mouse gaming\", \"8k\", \"paw3950\", \"mouse ligero\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(67,'Mouse LAMZU THORN V2 Inalámbrico 8K','El THORN V2 rehace la forma asimétrica de LAMZU para agarre de palma y garra, afinada junto al jugador S1Mon para CS2 y VALORANT. Estrena el sensor PAW NEXT I, MCU Nordic nRF54H20 en el mouse y en el receptor, y switches ópticos Kailh V2.','Mouse ergonómico de 55 g con sensor PAW NEXT I de 50,000 DPI y sondeo nativo de 8000 Hz.',4,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/mouse/lamzu-thorn-v2/lamzu-thorn-v2-1.webp',NULL,8,'activo','LAMZU','accesorio','Ergonómico 55 g',0,1,10,74,46,NULL,'[\"lamzu\", \"thorn v2\", \"mouse ergonomico\", \"mouse gaming\", \"8k\", \"paw next i\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(68,'Mouse LAMZU ATLANTIS MINI PRO Inalámbrico','El Atlantis Mini Pro es la talla pequeña de la familia Atlantis: 117 mm de largo y 51 g para quien mueve la muñeca más que el brazo. Su PAW3395 llega a 26,000 DPI y el cuerpo acepta el receptor de 4K de LAMZU, que se vende por separado.','Mouse compacto de 51 g con PAW3395 de 26,000 DPI y preparado para receptor de 4000 Hz.',4,1406.67,1899.00,35.00,'imagenes/imagenes-accesorios/mouse/lamzu-atlantis-mini-pro/lamzu-atlantis-mini-pro-1.webp',NULL,9,'activo','LAMZU','accesorio','Compacto 4K listo',0,1,12,213,156,NULL,'[\"lamzu\", \"atlantis mini pro\", \"mouse compacto\", \"mouse gaming\", \"4k\", \"paw3395\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(69,'Mouse LAMZU PARO AURORA Inalámbrico 8K','El PARO AURORA demuestra que un mouse ergonómico no tiene que pesar: 48 g en 120 mm de largo, con una joroba baja que acompaña la mano. Lleva PAW3950, switches ópticos Omron y receptor de 8K en la caja para usarlo al máximo desde el primer día.','Mouse ergonómico pequeño de 48 g con PAW3950, 30,000 DPI y receptor de 8000 Hz incluido.',4,1851.11,2499.00,35.00,'imagenes/imagenes-accesorios/mouse/lamzu-paro-aurora/lamzu-paro-aurora-1.webp',NULL,7,'activo','LAMZU','accesorio','Ergonómico compacto',0,1,10,68,41,NULL,'[\"lamzu\", \"paro aurora\", \"mouse ergonomico\", \"mouse gaming\", \"8k\", \"paw3950\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(70,'Mouse Pulsar X2 CrazyLight 8K','El X2 CrazyLight baja el peso a 39 g sin sacrificar estructura. Su sensor XS-1 llega a 32,000 DPI con 750 IPS y 50 G de aceleración, mientras los switches ópticos aguantan 100 millones de clics. Pensado para FPS de sensibilidad baja y movimientos amplios.','Mouse simétrico de 39 g con sensor XS-1 de 32,000 DPI, 750 IPS y sondeo de 8000 Hz.',4,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-x2-crazylight/pulsar-x2-crazylight-1.webp',NULL,8,'activo','Pulsar','accesorio','Simétrico 39 g',1,1,12,152,104,NULL,'[\"pulsar\", \"x2 crazylight\", \"mouse ultraligero\", \"mouse gaming\", \"8k\", \"xs-1\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(71,'Mouse Pulsar Xlite v4 Ergonómico','El Xlite v4 mantiene la silueta ergonómica que hizo famosa a la serie y la actualiza con el sensor XS-1: 32,000 DPI, 750 IPS y 50 G. Con 54 g y un diseño para mano derecha, es una opción cómoda para sesiones largas de juego y trabajo.','Mouse ergonómico para diestros de 54 g con sensor XS-1 de 32,000 DPI y hasta 8000 Hz.',4,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v4/pulsar-xlite-v4-1.webp',NULL,10,'activo','Pulsar','accesorio','Ergonómico 54 g',0,1,10,198,147,NULL,'[\"pulsar\", \"xlite v4\", \"mouse ergonomico\", \"mouse gaming\", \"8k\", \"xs-1\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(72,'Mouse Pulsar TenZ Signature Edition 2.0','Diseñado junto a Tyson TenZ Ngo, esta edición lleva el X2 Mini a su forma más ligera: 42 g y 114 mm de largo. El sensor alcanza 42,000 DPI con 800 IPS y 70 G de aceleración, y el sondeo llega a 8000 Hz para entradas casi instantáneas.','Edición firmada por TenZ, 42 g en tamaño mini, hasta 42,000 DPI y sondeo de 8000 Hz.',4,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-tenz-signature-2/pulsar-tenz-signature-2-1.webp',NULL,6,'activo','Pulsar','accesorio','Edición TenZ 42 g',0,1,8,89,57,NULL,'[\"pulsar\", \"tenz\", \"tenz signature\", \"mouse gaming\", \"8k\", \"mouse ligero\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(73,'Mouse Keychron G3 HE 8K Ultraligero','El G3 HE cambia los switches mecánicos por MagOptic magnéticos con Rapid Trigger, así que el clic responde al recorrido y no al contacto. Con 47 g, chasis de fibra de carbono y sondeo de 8000 Hz, es una alternativa distinta para quien viene de teclados magnéticos.','Mouse ultraligero de 47 g con chasis de fibra de carbono, sensor PixArt 3955 y switches MagOptic.',4,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/mouse/keychron-g3-he-8k/keychron-g3-he-8k-1.webp',NULL,9,'activo','Keychron','accesorio','Switches MagOptic',0,1,12,112,73,NULL,'[\"keychron\", \"g3 he\", \"mouse magnetico\", \"mouse gaming\", \"8k\", \"magoptic\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(74,'Monitor Pixio PX27U Wave 27\" 4K 160 Hz','El PX27U Wave resuelve la duda entre detalle y velocidad: 3840 x 2160 en un panel Fast IPS de 27 pulgadas a 160 Hz con 1 ms GTG. Diseño plano sin marcos, pensado para escritorios donde el espacio cuenta, y garantía de tres años.','Monitor 4K UHD de 27 pulgadas con panel Fast IPS, 160 Hz y 1 ms de respuesta.',8,7628.89,10299.00,35.00,'imagenes/imagenes-accesorios/monitores/pixio-px27u-wave/pixio-px27u-wave-1.webp',NULL,5,'activo','Pixio','accesorio','4K Fast IPS 160 Hz',0,1,10,159,84,NULL,'[\"pixio\", \"px27u\", \"monitor 4k\", \"monitor gaming\", \"160 hz\", \"fast ips\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(75,'Monitor Pixio PX277 OLED MAX V2 27\" 240 Hz','El PX277 OLED MAX V2 lleva panel OLED a un monitor de 27 pulgadas en 2560 x 1440 con 240 Hz y 0.03 ms GTG, así que el movimiento queda limpio incluso en escenas cargadas. Suma HDMI 2.1, DisplayPort 1.4, USB-C con 65 W de carga y bocinas integradas.','Monitor OLED de 27 pulgadas, 1440p y 240 Hz con 0.03 ms y USB-C de 65 W.',8,10665.93,14399.01,35.00,'imagenes/imagenes-accesorios/monitores/pixio-px277-oled-max-v2/pixio-px277-oled-max-v2-1.webp',NULL,4,'activo','Pixio','accesorio','OLED 1440p 240 Hz',1,1,10,96,58,NULL,'[\"pixio\", \"px277 oled\", \"monitor oled\", \"monitor 240hz\", \"1440p\", \"monitor gaming\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(76,'Monitor Pixio PX248 Wave 24\" 200 Hz','El PX248 Wave es el monitor de entrada para quien juega shooters: 24 pulgadas en 1920 x 1080, panel Fast IPS de 200 Hz y 1 ms GTG. Su diseño delgado y sin marcos aprovecha el escritorio y la garantía cubre tres años.','Monitor de 24 pulgadas Full HD con Fast IPS, 200 Hz y 1 ms GTG para FPS.',8,3110.37,4199.00,35.00,'imagenes/imagenes-accesorios/monitores/pixio-px248-wave/pixio-px248-wave-1.webp',NULL,10,'activo','Pixio','accesorio','FHD 200 Hz',0,1,12,231,176,NULL,'[\"pixio\", \"px248 wave\", \"monitor 24\", \"monitor 200hz\", \"monitor gaming\", \"full hd\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(77,'Monitor KOORUI G2741L 27\" UHD 160 Hz / FHD 320 Hz','El G2741L resuelve dos usos con una sola pantalla: en 3840 x 2160 corre hasta 160 Hz para trabajo y juegos con detalle, y en 1920 x 1080 sube a 320 Hz para competir. El panel Fast IPS mantiene buena respuesta en ambos modos.','Monitor de 27 pulgadas con dos modos: 4K a 160 Hz para detalle o Full HD a 320 Hz para velocidad.',8,4591.85,6199.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-g2741l/koorui-g2741l-1.webp',NULL,7,'activo','KOORUI','accesorio','Doble modo 4K y 320 Hz',0,1,10,78,43,NULL,'[\"koorui\", \"g2741l\", \"monitor 4k\", \"monitor 320hz\", \"monitor gaming\", \"doble modo\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(78,'Monitor KOORUI S3241XO 31.5\" OLED 240 Hz','El S3241XO combina un panel OLED de 31.5 pulgadas con 3840 x 2160 y 240 Hz. El OLED entrega negros reales y tiempos de respuesta casi instantáneos, lo que se nota en transiciones y en escenas oscuras.','Monitor OLED de 31.5 pulgadas en 4K UHD con 240 Hz de refresco.',8,12147.41,16399.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-s3241xo/koorui-s3241xo-1.webp',NULL,3,'activo','KOORUI','accesorio','OLED 4K 240 Hz',0,1,8,54,27,NULL,'[\"koorui\", \"s3241xo\", \"monitor oled\", \"monitor 4k\", \"240 hz\", \"monitor gaming\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(79,'Monitor INNOCN GA27W1Q 27\" QD-OLED 4K 240 Hz','El GA27W1Q usa panel QD-OLED de 27 pulgadas con 3840 x 2160 a 240 Hz y 0.03 ms GtG. Cubre 1.07 mil millones de colores en 10 bits, incluye USB-C con 65 W de entrega de energía y brazo con ajuste de altura, giro, pivote e inclinación.','Monitor QD-OLED de 27 pulgadas en 4K con 240 Hz, 0.03 ms y USB-C de 65 W.',8,11851.11,15999.00,35.00,'imagenes/imagenes-accesorios/monitores/innocn-ga27w1q/innocn-ga27w1q-1.webp',NULL,4,'activo','INNOCN','accesorio','QD-OLED 4K 240 Hz',1,1,8,63,34,NULL,'[\"innocn\", \"ga27w1q\", \"monitor qd-oled\", \"monitor 4k\", \"240 hz\", \"monitor gaming\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(80,'Monitor INNOCN E49M1R 49\" 5K DQHD 165 Hz','El E49M1R reemplaza dos monitores con una sola curva de 49 pulgadas en 5120 x 1440. La retroiluminación Mini-LED sube el brillo a 450 nits, corre a 165 Hz con 2 ms y alimenta una laptop por USB-C con 95 W.','Monitor ultrawide de 49 pulgadas con 5120 x 1440, Mini-LED, 165 Hz y 95 W por USB-C.',8,12888.15,17399.00,35.00,'imagenes/imagenes-accesorios/monitores/innocn-e49m1r/innocn-e49m1r-1.webp',NULL,2,'activo','INNOCN','accesorio','Ultrawide Mini-LED',0,1,5,38,19,NULL,'[\"innocn\", \"e49m1r\", \"monitor ultrawide\", \"monitor 49\", \"miniled\", \"165 hz\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(81,'Monitor Portátil Arzopa Z1RC 16\" 2.5K','El Z1RC ofrece 11 % más de espacio vertical que un 16:9 para código, hojas de cálculo y lectura. Con 2560 x 1600, 123 % de sRGB y 1.7 libras de peso, cabe en cualquier mochila y se acompaña de una funda con soporte para modo vertical.','Monitor portátil de 16 pulgadas en 2560 x 1600, formato 16:10 y 123 % de sRGB.',8,2295.56,3099.01,35.00,'imagenes/imagenes-accesorios/monitores/arzopa-z1rc/arzopa-z1rc-1.webp',NULL,12,'activo','Arzopa','accesorio','Portátil 2.5K 16:10',0,1,12,187,143,NULL,'[\"arzopa\", \"z1rc\", \"monitor portatil\", \"monitor 2.5k\", \"monitor usb-c\", \"16 pulgadas\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(82,'Fuente de Poder Corsair RM850x 850 W Gold','La RM850x es la base sólida para un equipo moderno: 850 W continuos, certificación Cybenetics Gold y cumplimiento ATX 3.1 con soporte PCIe 5.1. Sus conectores Type-4 totalmente modulares simplifican el cableado y el modo Zero RPM mantiene el ventilador detenido con cargas bajas.','Fuente totalmente modular de 850 W con certificación Cybenetics Gold, ATX 3.1 y modo Zero RPM.',6,2147.41,2899.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm850x/corsair-rm850x-1.avif',NULL,10,'activo','CORSAIR','accesorio','850 W Cybenetics Gold',1,1,10,214,168,NULL,'[\"corsair\", \"rm850x\", \"fuente de poder\", \"fuente 850w\", \"80 plus gold\", \"atx 3.1\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(83,'Fuente de Poder Corsair RM1000x 1000 W Gold','Pensada para tarjetas gráficas de gama alta, la RM1000x entrega 1000 W con eficiencia 80 PLUS Gold y cableado totalmente modular. El ventilador de levitación magnética con modo Zero RPM mantiene el ruido a raya y los condensadores japoneses de 105 °C sostienen la entrega a largo plazo.','Fuente de 1000 W 80 PLUS Gold, totalmente modular y con ventilador de levitación magnética.',6,2888.15,3899.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1000x/corsair-rm1000x-1.avif',NULL,8,'activo','CORSAIR','accesorio','1000 W 80 PLUS Gold',0,1,10,178,132,NULL,'[\"corsair\", \"rm1000x\", \"fuente de poder\", \"fuente 1000w\", \"80 plus gold\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(84,'Fuente de Poder Corsair HX1200i 1200 W Platinum','La HX1200i es la opción silenciosa para equipos exigentes: 1200 W con eficiencia Platinum, certificación ATX 3.1 y PCIe 5.1, y dos cables 12V-2x6 para las GPUs más grandes. Al ser digital, permite monitorear consumo, voltajes y temperatura desde iCUE.','Fuente digital de 1200 W con certificación Platinum, doble cable 12V-2x6 y monitoreo por iCUE.',6,4295.56,5799.01,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1200i/corsair-hx1200i-1.avif',NULL,5,'activo','CORSAIR','accesorio','1200 W digital Platinum',1,1,8,92,61,NULL,'[\"corsair\", \"hx1200i\", \"fuente de poder\", \"fuente 1200w\", \"80 plus platinum\", \"icue\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(85,'Fuente de Poder Corsair RM750e 750 W Gold','La RM750e cubre el rango donde está la mayoría de los equipos: 750 W con eficiencia 80 PLUS Gold, cableado totalmente modular y cumplimiento ATX 3.1 con conector 12VHPWR para las GPUs nuevas. Ventilador de 120 mm de bajo ruido.','Fuente de 750 W 80 PLUS Gold, totalmente modular y lista para ATX 3.1 con PCIe 5.1.',6,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm750e/corsair-rm750e-1.avif',NULL,12,'activo','CORSAIR','accesorio','750 W ATX 3.1',0,1,12,246,198,NULL,'[\"corsair\", \"rm750e\", \"fuente de poder\", \"fuente 750w\", \"80 plus gold\", \"atx 3.1\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(86,'Fuente de Poder Corsair SF750 750 W SFX Platinum','Para equipos pequeños con hardware grande: la SF750 entrega 750 W en formato SFX con eficiencia Platinum y cumplimiento ATX 3.1. Usa conectores Type-5 Micro-Fit para ahorrar espacio y un ventilador PWM de 92 mm con modo Zero RPM.','Fuente SFX de 750 W con eficiencia Platinum, ATX 3.1 y conectores Type-5 Micro-Fit.',6,3036.30,4099.01,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-sf750/corsair-sf750-1.avif',NULL,6,'activo','CORSAIR','accesorio','SFX 750 W Platinum',0,1,10,121,84,NULL,'[\"corsair\", \"sf750\", \"fuente sfx\", \"fuente 750w\", \"80 plus platinum\", \"itx\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(87,'Fuente de Poder Corsair RM1200x SHIFT 1200 W Gold','La RM1200x SHIFT cambia la disposición de los conectores: en lugar de mirar hacia el panel trasero, el panel de cables queda al costado del equipo. Con 1200 W y eficiencia Gold, conecta y desconecta cables sin desmontar la fuente.','Fuente de 1200 W Gold con interfaz de cables lateral para conectar todo de forma accesible.',6,3925.19,5299.01,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-rm1200x-shift/corsair-rm1200x-shift-1.avif',NULL,4,'activo','CORSAIR','accesorio','1200 W con puerto lateral',0,1,8,88,52,NULL,'[\"corsair\", \"rm1200x\", \"rm1200x shift\", \"fuente de poder\", \"fuente 1200w\", \"80 plus gold\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(88,'Fuente de Poder Corsair CX750 750 W Bronze','La CX750 es la opción práctica para armar sin complicaciones: 750 W continuos, eficiencia 80 PLUS Bronze de hasta 88 % y un chasis de 125 mm de largo que entra en casi cualquier gabinete. Su ventilador de 120 mm mantiene el ruido bajo.','Fuente de 750 W 80 PLUS Bronze con ventilador silencioso y cuerpo compacto de 125 mm.',6,1406.67,1899.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-cx750/corsair-cx750-1.avif',NULL,15,'activo','CORSAIR','accesorio','750 W 80 PLUS Bronze',0,1,12,316,274,NULL,'[\"corsair\", \"cx750\", \"fuente de poder\", \"fuente 750w\", \"80 plus bronze\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(89,'Fuente de Poder Corsair HX1500i 1500 W Platinum','La HX1500i es para estaciones de trabajo y equipos con varias GPUs: 1500 W con eficiencia Platinum, certificación ATX 3.1 y PCIe 5.1, ventilador de rodamiento dinámico fluido con Zero RPM y telemetría en tiempo real desde iCUE.','Fuente digital de 1500 W con eficiencia Platinum, ATX 3.1 y monitoreo completo por iCUE.',6,6740.00,9099.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/corsair-hx1500i/corsair-hx1500i-1.avif',NULL,3,'activo','CORSAIR','accesorio','1500 W Platinum digital',0,1,5,41,22,NULL,'[\"corsair\", \"hx1500i\", \"fuente de poder\", \"fuente 1500w\", \"80 plus platinum\", \"icue\", \"psu\"]',NULL,'2026-11-11 18:27:32','2026-11-11 18:27:32'),
+(90,'MINISFORUM MS-01 SE','La MS-01 SE concentra una estación de trabajo en un chasis que cabe en cualquier escritorio. Su Core i5-12600H de 12 núcleos y 16 hilos mueve compilaciones, máquinas virtuales y edición sin problemas, acompañado de gráficos Intel Iris Xe, 32 GB de memoria y un SSD de 1 TB.','Estación de trabajo compacta con Intel Core i5-12600H de 12 núcleos, 32 GB de memoria y SSD de 1 TB.',2,11851.11,15999.00,35.00,'imagenes/computadoras-desarrollo/minisforum-ms-01-se-workstation/minisforum-ms-01-se-workstation-1.webp',NULL,6,'activo','MINISFORUM','computadora','Estación de trabajo',1,1,8,54,27,NULL,'[\"minisforum\", \"ms-01\", \"workstation\", \"mini pc\", \"i5-12600h\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(91,'Beelink SER9 Pro','El SER9 Pro combina el Ryzen 7 H255 con la Radeon 780M para trabajo y creación ligera. Su memoria LPDDR5X a 6400 MT/s va soldada para mayor velocidad, el USB4 de 40 Gbps resuelve periféricos y pantallas, y la salida de video alcanza 4K a 240 Hz.','Mini PC con Ryzen 7 H255 de 8 núcleos, Radeon 780M, 24 GB LPDDR5X y USB4 de 40 Gbps.',2,11702.96,15799.00,35.00,'imagenes/computadoras-desarrollo/beelink-ser9-pro-r7-h255/beelink-ser9-pro-r7-h255-1.webp',NULL,7,'activo','Beelink','computadora','Ryzen 7 con USB4',1,1,10,96,58,NULL,'[\"beelink\", \"ser9 pro\", \"mini pc\", \"ryzen 7 h255\", \"radeon 780m\", \"usb4\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(92,'GMKtec K11 Ryzen 9','El K11 monta el Ryzen 9 8945HS de ocho núcleos en formato mini. Con 32 GB de memoria y 1 TB de almacenamiento, cubre compilación de proyectos, contenedores y edición ligera sin ocupar el espacio de una torre.','Mini PC con Ryzen 9 8945HS, Radeon 780M, 32 GB de memoria y SSD de 1 TB.',2,15184.44,20498.99,35.00,'imagenes/computadoras-desarrollo/gmktec-k11-r9-8945hs/gmktec-k11-r9-8945hs-1.webp',NULL,5,'activo','GMKtec','computadora','Ryzen 9 8945HS',0,1,8,72,39,NULL,'[\"gmktec\", \"k11\", \"mini pc\", \"ryzen 9 8945hs\", \"radeon 780m\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(93,'GMKtec EVO-X1 HX 370','El EVO-X1 usa el Ryzen AI 9 HX 370, con 12 núcleos y NPU para cargas de inteligencia artificial local. La Radeon 890M y los 32 GB de memoria lo colocan como equipo de desarrollo y creación en formato compacto.','Mini PC con Ryzen AI 9 HX 370 de 12 núcleos, Radeon 890M, 32 GB y SSD de 1 TB.',2,17480.74,23599.00,35.00,'imagenes/computadoras-desarrollo/gmktec-evo-x1-hx-370/gmktec-evo-x1-hx-370-1.webp',NULL,4,'activo','GMKtec','computadora','Ryzen AI HX 370',0,1,8,63,31,NULL,'[\"gmktec\", \"evo-x1\", \"mini pc\", \"ryzen ai 9 hx 370\", \"radeon 890m\", \"ia\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(94,'ACEMAGIC X1 Doble Pantalla','La X1 resuelve el espacio de trabajo sin monitor externo: dos pantallas que se despliegan en horizontal y una bisagra de 360° para usar el equipo como tablet. Con Core i7-1255U, 16 GB de memoria y 1 TB de almacenamiento, va sobrada para programar y multitarea.','Laptop con dos pantallas horizontales y bisagra de 360°, Core i7-1255U, 16 GB y 1 TB.',2,12740.00,17199.00,35.00,'imagenes/computadoras-desarrollo/acemagic-x1-doble-pantalla/acemagic-x1-doble-pantalla-1.webp',NULL,4,'activo','ACEMAGIC','computadora','Doble pantalla 360°',1,1,8,81,44,NULL,'[\"acemagic\", \"x1\", \"laptop doble pantalla\", \"i7-1255u\", \"laptop desarrollo\", \"computadora\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(95,'ACEMAGIC F5A Ryzen 9','El F5A pone un Ryzen 9 de ocho núcleos en un chasis de bolsillo. La memoria LPDDR5 de 24 GB y el SSD de 1 TB lo dejan listo para desarrollo, análisis de datos y trabajo de oficina exigente.','Mini PC con Ryzen 9 270, Radeon 780M, 24 GB LPDDR5 y SSD de 1 TB.',2,12147.41,16399.00,35.00,'imagenes/computadoras-desarrollo/acemagic-f5a-r9-270/acemagic-f5a-r9-270-1.webp',NULL,6,'activo','ACEMAGIC','computadora','Ryzen 9 compacto',0,1,10,58,33,NULL,'[\"acemagic\", \"f5a\", \"mini pc\", \"ryzen 9 270\", \"radeon 780m\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(96,'MINISFORUM UM890 Pro','El UM890 Pro es la propuesta de MINISFORUM para escritorios de desarrollo: ocho núcleos Zen 4, Radeon 780M y 32 GB de memoria en un equipo que se monta detrás del monitor.','Mini PC con Ryzen 9 8945HS, Radeon 780M, 32 GB de memoria y SSD de 1 TB.',2,12517.78,16899.00,35.00,'imagenes/computadoras-desarrollo/minisforum-um890-pro/minisforum-um890-pro-1.webp',NULL,5,'activo','MINISFORUM','computadora','Ryzen 9 UM890',0,1,8,67,36,NULL,'[\"minisforum\", \"um890 pro\", \"mini pc\", \"ryzen 9 8945hs\", \"radeon 780m\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(97,'Beelink EQi13 Pro','El EQi13 Pro usa un Core i7-13620H de 13ª generación con 32 GB de DDR4 en doble canal y dos ranuras M.2 PCIe 4.0. Su fuente de 85 W va integrada, así que se conecta con un solo cable y libera el escritorio.','Mini PC con Core i7-13620H, 32 GB DDR4 de doble canal y fuente interna de 85 W.',2,8962.22,12099.00,35.00,'imagenes/computadoras-desarrollo/beelink-eqi13-pro/beelink-eqi13-pro-1.webp',NULL,8,'activo','Beelink','computadora','Intel 13ª generación',0,1,10,104,61,NULL,'[\"beelink\", \"eqi13 pro\", \"mini pc\", \"i7-13620h\", \"desarrollo\", \"computadora\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(98,'MINISFORUM M1 Pro-285H','El M1 Pro-285H lleva el Core Ultra 9 285H de 16 núcleos a un chasis pequeño. Sus gráficos Intel Arc y los 32 GB de memoria permiten compilar, virtualizar y trabajar con modelos locales sin una torre completa.','Mini PC con Intel Core Ultra 9 285H, gráficos Arc, 32 GB de memoria y SSD de 1 TB.',2,15184.44,20498.99,35.00,'imagenes/computadoras-desarrollo/minisforum-m1-pro-285h/minisforum-m1-pro-285h-1.webp',NULL,4,'activo','MINISFORUM','computadora','Core Ultra 9 285H',0,1,8,45,23,NULL,'[\"minisforum\", \"m1 pro\", \"core ultra 9 285h\", \"mini pc\", \"intel arc\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(99,'GMKtec K17 Plus Ultra 7','El K17 Plus usa el Core Ultra 7 258V de bajo consumo y los gráficos Intel Arc 140V. Con 32 GB de memoria y 1 TB de almacenamiento es un equipo silencioso para desarrollo, oficina y edición ligera.','Mini PC con Intel Core Ultra 7 258V, gráficos Arc 140V, 32 GB de memoria y SSD de 1 TB.',2,14443.70,19499.00,35.00,'imagenes/computadoras-desarrollo/gmktec-k17-plus-ultra-7-258v/gmktec-k17-plus-ultra-7-258v-1.webp',NULL,5,'activo','GMKtec','computadora','Core Ultra 7 258V',0,1,8,51,28,NULL,'[\"gmktec\", \"k17 plus\", \"core ultra 7 258v\", \"mini pc\", \"intel arc\", \"desarrollo\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(100,'ACEMAGIC AX15 N150','La AX15 es la laptop para todos los días: pantalla de 15.6\", Intel N150, 16 GB de memoria y 512 GB de SSD. Pesa 1.6 kg, mide 0.66 pulgadas de grosor y su batería de 38 Wh aguanta más de 8 horas de trabajo.','Laptop de 15.6\" con Intel N150, 16 GB de memoria, 512 GB SSD y batería de 38 Wh.',3,4073.33,5499.00,35.00,'imagenes/computadoras-uso-diario/acemagic-ax15-n150/acemagic-ax15-n150-1.webp',NULL,12,'activo','ACEMAGIC','computadora','Laptop 15.6\"',1,1,10,182,121,NULL,'[\"acemagic\", \"ax15\", \"laptop\", \"intel n150\", \"laptop oficina\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(101,'ACEMAGIC AX16 Pro','La AX16 Pro crece en pantalla y en potencia: 16.1 pulgadas con Ryzen 7 5700U de ocho núcleos, gráficos Radeon Vega 8, 16 GB de memoria y 512 GB de SSD para trabajo, estudio y entretenimiento.','Laptop de 16.1\" con Ryzen 7 5700U de 8 núcleos, 16 GB de memoria y 512 GB SSD.',3,5925.19,7999.01,35.00,'imagenes/computadoras-uso-diario/acemagic-ax16-pro-r7-5700u/acemagic-ax16-pro-r7-5700u-1.webp',NULL,9,'activo','ACEMAGIC','computadora','Pantalla 16.1\"',0,1,10,96,64,NULL,'[\"acemagic\", \"ax16 pro\", \"laptop\", \"ryzen 7 5700u\", \"laptop 16 pulgadas\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(102,'ACEMAGIC LX15 Pro','La LX15 PRO equilibra precio y rendimiento: Ryzen 5 7430U de seis núcleos, 16 GB de memoria LPDDR4 y 512 GB de SSD en una pantalla de 15.6 pulgadas para el día a día.','Laptop de 15.6\" con Ryzen 5 7430U, 16 GB LPDDR4 y 512 GB SSD.',3,6962.22,9399.00,35.00,'imagenes/computadoras-uso-diario/acemagic-lx15-pro-r5-7430u/acemagic-lx15-pro-r5-7430u-1.webp',NULL,8,'activo','ACEMAGIC','computadora','Ryzen 5 7430U',0,1,8,74,47,NULL,'[\"acemagic\", \"lx15 pro\", \"laptop\", \"ryzen 5 7430u\", \"laptop oficina\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(103,'ACEMAGIC AX17 Pro','La AX17 Pro ofrece la pantalla más grande de la gama para trabajar cómodo en casa: 17.3 pulgadas, Ryzen 3 4300U, 16 GB de memoria y 512 GB de SSD, sin pagar de más.','Laptop de 17.3\" con Ryzen 3 4300U, 16 GB de memoria y 512 GB SSD.',3,4665.93,6299.01,35.00,'imagenes/computadoras-uso-diario/acemagic-ax17-pro-r3-4300u/acemagic-ax17-pro-r3-4300u-1.webp',NULL,10,'activo','ACEMAGIC','computadora','Pantalla 17.3\"',0,1,10,88,59,NULL,'[\"acemagic\", \"ax17 pro\", \"laptop\", \"ryzen 3 4300u\", \"laptop 17 pulgadas\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(104,'ACEMAGIC AX18 N150','La AX18 lleva la pantalla a 18.5 pulgadas para quien trabaja con varias ventanas abiertas. El Intel N150 y sus 16 GB de memoria mantienen el equipo fresco para oficina, clases y video.','Laptop de 18.5\" con Intel N150, 16 GB de memoria y 512 GB SSD.',3,5332.59,7199.00,35.00,'imagenes/computadoras-uso-diario/acemagic-ax18-n150/acemagic-ax18-n150-1.webp',NULL,7,'activo','ACEMAGIC','computadora','Pantalla 18.5\"',0,1,8,63,38,NULL,'[\"acemagic\", \"ax18\", \"laptop\", \"intel n150\", \"laptop 18 pulgadas\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(105,'ACEMAGIC LX15 N97','La LX15 es la opción más accesible del catálogo: Intel N97, 8 GB de memoria y 256 GB de SSD para navegar, estudiar, ver video y trabajar con documentos en una pantalla de 15.6 pulgadas.','Laptop de 15.6\" con Intel N97, 8 GB de memoria y 256 GB SSD.',3,3184.44,4298.99,35.00,'imagenes/computadoras-uso-diario/acemagic-lx15-n97/acemagic-lx15-n97-1.webp',NULL,14,'activo','ACEMAGIC','computadora','Laptop económica',0,1,12,211,148,NULL,'[\"acemagic\", \"lx15\", \"laptop\", \"intel n97\", \"laptop económica\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(106,'GMKtec NucBox G3 Plus','El NucBox G3 Plus es un mini PC silencioso para casa y oficina: Intel N150, 16 GB de memoria y 512 GB de SSD en un equipo que se esconde detrás del monitor.','Mini PC con Intel N150, 16 GB de memoria y 512 GB SSD para escritorio.',3,5036.30,6799.01,35.00,'imagenes/computadoras-uso-diario/gmktec-nucbox-g3-plus/gmktec-nucbox-g3-plus-1.webp',NULL,11,'activo','GMKtec','computadora','Mini PC económico',0,1,10,143,92,NULL,'[\"gmktec\", \"nucbox g3 plus\", \"mini pc\", \"intel n150\", \"mini pc económico\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(107,'Beelink EQ14 N150','El EQ14 está pensado para el hogar y la oficina pequeña: Intel N150, 16 GB de DDR4, 500 GB de SSD y dos puertos de red 2.5G para separar redes o montar un servidor doméstico.','Mini PC con Intel N150, 16 GB DDR4, 500 GB SSD y doble red 2.5G.',3,5925.19,7999.01,35.00,'imagenes/computadoras-uso-diario/beelink-eq14-n150/beelink-eq14-n150-1.webp',NULL,9,'activo','Beelink','computadora','Doble LAN 2.5G',0,1,8,77,45,NULL,'[\"beelink\", \"eq14\", \"mini pc\", \"intel n150\", \"doble lan 2.5g\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(108,'MINISFORUM UM760 Plus','El UM760 Plus ofrece un Ryzen 5 7640HS de seis núcleos con gráficos Radeon 760M, 16 GB de memoria y 512 GB de SSD: un mini PC ágil para oficina, estudio y multimedia 4K.','Mini PC con Ryzen 5 7640HS, Radeon 760M, 16 GB de memoria y 512 GB SSD.',3,4591.85,6199.00,35.00,'imagenes/computadoras-uso-diario/minisforum-um760-plus/minisforum-um760-plus-1.webp',NULL,10,'activo','MINISFORUM','computadora','Ryzen 5 7640HS',0,1,10,92,57,NULL,'[\"minisforum\", \"um760 plus\", \"mini pc\", \"ryzen 5 7640hs\", \"radeon 760m\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(109,'Beelink EQR6 Ryzen 5','El EQR6 resuelve el día a día con soltura: Ryzen 5 6600H de seis núcleos, gráficos Radeon 660M, 24 GB de memoria LPDDR5, 500 GB de SSD y doble LAN 2.5G para separar redes internas y externas.','Mini PC con Ryzen 5 6600H, 24 GB LPDDR5, 500 GB SSD y doble red 2.5G.',3,7628.89,10299.00,35.00,'imagenes/computadoras-uso-diario/beelink-eqr6-r5-6600h/beelink-eqr6-r5-6600h-1.webp',NULL,8,'activo','Beelink','computadora','Ryzen 5 6600H',0,1,8,85,51,NULL,'[\"beelink\", \"eqr6\", \"mini pc\", \"ryzen 5 6600h\", \"doble lan\", \"uso diario\"]',NULL,'2026-11-11 18:40:50','2026-11-11 18:41:20'),
+(110,'Mouse Pulsar X3 CrazyLight Medium Inalámbrico 8K','El X3 CrazyLight Medium está pensado para agarre de palma derecha: cuerpo de 46 g con skates de punto, sensor XS-1 de 32,000 DPI y switches ópticos Pulsar de 100 millones de clics. Admite hasta 8000 Hz de sondeo y ajuste de DPI en pasos de 10.','Mouse inalámbrico de 46 g con sensor Pulsar XS-1 de 32,000 DPI y sondeo de hasta 8000 Hz.',4,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-x3-crazylight-medium/pulsar-x3-crazylight-medium-1.webp',NULL,9,'activo','Pulsar','accesorio','46 g sensor XS-1',1,1,10,121,78,NULL,'[\"pulsar\", \"x3 crazylight\", \"mouse inalambrico\", \"mouse ligero\", \"8k\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(111,'Mouse Pulsar X2N CrazyLight Mini Inalámbrico 8K','El X2N CrazyLight Mini reduce el peso a 38 g manteniendo el sensor XS-1 y los switches ópticos. Su tamaño mini va bien con manos pequeñas o agarre de garra, y acepta sondeo de 8000 Hz con el receptor correspondiente.','Mouse simétrico compacto de 38 g con sensor XS-1 de 32,000 DPI y sondeo de hasta 8000 Hz.',4,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-x2n-crazylight-mini/pulsar-x2n-crazylight-mini-1.webp',NULL,8,'activo','Pulsar','accesorio','38 g mini',0,1,10,94,61,NULL,'[\"pulsar\", \"x2n\", \"mouse mini\", \"mouse ligero\", \"8k\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(112,'Mouse Pulsar X2H v3 Medium Inalámbrico','El X2H v3 Medium es la versión de joroba alta del X2: da más apoyo a la palma sin perder el formato simétrico. Pesa 53 g, usa el sensor XS-1 de 32,000 DPI y switches ópticos que evitan el doble clic.','Mouse de 53 g con joroba alta, sensor XS-1 de 32,000 DPI y switches ópticos.',4,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-medium/pulsar-x2h-v3-medium-1.webp',NULL,10,'activo','Pulsar','accesorio','Joroba alta 53 g',0,1,8,88,55,NULL,'[\"pulsar\", \"x2h v3\", \"mouse inalambrico\", \"joroba alta\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(113,'Mouse Pulsar X2H v3 Mini Inalámbrico','Versión mini del X2H v3: 51 g, joroba alta y sensor XS-1 de 32,000 DPI. Pensado para manos pequeñas o agarres de garra que necesitan rellenar la palma sin subir de peso.','Mouse mini de 51 g con joroba alta, sensor XS-1 y switches ópticos.',4,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-x2h-v3-mini/pulsar-x2h-v3-mini-1.webp',NULL,9,'activo','Pulsar','accesorio','Joroba alta 51 g',0,1,8,71,42,NULL,'[\"pulsar\", \"x2h v3 mini\", \"mouse mini\", \"mouse ligero\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(114,'Mouse Pulsar Xlite v3 Large Inalámbrico','El Xlite v3 Large es un ergonómico para mano derecha con 58 g y sensor PAW3395 de 26,000 DPI. Su sistema de clic dividido reduce la latencia y las ruedas con baleros hacen el desplazamiento más suave.','Mouse ergonómico de 58 g con sensor PAW3395, 26,000 DPI y hasta 100 horas de batería.',4,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-large/pulsar-xlite-v3-large-1.webp',NULL,10,'activo','Pulsar','accesorio','Ergonómico 58 g',0,1,8,133,96,NULL,'[\"pulsar\", \"xlite v3\", \"mouse ergonomico\", \"mouse inalambrico\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(115,'Mouse Pulsar Xlite v3 Mini Inalámbrico','El Xlite v3 Mini mantiene la forma ergonómica de la familia en un cuerpo más corto de 52 g. Sensor PAW3395 de 26,000 DPI, clic dividido y batería para hasta 100 horas de uso.','Mouse ergonómico mini de 52 g con sensor PAW3395 y hasta 100 horas de batería.',4,1554.81,2098.99,35.00,'imagenes/imagenes-accesorios/mouse/pulsar-xlite-v3-mini/pulsar-xlite-v3-mini-1.webp',NULL,9,'activo','Pulsar','accesorio','Ergonómico 52 g',0,1,8,79,48,NULL,'[\"pulsar\", \"xlite v3 mini\", \"mouse mini\", \"mouse ergonomico\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(116,'Mouse Keychron G5 Ultra Light Inalámbrico 8K','El G5 Ultra Light monta el PixArt 3950 con sondeo de 8000 Hz en 2.4 GHz, conexión por Bluetooth y cable. Su peso va de 43 a 55 g según la variante y la batería alcanza 162 horas.','Mouse ultraligero con sensor PixArt 3950 de 30,000 DPI, 8000 Hz y hasta 162 horas de batería.',4,1702.96,2299.00,35.00,'imagenes/imagenes-accesorios/mouse/keychron-g5-ultralight/keychron-g5-ultralight-1.webp',NULL,8,'activo','Keychron','accesorio','PixArt 3950 8K',0,1,10,62,37,NULL,'[\"keychron\", \"g5\", \"mouse inalambrico\", \"pixart 3950\", \"8k\", \"mouse ligero\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(117,'Mouse Keychron M3 Inalámbrico','El M3 se conecta por 2.4 GHz, Bluetooth o cable y permite elegir sensor PixArt 3950, 3395 o 3311 según la versión. Con 30,000 DPI y hasta 140 horas de batería cubre juego y trabajo.','Mouse tri-modo con sensor PixArt hasta 3950, 30,000 DPI y sondeo de hasta 8000 Hz.',4,1110.37,1499.00,35.00,'imagenes/imagenes-accesorios/mouse/keychron-m3-wireless/keychron-m3-wireless-1.webp',NULL,12,'activo','Keychron','accesorio','Tri-modo 8K',0,1,10,118,84,NULL,'[\"keychron\", \"m3\", \"mouse inalambrico\", \"mouse bluetooth\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(118,'Mouse Keychron M5 Ergonómico Inalámbrico','El M5 está diseñado para jornadas largas: forma ergonómica, 95 g y opción de micro switches totalmente silenciosos. Conecta por 2.4 GHz, Bluetooth o cable, con sensor PixArt 3950 de hasta 30,000 DPI.','Mouse ergonómico de 95 g con sensor PixArt hasta 3950 y switches micro silenciosos.',4,814.07,1098.99,35.00,'imagenes/imagenes-accesorios/mouse/keychron-m5-ergonomic/keychron-m5-ergonomic-1.webp',NULL,13,'activo','Keychron','accesorio','Ergonómico silencioso',0,1,10,156,112,NULL,'[\"keychron\", \"m5\", \"mouse ergonomico\", \"mouse silencioso\", \"oficina\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(119,'Mouse Keychron M6 Inalámbrico','El M6 combina sensor PixArt 3950 de 30,000 DPI con una rueda de mayor calidad y switches silenciosos. Conecta por 2.4 GHz, Bluetooth o cable y llega a 180 horas de batería.','Mouse tri-modo con sensor PixArt hasta 3950, rueda premium y hasta 180 horas de batería.',4,814.07,1098.99,35.00,'imagenes/imagenes-accesorios/mouse/keychron-m6-wireless/keychron-m6-wireless-1.webp',NULL,11,'activo','Keychron','accesorio','Hasta 180 h',0,1,10,104,73,NULL,'[\"keychron\", \"m6\", \"mouse inalambrico\", \"mouse silencioso\", \"productividad\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(120,'Mouse Keychron M4 Inalámbrico','El M4 es la opción compacta de Keychron: sensor PixArt 3950 o 3395, hasta 30,000 DPI y sondeo de 8000 Hz. Conecta por 2.4 GHz, Bluetooth o cable y ofrece hasta 67 horas de batería.','Mouse compacto tri-modo con sensor PixArt 3950 o 3395 y sondeo de hasta 8000 Hz.',4,1110.37,1499.00,35.00,'imagenes/imagenes-accesorios/mouse/keychron-m4-wireless/keychron-m4-wireless-1.webp',NULL,10,'activo','Keychron','accesorio','Compacto 8K',0,1,10,91,64,NULL,'[\"keychron\", \"m4\", \"mouse compacto\", \"mouse inalambrico\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(121,'Teclado Keychron Q1 Ultra 8K Inalámbrico 75%','El Q1 Ultra 8K es el 75% de la serie Q con chasis de aluminio y perilla de volumen. Conecta por 2.4 GHz, Bluetooth o cable, permite remapear todo con QMK y sostiene 8000 Hz de sondeo en inalámbrico. Su batería de 4000 mAh rinde hasta 660 horas.','Teclado 75% de aluminio con perilla, QMK, conexión tri-modo y sondeo de 8000 Hz.',7,3702.96,4999.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-q1-ultra-8k/keychron-q1-ultra-8k-1.webp',NULL,7,'activo','Keychron','accesorio','75% aluminio 8K',1,1,10,142,87,NULL,'[\"keychron\", \"q1 ultra\", \"teclado 75\", \"teclado inalambrico\", \"qmk\", \"8k\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(122,'Teclado Keychron Q3 Ultra 8K Inalámbrico TKL','El Q3 Ultra 8K ofrece formato 80% sin teclado numérico, chasis de aluminio y perilla. Con QMK se programa tecla por tecla, la batería de 4000 mAh llega a 660 horas y el Bluetooth recuerda hasta tres equipos.','Teclado TKL de aluminio con perilla, QMK, conexión tri-modo y 8000 Hz de sondeo.',7,3702.96,4999.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-q3-ultra-8k/keychron-q3-ultra-8k-1.webp',NULL,7,'activo','Keychron','accesorio','TKL aluminio 8K',0,1,10,118,72,NULL,'[\"keychron\", \"q3 ultra\", \"teclado tkl\", \"teclado inalambrico\", \"qmk\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(123,'Teclado Keychron Q6 Ultra 8K Full Size','El Q6 Ultra 8K es el más completo de la serie: formato 100% con numérico, perilla y chasis de aluminio. Mantiene QMK, sondeo de 8000 Hz y batería de 4000 mAh para 660 horas de uso inalámbrico.','Teclado de tamaño completo con teclado numérico, chasis de aluminio y 8000 Hz.',7,3851.11,5199.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-q6-ultra-8k/keychron-q6-ultra-8k-1.webp',NULL,6,'activo','Keychron','accesorio','Full size aluminio',0,1,10,96,58,NULL,'[\"keychron\", \"q6 ultra\", \"teclado full size\", \"teclado numerico\", \"qmk\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(124,'Teclado Keychron Q11 Ultra 8K Dividido Inalámbrico','El Q11 Ultra 8K separa el teclado en dos mitades que se sincronizan sin cable entre ellas. Formato 75% con perilla, QMK, sondeo de 8000 Hz y batería de 4000 mAh para hasta 160 horas. La postura de hombros y muñecas cambia por completo.','Teclado dividido 75% con sincronización inalámbrica entre mitades y 8000 Hz.',7,3851.11,5199.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-q11-ultra-8k/keychron-q11-ultra-8k-1.webp',NULL,5,'activo','Keychron','accesorio','Dividido sin cables',1,1,10,74,41,NULL,'[\"keychron\", \"q11 ultra\", \"teclado dividido\", \"teclado ergonomico\", \"inalambrico\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(125,'Teclado Keychron K3 Ultra 8K Bajo Perfil','El K3 Ultra 8K es delgado y ligero: 566 g y perfil bajo en formato 75%. Conecta por 2.4 GHz, Bluetooth o cable con 8000 Hz de sondeo y su batería de 2600 mAh llega a 550 horas.','Teclado 75% de bajo perfil, 566 g, conexión tri-modo y 8000 Hz.',7,1851.11,2499.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k3-ultra-8k/keychron-k3-ultra-8k-1.webp',NULL,12,'activo','Keychron','accesorio','Bajo perfil 75%',0,1,10,187,134,NULL,'[\"keychron\", \"k3 ultra\", \"teclado bajo perfil\", \"teclado inalambrico\", \"75%\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(126,'Teclado Keychron K2 Ultra 8K Inalámbrico','El K2 Ultra 8K usa switches Keychron Apex y formato 75% compacto. Ofrece 8000 Hz de sondeo en 2.4 GHz y cable, y con su batería de 4000 mAh alcanza 760 horas, la mayor autonomía de la familia.','Teclado 75% con switches Apex, conexión tri-modo y hasta 760 horas de batería.',7,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k2-ultra-8k/keychron-k2-ultra-8k-1.webp',NULL,11,'activo','Keychron','accesorio','75% hasta 760 h',0,1,10,165,121,NULL,'[\"keychron\", \"k2 ultra\", \"teclado 75\", \"teclado inalambrico\", \"mecanico\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(128,'Teclado Keychron J10 Ultra 8K Inalámbrico','El J10 Ultra 8K combina Bluetooth 5.3 con 2.4 GHz y cable. Puedes elegir entre switches Red, Brown, Banana o Silent Red según el tacto que prefieras, y cuenta con sondeo de 8000 Hz en 2.4 GHz.','Teclado inalámbrico con Bluetooth 5.3, 2.4 GHz, cable y switches Red, Brown, Banana o Silent Red.',7,2591.85,3499.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-j10-ultra-8k/keychron-j10-ultra-8k-1.webp',NULL,8,'activo','Keychron','accesorio','Bluetooth 5.3',0,1,10,108,66,NULL,'[\"keychron\", \"j10 ultra\", \"teclado inalambrico\", \"bluetooth 5.3\", \"mecanico\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(129,'Teclado Keychron V6 Ultra 8K Full Size','El V6 Ultra 8K es la versión de plástico reforzado de la serie V: formato 100% con numérico y perilla, switches Silk POM y 8000 Hz de sondeo. Su batería de 4000 mAh rinde hasta 660 horas.','Teclado de tamaño completo con numérico, perilla, 8000 Hz y 660 horas de batería.',7,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-v6-ultra-8k/keychron-v6-ultra-8k-1.webp',NULL,11,'activo','Keychron','accesorio','Full size económico',0,1,10,146,98,NULL,'[\"keychron\", \"v6 ultra\", \"teclado full size\", \"teclado numerico\", \"inalambrico\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(130,'Teclado Keychron V10 Ultra 8K 75% Alice','El V10 Ultra 8K usa la distribución Alice, con las teclas separadas en ángulo para que las muñecas queden rectas. Formato 75% con perilla, switches Silk POM, 8000 Hz y batería para 660 horas.','Teclado 75% con distribución Alice, perilla y 8000 Hz de sondeo.',7,2073.33,2799.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-v10-ultra-8k/keychron-v10-ultra-8k-1.webp',NULL,9,'activo','Keychron','accesorio','Ergonómico Alice',0,1,10,87,52,NULL,'[\"keychron\", \"v10 ultra\", \"teclado alice\", \"teclado ergonomico\", \"inalambrico\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(131,'Teclado Lemokey P3 HE Magnético TKL','El P3 HE está hecho para competir: switches magnéticos Gateron Double-Rail Nebula, Rapid Trigger y punto de actuación ajustable entre 0.2 y 3.8 mm. Formato TKL, conexión tri-modo y hasta 120 horas de batería.','Teclado TKL con switches magnéticos Gateron, Rapid Trigger y actuación ajustable de 0.2 a 3.8 mm.',7,2740.00,3699.00,35.00,'imagenes/imagenes-accesorios/teclados/lemokey-p3-he/lemokey-p3-he-1.webp',NULL,7,'activo','Lemokey','accesorio','Magnético Rapid Trigger',1,1,10,93,57,NULL,'[\"lemokey\", \"p3 he\", \"teclado magnetico\", \"rapid trigger\", \"teclado gaming\", \"tkl\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(132,'Audífonos Sennheiser HD 600 Open Back','El HD 600 es un clásico de estudio: diafragma dinámico de 300 Ω, respuesta de 12 Hz a 39 kHz y 97 dB de sensibilidad. Su cable OFC de 3 metros se desmonta y el conector chapado en oro de 6.3 mm aguanta años de uso.','Audífonos abiertos de referencia con 300 Ω, respuesta de 12 Hz a 39 kHz y cable OFC desmontable de 3 m.',5,8147.41,10999.00,35.00,'imagenes/imagenes-accesorios/audio/sennheiser-hd-600/sennheiser-hd-600-1.jpg',NULL,6,'activo','Sennheiser','accesorio','Referencia 300 Ω',1,1,8,214,132,NULL,'[\"sennheiser\", \"hd 600\", \"audifonos abiertos\", \"audifonos estudio\", \"300 ohm\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(133,'Audífonos Sennheiser HD 650 Open Back','El HD 650 afina el carácter del HD 600 hacia un tono más cálido. Sus drivers se seleccionan a mano por pares con tolerancias de ±1 dB, la respuesta llega de 10 Hz a 41 kHz y la impedancia de 300 Ω pide un amplificador decente.','Audífonos abiertos de 300 Ω con respuesta de 10 Hz a 41 kHz y drivers seleccionados por pares.',5,9258.52,12499.00,35.00,'imagenes/imagenes-accesorios/audio/sennheiser-hd-650/sennheiser-hd-650-1.jpg',NULL,5,'activo','Sennheiser','accesorio','Tono cálido 300 Ω',0,1,8,176,104,NULL,'[\"sennheiser\", \"hd 650\", \"audifonos abiertos\", \"audifonos audiofilo\", \"300 ohm\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(134,'Audífonos Sennheiser HD 550 Over-Ear','El HD 550 baja la impedancia a 150 Ω para moverse mejor entre laptop, dongle y amplificador. Cubre de 5 Hz a 39.5 kHz con distorsión menor al 0.2 % y trae cable desmontable de 1.8 m con adaptador roscado de 6.35 mm.','Audífonos abiertos de 150 Ω con respuesta de 5 Hz a 39.5 kHz y cable desmontable de 1.8 m.',5,5925.19,7999.01,35.00,'imagenes/imagenes-accesorios/audio/sennheiser-hd-550/sennheiser-hd-550-1.jpg',NULL,8,'activo','Sennheiser','accesorio','150 Ω versátil',0,1,10,138,81,NULL,'[\"sennheiser\", \"hd 550\", \"audifonos abiertos\", \"audifonos 150 ohm\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(135,'Audífonos Focal Bathys MG Bluetooth ANC','El Bathys MG lleva los drivers de cúpula de magnesio de 40 mm fabricados en Francia a un formato inalámbrico. Suma cancelación activa con ocho micrófonos, Bluetooth 5.2 multipunto y modo USB-DAC hasta 24 bits/192 kHz. La batería llega a 42 horas en USB-DAC y una carga de 15 minutos da 5 horas.','Audífonos Bluetooth con drivers de magnesio de 40 mm, cancelación de ruido de 8 micrófonos y modo USB-DAC 24/192.',5,19999.26,26999.00,35.00,'imagenes/imagenes-accesorios/audio/focal-bathys-mg/focal-bathys-mg-1.jpg',NULL,4,'activo','Focal','accesorio','Magnesio con ANC',1,1,8,87,39,NULL,'[\"focal\", \"bathys mg\", \"audifonos bluetooth\", \"anc\", \"usb dac\", \"audifonos premium\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(136,'Audífonos HIFIMAN Edition XS Planar','El Edition XS usa drivers planar magnéticos de gran superficie, los mismos que la gama alta de HIFIMAN. Con 18 Ω y 92 dB se mueven bien desde un dongle decente, y su respuesta de 8 Hz a 50 kHz entrega detalle y escena amplia.','Audífonos abiertos con drivers planar magnéticos, 18 Ω y respuesta de 8 Hz a 50 kHz.',5,3480.74,4699.00,35.00,'imagenes/imagenes-accesorios/audio/hifiman-edition-xs/hifiman-edition-xs-1.jpg',NULL,7,'activo','HIFIMAN','accesorio','Planar magnético',0,1,12,154,97,NULL,'[\"hifiman\", \"edition xs\", \"audifonos planar\", \"audifonos abiertos\", \"audiophile\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(137,'Audífonos Meze Audio 99 Classics V2','El 99 Classics V2 combina copas de madera con drivers dinámicos de 40 mm de 16 Ω, fáciles de mover desde el celular. Incluye absorbedores acústicos para pasar del afinado equilibrado V2 al tono más cálido del original, cable de Kevlar y dongle USB-C con DAC.','Audífonos cerrados con copas de madera, drivers de 40 mm, 16 Ω y cable Kevlar de 1.8 m.',5,5925.19,7999.01,35.00,'imagenes/imagenes-accesorios/audio/meze-99-classics-v2/meze-99-classics-v2-1.jpg',NULL,6,'activo','Meze Audio','accesorio','Madera cerrados',0,1,10,112,68,NULL,'[\"meze\", \"99 classics\", \"audifonos cerrados\", \"audifonos madera\", \"audiophile\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(138,'Audífonos Audeze MM-520 Planar de Estudio','El MM-520 parte de la base del MM-500 para monitoreo y mezcla. Sus drivers planar de 90 mm con imanes de neodimio N50 entregan de 5 Hz a 50 kHz con distorsión menor al 0.1 % a 100 dB. Con 18 Ω se alimentan desde equipo de estudio o portátil.','Audífonos planar magnéticos de 90 mm con 18 Ω, respuesta de 5 Hz a 50 kHz y distorsión bajo 0.1 %.',5,25925.19,34999.01,35.00,'imagenes/imagenes-accesorios/audio/audeze-mm-520/audeze-mm-520-1.jpg',NULL,3,'activo','Audeze','accesorio','Planar 90 mm',1,1,8,46,19,NULL,'[\"audeze\", \"mm-520\", \"audifonos planar\", \"audifonos estudio\", \"mezcla\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(139,'Audífonos Dan Clark Audio NOIRE X Cerrados','El NOIRE X es un cerrado planar pensado para escuchar sin molestar. Incluye cable Dummer con puntas combinadas de 3.5 y 6.3 mm, además de terminaciones de 4 pines XLR y 4.4 mm balanceada, así que se conecta a casi cualquier amplificador.','Audífonos cerrados planar magnéticos con tres terminaciones de cable incluidas.',5,17036.30,22999.01,35.00,'imagenes/imagenes-accesorios/audio/dan-clark-noire-x/dan-clark-noire-x-1.webp',NULL,4,'activo','Dan Clark Audio','accesorio','Planar cerrado',0,1,8,52,24,NULL,'[\"dan clark\", \"noire x\", \"audifonos cerrados\", \"audifonos planar\", \"premium\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(140,'Audífonos Sennheiser MOMENTUM True Wireless 4','Los MOMENTUM True Wireless 4 llegan con Bluetooth 5.4, Auracast y LE Audio para conexiones estables y de bajo consumo. Su sistema de seis micrófonos mantiene las llamadas claras incluso con ruido alrededor.','Audífonos inalámbricos con Bluetooth 5.4, Auracast, LE Audio y sistema de 6 micrófonos.',5,5925.19,7999.01,35.00,'imagenes/imagenes-accesorios/audio/sennheiser-momentum-tw4/sennheiser-momentum-tw4-1.jpg',NULL,9,'activo','Sennheiser','accesorio','TWS Bluetooth 5.4',0,1,10,203,141,NULL,'[\"sennheiser\", \"momentum true wireless 4\", \"audifonos bluetooth\", \"tws\", \"auracast\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(141,'Audífonos Bowers & Wilkins PX8 ANC','El PX8 combina drivers de cono de carbono con procesamiento DSP para un sonido detallado y graves firmes. La cancelación activa tapa el ruido del transporte y el acabado en piel lo deja cómodo para viajes largos.','Audífonos inalámbricos con cancelación de ruido, drivers de cono de carbono y DSP avanzado.',5,11851.11,15999.00,35.00,'imagenes/imagenes-accesorios/audio/bowers-wilkins-px8/bowers-wilkins-px8-1.webp',NULL,5,'activo','Bowers & Wilkins','accesorio','ANC premium',0,1,8,91,47,NULL,'[\"bowers wilkins\", \"px8\", \"audifonos anc\", \"audifonos bluetooth\", \"premium\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(142,'Audífonos Thieaudio Monarch MKIV In-Ear','El Monarch MKIV reparte el trabajo entre dos dinámicos IMPACT2 de 8 mm, seis armaduras balanceadas y dos drivers electrostáticos Sonion. La carcasa es de aluminio aeroespacial T6 y el cable modular incluye conexiones de 4.4 mm balanceada y 3.5 mm.','In-ear híbrido de 10 drivers con dos dinámicos IMPACT2, seis BA y dos EST, cable modular.',5,17777.04,23999.00,35.00,'imagenes/imagenes-accesorios/audio/thieaudio-monarch-mkiv/thieaudio-monarch-mkiv-1.webp',NULL,4,'activo','Thieaudio','accesorio','Híbrido 10 drivers',0,1,8,63,31,NULL,'[\"thieaudio\", \"monarch mkiv\", \"audifonos in ear\", \"iem\", \"hibrido\", \"audiophile\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(143,'Monitor Pixio PX27UM Mini LED 27\" Dual Mode','El PX27UM cambia de resolución según el juego: 4K a 160 Hz para detalle o Full HD a 320 Hz para competitivo. Su panel Mini LED Fast-IPS está certificado VESA HDR1000 con picos de hasta 1000 nits, y suma HDMI 2.1 y DisplayPort 1.4 para PC y consola.','Monitor de 27\" Mini LED con modo dual: 4K a 160 Hz o Full HD a 320 Hz, HDR1000 y HDMI 2.1.',8,9258.52,12499.00,35.00,'imagenes/imagenes-accesorios/monitores/pixio-px27um-mini-led/pixio-px27um-mini-led-1.webp',NULL,5,'activo','Pixio','accesorio','4K 160 Hz / FHD 320 Hz',1,1,10,78,41,NULL,'[\"pixio\", \"px27um\", \"monitor 4k\", \"monitor mini led\", \"320hz\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(144,'Monitor Pixio PXC348C Neo 34\" Ultrawide 180 Hz','El PXC348C Neo envuelve la vista con 34 pulgadas de curvatura y panel Fast VA. Su resolución 3440 x 1440 a 180 Hz sirve igual para trabajo con varias ventanas que para juego, y está disponible en negro o blanco.','Monitor ultrawide curvo de 34\" con panel Fast VA, 3440 x 1440 y 180 Hz.',8,5925.19,7999.01,35.00,'imagenes/imagenes-accesorios/monitores/pixio-pxc348c-neo/pixio-pxc348c-neo-1.webp',NULL,6,'activo','Pixio','accesorio','Ultrawide curvo 180 Hz',0,1,10,96,55,NULL,'[\"pixio\", \"pxc348c neo\", \"monitor ultrawide\", \"monitor curvo\", \"34 pulgadas\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(146,'Monitor Pixio PX279 Prime Neo 27\" 240 Hz','El PX279 Prime Neo lleva el panel Fast IPS a 27 pulgadas manteniendo Full HD y 240 Hz. Es la opción para quien quiere pantalla grande y alta tasa de refresco sin gastar en resolución 4K.','Monitor de 27\" Full HD con panel Fast IPS y 240 Hz de refresco.',8,4591.85,6199.00,35.00,'imagenes/imagenes-accesorios/monitores/pixio-px279-prime-neo/pixio-px279-prime-neo-1.webp',NULL,8,'activo','Pixio','accesorio','27\" FHD 240 Hz',0,1,10,88,49,NULL,'[\"pixio\", \"px279 prime neo\", \"monitor 27 pulgadas\", \"monitor 240hz\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(147,'Monitor KOORUI G2721E 27\" QHD 320 Hz','El G2721E combina resolución QHD con 320 Hz en un panel Fast IPS de 27 pulgadas. El HDR400 mejora el contraste en juego y la alta tasa de refresco deja imágenes limpias en títulos rápidos.','Monitor de 27\" con panel Fast IPS, 2560 x 1440, 320 Hz y HDR400.',8,3480.74,4699.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-g2721e/koorui-g2721e-1.webp',NULL,9,'activo','KOORUI','accesorio','QHD 320 Hz HDR400',1,1,10,147,92,NULL,'[\"koorui\", \"g2721e\", \"monitor qhd\", \"monitor 320hz\", \"gaming\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(148,'Monitor KOORUI G3441XC 34\" UWQHD 240 Hz','El G3441XC usa curvatura 1500R para envolver la vista en 34 pulgadas. Su panel VA entrega 3440 x 1440 a 240 Hz, con HDMI y DisplayPort para conectar PC y consola sin adaptadores.','Monitor curvo de 34\" con panel VA, 3440 x 1440 y 240 Hz.',8,6443.70,8699.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-g3441xc/koorui-g3441xc-1.webp',NULL,6,'activo','KOORUI','accesorio','Curvo 1500R 240 Hz',0,1,10,74,38,NULL,'[\"koorui\", \"g3441xc\", \"monitor ultrawide\", \"monitor curvo\", \"240hz\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(149,'Monitor KOORUI S2741LM 27\" QD-Mini LED Dual Mode','El S2741LM usa retroiluminación QD-Mini LED sobre panel IPS. Ofrece dos modos, UHD a 160 Hz con 3840 x 2160 o Full HD a 320 Hz para competitivo, así que sirve para trabajo detallado y para jugar rápido.','Monitor de 27\" con QD-Mini LED y modo dual: UHD a 160 Hz o Full HD a 320 Hz.',8,8147.41,10999.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-s2741lm/koorui-s2741lm-1.webp',NULL,5,'activo','KOORUI','accesorio','4K 160 Hz / FHD 320 Hz',0,1,10,61,29,NULL,'[\"koorui\", \"s2741lm\", \"monitor 4k\", \"mini led\", \"dual mode\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(150,'Monitor KOORUI G2421V 24\" QHD 180 Hz','El G2421V mete resolución QHD en 24 pulgadas, lo que da una densidad de píxeles alta y texto nítido. Su panel Fast IPS corre a 180 Hz, buen equilibrio entre juego y trabajo de oficina.','Monitor de 24\" con panel Fast IPS, 2560 x 1440 y 180 Hz.',8,2591.85,3499.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-g2421v/koorui-g2421v-1.webp',NULL,12,'activo','KOORUI','accesorio','24\" QHD 180 Hz',0,1,12,189,126,NULL,'[\"koorui\", \"g2421v\", \"monitor qhd\", \"monitor 24 pulgadas\", \"180hz\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(151,'Monitor INNOCN CB32U1 32\" 4K 160 Hz USB-C 90 W','El CB32U1 resuelve el escritorio con un solo cable: USB-C entrega imagen y hasta 90 W de carga para la laptop. Su panel de 32 pulgadas llega a 4K con 144 Hz de base y 160 Hz en overclock, más HDR400 y DisplayPort 1.4.','Monitor de 32\" 4K con 144 Hz (160 Hz en overclock), HDR400 y USB-C de 90 W.',8,8888.15,11999.00,35.00,'imagenes/imagenes-accesorios/monitores/innocn-cb32u1/innocn-cb32u1-1.webp',NULL,5,'activo','INNOCN','accesorio','4K USB-C 90 W',0,1,10,82,43,NULL,'[\"innocn\", \"cb32u1\", \"monitor 4k\", \"monitor usb c\", \"32 pulgadas\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(152,'Monitor INNOCN 34C1U 34\" 5K2K Ultrawide 120 Hz','El 34C1U ofrece 34 pulgadas en 21:9 con resolución 5K2K de 5120 x 2160 y 120 Hz. Con un solo cable USB-C entrega video y carga, y su soporte HDR y Adaptive Sync lo dejan listo para edición y multitarea pesada.','Monitor ultrawide profesional de 34\" con 5120 x 2160, 120 Hz y USB-C de un solo cable.',8,11110.37,14999.00,35.00,'imagenes/imagenes-accesorios/monitores/innocn-34c1u/innocn-34c1u-1.webp',NULL,4,'activo','INNOCN','accesorio','5K2K profesional',1,1,10,58,27,NULL,'[\"innocn\", \"34c1u\", \"monitor 5k2k\", \"monitor ultrawide\", \"profesional\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(154,'Fuente NZXT C1200 Platinum ATX 3.1 1200 W','La C1200 Platinum está certificada 80 PLUS y Cybenetics Platinum. Cumple ATX 3.1 e incluye un cable 12V-2x6 que entrega 600 W a la tarjeta gráfica. El ventilador de 140 mm con rodamiento dinámico se apaga con el modo Zero RPM y los capacitores japoneses aguantan 105 °C.','Fuente de 1200 W con certificación 80 PLUS Platinum, ATX 3.1 y cable 12V-2x6 de 600 W.',6,3332.59,4499.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-platinum/nzxt-c1200-platinum-1.webp',NULL,7,'activo','NZXT','accesorio','1200 W Platinum',1,1,10,84,47,NULL,'[\"nzxt\", \"c1200 platinum\", \"fuente 1200w\", \"atx 3.1\", \"80 plus platinum\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(155,'Fuente NZXT C1500 Platinum ATX 3.1 1500 W','La C1500 Platinum alimenta configuraciones extremas: 1500 W con ATX 3.1 y PCIe 5.1, más dos cables 16 pines 12V-2x6 de más de 600 W cada uno para GPUs de gama alta. Supera el 80 PLUS Platinum con 94 % de eficiencia y usa un ventilador de levitación magnética de 140 mm.','Fuente de 1500 W con 94 % de eficiencia, dos cables 12V-2x6 y ventilador de levitación magnética.',6,6073.33,8199.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1500-platinum/nzxt-c1500-platinum-1.webp',NULL,4,'activo','NZXT','accesorio','1500 W dos 12V-2x6',0,1,8,39,17,NULL,'[\"nzxt\", \"c1500 platinum\", \"fuente 1500w\", \"atx 3.1\", \"pcie 5.1\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(156,'Fuente NZXT C1000 Gold ATX 3.1 1000 W','La C1000 Gold cumple ATX 3.1 y aguanta los picos de las GPUs actuales con su conector 12V-2x6 de 600 W. El ventilador de 135 mm con rodamiento dinámico se detiene por debajo del 50 % de carga y los capacitores japoneses sostienen el voltaje.','Fuente de 1000 W 80 PLUS Gold, ATX 3.1 y conector 12V-2x6 de 600 W.',6,3110.37,4199.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-atx31/nzxt-c1000-gold-atx31-1.webp',NULL,9,'activo','NZXT','accesorio','1000 W Gold',0,1,10,121,74,NULL,'[\"nzxt\", \"c1000 gold\", \"fuente 1000w\", \"atx 3.1\", \"80 plus gold\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(157,'Fuente NZXT C1200 Gold ATX 3.1 1200 W','La C1200 Gold entrega 1200 W con certificación Gold y ATX 3.1. Su conector 12V-2x6 lleva 600 W a la gráfica y el ventilador de 135 mm se apaga bajo el 50 % de carga para mantener el equipo silencioso.','Fuente de 1200 W 80 PLUS Gold con ATX 3.1, 12V-2x6 de 600 W y modo silencioso.',6,3480.74,4699.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1200-gold-atx31/nzxt-c1200-gold-atx31-1.webp',NULL,7,'activo','NZXT','accesorio','1200 W Gold',0,1,10,97,58,NULL,'[\"nzxt\", \"c1200 gold\", \"fuente 1200w\", \"atx 3.1\", \"80 plus gold\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(158,'Fuente NZXT C850 Gold ATX 3.1 850 W','La C850 Gold es el punto medio de la serie C: 850 W Gold, ATX 3.1 y conector 12V-2x6 de 600 W para GPUs modernas. Ventilador de 135 mm que se detiene bajo el 50 % de carga y 10 años de garantía.','Fuente de 850 W 80 PLUS Gold con ATX 3.1 y conector 12V-2x6 de 600 W.',6,2591.85,3499.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-gold-atx31/nzxt-c850-gold-atx31-1.webp',NULL,11,'activo','NZXT','accesorio','850 W Gold',0,1,12,143,96,NULL,'[\"nzxt\", \"c850 gold\", \"fuente 850w\", \"atx 3.1\", \"80 plus gold\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(159,'Fuente NZXT C1000 Gold Core 1000 W','La C1000 Gold Core está certificada por Cybenetics con A+ en ruido, entre 15 y 20 dBA. Con 1000 W Gold admite GPUs con cable 12V-2x6 o hasta tres cables PCIe de 8 pines, y usa capacitores de 105 °C.','Fuente de 1000 W Gold con certificación de ruido Cybenetics A+ y capacitores de 105 °C.',6,2888.15,3899.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c1000-gold-core/nzxt-c1000-gold-core-1.webp',NULL,8,'activo','NZXT','accesorio','1000 W silenciosa',0,1,10,76,44,NULL,'[\"nzxt\", \"c1000 gold core\", \"fuente 1000w\", \"fuente silenciosa\", \"80 plus gold\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(161,'Fuente NZXT C850 SFX Gold 850 W','La C850 SFX Gold mete 850 W en formato SFX para gabinetes pequeños. Cumple ATX 3.1 y trae un conector 12V-2x6 de 600 W, así que no hay que renunciar a tarjetas gráficas grandes por armar en ITX.','Fuente SFX de 850 W con ATX 3.1 y conector 12V-2x6 de 600 W.',6,3332.59,4499.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c850-sfx-gold/nzxt-c850-sfx-gold-1.webp',NULL,6,'activo','NZXT','accesorio','SFX para ITX',0,1,10,58,31,NULL,'[\"nzxt\", \"c850 sfx\", \"fuente sfx\", \"fuente itx\", \"850w\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(162,'Cable Lian Li Strimer Plus V2 24 Pines RGB','El Strimer Plus V2 reemplaza el cable trenzado por silicona de alta gama, más delgado y flexible. Ilumina los 24 pines de la placa madre con RGB direccionable y se controla desde el software de la marca.','Extensión de alimentación de 24 pines con iluminación RGB direccionable y recubrimiento de silicona.',6,740.00,999.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-24-pin/lian-li-strimer-v2-24-pin-1.webp',NULL,14,'activo','Lian Li','accesorio','Extensión RGB 24 pines',0,1,10,168,112,NULL,'[\"lian li\", \"strimer\", \"cable rgb\", \"extension 24 pines\", \"argb\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(163,'Cable Lian Li Strimer Plus V2 8 Pines RGB','Extensión de 8 pines PCIe que ilumina la línea de alimentación de la tarjeta gráfica. Usa silicona flexible y RGB direccionable compatible con las controladoras habituales del gabinete.','Extensión de 8 pines para tarjeta gráfica con iluminación RGB direccionable.',6,591.85,799.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-8-pin/lian-li-strimer-v2-8-pin-1.webp',NULL,15,'activo','Lian Li','accesorio','Extensión RGB GPU',0,1,10,134,89,NULL,'[\"lian li\", \"strimer\", \"cable 8 pines\", \"cable rgb\", \"gpu\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(164,'Cable Lian Li Strimer Plus V2 Triple 8 Pines RGB','Extensión triple de 8 pines para tarjetas gráficas que piden tres conectores, como las RTX 3080 y 3090. El RGB direccionable recorre los tres cables y la silicona mantiene el conjunto flexible.','Extensión triple de 8 pines con RGB direccionable, compatible con RTX 3080 y 3090.',6,591.85,799.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/lian-li-strimer-v2-triple-8-pin/lian-li-strimer-v2-triple-8-pin-1.webp',NULL,12,'activo','Lian Li','accesorio','Triple 8 pines RGB',0,1,10,97,61,NULL,'[\"lian li\", \"strimer triple\", \"cable rgb\", \"triple 8 pines\", \"rtx\"]',NULL,'2026-11-11 19:03:32','2026-11-11 19:03:32'),
+(165,'Teclado Keychron K8 Ultra 8K TKL ZMK','El K8 Ultra 8K es un TKL con firmware ZMK de código abierto. Conecta por 2.4 GHz, Bluetooth o cable, sostiene 8000 Hz de sondeo y su batería de 4000 mAh llega a 760 horas.','Teclado TKL con firmware ZMK, conexión tri-modo, 8000 Hz y 760 horas de batería.',7,1999.26,2699.00,35.00,'imagenes/imagenes-accesorios/teclados/keychron-k8-ultra-8k/keychron-k8-ultra-8k-1.webp',NULL,10,'activo','Keychron','accesorio','TKL con ZMK',0,1,10,129,83,NULL,'[\"keychron\", \"k8 ultra\", \"teclado tkl\", \"zmk\", \"inalambrico\"]',NULL,'2026-11-11 19:05:29','2026-11-11 19:05:29'),
+(168,'Monitor Portátil Arzopa E1 Doble Pantalla 15.6\"','El E1 duplica el espacio de trabajo sin monitor externo: dos pantallas de 15.6 pulgadas Full HD en un cuerpo plegable que cabe en la mochila. Se conecta por USB-C o HDMI y sirve para laptop, consola o escritorio.','Monitor portátil plegable con dos pantallas de 15.6\" Full HD.',8,3184.44,4298.99,35.00,'imagenes/imagenes-accesorios/monitores/arzopa-e1-dual/arzopa-e1-dual-1.webp',NULL,8,'activo','Arzopa','accesorio','Doble pantalla portátil',0,1,12,116,67,NULL,'[\"arzopa\", \"e1\", \"monitor portatil\", \"doble pantalla\", \"usb c\"]',NULL,'2026-11-11 19:06:18','2026-11-11 19:06:18'),
+(169,'Monitor KOORUI GN02 27\" FHD 240 Hz','El GN02 apunta a quien quiere 27 pulgadas y alta tasa de refresco sin gastar de más. Su panel VA entrega Full HD a 240 Hz, con buen contraste para juego y series en un monitor de escritorio grande.','Monitor de 27\" con panel VA, Full HD y 240 Hz, la opción de entrada para jugar rápido.',8,2517.78,3399.00,35.00,'imagenes/imagenes-accesorios/monitores/koorui-gn02/koorui-gn02-1.webp',NULL,13,'activo','KOORUI','accesorio','27\" 240 Hz VA',0,1,12,126,79,NULL,'[\"koorui\", \"gn02\", \"monitor 27 pulgadas\", \"monitor 240hz\", \"va\"]',NULL,'2026-11-11 19:06:18','2026-11-11 19:06:18'),
+(170,'Fuente NZXT C750 Gold Core 750 W','La C750 Gold Core cumple ATX 3.1 y PCIe 5.1 con un conector 12V-2x6 de 300 W o hasta tres cables de 8 pines. Su eficiencia combina 80 PLUS Gold con Cybenetics Platinum, el ruido está certificado en A++ (menos de 15 dBA) y el ventilador de 135 mm se detiene en cargas ligeras.','Fuente modular de 750 W con 80 PLUS Gold, Cybenetics Platinum y ATX 3.1.',6,2221.48,2999.00,35.00,'imagenes/imagenes-accesorios/energia-y-cables/nzxt-c750-gold-core/nzxt-c750-gold-core-1.webp',NULL,10,'activo','NZXT','accesorio','750 W Platinum Cybenetics',0,1,12,88,54,NULL,'[\"nzxt\", \"c750 gold core\", \"fuente 750w\", \"atx 3.1\", \"fuente modular\"]',NULL,'2026-11-11 19:06:50','2026-11-11 19:06:50');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `solicitudes`
@@ -397,12 +3541,10 @@ CREATE TABLE `solicitudes` (
 -- Dumping data for table `solicitudes`
 --
 
-LOCK TABLES `solicitudes` WRITE;
 /*!40000 ALTER TABLE `solicitudes` DISABLE KEYS */;
 INSERT INTO `solicitudes` VALUES
 (1,2,3,'ASUS Zenbook 14 OLED','{\"diff\":{\"costoBase\":{\"antes\":23500,\"despues\":24000}}}','cambio con imagenes ajenas','rechazada','2026-11-04 18:24:22','Administrador','2026-11-04 18:25:08');
 /*!40000 ALTER TABLE `solicitudes` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `usuarios`
@@ -431,14 +3573,12 @@ CREATE TABLE `usuarios` (
 -- Dumping data for table `usuarios`
 --
 
-LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` VALUES
 (1,'Administrador','admin@computlalte.com','$2y$10$kLFvpji2WNJu4L8OYC1jNON94paROdOpRLKWSwxSukzod.ZG5lXk6','admin','Av. Tecnología 123, Col. Centro, CDMX','55 1234 5678',NULL,NULL,'2026-11-04 18:09:39'),
 (2,'Gerente','gerente@computlalte.com','$2y$10$3W6IZb3nw3pN1zGWZl1FBeNFqq0rObKwoIXV7lEYFyWOOWvQ7BrdS','gerente','Av. Tecnología 123, Col. Centro, CDMX','55 8765 4321',NULL,NULL,'2026-11-04 18:09:40'),
 (3,'Cliente','cliente@computlalte.com','$2y$10$M6lDaOcEqPvuz3lI3VmMZ.3N6Jq3jlrycQs98d8QlhcuOMZ60lDTO','cliente','Calle Jacarandas 45, CDMX','55 5555 1111','','tarjeta','2026-11-04 18:09:40');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `ventas`
@@ -470,1203 +3610,14 @@ CREATE TABLE `ventas` (
 -- Dumping data for table `ventas`
 --
 
-LOCK TABLES `ventas` WRITE;
 /*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
 INSERT INTO `ventas` VALUES
 (1,'CTL-20261105-30A0',3,'2026-11-04 18:09:40',48388.00,'tarjeta','','','',NULL,'pagado');
 /*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
-UNLOCK TABLES;
 
--- Catalogo completo de computadoras importadas (IDs 5-44), exportado desde MySQL.
-INSERT INTO `productos` VALUES (5,'Laptop Aspire Lite 16 15.6 Fhd Amd Ryzen 5 40 16gb 512gb Plateado','Laptop Aspire Lite 16 15.6 Fhd Amd Ryzen 5 40 16gb 512gb Plateado es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,9268.17,12512.03,NULL,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-01.png',NULL,8,'activo','ACER','computadora','',0,0,0,2,0,'2026-11-10','[\"laptop\",\"aspire\",\"lite\",\"fhd\",\"amd\",\"ryzen\",\"16gb\",\"512gb\",\"plateado\",\"acer\",\"desarrollo\"]','[{\"grupo\": \"equipo-5-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-5-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-5-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 5935}]}, {\"grupo\": \"equipo-5-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-5-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-5-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 3965}]}, {\"grupo\": \"equipo-5-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-5-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-5-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 2855}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (6,'Laptop Gamer 15.6\" Acemagic AMD Ryzen 5 7430U 16GB Ram 512GB SSD Win11 Pro Laptops','Laptop Gamer 15.6\" Acemagic AMD Ryzen 5 7430U 16GB Ram 512GB SSD Win11 Pro Laptops es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon RX Vega 7, 16 GB de memoria RAM, Almacenamiento 512 GB, Pantalla 15.6 pulgadas. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon RX Vega 7, 16 GB de memoria RAM, Almacenamiento 512 GB',2,7532.00,10168.20,NULL,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-01.png',NULL,8,'activo','ACEMAGIC','computadora','',0,0,0,10,0,'2026-11-10','[\"laptop\",\"gamer\",\"acemagic\",\"amd\",\"ryzen\",\"7430u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"win11\",\"pro\",\"laptops\",\"desarrollo\"]','[{\"grupo\": \"equipo-6-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-6-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-6-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 6882}]}, {\"grupo\": \"equipo-6-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-6-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-6-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 4578}]}, {\"grupo\": \"equipo-6-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-6-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-6-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 3286}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (7,'Laptop Hp Probook 445 G7 Ryzen 5 Económica 8gb Ram 256gb Ssd (Reacondicionado)','Laptop Hp Probook 445 G7 Ryzen 5 Económica 8gb Ram 256gb Ssd (Reacondicionado) es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 4500U, 8 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920x1080 Full HD, Windows 11 Pro. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 4500U, 8 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920x1080 Full HD',2,3951.91,5335.08,NULL,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-01.png',NULL,8,'activo','HP','computadora','',0,0,0,0,0,'2026-11-10','[\"laptop\",\"probook\",\"445\",\"ryzen\",\"económica\",\"8gb\",\"ram\",\"256gb\",\"ssd\",\"reacondicionado\",\"desarrollo\"]','[{\"grupo\": \"equipo-7-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-7-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-7-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 7829}]}, {\"grupo\": \"equipo-7-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-7-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-7-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 5191}]}, {\"grupo\": \"equipo-7-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-7-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-7-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 3717}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (8,'Laptop Dell 15 Dc15255 15.6 Ryzen 5 8gb, 512gb Full Hd Ssd Plateado','Laptop Dell 15 Dc15255 15.6 Ryzen 5 8gb, 512gb Full Hd Ssd Plateado es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7520U, 8 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home, Color Plateado. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7520U, 8 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home',2,7406.67,9999.00,NULL,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-01.png',NULL,8,'activo','DELL','computadora','',0,0,0,15,0,'2026-11-10','[\"laptop\",\"dell\",\"dc15255\",\"ryzen\",\"8gb\",\"512gb\",\"full\",\"ssd\",\"plateado\",\"desarrollo\"]','[{\"grupo\": \"equipo-8-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-8-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-8-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 8776}]}, {\"grupo\": \"equipo-8-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-8-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-8-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 5804}]}, {\"grupo\": \"equipo-8-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-8-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-8-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 4148}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (9,'Laptop Lenovo Thinkpad X13g1 Amd Ryzen 5 4650 32gb 256gb Ssd (Reacondicionado)','Laptop Lenovo Thinkpad X13g1 Amd Ryzen 5 4650 32gb 256gb Ssd (Reacondicionado) es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 4650, 32 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920px x1080px, Windows 11 Pro. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 4650, 32 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920px x1080px',2,5628.89,7599.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-01.png',NULL,1,'activo','LENOVO','computadora','',0,0,0,20,0,'2026-11-10','[\"laptop\",\"lenovo\",\"thinkpad\",\"x13g1\",\"amd\",\"ryzen\",\"4650\",\"32gb\",\"256gb\",\"ssd\",\"reacondicionado\",\"desarrollo\"]','[{\"grupo\": \"equipo-9-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-9-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-9-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 9723}]}, {\"grupo\": \"equipo-9-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-9-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-9-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 6417}]}, {\"grupo\": \"equipo-9-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-9-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-9-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 4579}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (10,'Laptop Gaming 15.6 Loq15arp10 Amd Ryzen 7 16gb 512gb Lenovo','Laptop Gaming 15.6 Loq15arp10 Amd Ryzen 7 16gb 512gb Lenovo es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 7735HS, Gráfica RTX 4050, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 7735HS, Gráfica RTX 4050, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,17663.56,23845.81,NULL,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,20,0,'2026-11-10','[\"laptop\",\"gaming\",\"loq15arp10\",\"amd\",\"ryzen\",\"16gb\",\"512gb\",\"lenovo\",\"desarrollo\"]','[{\"grupo\": \"equipo-10-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-10-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-10-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 10670}]}, {\"grupo\": \"equipo-10-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-10-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-10-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 7030}]}, {\"grupo\": \"equipo-10-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-10-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-10-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 5010}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (11,'Laptop 15.6\'\' Games Amd Ryzen 5 7430u 16(8+8)gb 512gb Win11 Gris','Laptop 15.6\'\' Games Amd Ryzen 5 7430u 16(8+8)gb 512gb Win11 Gris es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430u, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430u, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,7694.81,10388.00,NULL,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,31,0,'2026-11-10','[\"laptop\",\"games\",\"amd\",\"ryzen\",\"7430u\",\"512gb\",\"win11\",\"gris\",\"computlalte\",\"desarrollo\"]','[{\"grupo\": \"equipo-11-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-11-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-11-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 11617}]}, {\"grupo\": \"equipo-11-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-11-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-11-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 7643}]}, {\"grupo\": \"equipo-11-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-11-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-11-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 5441}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (12,'Notebook Acer Aspire A325-42 Ryzen 7 7730u 16gb Ram 512gb Ssd Pantalla 15.6 Full Hd Windows 11 Home Color Plateado','Notebook Acer Aspire A325-42 Ryzen 7 7730u 16gb Ram 512gb Ssd Pantalla 15.6 Full Hd Windows 11 Home Color Plateado es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 7730u, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px, Windows 11 Home. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 7730u, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px',2,9628.89,12999.00,NULL,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-01.png',NULL,8,'activo','ACER','computadora','',0,0,0,1386,0,'2026-11-10','[\"notebook\",\"acer\",\"aspire\",\"a325\",\"ryzen\",\"7730u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"pantalla\",\"full\",\"windows\",\"home\",\"color\",\"plateado\",\"desarrollo\"]','[{\"grupo\": \"equipo-12-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-12-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-12-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 12564}]}, {\"grupo\": \"equipo-12-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-12-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-12-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 8256}]}, {\"grupo\": \"equipo-12-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-12-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-12-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 5872}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (13,'Laptop Games 15.6\'\' Amd Ryzen 7 7730u 16gb Ram 512gb Ssd Fhd Windows 11 Pro','Laptop Games 15.6\'\' Amd Ryzen 7 7730u 16gb Ram 512gb Ssd Fhd Windows 11 Pro es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 7730U, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 7730U, Gráfica AMD Radeon Graphics, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,8657.78,11688.00,NULL,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,150,0,'2026-11-10','[\"laptop\",\"games\",\"amd\",\"ryzen\",\"7730u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"fhd\",\"windows\",\"pro\",\"computlalte\",\"desarrollo\"]','[{\"grupo\": \"equipo-13-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-13-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-13-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 13511}]}, {\"grupo\": \"equipo-13-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-13-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-13-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 8869}]}, {\"grupo\": \"equipo-13-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-13-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-13-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 6303}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (14,'Laptop Gamer 15.6\" Acemagic AMD Ryzen 5 7430U 16GB Ram 512GB SSD Win11 Pro Laptops','Laptop Gamer 15.6\" Acemagic AMD Ryzen 5 7430U 16GB Ram 512GB SSD Win11 Pro Laptops es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon RX Vega 7, 16 GB de memoria RAM, Almacenamiento 512 GB, Pantalla 15.6 pulgadas. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon RX Vega 7, 16 GB de memoria RAM, Almacenamiento 512 GB',2,7532.00,10168.20,NULL,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-01.png',NULL,8,'activo','ACEMAGIC','computadora','',0,0,0,10,0,'2026-11-10','[\"laptop\",\"gamer\",\"acemagic\",\"amd\",\"ryzen\",\"7430u\",\"16gb\",\"ram\",\"512gb\",\"ssd\",\"win11\",\"pro\",\"laptops\",\"desarrollo\"]','[{\"grupo\": \"equipo-14-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-14-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-14-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 1658}]}, {\"grupo\": \"equipo-14-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-14-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-14-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 9482}]}, {\"grupo\": \"equipo-14-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-14-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-14-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 6734}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (15,'Notebook Acer Gadget Erbook Ryzen 5 8gb 512gb Gris Fhd','Notebook Acer Gadget Erbook Ryzen 5 8gb 512gb Gris Fhd es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon Graphics, 8 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 5 7430U, Gráfica AMD Radeon Graphics, 8 GB de memoria RAM, Almacenamiento 512 GB SSD',2,7057.04,9527.01,NULL,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-01.png',NULL,8,'activo','ACER','computadora','',0,0,0,13,0,'2026-11-10','[\"notebook\",\"acer\",\"gadget\",\"erbook\",\"ryzen\",\"8gb\",\"512gb\",\"gris\",\"fhd\",\"desarrollo\"]','[{\"grupo\": \"equipo-15-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-15-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-15-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 2605}]}, {\"grupo\": \"equipo-15-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-15-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-15-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 10095}]}, {\"grupo\": \"equipo-15-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-15-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-15-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 7165}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (16,'Laptop Gamer LOQ 32gb Ram 512gb Ssd Rtx 5050 Gris Lenovo','Laptop Gamer LOQ 32gb Ram 512gb Ssd Rtx 5050 Gris Lenovo es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 13450Hx, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 13450Hx, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 512 GB SSD',2,22188.53,29954.52,NULL,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,40,0,'2026-11-10','[\"laptop\",\"gamer\",\"loq\",\"32gb\",\"ram\",\"512gb\",\"ssd\",\"rtx\",\"5050\",\"gris\",\"lenovo\",\"desarrollo\"]','[{\"grupo\": \"equipo-16-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-16-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-16-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 3552}]}, {\"grupo\": \"equipo-16-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-16-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-16-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 908}]}, {\"grupo\": \"equipo-16-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-16-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-16-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 7596}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (17,'Laptop Lenovo Ideapad Slim3 Core Ultra7 Serie 3 24gb 1tb Ssd Gris','Laptop Lenovo Ideapad Slim3 Core Ultra7 Serie 3 24gb 1tb Ssd Gris es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core Ultra 7, Gráfica Integrados Intel UHD, 24 GB de memoria RAM, Almacenamiento 1 TB SSD, Pantalla 1920 px x 1200 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core Ultra 7, Gráfica Integrados Intel UHD, 24 GB de memoria RAM, Almacenamiento 1 TB SSD',2,17237.40,23270.49,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,8,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"slim3\",\"core\",\"ultra7\",\"serie\",\"24gb\",\"1tb\",\"ssd\",\"gris\",\"desarrollo\"]','[{\"grupo\": \"equipo-17-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-17-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-17-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 4499}]}, {\"grupo\": \"equipo-17-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-17-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-17-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 1521}]}, {\"grupo\": \"equipo-17-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-17-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-17-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 8027}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (18,'Laptop Lenovo Ideapad Slim 3 Intel Core 3 Gen 11 8gb 512gb','Laptop Lenovo Ideapad Slim 3 Intel Core 3 Gen 11 8gb 512gb es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core 3 Series 304, 8 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920x1200, Windows 11 Home. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core 3 Series 304, 8 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920x1200',2,11110.37,14999.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,0,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"slim\",\"intel\",\"core\",\"gen\",\"8gb\",\"512gb\",\"desarrollo\"]','[{\"grupo\": \"equipo-18-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-18-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-18-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 5446}]}, {\"grupo\": \"equipo-18-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-18-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-18-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 2134}]}, {\"grupo\": \"equipo-18-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-18-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-18-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 858}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (19,'Laptop Lenovo Thinkpad T14 I5 16gb 256gb Win11 Pro','Laptop Lenovo Thinkpad T14 I5 16gb 256gb Win11 Pro es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5, 16 GB de memoria RAM, Almacenamiento 256 GB SSD. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5, 16 GB de memoria RAM, Almacenamiento 256 GB SSD',2,4796.96,6475.90,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,36,0,'2026-11-10','[\"laptop\",\"lenovo\",\"thinkpad\",\"t14\",\"16gb\",\"256gb\",\"win11\",\"pro\",\"desarrollo\"]','[{\"grupo\": \"equipo-19-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-19-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-19-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 6393}]}, {\"grupo\": \"equipo-19-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-19-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-19-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 2747}]}, {\"grupo\": \"equipo-19-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-19-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-19-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 1289}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (20,'Lenovo ThinkPad T14 Gen 3 Pantalla táctil portátil Intel Core i5-1245U Iris Xe Gráficos 16GB RAM 256GB SSD Windows 11 Pro Notabook PC para juegos, Estudios y Negocios','Lenovo ThinkPad T14 Gen 3 Pantalla táctil portátil Intel Core i5-1245U Iris Xe Gráficos 16GB RAM 256GB SSD Windows 11 Pro Notabook PC para juegos, Estudios y Negocios es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 1245U, Gráfica Intel Iris Xe Graphics, 16 GB de memoria RAM, Almacenamiento 256 GB SSD, Pantalla 1920 px x 1200 px táctil. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 1245U, Gráfica Intel Iris Xe Graphics, 16 GB de memoria RAM, Almacenamiento 256 GB SSD',2,6375.33,8606.70,NULL,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,0,0,'2026-11-10','[\"lenovo\",\"thinkpad\",\"t14\",\"gen\",\"pantalla\",\"táctil\",\"portátil\",\"intel\",\"core\",\"1245u\",\"iris\",\"gráficos\",\"16gb\",\"ram\",\"256gb\",\"ssd\",\"windows\",\"pro\",\"notabook\",\"para\",\"juegos\",\"estudios\",\"negocios\",\"desarrollo\"]','[{\"grupo\": \"equipo-20-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-20-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-20-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 7340}]}, {\"grupo\": \"equipo-20-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-20-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-20-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 3360}]}, {\"grupo\": \"equipo-20-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-20-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-20-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 1720}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (21,'Laptop Acemagic 15.6\'\' Intel I5 12600h 24gb Ram 512gb Ssd','Laptop Acemagic 15.6\'\' Intel I5 12600h 24gb Ram 512gb Ssd es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 12600h, 24 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 15.6 pulgadas. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 12600h, 24 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 15.6 pulgadas',2,8628.53,11648.52,NULL,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-01.png',NULL,5,'activo','ACEMAGIC','computadora','',0,0,0,26,0,'2026-11-10','[\"laptop\",\"acemagic\",\"intel\",\"12600h\",\"24gb\",\"ram\",\"512gb\",\"ssd\",\"desarrollo\"]','[{\"grupo\": \"equipo-21-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-21-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-21-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 8287}]}, {\"grupo\": \"equipo-21-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-21-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-21-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 3973}]}, {\"grupo\": \"equipo-21-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-21-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-21-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 2151}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (22,'Laptop Lenovo Ideapad 15,3 Snapdragon X 24gb + 512gb Con IA','Laptop Lenovo Ideapad 15,3 Snapdragon X 24gb + 512gb Con IA es un equipo de la categoría Desarrollo. Incluye Procesador Qualcomm Snapdragon X X1-26-100, Gráfica Qualcomm Adreno, 24 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1200 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Qualcomm Snapdragon X X1-26-100, Gráfica Qualcomm Adreno, 24 GB de memoria RAM, Almacenamiento 512 GB SSD',2,14814.07,19999.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,92,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"snapdragon\",\"24gb\",\"512gb\",\"con\",\"desarrollo\"]','[{\"grupo\": \"equipo-22-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-22-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-22-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 9234}]}, {\"grupo\": \"equipo-22-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-22-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-22-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 4586}]}, {\"grupo\": \"equipo-22-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-22-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-22-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 2582}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (23,'Laptop Lenovo Ideapad Slim 3 Touch Ryzen 7 16gb 512gb Ssd','Laptop Lenovo Ideapad Slim 3 Touch Ryzen 7 16gb 512gb Ssd es un equipo de la categoría Desarrollo. Incluye Procesador AMD Ryzen 7 8840HS, Gráfica Radeon 780M, 16 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920x1200. Ideal para desarrollo, estudio y trabajo diario.','Procesador AMD Ryzen 7 8840HS, Gráfica Radeon 780M, 16 GB de memoria RAM, Almacenamiento 512 GB SSD',2,12962.22,17499.00,NULL,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,10,0,'2026-11-10','[\"laptop\",\"lenovo\",\"ideapad\",\"slim\",\"touch\",\"ryzen\",\"16gb\",\"512gb\",\"ssd\",\"desarrollo\"]','[{\"grupo\": \"equipo-23-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-23-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-23-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 10181}]}, {\"grupo\": \"equipo-23-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-23-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-23-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 5199}]}, {\"grupo\": \"equipo-23-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-23-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-23-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 3013}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (24,'Laptop Gamer LOQ 32gb Ram 512gb Ssd Rtx 5050 Gris Lenovo','Laptop Gamer LOQ 32gb Ram 512gb Ssd Rtx 5050 Gris Lenovo es un equipo de la categoría Desarrollo. Incluye Procesador Intel Core i5 13450Hx, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 512 GB SSD, Pantalla 1920 px x 1080 px. Ideal para desarrollo, estudio y trabajo diario.','Procesador Intel Core i5 13450Hx, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 512 GB SSD',2,22188.53,29954.52,NULL,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2-01.png',NULL,8,'activo','LENOVO','computadora','',0,0,0,40,0,'2026-11-10','[\"laptop\",\"gamer\",\"loq\",\"32gb\",\"ram\",\"512gb\",\"ssd\",\"rtx\",\"5050\",\"gris\",\"lenovo\",\"desarrollo\"]','[{\"grupo\": \"equipo-24-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-24-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-24-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 11128}]}, {\"grupo\": \"equipo-24-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-24-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-24-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 5812}]}, {\"grupo\": \"equipo-24-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-24-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-24-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 3444}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (25,'Pc Gamer Rtx 4070 Super Ryzen 9 Torre Cooler 32gb 1tb Ir02','Pc Gamer Rtx 4070 Super Ryzen 9 Torre Cooler 32gb 1tb Ir02 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 9 5900X, Gráfica RTX 5070 12GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 9 5900X, Gráfica RTX 5070 12GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD',1,35480.74,47899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"rtx\",\"4070\",\"super\",\"ryzen\",\"torre\",\"cooler\",\"32gb\",\"1tb\",\"ir02\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-25-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-25-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-25-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 12075}]}, {\"grupo\": \"equipo-25-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-25-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-25-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 6425}]}, {\"grupo\": \"equipo-25-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-25-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-25-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 3875}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (26,'Pc Gamer Rgb Amd Ryzen 9700x 32gb Ddr5 1tb Ssd Rtx 5060 Msi','Pc Gamer Rgb Amd Ryzen 9700x 32gb Ddr5 1tb Ssd Rtx 5060 Msi es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 9700X, Gráfica GeForce RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 9700X, Gráfica GeForce RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB',1,28988.64,39134.67,NULL,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-01.png',NULL,8,'activo','MSI','computadora','',0,0,0,5,0,'2026-11-10','[\"gamer\",\"rgb\",\"amd\",\"ryzen\",\"9700x\",\"32gb\",\"ddr5\",\"1tb\",\"ssd\",\"rtx\",\"5060\",\"msi\",\"juegos\"]','[{\"grupo\": \"equipo-26-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-26-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-26-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 13022}]}, {\"grupo\": \"equipo-26-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-26-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-26-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 7038}]}, {\"grupo\": \"equipo-26-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-26-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-26-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 4306}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (27,'Pc Gamer Rtx 5060 Ryzen 9 5900x Ram 32gb 1tb Tcu Liquido 360','Pc Gamer Rtx 5060 Ryzen 9 5900x Ram 32gb 1tb Tcu Liquido 360 es un equipo de la categoría Juegos. Incluye Procesador Ryzen 9 5900x, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Ryzen 9 5900x, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB',1,28443.70,38399.00,NULL,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"rtx\",\"5060\",\"ryzen\",\"5900x\",\"ram\",\"32gb\",\"1tb\",\"tcu\",\"liquido\",\"360\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-27-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-27-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-27-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 13969}]}, {\"grupo\": \"equipo-27-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-27-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-27-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 7651}]}, {\"grupo\": \"equipo-27-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-27-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-27-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 4737}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (28,'Pc Powerbit Vortex: R7, 16gb, M.2 512gb, Rx7600, Wi-fi','Pc Powerbit Vortex: R7, 16gb, M.2 512gb, Rx7600, Wi-fi es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700X, Gráfica AMD Radeon RX 7600, 16 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home (Versión de Prueba). Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700X, Gráfica AMD Radeon RX 7600, 16 GB de memoria RAM, Almacenamiento 512 GB',1,11851.11,15999.00,NULL,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-01.png',NULL,8,'activo','POWERBIT','computadora','',0,0,0,0,0,'2026-11-10','[\"powerbit\",\"vortex\",\"16gb\",\"512gb\",\"rx7600\",\"juegos\"]','[{\"grupo\": \"equipo-28-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-28-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-28-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 2116}]}, {\"grupo\": \"equipo-28-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-28-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-28-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 8264}]}, {\"grupo\": \"equipo-28-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-28-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-28-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 5168}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (29,'Pc Gamer Powerbit Phantom: R7, 16gb, M.2 512gb, Rtx 5050','Pc Gamer Powerbit Phantom: R7, 16gb, M.2 512gb, Rtx 5050 es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700X, Gráfica NVIDIA GeForce RTX 5050, 16 GB de memoria RAM, Almacenamiento 512 GB, Windows 11 Home (Versión de Prueba). Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700X, Gráfica NVIDIA GeForce RTX 5050, 16 GB de memoria RAM, Almacenamiento 512 GB',1,13110.37,17699.00,NULL,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-01.png',NULL,8,'activo','POWERBIT','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"powerbit\",\"phantom\",\"16gb\",\"512gb\",\"rtx\",\"5050\",\"juegos\"]','[{\"grupo\": \"equipo-29-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-29-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-29-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 3063}]}, {\"grupo\": \"equipo-29-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-29-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-29-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 8877}]}, {\"grupo\": \"equipo-29-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-29-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-29-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 5599}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (30,'PC Gamer Xtreme PC Gaming ASUS TUF NVIDIA GeForce RTX 5060 AMD Ryzen 5 5500 16GB SSD 1TB WIFI White gaming 1080p, estudios y multitarea','PC Gamer Xtreme PC Gaming ASUS TUF NVIDIA GeForce RTX 5060 AMD Ryzen 5 5500 16GB SSD 1TB WIFI White gaming 1080p, estudios y multitarea es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 5 5500, Gráfica RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 5 5500, Gráfica RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD',1,16962.22,22899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-01.png',NULL,1,'activo','ASUS','computadora','',0,0,0,3,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"asus\",\"tuf\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"amd\",\"ryzen\",\"5500\",\"16gb\",\"ssd\",\"1tb\",\"wifi\",\"white\",\"1080p\",\"estudios\",\"multitarea\",\"juegos\"]','[{\"grupo\": \"equipo-30-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-30-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-30-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 4010}]}, {\"grupo\": \"equipo-30-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-30-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-30-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 9490}]}, {\"grupo\": \"equipo-30-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-30-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-30-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 6030}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (31,'PC Gamer Xtreme PC Gaming NVIDIA GeForce RTX 5060 Intel Core i5 12400F 16GB SSD 1TB WIFI White gaming 1080p, estudios y multitarea','PC Gamer Xtreme PC Gaming NVIDIA GeForce RTX 5060 Intel Core i5 12400F 16GB SSD 1TB WIFI White gaming 1080p, estudios y multitarea es un equipo de la categoría Juegos. Incluye Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB',1,17184.44,23199.00,NULL,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-01.png',NULL,1,'activo','COMPUTLALTE','computadora','',0,0,0,23,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"intel\",\"core\",\"12400f\",\"16gb\",\"ssd\",\"1tb\",\"wifi\",\"white\",\"1080p\",\"estudios\",\"multitarea\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-31-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-31-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-31-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 4957}]}, {\"grupo\": \"equipo-31-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-31-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-31-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 10103}]}, {\"grupo\": \"equipo-31-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-31-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-31-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 6461}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (32,'PC Gamer Xtreme PC Gaming ASUS TUF NVIDIA GeForce RTX 5060 Intel Core i5 12400F 16GB SSD 1TB WIFI Black gaming 1080p, estudios y multitarea','PC Gamer Xtreme PC Gaming ASUS TUF NVIDIA GeForce RTX 5060 Intel Core i5 12400F 16GB SSD 1TB WIFI Black gaming 1080p, estudios y multitarea es un equipo de la categoría Juegos. Incluye Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i5 12400F, Gráfica NVIDIA GeForce RTX 5060, 16 GB de memoria RAM, Almacenamiento 1 TB SSD',1,18369.63,24799.00,NULL,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-01.png',NULL,2,'activo','ASUS','computadora','',0,0,0,11,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"asus\",\"tuf\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"intel\",\"core\",\"12400f\",\"16gb\",\"ssd\",\"1tb\",\"wifi\",\"black\",\"1080p\",\"estudios\",\"multitarea\",\"juegos\"]','[{\"grupo\": \"equipo-32-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-32-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-32-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 5904}]}, {\"grupo\": \"equipo-32-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-32-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-32-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 916}]}, {\"grupo\": \"equipo-32-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-32-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-32-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 6892}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (33,'PC Gamer IA Entry Xtreme PC Gaming ASUS NVIDIA GeForce RTX 5060 Ti Intel Core Ultra 7 16GB DDR5 SSD 1TB WIFI White PBA Productividad Versátil Acelerada con IA','PC Gamer IA Entry Xtreme PC Gaming ASUS NVIDIA GeForce RTX 5060 Ti Intel Core Ultra 7 16GB DDR5 SSD 1TB WIFI White PBA Productividad Versátil Acelerada con IA es un equipo de la categoría Juegos. Incluye Procesador Intel Core Ultra 7, Gráfica RTX 5060 Ti, 16 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core Ultra 7, Gráfica RTX 5060 Ti, 16 GB de memoria RAM, Almacenamiento 1 TB SSD',1,25110.37,33899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-01.png',NULL,1,'activo','ASUS','computadora','',0,0,0,6,0,'2026-11-10','[\"gamer\",\"entry\",\"xtreme\",\"gaming\",\"asus\",\"nvidia\",\"geforce\",\"rtx\",\"5060\",\"intel\",\"core\",\"ultra\",\"16gb\",\"ddr5\",\"ssd\",\"1tb\",\"wifi\",\"white\",\"pba\",\"productividad\",\"versátil\",\"acelerada\",\"con\",\"juegos\"]','[{\"grupo\": \"equipo-33-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-33-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-33-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 6851}]}, {\"grupo\": \"equipo-33-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-33-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-33-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 1529}]}, {\"grupo\": \"equipo-33-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-33-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-33-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 7323}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (34,'Pc Gamer Blanca Enfriamiento Líquido Corei7 Rtx 4060 Ti 64gb','Pc Gamer Blanca Enfriamiento Líquido Corei7 Rtx 4060 Ti 64gb es un equipo de la categoría Juegos. Incluye Procesador Intel Core i7, Gráfica NVIDIA GeForce RTX 4060 Ti ó RTX 5060, 64 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i7, Gráfica NVIDIA GeForce RTX 4060 Ti ó RTX 5060, 64 GB de memoria RAM, Almacenamiento 1 TB',1,34725.93,46880.00,NULL,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"blanca\",\"enfriamiento\",\"líquido\",\"corei7\",\"rtx\",\"4060\",\"64gb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-34-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-34-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-34-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 7798}]}, {\"grupo\": \"equipo-34-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-34-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-34-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 2142}]}, {\"grupo\": \"equipo-34-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-34-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-34-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 7754}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (35,'Pc Gamer Blanca 12 Gb Vram Intel I9 Rtx 5070 32gb Ddr5 Ssd','Pc Gamer Blanca 12 Gb Vram Intel I9 Rtx 5070 32gb Ddr5 Ssd es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 14900KF, Gráfica NVIDIA GeForce RTX 5070, 32 GB de memoria RAM, Almacenamiento 1 TB, Windows 10 Pro. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 14900KF, Gráfica NVIDIA GeForce RTX 5070, 32 GB de memoria RAM, Almacenamiento 1 TB',1,47022.22,63480.00,NULL,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"blanca\",\"vram\",\"intel\",\"rtx\",\"5070\",\"32gb\",\"ddr5\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-35-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-35-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-35-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 8745}]}, {\"grupo\": \"equipo-35-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-35-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-35-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 2755}]}, {\"grupo\": \"equipo-35-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-35-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-35-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 8185}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (36,'Pc Gamer Grizzly Intel I9 12900f Rtx5070 Ram 32 Gb Ssd 2 Tb','Pc Gamer Grizzly Intel I9 12900f Rtx5070 Ram 32 Gb Ssd 2 Tb es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 12900F, Gráfica Nvidia RTX 5070, 32 GB de memoria RAM, Almacenamiento 2 TB, Windows 11 Pro. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 12900F, Gráfica Nvidia RTX 5070, 32 GB de memoria RAM, Almacenamiento 2 TB',1,40665.93,54899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"grizzly\",\"intel\",\"12900f\",\"rtx5070\",\"ram\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-36-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-36-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-36-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 9692}]}, {\"grupo\": \"equipo-36-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-36-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-36-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 3368}]}, {\"grupo\": \"equipo-36-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-36-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-36-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 1016}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (37,'Pc Gamer Grizzly Amd Ryzen 9 Rtx5060 Ram 32 Gb Ssd 2tb','Pc Gamer Grizzly Amd Ryzen 9 Rtx5060 Ram 32 Gb Ssd 2tb es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 9 5900XT, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 2 TB. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 9 5900XT, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 2 TB',1,30517.78,41199.00,NULL,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-01.png',NULL,3,'activo','COMPUTLALTE','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"grizzly\",\"amd\",\"ryzen\",\"rtx5060\",\"ram\",\"ssd\",\"2tb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-37-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-37-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-37-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 10639}]}, {\"grupo\": \"equipo-37-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-37-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-37-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 3981}]}, {\"grupo\": \"equipo-37-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-37-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-37-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 1447}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (38,'Pc Gamer Blanca Ryzen 7 5700 Enf Líquido Rtx 4060/5050 32gb','Pc Gamer Blanca Ryzen 7 5700 Enf Líquido Rtx 4060/5050 32gb es un equipo de la categoría Juegos. Incluye Procesador Ryzen 7 5700, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador Ryzen 7 5700, Gráfica RTX 5050, 32 GB de memoria RAM, Almacenamiento 1 TB',1,20725.93,27980.00,NULL,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"blanca\",\"ryzen\",\"5700\",\"enf\",\"líquido\",\"rtx\",\"4060\",\"5050\",\"32gb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-38-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-38-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-38-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 11586}]}, {\"grupo\": \"equipo-38-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-38-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-38-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 4594}]}, {\"grupo\": \"equipo-38-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-38-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-38-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 1878}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (39,'Pc Gaming Amd Ryzen 7 Rx 9060 Xt 16gb 1tb Ssd 80+','Pc Gaming Amd Ryzen 7 Rx 9060 Xt 16gb 1tb Ssd 80+ es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700, Gráfica Radeon Rx 9060 Xt, 16 GB de memoria RAM, Almacenamiento 1 TB, Windows 11 Pro. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700, Gráfica Radeon Rx 9060 Xt, 16 GB de memoria RAM, Almacenamiento 1 TB',1,15347.30,20718.86,NULL,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gaming\",\"amd\",\"ryzen\",\"9060\",\"16gb\",\"1tb\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-39-rendimiento\", \"grupoEtiqueta\": \"Modo de juego\", \"opciones\": [{\"valor\": \"base-39-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-39-rendimiento\", \"etiqueta\": \"Modo competitivo\", \"extra\": 12533}]}, {\"grupo\": \"equipo-39-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-39-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-39-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 5207}]}, {\"grupo\": \"equipo-39-experiencia\", \"grupoEtiqueta\": \"Conectividad avanzada\", \"opciones\": [{\"valor\": \"base-39-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-39-experiencia\", \"etiqueta\": \"Dock Thunderbolt de expansión\", \"extra\": 2309}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (40,'Pc Amd Gaming Ryzen 5 Ddr5 Rx 9060 Xt 16gb 1tb 650w Gold','Pc Amd Gaming Ryzen 5 Ddr5 Rx 9060 Xt 16gb 1tb 650w Gold es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 5 8400F, Gráfica AMD RX 9060 XT 16GB, 16 GB de memoria RAM, Almacenamiento 1 TB, Windows 11 Pro. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 5 8400F, Gráfica AMD RX 9060 XT 16GB, 16 GB de memoria RAM, Almacenamiento 1 TB',1,23826.67,32166.00,NULL,'imagenes/computadoras-gaming/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"amd\",\"gaming\",\"ryzen\",\"ddr5\",\"9060\",\"16gb\",\"1tb\",\"650w\",\"gold\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-40-rendimiento\", \"grupoEtiqueta\": \"Cómputo avanzado\", \"opciones\": [{\"valor\": \"base-40-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-40-rendimiento\", \"etiqueta\": \"Render sin límites\", \"extra\": 13480}]}, {\"grupo\": \"equipo-40-memoria\", \"grupoEtiqueta\": \"Memoria de trabajo\", \"opciones\": [{\"valor\": \"base-40-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-40-memoria\", \"etiqueta\": \"Kit RAM de gran capacidad\", \"extra\": 5820}]}, {\"grupo\": \"equipo-40-experiencia\", \"grupoEtiqueta\": \"Estación de trabajo\", \"opciones\": [{\"valor\": \"base-40-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-40-experiencia\", \"etiqueta\": \"Kit de captura y streaming\", \"extra\": 2740}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (41,'Pc Gamer Ryzen 7 5700x Rtx 5060 Ram 32gb Rtx 5060 1tb Ssd','Pc Gamer Ryzen 7 5700x Rtx 5060 Ram 32gb Rtx 5060 1tb Ssd es un equipo de la categoría Juegos. Incluye Procesador AMD Ryzen 7 5700X, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB. Ideal para gaming, estudio y multitarea.','Procesador AMD Ryzen 7 5700X, Gráfica RTX 5060, 32 GB de memoria RAM, Almacenamiento 1 TB',1,18369.63,24799.00,NULL,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-01.png',NULL,8,'activo','COMPUTLALTE','computadora','',0,0,0,0,0,'2026-11-10','[\"gamer\",\"ryzen\",\"5700x\",\"rtx\",\"5060\",\"ram\",\"32gb\",\"1tb\",\"ssd\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-41-rendimiento\", \"grupoEtiqueta\": \"Perfil profesional\", \"opciones\": [{\"valor\": \"base-41-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-41-rendimiento\", \"etiqueta\": \"Perfil de máxima potencia\", \"extra\": 1627}]}, {\"grupo\": \"equipo-41-memoria\", \"grupoEtiqueta\": \"Almacenamiento ultrarrápido\", \"opciones\": [{\"valor\": \"base-41-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-41-memoria\", \"etiqueta\": \"SSD NVMe de expansión\", \"extra\": 6433}]}, {\"grupo\": \"equipo-41-experiencia\", \"grupoEtiqueta\": \"Cobertura y soporte\", \"opciones\": [{\"valor\": \"base-41-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-41-experiencia\", \"etiqueta\": \"Soporte premium de cinco años\", \"extra\": 3171}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (42,'PC Gamer AI Xtreme PC Gaming MSI NVIDIA GeForce RTX 5080 Intel Core i9 32GB DDR5 SSD 1TB Sistema Liquido WIFI Black Productividad Profesional impulsada por IA Avanzada','PC Gamer AI Xtreme PC Gaming MSI NVIDIA GeForce RTX 5080 Intel Core i9 32GB DDR5 SSD 1TB Sistema Liquido WIFI Black Productividad Profesional impulsada por IA Avanzada es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 14900KF, Gráfica RTX 5080, 32 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 14900KF, Gráfica RTX 5080, 32 GB de memoria RAM, Almacenamiento 1 TB SSD',1,54740.00,73899.00,NULL,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-01.png',NULL,2,'activo','MSI','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"xtreme\",\"gaming\",\"msi\",\"nvidia\",\"geforce\",\"rtx\",\"5080\",\"intel\",\"core\",\"32gb\",\"ddr5\",\"ssd\",\"1tb\",\"sistema\",\"liquido\",\"wifi\",\"black\",\"productividad\",\"profesional\",\"impulsada\",\"por\",\"avanzada\",\"juegos\"]','[{\"grupo\": \"equipo-42-rendimiento\", \"grupoEtiqueta\": \"Aceleración gráfica\", \"opciones\": [{\"valor\": \"base-42-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-42-rendimiento\", \"etiqueta\": \"Overclock de estudio\", \"extra\": 2574}]}, {\"grupo\": \"equipo-42-memoria\", \"grupoEtiqueta\": \"Memoria para proyectos\", \"opciones\": [{\"valor\": \"base-42-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-42-memoria\", \"etiqueta\": \"Memoria para multitarea extrema\", \"extra\": 7046}]}, {\"grupo\": \"equipo-42-experiencia\", \"grupoEtiqueta\": \"Refrigeración y silencio\", \"opciones\": [{\"valor\": \"base-42-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-42-experiencia\", \"etiqueta\": \"Lazo líquido silencioso\", \"extra\": 3602}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (43,'Pc Gamer 2024 Rtx 4060 Ti Core I9 14900k Ram 128gb Ddr5 1tb','Pc Gamer 2024 Rtx 4060 Ti Core I9 14900k Ram 128gb Ddr5 1tb es un equipo de la categoría Juegos. Incluye Procesador Intel Core i9 14900KF, Gráfica RTX 4060 TI 8 GB, 128 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i9 14900KF, Gráfica RTX 4060 TI 8 GB, 128 GB de memoria RAM, Almacenamiento 1 TB SSD',1,87654.82,118334.01,NULL,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-01.png',NULL,1,'activo','COMPUTLALTE','computadora','',0,0,0,1,0,'2026-11-10','[\"gamer\",\"2024\",\"rtx\",\"4060\",\"core\",\"14900k\",\"ram\",\"128gb\",\"ddr5\",\"1tb\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-43-rendimiento\", \"grupoEtiqueta\": \"Potencia de procesamiento\", \"opciones\": [{\"valor\": \"base-43-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-43-rendimiento\", \"etiqueta\": \"Turbo multinúcleo\", \"extra\": 3521}]}, {\"grupo\": \"equipo-43-memoria\", \"grupoEtiqueta\": \"Capacidad de biblioteca\", \"opciones\": [{\"valor\": \"base-43-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-43-memoria\", \"etiqueta\": \"Archivo local de 16 TB\", \"extra\": 7659}]}, {\"grupo\": \"equipo-43-experiencia\", \"grupoEtiqueta\": \"Movilidad extendida\", \"opciones\": [{\"valor\": \"base-43-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-43-experiencia\", \"etiqueta\": \"Batería de autonomía extendida\", \"extra\": 4033}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `productos` VALUES (44,'Pc Gamer Moderna Rtx 4060intel Core I9 Ram 32 Gb 1 Tb Nzxt','Pc Gamer Moderna Rtx 4060intel Core I9 Ram 32 Gb 1 Tb Nzxt es un equipo de la categoría Juegos. Incluye Procesador Intel Core i7 12900KF, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD. Ideal para gaming, estudio y multitarea.','Procesador Intel Core i7 12900KF, Gráfica RTX 5060 8GB, 32 GB de memoria RAM, Almacenamiento 1 TB SSD',1,33777.04,45599.00,NULL,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-01.png',NULL,3,'activo','COMPUTLALTE','computadora','',0,0,0,5,0,'2026-11-10','[\"gamer\",\"moderna\",\"rtx\",\"4060intel\",\"core\",\"ram\",\"nzxt\",\"computlalte\",\"juegos\"]','[{\"grupo\": \"equipo-44-rendimiento\", \"grupoEtiqueta\": \"Perfil de creación\", \"opciones\": [{\"valor\": \"base-44-rendimiento\", \"etiqueta\": \"Rendimiento de fábrica\", \"extra\": 0}, {\"valor\": \"plus-44-rendimiento\", \"etiqueta\": \"Aceleración de IA\", \"extra\": 4468}]}, {\"grupo\": \"equipo-44-memoria\", \"grupoEtiqueta\": \"Memoria de alto ancho de banda\", \"opciones\": [{\"valor\": \"base-44-memoria\", \"etiqueta\": \"Configuración incluida\", \"extra\": 0}, {\"valor\": \"plus-44-memoria\", \"etiqueta\": \"Memoria de latencia ultrabaja\", \"extra\": 8272}]}, {\"grupo\": \"equipo-44-experiencia\", \"grupoEtiqueta\": \"Pantalla de referencia\", \"opciones\": [{\"valor\": \"base-44-experiencia\", \"etiqueta\": \"Configuración estándar\", \"extra\": 0}, {\"valor\": \"plus-44-experiencia\", \"etiqueta\": \"Panel calibrado de color\", \"extra\": 4464}]}]','2026-11-09 17:54:21','2026-11-09 19:39:32');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'clave','Procesador AMD Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'clave','Gráfica AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Color: Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Linea de la tarjeta gráfica integrada: Radeon');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Modelo del procesador: 40');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (5,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'clave','Procesador AMD Ryzen 5 7430U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'clave','Gráfica AMD Radeon RX Vega 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'clave','Almacenamiento 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'clave','Pantalla 15.6 pulgadas');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'clave','Color Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon RX Vega 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Modelo del procesador: AMD Ryzen™ 5 7430U Processor');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Línea del procesador: Ryzen');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Capacidad del disco duro: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (6,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'clave','Procesador AMD Ryzen 5 4500U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'clave','8 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'clave','Almacenamiento 256 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'clave','Pantalla 1920x1080 Full HD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'clave','Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'clave','Color Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Color: Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Estado del reacondicionado: Excelente');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Edición del sistema operativo: Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Modelo del procesador: 4500U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Capacidad de disco SSD: 256 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Memoria RAM: 8 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Resolución de pantalla: 1920x1080 Full HD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (7,'tecnica','Estado: Reacondicionado excelente');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'clave','Procesador AMD Ryzen 5 7520U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'clave','8 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'clave','Almacenamiento 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'clave','Color Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Color: Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Modelo del procesador: 7520U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Capacidad del disco duro: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Memoria RAM: 8 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (8,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'clave','Procesador AMD Ryzen 5 4650');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'clave','Almacenamiento 256 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'clave','Pantalla 1920px x1080px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'clave','Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'clave','Color Negro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Color: Negro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Estado del reacondicionado: Excelente');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Linea de la tarjeta gráfica integrada: AMD Radeon RX Vega 6');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Edición del sistema operativo: Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Modelo del procesador: 4650');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Capacidad de disco SSD: 256 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Resolución de pantalla: 1920px x1080px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (9,'tecnica','Estado: Reacondicionado excelente');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'clave','Procesador AMD Ryzen 7 7735HS');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'clave','Gráfica RTX 4050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Modelo de la tarjeta gráfica dedicada: RTX 4050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Línea de la tarjeta gráfica dedicada: GeForce');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Marca de la tarjeta gráfica dedicada: NVIDIA');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Modelo de la tarjeta gráfica integrada: Radeon');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Linea de la tarjeta gráfica integrada: Graficos integrados');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Marca de la tarjeta gráfica integrada: AMD Integrados');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Modelo del procesador: 7735HS');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Línea del procesador: Ryzen 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Frecuencia de actualización de la pantalla: 144 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (10,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'clave','Procesador AMD Ryzen 5 7430u');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'clave','Gráfica AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'clave','Windows 11 Pro Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Edición del sistema operativo: Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Versión del sistema operativo: 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Modelo del procesador: Ryzen 5 7430u');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (11,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'clave','Procesador AMD Ryzen 7 7730u');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'clave','Color Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Color: Plateado');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Modelo del procesador: 7730u');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Línea del procesador: Ryzen 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (12,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'clave','Procesador AMD Ryzen 7 7730U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'clave','Gráfica AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Modelo del procesador: Ryzen 7 7730U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Línea del procesador: Ryzen 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (13,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'clave','Procesador AMD Ryzen 5 7430U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'clave','Gráfica AMD Radeon RX Vega 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'clave','Almacenamiento 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'clave','Pantalla 15.6 pulgadas');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'clave','Color Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon RX Vega 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Modelo del procesador: AMD Ryzen™ 5 7430U Processor');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Línea del procesador: Ryzen');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Capacidad del disco duro: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (14,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'clave','Procesador AMD Ryzen 5 7430U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'clave','Gráfica AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'clave','8 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Modelo de la tarjeta gráfica integrada: AMD Radeon Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Modelo del procesador: 7430U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Memoria RAM: 8 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (15,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'clave','Procesador Intel Core i5 13450Hx');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'clave','Gráfica RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Color: Gris Luna');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Modelo de la tarjeta gráfica dedicada: RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Línea de la tarjeta gráfica dedicada: GeForce');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Marca de la tarjeta gráfica dedicada: NVIDIA');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Modelo de la tarjeta gráfica integrada: Inegrados Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Linea de la tarjeta gráfica integrada: Gráficos Intel®');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Marca de la tarjeta gráfica integrada: Integrados INTEL');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Modelo del procesador: 13450Hx');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Línea del procesador: Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Frecuencia de actualización de la pantalla: 144 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (16,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'clave','Procesador Intel Core Ultra 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'clave','Gráfica Integrados Intel UHD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'clave','24 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'clave','Pantalla 1920 px x 1200 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Modelo de la tarjeta gráfica dedicada: Integrados Intel UHD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Línea de la tarjeta gráfica dedicada: UHD GRAPHICS');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Marca de la tarjeta gráfica dedicada: UHD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Modelo de la tarjeta gráfica integrada: Graficos integrados');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Linea de la tarjeta gráfica integrada: Integrados');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Marca de la tarjeta gráfica integrada: Graphic Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Modelo del procesador: 355');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Línea del procesador: Core Ultra 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Capacidad de disco SSD: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Memoria RAM: 24 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (17,'tecnica','Resolución de pantalla: 1920 px x 1200 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'clave','Procesador Intel Core 3 Series 304');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'clave','8 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'clave','Pantalla 1920x1200');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'clave','Color Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Modelo del procesador: Series 304');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Línea del procesador: CORE 3');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Memoria RAM: 8 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (18,'tecnica','Resolución de pantalla: 1920x1200');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (19,'clave','Procesador Intel Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (19,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (19,'clave','Almacenamiento 256 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (19,'tecnica','Procesador: Intel Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (19,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (19,'tecnica','Almacenamiento: 256 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'clave','Procesador Intel Core i5 1245U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'clave','Gráfica Intel Iris Xe Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'clave','Almacenamiento 256 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'clave','Pantalla 1920 px x 1200 px táctil');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'clave','Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Color: Negro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Modelo de la tarjeta gráfica integrada: Intel Iris Xe Graphics');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Edición del sistema operativo: Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Modelo del procesador: 1245U');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Línea del procesador: Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Capacidad de disco SSD: 256 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Con pantalla táctil: Sí');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (20,'tecnica','Resolución de pantalla: 1920 px x 1200 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'clave','Procesador Intel Core i5 12600h');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'clave','24 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'clave','Pantalla 15.6 pulgadas');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'tecnica','Procesador: Intel Core i5 12600h');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'tecnica','Memoria RAM: 24 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'tecnica','Almacenamiento: 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (21,'tecnica','Pantalla: 15.6 pulgadas');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'clave','Procesador Qualcomm Snapdragon X X1-26-100');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'clave','Gráfica Qualcomm Adreno');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'clave','24 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'clave','Pantalla 1920 px x 1200 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Color: Gris Luna');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Modelo de la tarjeta gráfica dedicada: Adreno Qualcomm Adreno Int');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Línea de la tarjeta gráfica dedicada: Qualcomm integrada');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Marca de la tarjeta gráfica dedicada: Integrados GPU');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Modelo de la tarjeta gráfica integrada: Qualcomm Adreno');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Linea de la tarjeta gráfica integrada: Graficos integrados');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Marca de la tarjeta gráfica integrada: GPU');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Modelo del procesador: X1-26-100');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Línea del procesador: Snapdragon X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Marca del procesador: Qualcomm');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Memoria RAM: 24 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (22,'tecnica','Resolución de pantalla: 1920 px x 1200 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'clave','Procesador AMD Ryzen 7 8840HS');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'clave','Gráfica Radeon 780M');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'clave','Pantalla 1920x1200');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Color: Gris');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Modelo de la tarjeta gráfica integrada: Radeon 780M');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Linea de la tarjeta gráfica integrada: Radeon');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Modelo del procesador: 8840HS');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Línea del procesador: Ryzen 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Frecuencia de actualización de la pantalla: 60 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (23,'tecnica','Resolución de pantalla: 1920x1200');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'clave','Procesador Intel Core i5 13450Hx');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'clave','Gráfica RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'clave','Almacenamiento 512 GB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'clave','Pantalla 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'clave','Windows 11 Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Color: Gris Luna');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Modelo de la tarjeta gráfica dedicada: RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Línea de la tarjeta gráfica dedicada: GeForce');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Marca de la tarjeta gráfica dedicada: NVIDIA');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Modelo de la tarjeta gráfica integrada: Inegrados Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Linea de la tarjeta gráfica integrada: Gráficos Intel®');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Marca de la tarjeta gráfica integrada: Integrados INTEL');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Edición del sistema operativo: Home');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Versión del sistema operativo: 11');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Nombre del sistema operativo: Windows');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Modelo del procesador: 13450Hx');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Línea del procesador: Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Frecuencia de actualización de la pantalla: 144 Hz');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Capacidad de disco SSD: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Con pantalla táctil: No');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (24,'tecnica','Resolución de pantalla: 1920 px x 1080 px');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'clave','Procesador AMD Ryzen 9 5900X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'clave','Gráfica RTX 5070 12GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'tecnica','Tarjeta gráfica: RTX 5070 12GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'tecnica','Modelo del procesador: 5900X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'tecnica','Línea del procesador: Ryzen 9');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (25,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'clave','Procesador AMD Ryzen 7 9700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'clave','Gráfica GeForce RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'tecnica','Tarjeta gráfica: GeForce RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'tecnica','Modelo del procesador: Ryzen 7 9700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (26,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'clave','Procesador Ryzen 9 5900x');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'clave','Gráfica RTX 5060 8GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'tecnica','Tarjeta gráfica: RTX 5060 8GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'tecnica','Modelo del procesador: 5900X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (27,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'clave','Procesador AMD Ryzen 7 5700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'clave','Gráfica AMD Radeon RX 7600');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'clave','Almacenamiento 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'clave','Windows 11 Home (Versión de Prueba)');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Pc Powerbit Vortex: R7, 16gb, M.2 512gb, Rx7600, Wi-fi');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Tarjeta gráfica: AMD Radeon RX 7600');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Capacidad del disco: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Modelo del procesador: Ryzen 7 5700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (28,'tecnica','Sistema operativo: Windows 11 Home (Versión de Prueba)');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'clave','Procesador AMD Ryzen 7 5700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'clave','Gráfica NVIDIA GeForce RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'clave','Almacenamiento 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'clave','Windows 11 Home (Versión de Prueba)');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Pc Gamer Powerbit Phantom: R7, 16gb, M.2 512gb, Rtx 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Tarjeta gráfica: NVIDIA® GeForce RTX™ 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Capacidad del disco: 512 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Modelo del procesador: Ryzen 7 5700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (29,'tecnica','Sistema operativo: Windows 11 Home (Versión de Prueba)');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'clave','Procesador AMD Ryzen 5 5500');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'clave','Gráfica RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'tecnica','Modelo del procesador: 5500');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'tecnica','Línea del procesador: Ryzen 5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (30,'tecnica','Incluye: sistema operativo instalado, no activado Windows 11 Home Trial');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'clave','Procesador Intel Core i5 12400F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'clave','Gráfica NVIDIA GeForce RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'tecnica','Modelo del procesador: 12400F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'tecnica','Línea del procesador: Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (31,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'clave','Procesador Intel Core i5 12400F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'clave','Gráfica NVIDIA GeForce RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'tecnica','Modelo del procesador: 12400F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'tecnica','Línea del procesador: Core i5');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (32,'tecnica','Incluye: sistema operativo instalado, no activado Windows 11 Home Trial');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'clave','Procesador Intel Core Ultra 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'clave','Gráfica RTX 5060 Ti');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'tecnica','Incluye: sistema operativo instalado, no activado Windows 11 Home Trial');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'tecnica','Procesador: Intel Core Ultra 7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'tecnica','Gráfica: RTX 5060 Ti');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (33,'tecnica','Almacenamiento: 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'clave','Procesador Intel Core i7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'clave','Gráfica NVIDIA GeForce RTX 4060 Ti ó RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'clave','64 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'tecnica','Memoria RAM: 64 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 4060 Ti ó RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'tecnica','Modelo del procesador: Intel Core i7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'tecnica','Línea del procesador: i7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (34,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'clave','Procesador Intel Core i9 14900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'clave','Gráfica NVIDIA GeForce RTX 5070');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'clave','Windows 10 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'tecnica','Tarjeta gráfica: NVIDIA GeForce RTX 5070');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'tecnica','Modelo del procesador: 14900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (35,'tecnica','Sistema operativo: Windows 10 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'clave','Procesador Intel Core i9 12900F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'clave','Gráfica Nvidia RTX 5070');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'clave','Almacenamiento 2 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'clave','Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'tecnica','Tarjeta gráfica: Nvidia RTX 5070');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'tecnica','Capacidad del disco: 2 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'tecnica','Modelo del procesador: Core i9 12900F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (36,'tecnica','Sistema operativo: Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'clave','Procesador AMD Ryzen 9 5900XT');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'clave','Gráfica RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'clave','Almacenamiento 2 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'tecnica','Tarjeta gráfica: RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'tecnica','Capacidad del disco: 2 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'tecnica','Modelo del procesador: Ryzen 9 5900XT');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (37,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'clave','Procesador Ryzen 7 5700');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'clave','Gráfica RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'tecnica','Tarjeta gráfica: RTX 5050');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'tecnica','Modelo del procesador: 5700');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (38,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'clave','Procesador AMD Ryzen 7 5700');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'clave','Gráfica Radeon Rx 9060 Xt');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'clave','Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'tecnica','Tarjeta gráfica: Radeon Rx 9060 Xt');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'tecnica','Modelo del procesador: Ryzen 7 5700');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (39,'tecnica','Sistema operativo: Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'clave','Procesador AMD Ryzen 5 8400F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'clave','Gráfica AMD RX 9060 XT 16GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'clave','16 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'clave','Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'tecnica','Tarjeta gráfica: AMD RX 9060 XT 16GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'tecnica','Memoria RAM: 16 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'tecnica','Modelo del procesador: Ryzen 5 8400F');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (40,'tecnica','Sistema operativo: Windows 11 Pro');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'clave','Procesador AMD Ryzen 7 5700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'clave','Gráfica RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'clave','Almacenamiento 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'tecnica','Tarjeta gráfica: RTX 5060');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'tecnica','Capacidad del disco: 1 TB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'tecnica','Modelo del procesador: Ryzen 7 5700X');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (41,'tecnica','Marca del procesador: AMD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'clave','Procesador Intel Core i9 14900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'clave','Gráfica RTX 5080');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'tecnica','Modelo del procesador: 14900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'tecnica','Línea del procesador: Core i9');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (42,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'clave','Procesador Intel Core i9 14900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'clave','Gráfica RTX 4060 TI 8 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'clave','128 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'tecnica','Tarjeta gráfica: RTX 4060 TI 8 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'tecnica','Memoria RAM: 128 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'tecnica','Modelo del procesador: 14900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'tecnica','Línea del procesador: Core i9');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (43,'tecnica','Marca del procesador: Intel');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'clave','Procesador Intel Core i7 12900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'clave','Gráfica RTX 5060 8GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'clave','32 GB de memoria RAM');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'clave','Almacenamiento 1 TB SSD');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'tecnica','Tarjeta gráfica: RTX 5060 8GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'tecnica','Memoria RAM: 32 GB');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'tecnica','Modelo del procesador: 12900KF');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'tecnica','Línea del procesador: Core i7');
-INSERT INTO `especificaciones` (`producto_id`,`tipo`,`descripcion`) VALUES (44,'tecnica','Marca del procesador: Intel');
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (5,'imagenes/computadoras-desarrollo/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16/laptop-aspire-lite-16-15-6-fhd-amd-ryzen-5-40-16-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (6,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-07.png',7);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (7,'imagenes/computadoras-desarrollo/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r/laptop-hp-probook-445-g7-ryzen-5-economica-8gb-r-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (8,'imagenes/computadoras-desarrollo/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu/laptop-dell-15-dc15255-15-6-ryzen-5-8gb-512gb-fu-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (9,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32/laptop-lenovo-thinkpad-x13g1-amd-ryzen-5-4650-32-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (10,'imagenes/computadoras-desarrollo/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5/laptop-gaming-15-6-loq15arp10-amd-ryzen-7-16gb-5-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (11,'imagenes/computadoras-desarrollo/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51/laptop-15-6-games-amd-ryzen-5-7430u-16-8-8-gb-51-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (12,'imagenes/computadoras-desarrollo/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb/notebook-acer-aspire-a325-42-ryzen-7-7730u-16gb-07.png',7);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (13,'imagenes/computadoras-desarrollo/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512/laptop-games-15-6-amd-ryzen-7-7730u-16gb-ram-512-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (14,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (14,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (14,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (14,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (14,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (14,'imagenes/computadoras-desarrollo/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2/laptop-gamer-15-6-acemagic-amd-ryzen-5-7430u-16g-2-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (15,'imagenes/computadoras-desarrollo/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr/notebook-acer-gadget-erbook-ryzen-5-8gb-512gb-gr-07.png',7);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (16,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (17,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3/laptop-lenovo-ideapad-slim3-core-ultra7-serie-3-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (18,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11/laptop-lenovo-ideapad-slim-3-intel-core-3-gen-11-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (19,'imagenes/computadoras-desarrollo/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p/laptop-lenovo-thinkpad-t14-i5-16gb-256gb-win11-p-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (20,'imagenes/computadoras-desarrollo/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat/lenovo-thinkpad-t14-gen-3-pantalla-tactil-portat-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (21,'imagenes/computadoras-desarrollo/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51/laptop-acemagic-15-6-intel-i5-12600h-24gb-ram-51-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (22,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512/laptop-lenovo-ideapad-15-3-snapdragon-x-24gb-512-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-07.png',7);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (23,'imagenes/computadoras-desarrollo/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb/laptop-lenovo-ideapad-slim-3-touch-ryzen-7-16gb-08.png',8);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (24,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (24,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (24,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (24,'imagenes/computadoras-desarrollo/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2/laptop-gamer-loq-32gb-ram-512gb-ssd-rtx-5050-gri-2-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (25,'imagenes/computadoras-gaming/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g/pc-gamer-rtx-4070-super-ryzen-9-torre-cooler-32g-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (26,'imagenes/computadoras-gaming/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r/pc-gamer-rgb-amd-ryzen-9700x-32gb-ddr5-1tb-ssd-r-07.png',7);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (27,'imagenes/computadoras-gaming/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu/pc-gamer-rtx-5060-ryzen-9-5900x-ram-32gb-1tb-tcu-07.png',7);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (28,'imagenes/computadoras-gaming/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f/pc-powerbit-vortex-r7-16gb-m-2-512gb-rx7600-wi-f-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (29,'imagenes/computadoras-gaming/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx/pc-gamer-powerbit-phantom-r7-16gb-m-2-512gb-rtx-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (30,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (31,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506/pc-gamer-xtreme-pc-gaming-nvidia-geforce-rtx-506-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (32,'imagenes/computadoras-gaming/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2/pc-gamer-xtreme-pc-gaming-asus-tuf-nvidia-geforc-2-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (33,'imagenes/computadoras-gaming/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g/pc-gamer-ia-entry-xtreme-pc-gaming-asus-nvidia-g-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (34,'imagenes/computadoras-gaming/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx/pc-gamer-blanca-enfriamiento-liquido-corei7-rtx-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (35,'imagenes/computadoras-gaming/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g/pc-gamer-blanca-12-gb-vram-intel-i9-rtx-5070-32g-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (36,'imagenes/computadoras-gaming/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32/pc-gamer-grizzly-intel-i9-12900f-rtx5070-ram-32-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (37,'imagenes/computadoras-gaming/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s/pc-gamer-grizzly-amd-ryzen-9-rtx5060-ram-32-gb-s-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (38,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (38,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (38,'imagenes/computadoras-gaming/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406/pc-gamer-blanca-ryzen-7-5700-enf-liquido-rtx-406-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (39,'imagenes/computadoras-gaming/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80/pc-gaming-amd-ryzen-7-rx-9060-xt-16gb-1tb-ssd-80-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (40,'imagenes/computadoras-gaming/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (40,'imagenes/computadoras-gaming/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (40,'imagenes/computadoras-gaming/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6/pc-amd-gaming-ryzen-5-ddr5-rx-9060-xt-16gb-1tb-6-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (41,'imagenes/computadoras-gaming/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506/pc-gamer-ryzen-7-5700x-rtx-5060-ram-32gb-rtx-506-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (42,'imagenes/computadoras-gaming/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce/pc-gamer-ai-xtreme-pc-gaming-msi-nvidia-geforce-06.png',6);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (43,'imagenes/computadoras-gaming/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128/pc-gamer-2024-rtx-4060-ti-core-i9-14900k-ram-128-05.png',5);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-01.png',1);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-02.png',2);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-03.png',3);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-04.png',4);
-INSERT INTO `imagenes_producto` (`producto_id`,`url`,`posicion`) VALUES (44,'imagenes/computadoras-gaming/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb/pc-gamer-moderna-rtx-4060intel-core-i9-ram-32-gb-05.png',5);
-
--- Sincronización de subcategorías de accesorios y alta del Sennheiser HE1.
-INSERT INTO categorias (nombre) VALUES
-  ('Audio'),
-  ('Mouse'),
-  ('Energía y Cables'),
-  ('Teclados'),
-  ('Monitores')
-ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
-
-SET @audio_categoria_id = (SELECT id FROM categorias WHERE nombre = 'Audio' LIMIT 1);
-
-UPDATE productos
-SET imagen_url = REPLACE(
-  imagen_url,
-  'imagenes/imagenes-accesorios/raton-attack-shark/',
-  'imagenes/imagenes-accesorios/mouse/raton-attack-shark/'
-)
-WHERE imagen_url LIKE 'imagenes/imagenes-accesorios/raton-attack-shark/%';
-
-UPDATE imagenes_producto
-SET url = REPLACE(
-  url,
-  'imagenes/imagenes-accesorios/raton-attack-shark/',
-  'imagenes/imagenes-accesorios/mouse/raton-attack-shark/'
-)
-WHERE url LIKE 'imagenes/imagenes-accesorios/raton-attack-shark/%';
-
-INSERT INTO productos (
-  nombre, descripcion, descripcion_corta, categoria_id, costo_base, precio_final,
-  margen_propio, imagen_url, stock, estado, marca, tipo, etiqueta, destacado,
-  en_oferta, descuento, terminos_busqueda
-)
-SELECT
-  'Sennheiser HE1 Orpheus',
-  'El pináculo del audio. Sistema electrostático de referencia con amplificador de alta tensión integrado, carcasa de mármol de Carrara y DACs ESS SABRE.',
-  'El pináculo del audio. Primer sistema electrostático con amplificador de alta tensión integrado, mármol de Carrara y DACs ESS SABRE.',
-  @audio_categoria_id, 808518.52, 1091500.00, NULL,
-  'imagenes/imagenes-accesorios/audio/sennheiser-he1.jpg',
-  1, 'activo', 'Sennheiser', 'accesorio', 'Audio de referencia', 1, 0, 0,
-  '["sennheiser","he1","orpheus","audifonos","auriculares","electrostatico","audio premium"]'
-WHERE NOT EXISTS (
-  SELECT 1 FROM productos WHERE nombre = 'Sennheiser HE1 Orpheus'
-);
-
-SET @he1_id = (
-  SELECT id FROM productos WHERE nombre = 'Sennheiser HE1 Orpheus' ORDER BY id LIMIT 1
-);
-
-UPDATE productos
-SET descripcion = 'El pináculo del audio. Sistema electrostático de referencia con amplificador de alta tensión integrado, carcasa de mármol de Carrara y DACs ESS SABRE.',
-  descripcion_corta = 'El pináculo del audio. Primer sistema electrostático con amplificador de alta tensión integrado, mármol de Carrara y DACs ESS SABRE.',
-  categoria_id = @audio_categoria_id,
-  costo_base = 808518.52,
-  precio_final = ROUND(costo_base * 1.35, 2),
-  margen_propio = NULL,
-  imagen_url = 'imagenes/imagenes-accesorios/audio/sennheiser-he1.jpg',
-  stock = 1,
-  estado = 'activo',
-  marca = 'Sennheiser',
-  tipo = 'accesorio',
-  etiqueta = 'Audio de referencia',
-  destacado = 1,
-  en_oferta = 1,
-  descuento = 5,
-  resenas = 64,
-  vendidos = 21,
-  terminos_busqueda = '["sennheiser","he1","orpheus","audifonos","auriculares","electrostatico","audio premium"]'
-WHERE id = @he1_id;
-
-DELETE FROM imagenes_producto WHERE producto_id = @he1_id;
-INSERT INTO imagenes_producto (producto_id, url, posicion) VALUES
-  (@he1_id, 'imagenes/imagenes-accesorios/audio/sennheiser-he1.jpg', 1),
-  (@he1_id, 'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (1).jpg', 2),
-  (@he1_id, 'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (2).jpg', 3),
-  (@he1_id, 'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (3).jpg', 4),
-  (@he1_id, 'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (4).jpg', 5),
-  (@he1_id, 'imagenes/imagenes-accesorios/audio/sennheiser-he1/sennheiser-he1-orpheus-auriculares (5).jpg', 6);
-
-DELETE FROM especificaciones WHERE producto_id = @he1_id;
-INSERT INTO especificaciones (producto_id, tipo, descripcion) VALUES
-  (@he1_id, 'tecnica', 'Primer auricular electrostático con amplificador integrado'),
-  (@he1_id, 'tecnica', 'Carcasa de mármol de Carrara y vidrio hecho a mano'),
-  (@he1_id, 'tecnica', 'Amplificador Cool Class A MOS-FET de alta tensión'),
-  (@he1_id, 'tecnica', '8 DACs internos ESS SABRE ES9018'),
-  (@he1_id, 'tecnica', 'Diafragmas vaporizados de platino de 2.4 micrómetros'),
-  (@he1_id, 'tecnica', 'Transductores de cerámica vaporizados en oro'),
-  (@he1_id, 'tecnica', 'Cables de cobre plateado OFC al 99.9%'),
-  (@he1_id, 'tecnica', 'Respuesta de frecuencia: 8 Hz a >100 kHz'),
-  (@he1_id, 'tecnica', 'Distorsión ultra baja: 0.01% a 1 kHz');
-
-SET @teclados_categoria_id = (SELECT id FROM categorias WHERE nombre = 'Teclados' LIMIT 1);
-SET @monitores_categoria_id = (SELECT id FROM categorias WHERE nombre = 'Monitores' LIMIT 1);
-SET @energia_categoria_id = (SELECT id FROM categorias WHERE nombre = 'Energía y Cables' LIMIT 1);
-
-INSERT INTO productos (
-  nombre, descripcion, descripcion_corta, categoria_id, costo_base, precio_final,
-  margen_propio, imagen_url, stock, estado, marca, tipo, etiqueta, destacado,
-  terminos_busqueda
-)
-SELECT
-  'Teclado Magnético Cool 68',
-  'Teclado magnético compacto DAREU COOL68, diseñado para juegos competitivos con actuación precisa, Rapid Trigger y sondeo de alta velocidad.',
-  'Teclado magnético 65% de 68 teclas, Rapid Trigger de 0.01 mm, polling rate de 8000 Hz e iluminación RGB.',
-  @teclados_categoria_id, 5135.60, 6933.06, 35,
-  'imagenes/imagenes-accesorios/teclados/teclado-cool-68-1.jpg',
-  5, 'activo', 'DAREU', 'accesorio', 'Teclado magnético', 1,
-  '["dareu","cool 68","cool68","teclado magnetico","teclado gaming","rapid trigger"]'
-WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Teclado Magnético Cool 68');
-
-SET @teclado_id = (SELECT id FROM productos WHERE nombre = 'Teclado Magnético Cool 68' ORDER BY id LIMIT 1);
-UPDATE productos SET categoria_id = @teclados_categoria_id, costo_base = 5135.60,
-  precio_final = 6933.06, margen_propio = 35, resenas = 132, vendidos = 215,
-  imagen_url = 'imagenes/imagenes-accesorios/teclados/teclado-cool-68-1.jpg'
-WHERE id = @teclado_id;
-DELETE FROM imagenes_producto WHERE producto_id = @teclado_id;
-INSERT INTO imagenes_producto (producto_id, url, posicion) VALUES
-  (@teclado_id, 'imagenes/imagenes-accesorios/teclados/teclado-cool-68-1.jpg', 1),
-  (@teclado_id, 'imagenes/imagenes-accesorios/teclados/cool-68/3-11-7cf792b0356b65b19717754851489783-1024-1024.webp', 2),
-  (@teclado_id, 'imagenes/imagenes-accesorios/teclados/cool-68/5-12-cfa01d8f450c6d5f1317754851502718-1024-1024.webp', 3),
-  (@teclado_id, 'imagenes/imagenes-accesorios/teclados/cool-68/6-11-d79b2d5e3ee8e8a19717754851488859-1024-1024.webp', 4),
-  (@teclado_id, 'imagenes/imagenes-accesorios/teclados/cool-68/actuacion-de-efecto-hall-65-switch-magnetico-2-638fb7c4e42676ea1017754851493474-1024-1024.webp', 5);
-DELETE FROM especificaciones WHERE producto_id = @teclado_id;
-INSERT INTO especificaciones (producto_id, tipo, descripcion) VALUES
-  (@teclado_id, 'tecnica', 'Teclado magnético 65% (68 teclas)'),
-  (@teclado_id, 'tecnica', 'Switch Ice Blade Magnetic'),
-  (@teclado_id, 'tecnica', 'Rapid Trigger de 0.01 mm de precisión'),
-  (@teclado_id, 'tecnica', 'Polling rate de 8000 Hz'),
-  (@teclado_id, 'tecnica', 'Estructura Gasket Mount'),
-  (@teclado_id, 'tecnica', 'Iluminación RGB'),
-  (@teclado_id, 'tecnica', 'Teclas PBT de doble inyección'),
-  (@teclado_id, 'tecnica', 'Conectividad USB Type-C'),
-  (@teclado_id, 'tecnica', 'Dimensiones: 329 x 111 x 44 mm'),
-  (@teclado_id, 'tecnica', 'Peso: 740 g ± 50 g'),
-  (@teclado_id, 'tecnica', 'Vida útil del switch: 100 millones de clics');
-
-INSERT INTO productos (
-  nombre, descripcion, descripcion_corta, categoria_id, costo_base, precio_final,
-  margen_propio, imagen_url, stock, estado, marca, tipo, etiqueta, destacado,
-  terminos_busqueda
-)
-SELECT
-  'Monitor ASUS ROG Swift PG32UCDM',
-  'Monitor gaming ASUS ROG Swift de 32 pulgadas con panel QD-OLED 4K UHD, frecuencia de 240 Hz y conectividad HDMI 2.1 y USB-C.',
-  'QD-OLED 4K UHD de 32 pulgadas, 240 Hz, 0.03 ms, DisplayHDR 400 True Black y USB-C con entrega de energía de 90 W.',
-  @monitores_categoria_id, 16449.00, 22206.15, 35,
-  'imagenes/imagenes-accesorios/monitores/monitor-asus-rog-1.jpg',
-  3, 'activo', 'ASUS ROG', 'accesorio', 'QD-OLED 4K 240 Hz', 1,
-  '["asus","rog swift","pg32ucdm","monitor gaming","qd-oled","4k","240hz"]'
-WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Monitor ASUS ROG Swift PG32UCDM');
-
-SET @monitor_id = (SELECT id FROM productos WHERE nombre = 'Monitor ASUS ROG Swift PG32UCDM' ORDER BY id LIMIT 1);
-UPDATE productos SET categoria_id = @monitores_categoria_id, costo_base = 16449.00,
-  precio_final = 22206.15, margen_propio = 35, resenas = 89, vendidos = 98,
-  imagen_url = 'imagenes/imagenes-accesorios/monitores/monitor-asus-rog-1.jpg'
-WHERE id = @monitor_id;
-DELETE FROM imagenes_producto WHERE producto_id = @monitor_id;
-INSERT INTO imagenes_producto (producto_id, url, posicion) VALUES
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/monitor-asus-rog-1.jpg', 1),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-02-orig.jpg', 2),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-03-orig.jpg', 3),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-04-orig.jpg', 4),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-05-orig.jpg', 5),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-06-orig.jpg', 6),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-07-orig.jpg', 7),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-08-orig.jpg', 8),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-09-orig.jpg', 9),
-  (@monitor_id, 'imagenes/imagenes-accesorios/monitores/asus-rog-swift/pg32ucdm-10-orig.jpg', 10);
-DELETE FROM especificaciones WHERE producto_id = @monitor_id;
-INSERT INTO especificaciones (producto_id, tipo, descripcion) VALUES
-  (@monitor_id, 'tecnica', 'Panel QD-OLED de 32 pulgadas'),
-  (@monitor_id, 'tecnica', 'Resolución 4K UHD (3840 x 2160)'),
-  (@monitor_id, 'tecnica', 'Tasa de refresco de 240 Hz'),
-  (@monitor_id, 'tecnica', 'Tiempo de respuesta de 0.03 ms'),
-  (@monitor_id, 'tecnica', 'Compatible con G-Sync y FreeSync'),
-  (@monitor_id, 'tecnica', 'Certificación VESA DisplayHDR 400 True Black'),
-  (@monitor_id, 'tecnica', 'Cobertura de color 99% DCI-P3'),
-  (@monitor_id, 'tecnica', 'Disipador térmico personalizado con película de grafeno'),
-  (@monitor_id, 'tecnica', 'Entradas HDMI 2.1, DisplayPort y USB-C con entrega de energía de 90 W');
-
-INSERT INTO productos (
-  nombre, descripcion, descripcion_corta, categoria_id, costo_base, precio_final,
-  margen_propio, imagen_url, stock, estado, marca, tipo, etiqueta, destacado,
-  terminos_busqueda
-)
-SELECT
-  'Fuente de Poder Corsair AX1600i',
-  'Fuente de poder digital Corsair AX1600i de 1600 W, certificación 80 PLUS Titanium, plataforma GaN y operación totalmente modular.',
-  '1600 W continuos, 80 PLUS Titanium, totalmente modular, monitoreo digital iCUE y garantía de 10 años.',
-  @energia_categoria_id, 10078.20, 13605.57, 35,
-  'imagenes/imagenes-accesorios/energia-y-cables/fuente-corsair-ax1600i-1.jpg',
-  2, 'activo', 'CORSAIR', 'accesorio', '1600 W Titanium', 1,
-  '["corsair","ax1600i","fuente de poder","fuente 1600w","80 plus titanium","gan"]'
-WHERE NOT EXISTS (SELECT 1 FROM productos WHERE nombre = 'Fuente de Poder Corsair AX1600i');
-
-SET @fuente_id = (SELECT id FROM productos WHERE nombre = 'Fuente de Poder Corsair AX1600i' ORDER BY id LIMIT 1);
-UPDATE productos SET categoria_id = @energia_categoria_id, costo_base = 10078.20,
-  precio_final = 13605.57, margen_propio = 35, resenas = 57, vendidos = 76,
-  imagen_url = 'imagenes/imagenes-accesorios/energia-y-cables/fuente-corsair-ax1600i-1.jpg'
-WHERE id = @fuente_id;
-DELETE FROM imagenes_producto WHERE producto_id = @fuente_id;
-INSERT INTO imagenes_producto (producto_id, url, posicion) VALUES
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/fuente-corsair-ax1600i-1.jpg', 1),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_02.avif', 2),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_03.avif', 3),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_05.avif', 4),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_06.avif', 5),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_07.avif', 6),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_08.avif', 7),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_09.avif', 8),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_10.avif', 9),
-  (@fuente_id, 'imagenes/imagenes-accesorios/energia-y-cables/corsair-ax1600i/AX1600i_11.avif', 10);
-DELETE FROM especificaciones WHERE producto_id = @fuente_id;
-INSERT INTO especificaciones (producto_id, tipo, descripcion) VALUES
-  (@fuente_id, 'tecnica', 'Potencia: 1600 W continuos'),
-  (@fuente_id, 'tecnica', 'Certificación 80 PLUS Titanium (más del 94% de eficiencia)'),
-  (@fuente_id, 'tecnica', 'Totalmente modular'),
-  (@fuente_id, 'tecnica', 'Transistores de Nitruro de Galio (GaN) Totem-pole PFC'),
-  (@fuente_id, 'tecnica', 'Ventilador FDB de 140 mm con modo Zero RPM'),
-  (@fuente_id, 'tecnica', 'Monitoreo digital y sincronización RGB mediante CORSAIR iCUE'),
-  (@fuente_id, 'tecnica', 'Capacitores electrolíticos japoneses de 105 °C'),
-  (@fuente_id, 'tecnica', 'Protecciones: OVP, UVP, SCP, OTP y OPP'),
-  (@fuente_id, 'tecnica', 'Conectores: 1x ATX, 9x PATA, 16x SATA y 2x Floppy'),
-  (@fuente_id, 'tecnica', 'Garantía de 10 años'),
-  (@fuente_id, 'tecnica', 'Dimensiones: 150 x 86 x 200 mm');
-
-DELETE FROM especificaciones
-WHERE tipo = 'clave' AND producto_id IN (@he1_id, @teclado_id, @monitor_id, @fuente_id);
-INSERT INTO especificaciones (producto_id, tipo, descripcion) VALUES
-  (@he1_id, 'clave', 'Amplificador integrado en mármol'),
-  (@he1_id, 'clave', 'Tubos de vacío protegidos con cuarzo'),
-  (@he1_id, 'clave', '8 DACs ESS SABRE'),
-  (@he1_id, 'clave', 'Cables OFC plateados'),
-  (@teclado_id, 'clave', 'Switches magnéticos Ice Blade'),
-  (@teclado_id, 'clave', 'Rapid Trigger 0.01 mm'),
-  (@teclado_id, 'clave', 'Polling rate 8000 Hz'),
-  (@teclado_id, 'clave', 'Estructura Gasket Mount'),
-  (@monitor_id, 'clave', 'Panel QD-OLED 4K'),
-  (@monitor_id, 'clave', '240 Hz y 0.03 ms'),
-  (@monitor_id, 'clave', 'Disipador de grafeno'),
-  (@monitor_id, 'clave', 'Certificación HDR 400 True Black'),
-  (@fuente_id, 'clave', '1600 W Titanium'),
-  (@fuente_id, 'clave', 'Transistores GaN'),
-  (@fuente_id, 'clave', 'Modo Zero RPM'),
-  (@fuente_id, 'clave', 'Monitoreo CORSAIR iCUE');
-
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Sennheiser HE1 Orpheus' AND e.tipo = 'tecnica'
-  AND e.descripcion IN (
-    'Amplificador Cool Class A MOS-FET de alta tensión',
-    'Diafragmas vaporizados de platino de 2.4 micrómetros'
-  );
-
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Teclado Magnético Cool 68' AND e.tipo = 'tecnica'
-  AND e.descripcion IN (
-    'Teclas PBT de doble inyección',
-    'Conectividad USB Type-C',
-    'Vida útil del switch: 100 millones de clics'
-  );
-
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Monitor ASUS ROG Swift PG32UCDM' AND e.tipo = 'tecnica'
-  AND e.descripcion IN (
-    'Compatible con G-Sync y FreeSync',
-    'Cobertura de color 99% DCI-P3'
-  );
-
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Fuente de Poder Corsair AX1600i' AND e.tipo = 'tecnica'
-  AND e.descripcion IN (
-    'Totalmente modular',
-    'Capacitores electrolíticos japoneses de 105 °C',
-    'Garantía de 10 años'
-  );
-
--- Balance de listas: una especificación técnica más pasa a características
--- clave (audífonos y monitor); en la fuente se quita la lista de conectores
--- y se mueven las protecciones a características clave.
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Sennheiser HE1 Orpheus' AND e.tipo = 'tecnica'
-  AND e.descripcion = 'Respuesta de frecuencia: 8 Hz a >100 kHz';
-
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Monitor ASUS ROG Swift PG32UCDM' AND e.tipo = 'tecnica'
-  AND e.descripcion = 'Entradas HDMI 2.1, DisplayPort y USB-C con entrega de energía de 90 W';
-
-UPDATE especificaciones e JOIN productos p ON p.id = e.producto_id
-SET e.tipo = 'clave'
-WHERE p.nombre = 'Fuente de Poder Corsair AX1600i' AND e.tipo = 'tecnica'
-  AND e.descripcion = 'Protecciones: OVP, UVP, SCP, OTP y OPP';
-
-DELETE FROM especificaciones
-WHERE producto_id = @fuente_id
-  AND tipo = 'tecnica'
-  AND descripcion = 'Conectores: 1x ATX, 9x PATA, 16x SATA y 2x Floppy';
-
--- Ofertas estilo mouse: cada tarjeta de accesorio muestra su porcentaje.
-UPDATE productos SET en_oferta = 1, descuento = 5
-WHERE nombre = 'Sennheiser HE1 Orpheus';
-UPDATE productos SET en_oferta = 1, descuento = 8
-WHERE nombre = 'Teclado Magnético Cool 68';
-UPDATE productos SET en_oferta = 1, descuento = 12
-WHERE nombre = 'Monitor ASUS ROG Swift PG32UCDM';
-UPDATE productos SET en_oferta = 1, descuento = 15
-WHERE nombre = 'Fuente de Poder Corsair AX1600i';
-
-UPDATE productos
-SET personalizacion = JSON_ARRAY(
-  JSON_OBJECT('grupo','refrigeracion','grupoEtiqueta','Refrigeración líquida','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','aire-incluido','etiqueta','Refrigeración incluida','extra',0),
-    JSON_OBJECT('valor','custom-loop','etiqueta','Refrigeración Líquida Custom','extra',5000))),
-  JSON_OBJECT('grupo','almacenamiento','grupoEtiqueta','Almacenamiento SSD','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','1tb-nvme','etiqueta','SSD NVMe 1 TB','extra',0),
-    JSON_OBJECT('valor','50tb-ssd','etiqueta','50 TB SSD','extra',15000))),
-  JSON_OBJECT('grupo','memoria','grupoEtiqueta','Memoria RAM','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','32gb-ddr5','etiqueta','32 GB DDR5','extra',0),
-    JSON_OBJECT('valor','128gb-ddr5','etiqueta','128 GB RAM','extra',8000))),
-  JSON_OBJECT('grupo','iluminacion','grupoEtiqueta','Iluminación del sistema','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','rgb-controlado','etiqueta','RGB sincronizado','extra',0),
-    JSON_OBJECT('valor','rgb-extremo','etiqueta','Iluminación RGB Extrema','extra',3500)))
-)
-WHERE nombre = 'PC para juegos VENGEANCE a7500';
-
-UPDATE productos
-SET personalizacion = JSON_ARRAY(
-  JSON_OBJECT('grupo','proteccion','grupoEtiqueta','Cobertura Apple','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','garantia-estandar','etiqueta','Garantía estándar','extra',0),
-    JSON_OBJECT('valor','apple-care-plus','etiqueta','Apple Care+','extra',8000))),
-  JSON_OBJECT('grupo','chip','grupoEtiqueta','Procesador','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','m5-pro','etiqueta','Chip M5 Pro','extra',0),
-    JSON_OBJECT('valor','m5-max','etiqueta','Chip M5 Max','extra',25000))),
-  JSON_OBJECT('grupo','memoria-unificada','grupoEtiqueta','Memoria unificada','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','36gb-unificada','etiqueta','36 GB unificada','extra',0),
-    JSON_OBJECT('valor','128gb-unificada','etiqueta','Memoria Unificada 128 GB','extra',20000))),
-  JSON_OBJECT('grupo','teclado','grupoEtiqueta','Teclado y acceso','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','touch-id-incluido','etiqueta','Teclado estándar','extra',0),
-    JSON_OBJECT('valor','touch-id','etiqueta','Teclado con Touch ID','extra',3500)))
-)
-WHERE nombre = 'MacBook Pro 16" M5 Max';
-
-UPDATE productos
-SET personalizacion = JSON_ARRAY(
-  JSON_OBJECT('grupo','pantalla','grupoEtiqueta','Pantalla','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','oled-wuxga','etiqueta','OLED WUXGA','extra',0),
-    JSON_OBJECT('valor','oled-4k','etiqueta','Pantalla 4K OLED','extra',6000))),
-  JSON_OBJECT('grupo','monitores','grupoEtiqueta','Espacio de trabajo','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','monitor-integrado','etiqueta','Pantalla integrada','extra',0),
-    JSON_OBJECT('valor','doble-monitor','etiqueta','Doble Monitor Externo','extra',10000))),
-  JSON_OBJECT('grupo','acoplamiento','grupoEtiqueta','Conectividad de escritorio','opciones',JSON_ARRAY(
-    JSON_OBJECT('valor','adaptador-usb-c','etiqueta','Adaptador USB-C','extra',0),
-    JSON_OBJECT('valor','estacion-acoplamiento','etiqueta','Estación de Acoplamiento','extra',3000)))
-)
-WHERE nombre = 'ASUS Zenbook 14 OLED';
-
-UPDATE productos AS p
-SET p.personalizacion = JSON_ARRAY(
-  JSON_OBJECT('grupo',CONCAT('equipo-',p.id,'-rendimiento'),
-    'grupoEtiqueta',CASE MOD(p.id,6) WHEN 0 THEN 'Aceleración gráfica' WHEN 1 THEN 'Potencia de procesamiento' WHEN 2 THEN 'Perfil de creación' WHEN 3 THEN 'Modo de juego' WHEN 4 THEN 'Cómputo avanzado' ELSE 'Perfil profesional' END,
-    'opciones',JSON_ARRAY(
-      JSON_OBJECT('valor',CONCAT('base-',p.id,'-rendimiento'),'etiqueta','Rendimiento de fábrica','extra',0),
-      JSON_OBJECT('valor',CONCAT('plus-',p.id,'-rendimiento'),'etiqueta',CASE MOD(p.id,6) WHEN 0 THEN 'Overclock de estudio' WHEN 1 THEN 'Turbo multinúcleo' WHEN 2 THEN 'Aceleración de IA' WHEN 3 THEN 'Modo competitivo' WHEN 4 THEN 'Render sin límites' ELSE 'Perfil de máxima potencia' END,'extra',1200+MOD(p.id*947,12800)))),
-  JSON_OBJECT('grupo',CONCAT('equipo-',p.id,'-memoria'),
-    'grupoEtiqueta',CASE MOD(p.id,5) WHEN 0 THEN 'Memoria de trabajo' WHEN 1 THEN 'Almacenamiento ultrarrápido' WHEN 2 THEN 'Memoria para proyectos' WHEN 3 THEN 'Capacidad de biblioteca' ELSE 'Memoria de alto ancho de banda' END,
-    'opciones',JSON_ARRAY(
-      JSON_OBJECT('valor',CONCAT('base-',p.id,'-memoria'),'etiqueta','Configuración incluida','extra',0),
-      JSON_OBJECT('valor',CONCAT('plus-',p.id,'-memoria'),'etiqueta',CASE MOD(p.id,5) WHEN 0 THEN 'Kit RAM de gran capacidad' WHEN 1 THEN 'SSD NVMe de expansión' WHEN 2 THEN 'Memoria para multitarea extrema' WHEN 3 THEN 'Archivo local de 16 TB' ELSE 'Memoria de latencia ultrabaja' END,'extra',900+MOD(p.id*613,9800)))),
-  JSON_OBJECT('grupo',CONCAT('equipo-',p.id,'-experiencia'),
-    'grupoEtiqueta',CASE MOD(p.id,6) WHEN 0 THEN 'Refrigeración y silencio' WHEN 1 THEN 'Movilidad extendida' WHEN 2 THEN 'Pantalla de referencia' WHEN 3 THEN 'Conectividad avanzada' WHEN 4 THEN 'Estación de trabajo' ELSE 'Cobertura y soporte' END,
-    'opciones',JSON_ARRAY(
-      JSON_OBJECT('valor',CONCAT('base-',p.id,'-experiencia'),'etiqueta','Configuración estándar','extra',0),
-      JSON_OBJECT('valor',CONCAT('plus-',p.id,'-experiencia'),'etiqueta',CASE MOD(p.id,6) WHEN 0 THEN 'Lazo líquido silencioso' WHEN 1 THEN 'Batería de autonomía extendida' WHEN 2 THEN 'Panel calibrado de color' WHEN 3 THEN 'Dock Thunderbolt de expansión' WHEN 4 THEN 'Kit de captura y streaming' ELSE 'Soporte premium de cinco años' END,'extra',700+MOD(p.id*431,7600))))
-)
-WHERE p.tipo = 'computadora'
-  AND p.nombre NOT IN ('PC para juegos VENGEANCE a7500','ASUS Zenbook 14 OLED','MacBook Pro 16" M5 Max');
-
+--
+-- Dumping routines for database 'computlalte_db'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1677,4 +3628,4 @@ WHERE p.tipo = 'computadora'
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-11-04 18:50:30
+-- Dump completed on 2026-11-11 19:07:08

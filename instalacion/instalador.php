@@ -5,9 +5,15 @@
 // crea la base de datos, importa todas las tablas con sus datos y
 // verifica que todo quedó bien. No hace falta usar phpMyAdmin.
 //
-// Uso:  http://localhost/computlaltenango/instalacion/instalador.php
+// Uso:  http://localhost/computlalte/instalacion/instalador.php
 
 declare(strict_types=1);
+
+// El proyecto funciona desde PHP 7.1. Si el servidor trae una versión anterior,
+// se dice claro en lugar de fallar a mitad de la pantalla. La comprobación vive
+// en api/_compat.php para que valga en todo el sitio.
+require_once __DIR__ . "/../api/_compat.php";
+exigir_php_compatible();
 
 // Credenciales y sesión: _bd.php carga conexion.php (constantes DB_*) y
 // abre la sesión de PHP para comprobar quién está instalando.
@@ -37,15 +43,28 @@ $productos_actuales = 0;
 $usuarios_actuales = 0;
 
 if (!$fallo_conexion) {
-    $resultado = $servidor->query(
-        "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '" . DB_NOMBRE . "'"
-    );
-    $base_existe = $resultado && $resultado->num_rows > 0;
+    try {
+        $resultado = $servidor->query(
+            "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '" . DB_NOMBRE . "'"
+        );
+        $base_existe = $resultado && $resultado->num_rows > 0;
 
-    if ($base_existe) {
-        $servidor->select_db(DB_NOMBRE);
-        $productos_actuales = (int) $servidor->query("SELECT COUNT(*) AS t FROM productos")->fetch_assoc()["t"];
-        $usuarios_actuales = (int) $servidor->query("SELECT COUNT(*) AS t FROM usuarios")->fetch_assoc()["t"];
+        if ($base_existe && $servidor->select_db(DB_NOMBRE)) {
+            // Una base a medio crear (sin todas sus tablas) no debe romper el
+            // instalador: en ese caso se trata como instalación pendiente.
+            $tabla_productos = $servidor->query("SHOW TABLES LIKE 'productos'");
+            if ($tabla_productos && $tabla_productos->num_rows > 0) {
+                $productos_actuales = (int) $servidor->query("SELECT COUNT(*) AS t FROM productos")->fetch_assoc()["t"];
+            }
+            $tabla_usuarios = $servidor->query("SHOW TABLES LIKE 'usuarios'");
+            if ($tabla_usuarios && $tabla_usuarios->num_rows > 0) {
+                $usuarios_actuales = (int) $servidor->query("SELECT COUNT(*) AS t FROM usuarios")->fetch_assoc()["t"];
+            }
+        }
+    } catch (Throwable $e) {
+        $base_existe = false;
+        $productos_actuales = 0;
+        $usuarios_actuales = 0;
     }
 }
 
@@ -244,7 +263,10 @@ if ($accion === "instalar" && !$fallo_conexion) {
         <p class="nota">
             ¿Problemas? Revisa que Apache y MySQL estén encendidos en el Panel de XAMPP y que este
             proyecto esté dentro de <code>htdocs</code>. El detalle completo está en
-            <code>instalacion/README.md</code>.
+            <code>instalacion/README.md</code>.<br>
+            Servidor: <code><?php echo htmlspecialchars(php_resumen()); ?></code>
+            (se admite de <?php echo PHP_VERSION_MINIMA; ?> en adelante).
+            <a href="requisitos.php">Ver el diagnóstico completo</a>.
         </p>
     </main>
 </body>

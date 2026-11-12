@@ -252,7 +252,7 @@
         resumenPendientes.replaceChildren();
 
         if (!pendientes.length) {
-            resumenPendientes.append(crearVacio("No hay solicitudes esperando revisión."));
+            resumenPendientes.append(crearVacio("No hay solicitudes esperando revisión. El gerente debe estar tomando café."));
         } else {
             pendientes.slice(0, 5).forEach(function (solicitud) {
                 const fila = crear("div", "panel-lista-item");
@@ -284,7 +284,7 @@
         listaBitacora.replaceChildren();
 
         if (!movimientos.length) {
-            listaBitacora.append(crearVacio("Todavía no hay movimientos registrados."));
+            listaBitacora.append(crearVacio("Todavía no hay movimientos registrados. Silencio sospechoso, la verdad."));
         } else {
             movimientos.slice(0, 6).forEach(function (movimiento) {
                 const fila = crear("div", "panel-lista-item");

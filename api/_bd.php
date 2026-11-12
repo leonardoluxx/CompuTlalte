@@ -4,18 +4,21 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . "/_compat.php";
 require __DIR__ . "/../conexion.php";
+
+// Primero lo primero: si el PHP del servidor es más viejo que 7.1, se avisa
+// con un mensaje claro en vez de reventar en mitad de un archivo.
+exigir_php_compatible();
 
 // ------------------------------------------------------------- sesión
 // Todas las peticiones comparten la sesión de PHP (cookie PHPSESSID).
 // La cookie es HttpOnly (JavaScript no puede leerla) y SameSite=Lax
 // (frena CSRF entre sitios). "secure" se activa solo bajo HTTPS.
 if (session_status() === PHP_SESSION_NONE) {
-    session_set_cookie_params([
-        "httponly" => true,
-        "samesite" => "Lax",
-        "secure" => (($_SERVER["HTTPS"] ?? "") !== "" && $_SERVER["HTTPS"] !== "off")
-    ]);
+    // La forma de la llamada cambia según la versión de PHP; _compat.php
+    // elige la correcta.
+    configurar_cookie_sesion();
     session_start();
 }
 
@@ -64,7 +67,11 @@ function rate_limit(string $accion, int $max = 30, int $ventana = 60): void
     $ahora = time();
     $clave = "rate_" . $accion;
     $historial = $_SESSION[$clave] ?? [];
-    $historial = array_filter($historial, fn(int $t): bool => $ahora - $t < $ventana);
+    // Con función anónima clásica: las funciones flecha (fn) llegaron en PHP
+    // 7.4 y en un PHP anterior esta línea daba un error de sintaxis en $t.
+    $historial = array_filter($historial, function ($marca) use ($ahora, $ventana) {
+        return $ahora - $marca < $ventana;
+    });
     if (count($historial) >= $max) {
         http_response_code(429);
         responder_error("Demasiadas peticiones. Espera un momento.", 429);
@@ -100,14 +107,16 @@ function leer_cuerpo(): array
 }
 
 // ------------------------------------------------------- respuestas
-function responder_ok(array $datos = []): never
+// Sin tipo de retorno a propósito: estos ayudantes terminan con exit y el
+// tipo "never" solo existe desde PHP 8.1; así el código corre igual en 7.4.
+function responder_ok(array $datos = [])
 {
     cabeceras_json();
     echo json_encode(array_merge(["ok" => true], $datos), JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-function responder_error(string $mensaje, int $codigo_http = 400): never
+function responder_error(string $mensaje, int $codigo_http = 400)
 {
     http_response_code($codigo_http);
     cabeceras_json();

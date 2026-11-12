@@ -118,7 +118,9 @@ if (isset($cuerpo["imagen"])) {
 
     // Solo rutas locales dentro de imagenes/ y sin travesías de directorio.
     // Se permiten puntos (extensiones como .webp), pero nunca "..".
-    if (!preg_match("#^imagenes/[\w.\-/]+$#", $imagen) || str_contains($imagen, "..")) {
+    // strpos en lugar de str_contains: la segunda llegó en PHP 8 y esto debe
+    // funcionar también en PHP 7.4.
+    if (!preg_match("#^imagenes/[\w.\-/]+$#", $imagen) || strpos($imagen, "..") !== false) {
         responder_error("Ruta de imagen no válida.");
     }
 

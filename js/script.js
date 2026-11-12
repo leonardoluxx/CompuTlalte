@@ -205,6 +205,9 @@ const imagenPrincipalProducto = document.querySelector("#imagen-principal-produc
 const miniaturasProducto = document.querySelector("#miniaturas-producto");
 const botonImagenAnterior = document.querySelector("#imagen-anterior");
 const botonImagenSiguiente = document.querySelector("#imagen-siguiente");
+const galeriaProducto = document.querySelector(".galeria-producto");
+const DURACION_FLECHAS_GALERIA = 4000;
+let temporizadorFlechasGaleria = null;
 const tituloModal = document.querySelector("#modal-titulo");
 const categoriaProducto = document.querySelector("#categoria-producto");
 const precioProducto = document.querySelector("#precio-producto");
@@ -937,7 +940,7 @@ function mostrarOfertas() {
         : productos.filter((producto) => descuentoVigente(producto) > 0);
 
     if (!enOferta.length) {
-        const aviso = crearElemento("p", "ofertas-vacio", "Por ahora no hay ofertas activas. Vuelve pronto o explora todo el catálogo.");
+        const aviso = crearElemento("p", "ofertas-vacio", "Por ahora no hay ofertas activas. Nuestro gerente sigue negociando con el proveedor: y con su conciencia.");
         rejillaOfertas.replaceChildren(aviso);
         return;
     }
@@ -954,10 +957,51 @@ function mostrarOfertas() {
 }
 
 // Llena una lista de viñetas usando texto plano para cada característica.
+// Rellena una lista del modal: las primeras 4 filas van al <ul> principal
+// y el resto a un contenedor extra que "Mostrar más" despliega animando
+// grid-template-rows (0fr -> 1fr); así el contenido se abre empujando lo
+// de abajo suavemente, sin saltos ni recálculos bruscos.
 function mostrarLista(elementoLista, elementos) {
+    const filasVisibles = 4;
+    const principales = elementos.slice(0, filasVisibles);
+    const extras = elementos.slice(filasVisibles);
+
+    let contenedorExtra = elementoLista.nextElementSibling;
+    if (!contenedorExtra || !contenedorExtra.classList.contains("contenedor-filas-extra")) {
+        contenedorExtra = document.createElement("div");
+        contenedorExtra.className = "contenedor-filas-extra";
+        contenedorExtra.append(document.createElement("ul"));
+        elementoLista.after(contenedorExtra);
+    }
+
     elementoLista.replaceChildren(
-        ...elementos.map((texto) => crearElemento("li", "", texto))
+        ...principales.map((texto) => crearElemento("li", "", texto))
     );
+    contenedorExtra.firstElementChild.replaceChildren(
+        ...extras.map((texto) => crearElemento("li", "", texto))
+    );
+}
+
+// Las flechas de la galería se muestran unos segundos al abrir el producto
+// para que el usuario descubra que existen; después se desvanecen solas y
+// vuelven a aparecer al pasar el cursor o al llegar con el teclado.
+function mostrarFlechasGaleriaTemporalmente() {
+    if (!galeriaProducto) {
+        return;
+    }
+
+    window.clearTimeout(temporizadorFlechasGaleria);
+    galeriaProducto.classList.add("flechas-visibles");
+    temporizadorFlechasGaleria = window.setTimeout(() => {
+        galeriaProducto.classList.remove("flechas-visibles");
+        temporizadorFlechasGaleria = null;
+    }, DURACION_FLECHAS_GALERIA);
+}
+
+function ocultarFlechasGaleria() {
+    window.clearTimeout(temporizadorFlechasGaleria);
+    temporizadorFlechasGaleria = null;
+    galeriaProducto?.classList.remove("flechas-visibles");
 }
 
 // Actualiza la imagen grande y marca cuál miniatura está seleccionada.
@@ -999,6 +1043,39 @@ function cambiarImagenProducto(direccion) {
     seleccionarImagenProducto(productoModalActual, nuevoIndice);
 }
 
+// Decide si el botón "Mostrar más" hace falta de verdad. Primero se mide el
+// modal con todas las filas visibles: si el contenido cabe completo, se deja
+// tal cual y no se oculta nada. Solo cuando la columna desborda se colapsan
+// las listas a 4 filas (y a 3 si aún no cabe) para ofrecer el botón.
+function ajustarDetallesModal(hayDetallesExtra) {
+    if (!listasDetallesProducto) {
+        return;
+    }
+
+    const columnaDetalles = listasDetallesProducto.closest(".informacion-producto");
+    if (!columnaDetalles) {
+        return;
+    }
+
+    const contenidoDesborda = () => columnaDetalles.scrollHeight > columnaDetalles.clientHeight + 1;
+
+    if (!hayDetallesExtra || !contenidoDesborda()) {
+        return;
+    }
+
+    listasDetallesProducto.classList.add("listas-colapsadas");
+
+    if (botonAlternarDetalles) {
+        botonAlternarDetalles.hidden = false;
+        botonAlternarDetalles.setAttribute("aria-expanded", "false");
+        botonAlternarDetalles.textContent = "Mostrar más";
+    }
+
+    if (contenidoDesborda()) {
+        listasDetallesProducto.classList.add("listas-compactas");
+    }
+}
+
 // Abre el modal y presenta la galería, el precio y las especificaciones elegidas.
 function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje = 0 } = {}) {
     // Sirve para ofrecer este producto en el buscador la próxima vez.
@@ -1017,6 +1094,24 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
         reseñasModal.textContent = producto.reseñas ? `${producto.reseñas} reseñas` : "";
     }
 
+    // Las listas nacen completas. La decisión de colapsarlas se toma DESPUÉS
+    // de abrir el modal, midiendo si el contenido realmente desborda; así el
+    // botón no aparece en tarjetas que ya se veían bien sin él. Se desactiva
+    // la transición durante esa primera medición para que el ajuste no anime.
+    const detallesVisiblesIniciales = 4;
+    const hayDetallesExtra = producto.caracteristicasClave.length > detallesVisiblesIniciales
+        || producto.especificacionesTecnicas.length > detallesVisiblesIniciales;
+
+    if (listasDetallesProducto) {
+        listasDetallesProducto.classList.add("sin-transicion");
+        listasDetallesProducto.classList.remove("listas-colapsadas", "listas-compactas");
+    }
+    if (botonAlternarDetalles) {
+        botonAlternarDetalles.hidden = true;
+        botonAlternarDetalles.setAttribute("aria-expanded", "false");
+        botonAlternarDetalles.textContent = "Mostrar más";
+    }
+
     mostrarLista(listaCaracteristicas, producto.caracteristicasClave);
     mostrarLista(listaEspecificaciones, producto.especificacionesTecnicas);
 
@@ -1030,21 +1125,6 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
         }
     }
     actualizarPrecioProducto();
-
-    // Igual que en el catálogo de accesorios: la lista queda colapsada
-    // mostrando 4 filas por columna en cuanto alguna la rebasa.
-    const detallesVisiblesIniciales = 4;
-    const hayDetallesExtra = producto.caracteristicasClave.length > detallesVisiblesIniciales
-        || producto.especificacionesTecnicas.length > detallesVisiblesIniciales;
-
-    if (listasDetallesProducto) {
-        listasDetallesProducto.classList.toggle("listas-colapsadas", hayDetallesExtra);
-    }
-    if (botonAlternarDetalles) {
-        botonAlternarDetalles.hidden = !hayDetallesExtra;
-        botonAlternarDetalles.setAttribute("aria-expanded", "false");
-        botonAlternarDetalles.textContent = "Mostrar más";
-    }
 
     miniaturasProducto.replaceChildren();
 
@@ -1069,6 +1149,14 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
     seleccionarImagenProducto(producto, 0);
     modalProducto.showModal();
     modalProducto.focus({ preventScroll: true });
+    mostrarFlechasGaleriaTemporalmente();
+    ajustarDetallesModal(hayDetallesExtra);
+
+    // La transición se reactiva en el siguiente cuadro, cuando el estado
+    // inicial ya quedó pintado sin animación.
+    requestAnimationFrame(() => {
+        listasDetallesProducto?.classList.remove("sin-transicion");
+    });
 }
 
 // Presenta el catálogo cuando el documento ya está listo para usarse.
@@ -1129,19 +1217,76 @@ if (filtrosComputadoras && selectorOrdenComputadoras && botonLimpiarFiltrosCompu
     filtrosComputadoras.addEventListener("change", mostrarComputadoras);
     selectorOrdenComputadoras.addEventListener("change", mostrarComputadoras);
     botonLimpiarFiltrosComputadoras.addEventListener("click", () => {
+        // "Limpiar filtros" quita TODO: se vuelve a ver el catálogo completo,
+        // no un estado inicial que ya traía "Juegos" marcado.
         filtrosComputadoras.querySelectorAll('input[type="checkbox"]').forEach((filtro) => {
-            // Vuelve al estado inicial: toda la disponibilidad y solo Juegos.
-            if (filtro.name === "disponibilidad-computadora") {
-                filtro.checked = true;
-            } else if (filtro.name === "categoria-computadora") {
-                filtro.checked = filtro.value === "Juegos";
-            } else {
-                filtro.checked = false;
-            }
+            filtro.checked = false;
         });
         selectorOrdenComputadoras.value = "destacados";
         mostrarComputadoras();
     });
+}
+
+// Reacomodo suave de las tarjetas al abrir o cerrar los filtros.
+// Se mide dónde estaba cada tarjeta, se aplica el cambio y cada una viaja
+// desde su posición anterior hasta la nueva. Es puro adorno: si el sistema
+// pide movimiento reducido o el navegador no soporta animaciones, el cambio
+// se aplica de inmediato y nada se rompe.
+const prefiereMovimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function reacomodarTarjetas(contenedor, aplicarCambio) {
+    const tarjetas = contenedor ? [...contenedor.querySelectorAll(".tarjeta-producto")] : [];
+    const puedeAnimar =
+        tarjetas.length > 0 &&
+        !prefiereMovimientoReducido.matches &&
+        typeof Element.prototype.animate === "function";
+
+    if (!puedeAnimar) {
+        aplicarCambio();
+        return;
+    }
+
+    const posicionesPrevias = tarjetas.map((tarjeta) => tarjeta.getBoundingClientRect());
+
+    // Sin transición de columna: el destino final se calcula al instante y la
+    // suavidad la aportan las tarjetas, no el ancho de la rejilla.
+    contenedor.classList.add("reacomodo-instantaneo");
+    aplicarCambio();
+    void contenedor.offsetWidth;
+
+    tarjetas.forEach((tarjeta, indice) => {
+        const antes = posicionesPrevias[indice];
+        const ahora = tarjeta.getBoundingClientRect();
+        const moverX = antes.left - ahora.left;
+        const moverY = antes.top - ahora.top;
+        const escalarX = ahora.width ? antes.width / ahora.width : 1;
+        const escalarY = ahora.height ? antes.height / ahora.height : 1;
+
+        const quieta =
+            Math.abs(moverX) < 1 &&
+            Math.abs(moverY) < 1 &&
+            Math.abs(escalarX - 1) < 0.01 &&
+            Math.abs(escalarY - 1) < 0.01;
+
+        if (quieta) {
+            return;
+        }
+
+        tarjeta.animate(
+            [
+                { transform: `translate(${moverX}px, ${moverY}px) scale(${escalarX}, ${escalarY})` },
+                { transform: "none" }
+            ],
+            {
+                duration: 460,
+                delay: Math.min(indice * 6, 120),
+                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                fill: "backwards"
+            }
+        );
+    });
+
+    window.setTimeout(() => contenedor.classList.remove("reacomodo-instantaneo"), 600);
 }
 
 // Muestra u oculta el panel lateral de computadoras y actualiza el botón.
@@ -1160,7 +1305,10 @@ if (contenedorComputadoras && botonAlternarFiltrosComputadoras && textoAlternarF
 
     botonAlternarFiltrosComputadoras.addEventListener(
         "click",
-        () => aplicarEstadoFiltrosComputadoras(!filtrosVisiblesComputadoras)
+        () =>
+            reacomodarTarjetas(contenedorComputadoras, () =>
+                aplicarEstadoFiltrosComputadoras(!filtrosVisiblesComputadoras)
+            )
     );
     consultaFiltrosMovilesComputadoras.addEventListener(
         "change",
@@ -1192,9 +1340,9 @@ if (filtrosAccesorios && selectorOrdenAccesorios && botonLimpiarFiltros) {
     filtrosAccesorios.addEventListener("change", mostrarAccesorios);
     selectorOrdenAccesorios.addEventListener("change", mostrarAccesorios);
     botonLimpiarFiltros.addEventListener("click", () => {
+        // Igual que en computadoras: sin filtros se ve todo el catálogo.
         filtrosAccesorios.querySelectorAll('input[type="checkbox"]').forEach((filtro) => {
-            // Vuelve al estado inicial: disponibilidad completa, sin categorías.
-            filtro.checked = filtro.name === "disponibilidad";
+            filtro.checked = false;
         });
         selectorOrdenAccesorios.value = "destacados";
         mostrarAccesorios();
@@ -1216,7 +1364,9 @@ if (contenedorCatalogo && botonAlternarFiltros && textoAlternarFiltros) {
     // En escritorio el panel inicia visible; en móvil, oculto.
     aplicarEstadoFiltros(filtrosVisibles);
 
-    botonAlternarFiltros.addEventListener("click", () => aplicarEstadoFiltros(!filtrosVisibles));
+    botonAlternarFiltros.addEventListener("click", () =>
+        reacomodarTarjetas(contenedorCatalogo, () => aplicarEstadoFiltros(!filtrosVisibles))
+    );
     consultaFiltrosMoviles.addEventListener("change", (evento) => aplicarEstadoFiltros(!evento.matches));
 }
 
@@ -1321,6 +1471,7 @@ botonCerrarModal.addEventListener("click", () => modalProducto.close());
 botonImagenAnterior.addEventListener("click", () => cambiarImagenProducto(-1));
 botonImagenSiguiente.addEventListener("click", () => cambiarImagenProducto(1));
 modalProducto.addEventListener("close", () => {
+    ocultarFlechasGaleria();
     elementoQueAbrioModal?.focus();
     elementoQueAbrioModal = null;
     productoModalActual = null;
@@ -1352,6 +1503,8 @@ document.addEventListener("keydown", (evento) => {
 });
 
 // Alterna entre las primeras filas y todas las características/especificaciones.
+// El despliegue lo anima el CSS (grid-template-rows 0fr -> 1fr de las filas
+// extra): aquí solo se cambia la clase y se sincroniza el botón.
 if (botonAlternarDetalles && listasDetallesProducto) {
     botonAlternarDetalles.addEventListener("click", () => {
         const quedanColapsadas = listasDetallesProducto.classList.toggle("listas-colapsadas");
@@ -1482,7 +1635,8 @@ if (seccionPersonalizacion) {
     });
 }
 
-// El botón "Personalizar ahora" pliega o despliega las opciones con animación.
+// El botón "Personalizar ahora" pliega o despliega las opciones con la
+// animación CSS del contenedor (grid-template-rows 0fr -> 1fr).
 if (botonPersonalizacion) {
     botonPersonalizacion.addEventListener("click", () => {
         const estanAbiertas = botonPersonalizacion.getAttribute("aria-expanded") === "true";
