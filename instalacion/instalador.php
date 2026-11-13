@@ -135,11 +135,25 @@ if ($accion === "instalar" && !$fallo_conexion) {
         $imagenes = (int) $servidor->query("SELECT COUNT(*) AS t FROM imagenes_producto")->fetch_assoc()["t"];
         $ventas = (int) $servidor->query("SELECT COUNT(*) AS t FROM ventas")->fetch_assoc()["t"];
 
+        // Reseñas de productos y encuestas del sitio: la tienda las muestra
+        // siempre desde la base de datos, así que se comprueba que viajaron.
+        $resenas_productos = 0;
+        $resenas_sitio = 0;
+        $consulta_resenas = $servidor->query("SELECT COUNT(*) AS t FROM resenas_productos");
+        if ($consulta_resenas) {
+            $resenas_productos = (int) $consulta_resenas->fetch_assoc()["t"];
+        }
+        $consulta_sitio = $servidor->query("SELECT COUNT(*) AS t FROM resenas_sitio");
+        if ($consulta_sitio) {
+            $resenas_sitio = (int) $consulta_sitio->fetch_assoc()["t"];
+        }
+
         paso("Tablas creadas: $tablas.");
         paso("Productos con su precio final: $productos.");
         paso("Especificaciones cargadas: $especificaciones. Imágenes registradas: $imagenes.");
         paso("Cuentas creadas: $usuarios (administrador, gerente y cliente).");
         paso("Ventas de demostración: $ventas (para que los reportes tengan datos).");
+        paso("Reseñas de productos: $resenas_productos. Encuestas del sitio: $resenas_sitio.");
 
         if ($productos < 1 || $usuarios < 1) {
             throw new RuntimeException("La importación terminó pero faltan datos: revisa el archivo SQL.");

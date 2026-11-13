@@ -240,9 +240,41 @@
         </section>
     </main>
 
+
+    <!-- Encuesta de satisfacción (aparece después de comprar). -->
+    <div class="encuesta-sitio oculta" id="encuesta-sitio" hidden role="dialog" aria-label="Encuesta de satisfacción">
+        <button class="encuesta-cerrar" id="encuesta-cerrar" type="button" aria-label="Cerrar encuesta">×</button>
+        <p class="encuesta-titulo">¿Cómo fue tu experiencia en Computlalte?</p>
+        <div class="encuesta-estrellas" id="encuesta-estrellas">
+            <button type="button" data-valor="1" aria-label="1 estrella">★</button>
+            <button type="button" data-valor="2" aria-label="2 estrellas">★</button>
+            <button type="button" data-valor="3" aria-label="3 estrellas">★</button>
+            <button type="button" data-valor="4" aria-label="4 estrellas">★</button>
+            <button type="button" data-valor="5" aria-label="5 estrellas">★</button>
+        </div>
+        <label class="encuesta-campo">
+            <span>¿Qué tan fácil te resultó comprar?</span>
+            <select id="encuesta-facilidad">
+                <option value="">Sin responder</option>
+                <option value="5">Muy fácil</option>
+                <option value="4">Fácil</option>
+                <option value="3">Normal</option>
+                <option value="2">Complicado</option>
+                <option value="1">Muy complicado</option>
+            </select>
+        </label>
+        <label class="encuesta-campo">
+            <span>¿Qué fue lo más difícil o qué mejorarías? (opcional)</span>
+            <textarea id="encuesta-comentario" rows="2" maxlength="400"></textarea>
+        </label>
+        <button class="encuesta-enviar boton-brillante" id="encuesta-enviar" type="button">Enviar</button>
+        <p class="encuesta-gracias" id="encuesta-gracias" hidden>¡Gracias por tu feedback!</p>
+    </div>
+
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
     <script src="api/bootstrap.php?v=1"></script>
-    <script src="js/tienda-datos.js?v=5"></script>
+    <script src="js/tienda-datos.js?v=6"></script>
     <script src="js/scripts-pago.js?v=6"></script>
+    <script src="js/encuesta.js?v=3" defer></script>
 </body>
 </html>

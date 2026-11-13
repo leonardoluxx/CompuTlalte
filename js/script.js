@@ -201,6 +201,20 @@ const MAXIMO_HISTORIAL_BUSQUEDA = 6;
 const CLAVE_PRODUCTOS_VISTOS = "computlalte-productos-vistos";
 const MAXIMO_PRODUCTOS_VISTOS = 4;
 const botonCerrarModal = document.querySelector("#cerrar-modal-producto");
+const modalResenas = document.querySelector("#modal-resenas");
+const botonCerrarResenas = document.querySelector("#cerrar-modal-resenas");
+const promedioResenas = document.querySelector("#promedio-resenas");
+const listaResenas = document.querySelector("#lista-resenas");
+const botonEscribirResena = document.querySelector("#escribir-resena");
+const botonCancelarResena = document.querySelector("#cancelar-resena");
+const formResena = document.querySelector("#form-resena");
+const publicarComoResena = document.querySelector("#resena-como");
+const avisoResena = document.querySelector("#aviso-resena");
+const contenedorEstrellasResena = document.querySelector("#estrellas-resena");
+const botonesEstrellasResena = contenedorEstrellasResena
+    ? Array.from(contenedorEstrellasResena.querySelectorAll("button"))
+    : [];
+const inputResenaComentario = document.querySelector("#resena-comentario");
 const imagenPrincipalProducto = document.querySelector("#imagen-principal-producto");
 const miniaturasProducto = document.querySelector("#miniaturas-producto");
 const botonImagenAnterior = document.querySelector("#imagen-anterior");
@@ -778,7 +792,24 @@ function crearTarjetaProducto(producto, { descuentoPorcentaje = null, etiquetaOf
     pie.append(precio, accionesTarjeta);
     contenido.append(pie);
     botonTarjeta.append(marcoImagen, contenido);
-    tarjeta.append(botonTarjeta);
+
+    // Franja de reseñas bajo la tarjeta: SIEMPRE visible y cliqueable, con
+    // el promedio y el total REALES de la base de datos. Sin reseñas dice
+    // "Aún no tiene reseñas" y abre el panel para dejar la primera.
+    const botonResenas = document.createElement("button");
+    botonResenas.className = "reseñas-tarjeta";
+    botonResenas.type = "button";
+    botonResenas.dataset.idProductoResenas = String(producto.id);
+    botonResenas.title = "Ver reseñas de este producto";
+    botonResenas.setAttribute("aria-label", `Ver reseñas de ${producto.nombre}`);
+    pintarResumenResenas(botonResenas, producto);
+    botonResenas.addEventListener("click", () => {
+        // Abre el detalle del producto y encima el panel de reseñas.
+        mostrarDetallesProducto(producto, botonResenas, { descuentoPorcentaje: descuento });
+        abrirResenasProducto();
+    });
+
+    tarjeta.append(botonTarjeta, botonResenas);
 
     return tarjeta;
 }
@@ -1089,10 +1120,9 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
     descripcionProducto.textContent = producto.descripcionLarga;
     estadoCompra.textContent = "";
 
-    const reseñasModal = document.querySelector("#reseñas-modal");
-    if (reseñasModal) {
-        reseñasModal.textContent = producto.reseñas ? `${producto.reseñas} reseñas` : "";
-    }
+    // Resumen de reseñas junto al título: promedio y total REALES de la base
+    // de datos (o "Aún no tiene reseñas"). Siempre cliqueable.
+    pintarResumenResenas(textoResenasModal, producto);
 
     // Las listas nacen completas. La decisión de colapsarlas se toma DESPUÉS
     // de abrir el modal, midiendo si el contenido realmente desborda; así el
@@ -1158,7 +1188,293 @@ function mostrarDetallesProducto(producto, elementoOrigen, { descuentoPorcentaje
         listasDetallesProducto?.classList.remove("sin-transicion");
     });
 }
+// ===================================================== reseñas de producto
+// Token CSRF que api/bootstrap.php deja en el <meta> de la página.
+function tokenCsrfActual() {
+    const meta = document.querySelector('meta[name="csrf-token"]');
+    return meta ? meta.content : "";
+}
 
+// Usuario con sesión (o null) según los datos que entrega el servidor.
+// Tienda mantiene la sesión al día: su caché se refresca al volver de otra
+// página (incluso cuando el navegador restaura esta desde su caché). El
+// volcado incrustado en DatosBD, en cambio, puede quedarse viejo.
+function usuarioSesionActual() {
+    const tienda = window.Tienda;
+    const enTienda = tienda && typeof tienda.sesion === "function"
+        ? tienda.sesion()
+        : null;
+    if (enTienda) {
+        return enTienda;
+    }
+    const datos = window.DatosBD || {};
+    return datos.sesion || null;
+}
+
+// Convierte 4 en "★★★★☆".
+function estrellasTexto(cantidad) {
+    const n = Math.max(0, Math.min(5, Number(cantidad) || 0));
+    return "★".repeat(n) + "☆".repeat(5 - n);
+}
+
+// Pinta el resumen de reseñas (estrellas + texto) dentro de un elemento.
+// El total y el promedio SIEMPRE vienen de la base de datos; si el producto
+// no tiene reseñas se muestran las estrellas vacías con el aviso
+// "Aún no tiene reseñas", y todo queda cliqueable para dejar la primera.
+function pintarResumenResenas(elemento, producto) {
+    if (!elemento) {
+        return;
+    }
+
+    const total = Number(producto && producto.reseñas) || 0;
+    const promedio = Number(producto && producto.promedioResenas) || 0;
+
+    elemento.replaceChildren();
+    elemento.append(
+        crearElemento("span", "estrellas-resumen", estrellasTexto(total > 0 ? Math.round(promedio) : 0)),
+        crearElemento(
+            "span",
+            "texto-resumen-resenas",
+            total > 0
+                ? `${promedio.toFixed(1)} · ${total} reseña${total === 1 ? "" : "s"}`
+                : "Aún no tiene reseñas"
+        )
+    );
+    elemento.classList.toggle("sin-resenas", total === 0);
+}
+
+// Formatea una fecha MySQL a un texto corto y legible.
+function formatearFecha(fechaIso) {
+    if (!fechaIso) return "";
+    const fecha = new Date(String(fechaIso).replace(" ", "T"));
+    if (isNaN(fecha.getTime())) return String(fechaIso).slice(0, 10);
+    try {
+        return fecha.toLocaleDateString("es-MX", { year: "numeric", month: "short", day: "numeric" });
+    } catch (error) {
+        return String(fechaIso).slice(0, 10);
+    }
+}
+
+// Dibuja el promedio y la lista de reseñas dentro del modal.
+function renderizarResenas(datos) {
+    if (!listaResenas) return;
+    listaResenas.replaceChildren();
+
+    const resenas = (datos && datos.reseñas) || [];
+    const total = Number(datos && datos.total) || resenas.length;
+    const promedio = Number(datos && datos.promedio) || 0;
+
+    if (promedioResenas) {
+        promedioResenas.textContent = total > 0
+            ? `${promedio.toFixed(1)} ★ · ${total} reseña${total === 1 ? "" : "s"}`
+            : "Aún sin reseñas";
+    }
+
+    if (!resenas.length) {
+        listaResenas.append(crearElemento("p", "reseña-comentario", "Este producto aún no tiene reseñas. ¡Sé el primero en opinar!"));
+        return;
+    }
+
+    resenas.forEach((resena) => {
+        const item = crearElemento("article", "reseña-item");
+        const cabecera = crearElemento("div", "reseña-cabecera");
+        cabecera.append(
+            crearElemento("span", "reseña-nombre", resena.nombre_usuario || "Anónimo"),
+            crearElemento("span", "reseña-fecha", formatearFecha(resena.fecha))
+        );
+        item.append(
+            cabecera,
+            crearElemento("span", "reseña-estrellas", estrellasTexto(resena.calificacion)),
+            crearElemento("p", "reseña-comentario", resena.comentario || "")
+        );
+        listaResenas.append(item);
+    });
+}
+
+// Pide a la API las reseñas del producto y las pinta.
+async function cargarResenasProducto(productoId) {
+    if (!listaResenas) return;
+    listaResenas.replaceChildren(crearElemento("p", "reseña-comentario", "Cargando reseñas…"));
+    try {
+        const respuesta = await fetch(`api/resenas.php?producto_id=${encodeURIComponent(productoId)}`, {
+            headers: { "Accept": "application/json" }
+        });
+        const datos = await respuesta.json();
+        if (!respuesta.ok || !datos.ok) {
+            throw new Error(datos.mensaje || "No se pudieron cargar las reseñas.");
+        }
+
+        // Si seguimos viendo el mismo producto, sincroniza su resumen
+        // (modal y franjas de las tarjetas) con los datos recién llegados.
+        if (productoModalActual && Number(productoModalActual.id) === Number(productoId)) {
+            productoModalActual.reseñas = Number(datos.total) || 0;
+            productoModalActual.promedioResenas = Number(datos.promedio) || 0;
+            pintarResumenResenas(textoResenasModal, productoModalActual);
+            document.querySelectorAll(`.reseñas-tarjeta[data-id-producto-resenas="${productoId}"]`)
+                .forEach((boton) => pintarResumenResenas(boton, productoModalActual));
+        }
+
+        renderizarResenas(datos);
+    } catch (error) {
+        listaResenas.replaceChildren(crearElemento("p", "reseña-comentario", "No se pudieron cargar las reseñas."));
+    }
+}
+
+// Valor elegido en las estrellas del formulario (0 = sin elegir).
+let valorEstrellasResena = 0;
+
+// Pinta amarillas las estrellas hasta el valor elegido.
+function pintarEstrellasResena(valor) {
+    valorEstrellasResena = valor;
+    botonesEstrellasResena.forEach((boton) => {
+        const activa = Number(boton.dataset.valor) <= valor;
+        boton.classList.toggle("activa", activa);
+        boton.setAttribute("aria-pressed", activa ? "true" : "false");
+    });
+}
+
+// Devuelve el modal a su estado inicial: lista visible y formulario oculto.
+function reiniciarFormularioResena() {
+    if (formResena) formResena.hidden = true;
+    if (inputResenaComentario) inputResenaComentario.value = "";
+    pintarEstrellasResena(0);
+    if (botonEscribirResena) botonEscribirResena.hidden = false;
+    if (avisoResena) avisoResena.hidden = true;
+}
+
+// Abre el modal de reseñas sobre el modal de producto.
+function abrirResenasProducto() {
+    if (!productoModalActual || !modalResenas) return;
+
+    // Siempre arranca mostrando la lista de reseñas; el formulario solo
+    // aparece cuando el visitante pulsa "Escribir una reseña".
+    reiniciarFormularioResena();
+
+    cargarResenasProducto(productoModalActual.id);
+    if (!modalResenas.open) modalResenas.showModal();
+}
+
+function cerrarResenasProducto() {
+    if (modalResenas && modalResenas.open) modalResenas.close();
+}
+
+// Guarda una reseña nueva y recarga la lista.
+async function enviarResena(evento) {
+    evento.preventDefault();
+    if (!productoModalActual) return;
+
+    const sesion = usuarioSesionActual();
+    if (!sesion) {
+        if (window.Notificaciones) Notificaciones.aviso("Inicia sesión para dejar tu reseña.", "Sesión requerida");
+        return;
+    }
+
+    const nombre = sesion.nombre || "";
+    const estrellas = valorEstrellasResena;
+    const comentario = (inputResenaComentario && inputResenaComentario.value.trim()) || "";
+    const boton = formResena ? formResena.querySelector(".boton-enviar-resena") : null;
+
+    if (estrellas < 1) {
+        if (window.Notificaciones) Notificaciones.aviso("Selecciona cuántas estrellas le das al producto.", "Falta tu calificación");
+        return;
+    }
+
+    if (boton) { boton.disabled = true; boton.textContent = "Enviando…"; }
+    try {
+        const respuesta = await fetch("api/resenas.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": tokenCsrfActual()
+            },
+            body: JSON.stringify({
+                producto_id: productoModalActual.id,
+                nombre: nombre,
+                estrellas: estrellas,
+                comentario: comentario,
+                csrf: tokenCsrfActual()
+            })
+        });
+        const datos = await respuesta.json();
+        if (!respuesta.ok || !datos.ok) {
+            throw new Error(datos.mensaje || "No se pudo guardar tu reseña.");
+        }
+        if (window.Notificaciones) Notificaciones.toast({ tipo: "exito", titulo: "¡Gracias!", texto: "Tu reseña se publicó." });
+        reiniciarFormularioResena();
+        cargarResenasProducto(productoModalActual.id);
+    } catch (error) {
+        if (window.Notificaciones) Notificaciones.alerta(error.message, "No se pudo enviar");
+    } finally {
+        if (boton) { boton.disabled = false; boton.textContent = "Enviar reseña"; }
+    }
+}
+
+const textoResenasModal = document.querySelector("#reseñas-modal");
+// Con el <button> nativo no hacen falta trucos de rol o tabindex: Enter,
+// Espacio y el clic funcionan solos.
+if (textoResenasModal && modalResenas) {
+    textoResenasModal.addEventListener("click", abrirResenasProducto);
+}
+if (botonCerrarResenas) botonCerrarResenas.addEventListener("click", cerrarResenasProducto);
+if (botonEscribirResena && formResena) {
+    botonEscribirResena.addEventListener("click", () => {
+        const sesion = usuarioSesionActual();
+        if (!sesion) {
+            // Dos avisos a la vez: el texto rojo junto al botón (siempre
+            // visible dentro del modal) y el toast flotante que ahora sí se
+            // pinta por encima del diálogo.
+            if (avisoResena) avisoResena.hidden = false;
+            if (window.Notificaciones) Notificaciones.aviso("Inicia sesión para dejar tu reseña.", "Sesión requerida");
+            return;
+        }
+        // La cuenta ya guarda el nombre: aquí solo se eligen estrellas y
+        // comentario, sin campos de más.
+        if (avisoResena) avisoResena.hidden = true;
+        if (publicarComoResena) {
+            publicarComoResena.textContent = `Publicarás como ${sesion.nombre}`;
+            publicarComoResena.hidden = false;
+        }
+        botonEscribirResena.hidden = true;
+        formResena.hidden = false;
+        if (inputResenaComentario) inputResenaComentario.focus();
+    });
+}
+
+// "Cancelar" regresa a la lista sin guardar nada.
+if (botonCancelarResena) {
+    botonCancelarResena.addEventListener("click", reiniciarFormularioResena);
+}
+
+// Al regresar a esta página (por ejemplo, desde el login con el botón
+// "atrás"), el navegador puede restaurarla desde su caché con los datos
+// incrustados ya viejos. Se refrescan desde el servidor y el aviso rojo de
+// "inicia sesión" se retira si la sesión ya está activa.
+window.addEventListener("pageshow", function (evento) {
+    // Solo la restauración desde la caché deja datos viejos: en una carga
+    // normal el volcado incrustado ya trae la sesión al día.
+    if (!evento.persisted) {
+        return;
+    }
+    const tienda = window.Tienda;
+    if (!tienda || typeof tienda.refrescar !== "function") {
+        return;
+    }
+    Promise.resolve(tienda.refrescar())
+        .then(function () {
+            if (usuarioSesionActual() && avisoResena) {
+                avisoResena.hidden = true;
+            }
+        })
+        .catch(function () {
+            // Sin respuesta del servidor se conserva lo que había en pantalla.
+        });
+});
+
+// Estrellas clicables del formulario.
+botonesEstrellasResena.forEach((boton) => {
+    boton.addEventListener("click", () => pintarEstrellasResena(Number(boton.dataset.valor) || 0));
+});
+if (formResena) formResena.addEventListener("submit", enviarResena);
 // Presenta el catálogo cuando el documento ya está listo para usarse.
 // La categoría inicial es Juegos para no mostrar todo el catálogo de golpe.
 if (rejillaComputadoras) {
@@ -1471,6 +1787,11 @@ botonCerrarModal.addEventListener("click", () => modalProducto.close());
 botonImagenAnterior.addEventListener("click", () => cambiarImagenProducto(-1));
 botonImagenSiguiente.addEventListener("click", () => cambiarImagenProducto(1));
 modalProducto.addEventListener("close", () => {
+    // Si el detalle se cierra con el panel de reseñas abierto, este se
+    // cierra también: nunca queda un panel huérfano flotando.
+    if (modalResenas && modalResenas.open) {
+        cerrarResenasProducto();
+    }
     ocultarFlechasGaleria();
     elementoQueAbrioModal?.focus();
     elementoQueAbrioModal = null;
@@ -1486,7 +1807,13 @@ modalProducto.addEventListener("click", (evento) => {
 });
 
 // Cierra el modal con Escape y deja que su evento close restaure el foco.
+// Mientras el panel de reseñas esté abierto, Escape lo cierra a él primero
+// (comportamiento nativo del diálogo superior): el detalle no reacciona.
 document.addEventListener("keydown", (evento) => {
+    if (modalResenas && modalResenas.open) {
+        return;
+    }
+
     if (!modalProducto.open) {
         return;
     }
@@ -1604,6 +1931,19 @@ function añadirProductoAlCarrito(
 botonComprarProducto.addEventListener("click", () => {
     if (!productoModalActual) {
         estadoCompra.textContent = "No hay producto seleccionado.";
+        return;
+    }
+
+    // Comprar exige sesión: sin cuenta no se puede continuar al carrito/pago.
+    const sesion = usuarioSesionActual();
+    if (!sesion) {
+        if (window.Notificaciones) {
+            Notificaciones.aviso("Inicia sesión para comprar.", "Sesión requerida");
+        }
+        try {
+            localStorage.setItem("redirigirTrasLogin", "carrito");
+        } catch (error) {}
+        window.location.href = "login.html";
         return;
     }
 

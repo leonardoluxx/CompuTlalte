@@ -88,11 +88,14 @@ problemas al final de esta guía.
 
 3. Espera unos segundos: verás una lista con pasos en verde ✔ y los enlaces
    finales. **Listo, eso es todo.** El instalador crea la base de datos
-   `computlalte_db` con 11 tablas y el catálogo completo: **160 productos**
+   `computlalte_db` con 13 tablas y el catálogo completo: **160 productos**
    (60 computadoras y 100 accesorios), **2 130 especificaciones**, **953 imágenes
    de producto**, tres cuentas de prueba, una venta de demostración y las rutas
-   predeterminadas de portada, accesorios y ofertas. El dump incluye todo el
-   catálogo; no necesita archivos de importación adicionales.
+   predeterminadas de portada, accesorios y ofertas. También incluye **24 reseñas
+   de productos de demostración** y **3 encuestas del sitio**, para que las
+   estrellas de las tarjetas y la vista de reseñas del panel tengan datos desde
+   el primer momento. El dump incluye todo el catálogo; no necesita archivos de
+   importación adicionales.
 
    Catálogo que queda instalado (20 productos exactos por categoría):
 

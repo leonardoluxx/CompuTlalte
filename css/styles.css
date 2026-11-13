@@ -1076,6 +1076,52 @@ button {
     font-size: 20px;
 }
 
+/* Franja de reseñas de la tarjeta: botón a lo ancho bajo el contenido.
+   Siempre visible y cliqueable; muestra promedio y totales REALES de la
+   base de datos, o el aviso "Aún no tiene reseñas". */
+.reseñas-tarjeta {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 16px 13px;
+    background: transparent;
+    border: 0;
+    border-top: 1px solid #292929;
+    color: #f0c040;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.reseñas-tarjeta:hover,
+.reseñas-tarjeta:focus-visible {
+    background: rgb(240 192 64 / 8%);
+    color: #ffe066;
+}
+
+.reseñas-tarjeta .estrellas-resumen {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+}
+
+.reseñas-tarjeta .texto-resumen-resenas {
+    color: #d6d6d6;
+}
+
+/* Sin reseñas: estrellas tenues y aviso en gris cálido, sin parecer error. */
+.reseñas-tarjeta.sin-resenas .estrellas-resumen {
+    color: #6f6f6f;
+}
+
+.reseñas-tarjeta.sin-resenas .texto-resumen-resenas {
+    color: #b9b9b9;
+}
+
 .accion-ver-detalles {
     display: inline-flex;
     align-items: center;
@@ -1362,15 +1408,45 @@ button {
     text-transform: uppercase;
 }
 
+/* Botón de reseñas en el encabezado del modal de producto: promedio y
+   total REALES de la base de datos, o "Aún no tiene reseñas". Es un
+   <button> nativo, así que mouse y teclado lo activan sin trucos. */
 .reseñas-modal {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     margin-left: auto;
-    padding-right: 12px;
+    padding: 6px 10px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 8px;
     color: #f0c040;
     font-family: var(--fuente-interfaz);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.03em;
     white-space: nowrap;
+    cursor: pointer;
+    transition: text-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+.reseñas-modal:hover,
+.reseñas-modal:focus-visible {
+    color: #ffe066;
+    border-color: rgb(240 192 64 / 40%);
+    text-shadow: 0 0 8px rgba(240, 192, 64, 0.8), 0 0 16px rgba(240, 192, 64, 0.4);
+    transform: scale(1.05);
+}
+
+.reseñas-modal .estrellas-resumen {
+    letter-spacing: 0.12em;
+}
+
+/* Sin reseñas: las estrellas vacías se atenúan, el aviso queda dorado. */
+.reseñas-modal.sin-resenas .estrellas-resumen {
+    color: #6f6f6f;
+    text-shadow: none;
 }
 
 .encabezado-detalle-producto h2 {
@@ -2695,5 +2771,571 @@ h3 {
     .pie-inferior {
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+/* ============================================================ */
+/* Modal de reseñas del producto (flotante, glassmorphism)       */
+/* ============================================================ */
+.modal-resenas {
+    border: none;
+    padding: 0;
+    background: transparent;
+    color: #f2f2f2;
+    max-width: min(560px, 92vw);
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.modal-resenas::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.contenido-modal-resenas {
+    background: rgba(18, 18, 22, 0.78);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(240, 192, 64, 0.25);
+    border-radius: 18px;
+    padding: 22px 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    /* El scroll se queda dentro del modal: no se pasa a la página. */
+    overscroll-behavior: contain;
+}
+
+.encabezado-resenas {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.etiqueta-resenas {
+    margin: 0 0 4px;
+    color: #f0c040;
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.encabezado-resenas h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.promedio-resenas {
+    margin: 6px 0 0;
+    color: #f0c040;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.lista-resenas {
+    overflow-y: auto;
+    flex: 1 1 auto;
+    padding-right: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
+    max-height: 50vh;
+    overscroll-behavior: contain;
+}
+
+.reseña-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.reseña-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.reseña-nombre {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.reseña-fecha {
+    color: #9a9a9a;
+    font-size: 11px;
+}
+
+.reseña-estrellas {
+    color: #f0c040;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.reseña-comentario {
+    margin: 0;
+    color: #d0d0d0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.acciones-resenas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Aviso rojo de sesión requerida: vive junto al botón de escribir, dentro
+   del modal, para que el visitante lo vea aunque los toasts fallen. */
+.aviso-resena {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 7px 14px;
+    background: var(--color-acento-suave, rgb(255 0 51 / 14%));
+    border: 1px solid rgb(255 0 51 / 30%);
+    border-radius: 10px;
+    color: #ff5a66;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* El atributo hidden gana al display:flex: sin sesión el aviso no se pinta. */
+.aviso-resena[hidden] {
+    display: none;
+}
+
+.aviso-resena a {
+    color: #ff8a92;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.aviso-resena a:hover,
+.aviso-resena a:focus-visible {
+    color: #ffb3b8;
+}
+
+.boton-escribir-resena {
+    background: transparent;
+    border: 1px solid #f0c040;
+    color: #f0c040;
+    padding: 7px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.boton-escribir-resena:hover,
+.boton-escribir-resena:focus-visible {
+    background: #f0c040;
+    color: #111;
+    box-shadow: 0 0 14px rgba(240, 192, 64, 0.35);
+}
+
+.form-resena {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 12px;
+}
+
+/* display:flex del formulario anulaba el atributo hidden: esta regla lo
+   vuelve a ocultar cuando el HTML lo pide (la lista va primero). */
+.form-resena[hidden] {
+    display: none;
+}
+
+/* Aviso de con qué cuenta se publicará: el nombre ya lo guarda la cuenta. */
+.publicar-como {
+    margin: 0;
+    color: #9a9a9a;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* Estrellas clicables para calificar: las mismas amarillas de las reseñas. */
+.estrellas-resena {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 2px;
+}
+
+.estrellas-resena button {
+    background: none;
+    border: 0;
+    padding: 0 2px;
+    color: #6f6f6f;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease;
+}
+
+.estrellas-resena button:hover,
+.estrellas-resena button:focus-visible {
+    color: #ffe066;
+    transform: scale(1.15);
+}
+
+.estrellas-resena button.activa {
+    color: #f0c040;
+    text-shadow: 0 0 10px rgba(240, 192, 64, 0.65);
+}
+
+.estrellas-resena button:focus-visible {
+    outline: 2px solid #f0c040;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.campo-resena {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: #c3c3c3;
+}
+
+.campo-resena textarea {
+    background: #0d0d0d;
+    border: 1px solid #353535;
+    color: #f2f2f2;
+    border-radius: 8px;
+    padding: 9px 11px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+}
+
+.campo-resena textarea::placeholder {
+    color: #7a7a7a;
+}
+
+.campo-resena textarea:focus-visible {
+    outline: none;
+    border-color: #f0c040;
+    box-shadow: 0 0 0 2px rgba(240, 192, 64, 0.18);
+}
+
+/* Botón de enviar reseña: relleno dorado de la paleta de las reseñas,
+   con texto oscuro y un brillo suave para que se mire. */
+.form-resena .boton-enviar-resena {
+    padding: 9px 22px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    color: #171310;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    background: linear-gradient(135deg, #ffe066, #f0c040 55%, #d99e1f);
+    box-shadow: 0 4px 18px rgb(240 192 64 / 35%), inset 0 1px 0 rgb(255 255 255 / 40%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.form-resena .boton-enviar-resena:hover,
+.form-resena .boton-enviar-resena:focus-visible {
+    filter: brightness(1.07);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 26px rgb(240 192 64 / 45%), inset 0 1px 0 rgb(255 255 255 / 40%);
+}
+
+.form-resena .boton-enviar-resena:disabled {
+    cursor: wait;
+    opacity: 0.65;
+    transform: none;
+    filter: none;
+}
+
+/* Fila centrada: enviar (y cancelar) al centro del formulario. */
+.acciones-form-resena {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.boton-cancelar-resena {
+    background: transparent;
+    border: 1px solid #3a3a3a;
+    color: #b9b9b9;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: var(--fuente-interfaz);
+    font-size: 12px;
+    font-weight: 600;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.boton-cancelar-resena:hover,
+.boton-cancelar-resena:focus-visible {
+    border-color: #f0c040;
+    color: #f0c040;
+}
+
+/* Mientras haya un diálogo abierto, el fondo de la página no se mueve. */
+html:has(dialog[open]) {
+    overflow: hidden;
+}
+
+/* ============================================================ */
+/* Encuesta de satisfacción (flotante, discreta)                 */
+/* ============================================================ */
+.encuesta-sitio {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 999;
+    width: min(300px, calc(100vw - 36px));
+    background: rgba(18, 18, 22, 0.85);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(240, 192, 64, 0.25);
+    border-radius: 16px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    color: #f2f2f2;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.encuesta-sitio.oculta {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+    pointer-events: none;
+}
+
+.encuesta-cerrar {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #9a9a9a;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.encuesta-cerrar:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.encuesta-titulo {
+    margin: 0 24px 10px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.encuesta-estrellas {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.encuesta-estrellas button {
+    background: transparent;
+    border: none;
+    color: #555;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.encuesta-estrellas button.activo,
+.encuesta-estrellas button:hover {
+    color: #f0c040;
+    transform: scale(1.15);
+}
+
+/* Campos extra de la encuesta: qué tan fácil fue comprar (select) y el
+   comentario libre de "qué fue lo más difícil". Ambos opcionales. */
+.encuesta-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.encuesta-campo span {
+    color: #b9b9b9;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.encuesta-campo select,
+.encuesta-campo textarea {
+    width: 100%;
+    padding: 8px 10px;
+    background: #0d0d0d;
+    border: 1px solid #353535;
+    border-radius: 8px;
+    color: #f2f2f2;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    resize: vertical;
+}
+
+.encuesta-campo select:focus-visible,
+.encuesta-campo textarea:focus-visible {
+    outline: none;
+    border-color: var(--color-acento, #ff0033);
+}
+
+.encuesta-campo select:disabled,
+.encuesta-campo textarea:disabled {
+    opacity: 0.55;
+}
+
+.encuesta-enviar {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    border: none;
+}
+
+.encuesta-gracias {
+    margin: 8px 0 0;
+    text-align: center;
+    color: #f0c040;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+@media (max-width: 480px) {
+    .encuesta-sitio {
+        right: 10px;
+        bottom: 10px;
+        width: calc(100vw - 20px);
+    }
+}
+
+/* Chispas al elegir 5 estrellas */
+.encuesta-estrellas {
+    position: relative;
+}
+
+.encuesta-estrellas.destello {
+    animation: latidoEstrellas 0.8s ease;
+}
+
+@keyframes latidoEstrellas {
+    0% { filter: drop-shadow(0 0 0 rgba(240, 192, 64, 0)); }
+    35% { filter: drop-shadow(0 0 10px rgba(240, 192, 64, 0.95)); }
+    100% { filter: drop-shadow(0 0 0 rgba(240, 192, 64, 0)); }
+}
+
+.chispa {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 8px rgba(255, 224, 102, 0.9);
+    animation: subirChispa 0.85s ease-out forwards;
+}
+
+@keyframes subirChispa {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, -30px))) scale(0.25); }
+}
+
+/* La encuesta entra con un desliz suave cuando aparece */
+.encuesta-sitio.oculta {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+    pointer-events: none;
+}
+
+/* Responsiva: pantallas chicas */
+@media (max-width: 640px) {
+    .modal-resenas {
+        max-width: calc(100vw - 16px);
+    }
+
+    .contenido-modal-resenas {
+        padding: 16px;
+        border-radius: 14px;
+        max-height: 84vh;
+    }
+
+    .lista-resenas {
+        max-height: 46vh;
+    }
+
+    .encabezado-resenas h2 {
+        font-size: 17px;
+    }
+
+    .promedio-resenas {
+        font-size: 16px;
+    }
+
+    .reseña-item {
+        padding: 10px 11px;
+    }
+
+    .encuesta-sitio {
+        right: 10px;
+        bottom: 10px;
+        width: calc(100vw - 20px);
+        padding: 12px 14px 14px;
+    }
+
+    .encuesta-estrellas button {
+        font-size: 26px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .encuesta-sitio,
+    .encuesta-estrellas.destello,
+    .chispa {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .encuesta-sitio {
+        left: 10px;
+        right: 10px;
+        width: auto;
     }
 }

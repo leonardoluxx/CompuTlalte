@@ -51,6 +51,9 @@
     let usuariosCache = Array.isArray(DatosBD.usuarios) ? DatosBD.usuarios : [];
     let solicitudesCache = Array.isArray(DatosBD.solicitudes) ? DatosBD.solicitudes : [];
     let bitacoraCache = Array.isArray(DatosBD.bitacora) ? DatosBD.bitacora : [];
+    // Reseñas del sitio y de productos: solo viajan para admin y gerente.
+    let resenasSitioCache = DatosBD.resenasSitio || { promedio: 0, total: 0, lista: [] };
+    let resenasProductosCache = DatosBD.resenasProductos || { total: 0, lista: [] };
 
     function emitir() {
         try {
@@ -78,6 +81,12 @@
         }
         if (Array.isArray(datos.bitacora)) {
             bitacoraCache = datos.bitacora;
+        }
+        if (datos.resenasSitio) {
+            resenasSitioCache = datos.resenasSitio;
+        }
+        if (datos.resenasProductos) {
+            resenasProductosCache = datos.resenasProductos;
         }
 
         aplicarImagenes();
@@ -280,6 +289,23 @@
 
     function bitacora() {
         return bitacoraCache.slice();
+    }
+
+    // Encuesta del sitio tal como la verá el panel (admin y gerente).
+    function resenasSitio() {
+        return {
+            promedio: Number(resenasSitioCache.promedio) || 0,
+            total: Number(resenasSitioCache.total) || 0,
+            lista: Array.isArray(resenasSitioCache.lista) ? resenasSitioCache.lista.slice() : []
+        };
+    }
+
+    // Últimas reseñas de productos, también para el panel.
+    function resenasProductos() {
+        return {
+            total: Number(resenasProductosCache.total) || 0,
+            lista: Array.isArray(resenasProductosCache.lista) ? resenasProductosCache.lista.slice() : []
+        };
     }
 
     function sesion() {
@@ -580,6 +606,8 @@
         rechazarSolicitud: rechazarSolicitud,
         limpiarBitacora: limpiarBitacora,
         bitacora: bitacora,
+        resenasSitio: resenasSitio,
+        resenasProductos: resenasProductos,
         guardarImagenConfig: guardarImagenConfig,
         construirRutaImagen: construirRutaImagen,
         refrescar: refrescar

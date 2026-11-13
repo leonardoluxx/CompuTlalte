@@ -134,7 +134,10 @@
             }
         }
 
-        document.body.append(velo);
+        // Si hay un diálogo abierto, el velo vive dentro de él para pintarse
+        // en la capa superior (por encima del modal) y no detrás.
+        var dialogoAbierto = dialogoSuperior();
+        (dialogoAbierto || document.body).append(velo);
         document.body.style.overflow = "hidden";
 
         window.setTimeout(function () {
@@ -170,13 +173,29 @@
     }
 
     /* ------------------------------------------------------ toasts */
+    // Los diálogos (showModal) viven en la capa superior del navegador:
+    // ningún z-index del cuerpo puede verse por encima de ellos. Por eso,
+    // mientras haya un diálogo abierto, el contenedor de avisos se crea
+    // DENTRO de él: position:fixed sigue funcionando y el toast se pinta
+    // encima del modal en vez de quedar enterrado detrás.
+    function dialogoSuperior() {
+        // Preferimos el modal de reseñas (se abre encima del de producto);
+        // si no, el último diálogo abierto es el que está más arriba.
+        var reseñas = document.querySelector(".modal-resenas[open]");
+        if (reseñas) {
+            return reseñas;
+        }
+        var abiertos = document.querySelectorAll("dialog[open]");
+        return abiertos.length ? abiertos[abiertos.length - 1] : null;
+    }
+
     function contenedorToasts() {
-        var contenedor = document.getElementById("aviso-toasts");
+        var anfitrion = dialogoSuperior() || document.body;
+        var contenedor = anfitrion.querySelector(":scope > .aviso-toasts");
         if (!contenedor) {
             contenedor = crear("div", "aviso-toasts");
-            contenedor.id = "aviso-toasts";
             contenedor.setAttribute("aria-live", "polite");
-            document.body.append(contenedor);
+            anfitrion.append(contenedor);
         }
         return contenedor;
     }

@@ -53,6 +53,13 @@
     const resumenPendientes = document.getElementById("resumen-pendientes");
     const listaBitacora = document.getElementById("lista-bitacora");
 
+    // Vista de reseñas: encuesta del sitio y opiniones de productos.
+    const statResenasSitio = document.getElementById("stat-resenas-sitio");
+    const statResenasSitioTotal = document.getElementById("stat-resenas-sitio-total");
+    const statResenasProductos = document.getElementById("stat-resenas-productos");
+    const listaResenasSitio = document.getElementById("lista-resenas-sitio");
+    const listaResenasProductos = document.getElementById("lista-resenas-productos");
+
     const buscarProductoEl = document.getElementById("buscar-producto");
     const filtroCategoriaEl = document.getElementById("filtro-categoria");
     const filtroEstadoEl = document.getElementById("filtro-estado");
@@ -222,6 +229,8 @@
             renderOfertas();
         } else if (vistaActual === "solicitudes") {
             renderSolicitudes();
+        } else if (vistaActual === "resenas") {
+            renderResenas();
         } else if (vistaActual === "ajustes" && esAdmin) {
             renderAjustes();
         } else {
@@ -774,6 +783,88 @@
             }
 
             listaSolicitudes.append(tarjeta);
+        });
+    }
+
+    // ----------------------------------------------------------------- reseñas
+
+    // Convierte 4 en "★★★★☆" para el panel.
+    function estrellasPanel(n) {
+        const valor = Math.max(0, Math.min(5, Number(n) || 0));
+        return "★".repeat(valor) + "☆".repeat(5 - valor);
+    }
+
+    const ETIQUETAS_FACILIDAD = {
+        5: "Muy fácil",
+        4: "Fácil",
+        3: "Normal",
+        2: "Complicado",
+        1: "Muy complicado"
+    };
+
+    // Encuesta del sitio (experiencia, facilidad, qué fue lo más difícil) y
+    // últimas reseñas de productos. Datos que llegan del servidor para
+    // administrador y gerente.
+    function renderResenas() {
+        const sitio = Tienda.resenasSitio();
+
+        statResenasSitio.textContent = sitio.total > 0 ? `${sitio.promedio.toFixed(1)} ★` : "—";
+        statResenasSitioTotal.textContent = String(sitio.total);
+
+        listaResenasSitio.replaceChildren();
+        if (!sitio.lista.length) {
+            listaResenasSitio.append(crearVacio(
+                "Aún no hay encuestas. Aparecen cuando un cliente califica su experiencia al terminar una compra."
+            ));
+        } else {
+            sitio.lista.forEach(function (resena) {
+                const fila = crear("div", "panel-lista-item");
+                const texto = crear("div", "panel-lista-texto");
+
+                const detalle = [fechaCorta(resena.fecha)];
+                if (resena.facilidad) {
+                    detalle.push(`Compra: ${ETIQUETAS_FACILIDAD[resena.facilidad] || resena.facilidad}`);
+                }
+                if (resena.comentario) {
+                    detalle.push(`“${resena.comentario}”`);
+                }
+
+                texto.append(
+                    crear("strong", "", `${estrellasPanel(resena.calificacion)} · ${resena.calificacion}/5`),
+                    crear("small", "", detalle.join(" — "))
+                );
+                fila.append(texto);
+                listaResenasSitio.append(fila);
+            });
+        }
+
+        const productos = Tienda.resenasProductos();
+        statResenasProductos.textContent = String(productos.total);
+
+        listaResenasProductos.replaceChildren();
+        if (!productos.lista.length) {
+            listaResenasProductos.append(crearVacio(
+                "Ningún producto tiene reseñas todavía: en la tienda se ven como “Aún no tiene reseñas” hasta que un cliente opine."
+            ));
+            return;
+        }
+
+        productos.lista.forEach(function (resena) {
+            const fila = crear("div", "panel-lista-item");
+            const texto = crear("div", "panel-lista-texto");
+
+            const detalle = [fechaCorta(resena.fecha)];
+            if (resena.comentario) {
+                detalle.push(`“${resena.comentario}”`);
+            }
+            detalle.push(`Autor: ${resena.nombreUsuario || "Anónimo"}`);
+
+            texto.append(
+                crear("strong", "", `${estrellasPanel(resena.calificacion)} · ${resena.productoNombre}`),
+                crear("small", "", detalle.join(" — "))
+            );
+            fila.append(texto);
+            listaResenasProductos.append(fila);
         });
     }
 

@@ -9,7 +9,7 @@
     <title>Panel de control | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/panel.css?v=2">
+    <link rel="stylesheet" href="css/panel.css?v=3">
 </head>
 <body class="panel-cuerpo">
     <header class="panel-cabecera">
@@ -45,6 +45,7 @@
                     Solicitudes
                     <span class="panel-contador" id="contador-solicitudes">0</span>
                 </button>
+                <button class="panel-menu-boton" type="button" data-vista="resenas">Reseñas</button>
                 <button class="panel-menu-boton solo-admin" type="button" data-vista="ajustes">Ajustes</button>
             </nav>
 
@@ -225,6 +226,47 @@
                 </div>
                 <p class="panel-nota" id="nota-solicitudes"></p>
                 <div class="panel-solicitudes" id="lista-solicitudes"></div>
+            </section>
+
+            <!-- Reseñas: encuesta del sitio y opiniones de productos.
+                 Las ve el administrador y el gerente, nunca los clientes. -->
+            <section class="panel-vista" data-vista-panel="resenas" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">LO QUE OPINAN LOS CLIENTES</p>
+                        <h1>Reseñas</h1>
+                    </div>
+                </div>
+
+                <div class="panel-columnas">
+                    <section class="panel-tarjeta">
+                        <h2>Reseñas del sitio</h2>
+                        <p class="panel-texto">La encuesta que responde quien compra: su experiencia general, qué tan fácil le resultó comprar y qué fue lo más difícil.</p>
+                        <div class="panel-estadisticas">
+                            <article class="panel-stat">
+                                <span>Promedio del sitio</span>
+                                <strong id="stat-resenas-sitio">—</strong>
+                            </article>
+                            <article class="panel-stat">
+                                <span>Encuestas recibidas</span>
+                                <strong id="stat-resenas-sitio-total">0</strong>
+                            </article>
+                        </div>
+                        <div id="lista-resenas-sitio" class="panel-lista-compacta"></div>
+                    </section>
+
+                    <section class="panel-tarjeta">
+                        <h2>Reseñas de productos</h2>
+                        <p class="panel-texto">Las estrellas y comentarios que los clientes dejan en cada producto del catálogo.</p>
+                        <div class="panel-estadisticas">
+                            <article class="panel-stat">
+                                <span>Reseñas de productos</span>
+                                <strong id="stat-resenas-productos">0</strong>
+                            </article>
+                        </div>
+                        <div id="lista-resenas-productos" class="panel-lista-compacta"></div>
+                    </section>
+                </div>
             </section>
 
             <!-- Ajustes exclusivos del administrador. -->
@@ -447,7 +489,7 @@
 
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
     <script src="api/bootstrap.php?v=1"></script>
-    <script src="js/tienda-datos.js?v=5"></script>
-    <script src="js/panel.js?v=3"></script>
+    <script src="js/tienda-datos.js?v=6"></script>
+    <script src="js/panel.js?v=4"></script>
 </body>
 </html>

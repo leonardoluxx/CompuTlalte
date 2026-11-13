@@ -7,7 +7,9 @@
 declare(strict_types=1);
 
 // Convierte una fila de la BD al formato del frontend.
-function adaptar_producto(array $fila, array $especificaciones, array $imagenes, float $margen_global): array
+// $resenas trae el conteo y promedio REALES de la tabla resenas_productos
+// (agrupados por producto_id); las reseñas nunca se inventan en el código.
+function adaptar_producto(array $fila, array $especificaciones, array $imagenes, float $margen_global, array $resenas = []): array
 {
     $margen_propio = $fila["margen_propio"] !== null ? (float) $fila["margen_propio"] : null;
     $margen_aplicado = $margen_propio ?? $margen_global;
@@ -18,6 +20,8 @@ function adaptar_producto(array $fila, array $especificaciones, array $imagenes,
     $precio_venta = $descuento > 0
         ? round($precio_lista * (1 - $descuento / 100), 2)
         : $precio_lista;
+
+    $resenas_producto = $resenas[(int) $fila["id"]] ?? null;
 
     return [
         "id" => (int) $fila["id"],
@@ -31,7 +35,8 @@ function adaptar_producto(array $fila, array $especificaciones, array $imagenes,
         "stock" => (int) $fila["stock"],
         "destacado" => ((int) $fila["destacado"]) === 1,
         // El frontend usa la llave con ñ; se envía tal cual.
-        "reseñas" => (int) ($fila["resenas"] ?? 0),
+        "reseñas" => $resenas_producto ? (int) $resenas_producto["total"] : 0,
+        "promedioResenas" => $resenas_producto ? round((float) $resenas_producto["promedio"], 1) : 0,
         "vendidos" => (int) ($fila["vendidos"] ?? 0),
         "fechaAlta" => (string) ($fila["fecha_alta"] ?? ""),
         "costoBase" => (float) $fila["costo_base"],
@@ -72,6 +77,17 @@ function obtener_productos(mysqli $bd, float $margen_global): array
         $filas[(int) $fila["id"]] = $fila;
     }
 
+    // Reseñas REALES por producto (conteo y promedio de calificaciones).
+    // Una sola consulta agrupada alimenta a todo el catálogo.
+    $resenas = [];
+    $resultado = $bd->query(
+        "SELECT producto_id, COUNT(*) AS total, AVG(calificacion) AS promedio
+         FROM resenas_productos GROUP BY producto_id"
+    );
+    while ($fila = $resultado->fetch_assoc()) {
+        $resenas[(int) $fila["producto_id"]] = $fila;
+    }
+
     // Especificaciones agrupadas por producto y tipo (una sola consulta).
     $especificaciones = [];
     $resultado = $bd->query(
@@ -97,7 +113,8 @@ function obtener_productos(mysqli $bd, float $margen_global): array
             $fila,
             $especificaciones[$id] ?? [],
             $imagenes[$id] ?? [],
-            $margen_global
+            $margen_global,
+            $resenas
         );
     }
 
@@ -356,7 +373,9 @@ function datos_para_frontend(mysqli $bd): array
         "permisos" => [],
         "usuarios" => [],
         "solicitudes" => [],
-        "bitacora" => []
+        "bitacora" => [],
+        "resenasSitio" => ["promedio" => 0, "total" => 0, "lista" => []],
+        "resenasProductos" => ["total" => 0, "lista" => []]
     ];
 
     // Imágenes configurables de la tienda (portada y secciones).
@@ -449,6 +468,60 @@ function datos_para_frontend(mysqli $bd): array
                 "detalle" => (string) $fila["detalle"]
             ];
         }
+
+        // ------------------------------------------- reseñas (admin + gerente)
+        // Reseñas del sitio: la encuesta que los clientes responden al
+        // terminar una compra (o al llegar al final de la página).
+        $resultado = $bd->query(
+            "SELECT COALESCE(AVG(calificacion), 0) AS promedio, COUNT(*) AS total FROM resenas_sitio"
+        );
+        $resumen_sitio = $resultado->fetch_assoc();
+        $lista_sitio = [];
+        $resultado = $bd->query(
+            "SELECT id, calificacion, facilidad, comentario, fecha
+             FROM resenas_sitio ORDER BY id DESC LIMIT 50"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $lista_sitio[] = [
+                "id" => (int) $fila["id"],
+                "calificacion" => (int) $fila["calificacion"],
+                "facilidad" => $fila["facilidad"] !== null ? (int) $fila["facilidad"] : null,
+                "comentario" => (string) ($fila["comentario"] ?? ""),
+                "fecha" => (string) $fila["fecha"]
+            ];
+        }
+        $datos["resenasSitio"] = [
+            "promedio" => round((float) $resumen_sitio["promedio"], 1),
+            "total" => (int) $resumen_sitio["total"],
+            "lista" => $lista_sitio
+        ];
+
+        // Últimas reseñas que los clientes dejaron a productos concretos.
+        $resultado = $bd->query("SELECT COUNT(*) AS t FROM resenas_productos");
+        $total_productos = (int) $resultado->fetch_assoc()["t"];
+        $lista_productos = [];
+        $resultado = $bd->query(
+            "SELECT r.id, r.producto_id, p.nombre AS producto_nombre,
+                    r.nombre_usuario, r.calificacion, r.comentario, r.fecha
+             FROM resenas_productos r
+             LEFT JOIN productos p ON p.id = r.producto_id
+             ORDER BY r.id DESC LIMIT 20"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $lista_productos[] = [
+                "id" => (int) $fila["id"],
+                "productoId" => (int) $fila["producto_id"],
+                "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
+                "nombreUsuario" => (string) $fila["nombre_usuario"],
+                "calificacion" => (int) $fila["calificacion"],
+                "comentario" => (string) ($fila["comentario"] ?? ""),
+                "fecha" => (string) $fila["fecha"]
+            ];
+        }
+        $datos["resenasProductos"] = [
+            "total" => $total_productos,
+            "lista" => $lista_productos
+        ];
     }
 
     return $datos;

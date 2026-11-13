@@ -390,6 +390,13 @@ async function finalizarPago(metodo, datosPago = {}) {
         ? "auto"
         : "smooth";
     panelExitoEl.scrollIntoView({ behavior: movimiento, block: "start" });
+
+    // La compra terminó: se ofrece la encuesta de satisfacción.
+    try {
+        document.dispatchEvent(new CustomEvent("encuesta:mostrar"));
+    } catch (error) {
+        // Navegadores antiguos sin CustomEvent: la encuesta no se muestra aquí.
+    }
 }
 
 function manejarTransferencia(evento) {
