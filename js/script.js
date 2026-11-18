@@ -1941,7 +1941,7 @@ botonComprarProducto.addEventListener("click", () => {
             Notificaciones.aviso("Inicia sesión para comprar.", "Sesión requerida");
         }
         try {
-            localStorage.setItem("redirigirTrasLogin", "carrito");
+            localStorage.setItem("redirigirTrasLogin", "carrito.html");
         } catch (error) {}
         window.location.href = "login.html";
         return;

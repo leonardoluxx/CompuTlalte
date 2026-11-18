@@ -297,15 +297,15 @@
 
             window.setTimeout(() => {
                 if (redirigir) {
-                    const PAGINAS = {
-                        carrito: "carrito.html",
-                        cuenta: "cuenta.html",
-                        pago: "pago.html",
-                        panel: "panel.html"
-                    };
+                    // El destino se resuelve con la lista central de páginas
+                    // (js/navegacion.js): acepta la clave corta ("cuenta") o
+                    // el archivo ("cuenta.html") y nunca manda el navegador a
+                    // una dirección sin .html. Si el valor no corresponde a
+                    // ninguna página conocida, se muestra la tarjeta de sesión.
+                    const destinoResuelto = window.Navegacion ? Navegacion.destino(redirigir) : null;
 
-                    if (redirigir in PAGINAS) {
-                        window.location.href = PAGINAS[redirigir];
+                    if (destinoResuelto) {
+                        window.location.href = destinoResuelto;
                         return;
                     }
                 }

@@ -161,7 +161,7 @@
         } else {
             enlaceLogin.addEventListener("click", function () {
                 try {
-                    localStorage.setItem("redirigirTrasLogin", "panel");
+                    localStorage.setItem("redirigirTrasLogin", "panel.html");
                 } catch (error) {
                     // Si el navegador bloquea el almacenamiento, el login igual funciona.
                 }

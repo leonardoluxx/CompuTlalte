@@ -106,6 +106,14 @@ formularioEl.addEventListener("submit", async function (evento) {
         return;
     }
 
+    // ¿Había un destino pendiente (carrito, pago, cuenta...)? Se lee sin
+    // borrarlo todavía: si el auto-login falla, el valor se queda guardado
+    // para que el inicio de sesión manual también pueda honrarlo.
+    let pendiente = null;
+    try {
+        pendiente = localStorage.getItem("redirigirTrasLogin");
+    } catch (error) {}
+
     // Auto-login después del registro
     try {
         const loginRespuesta = await fetch("api/login.php", {
@@ -115,12 +123,17 @@ formularioEl.addEventListener("submit", async function (evento) {
         });
         const loginResultado = await loginRespuesta.json();
         if (loginRespuesta.ok && loginResultado.ok) {
-            // Redirigir a donde venía el usuario (carrito, pago, etc.)
+            // Redirigir a donde venía el usuario (carrito, pago, etc.).
+            // Navegacion convierte la clave guardada ("cuenta") o el archivo
+            // ("cuenta.html") en una página real: un valor desconocido cae
+            // al índice, nunca a una URL sin .html que rompa el servidor.
             let redirigir = "index.html";
-            try {
-                redirigir = localStorage.getItem("redirigirTrasLogin") || "index.html";
-                localStorage.removeItem("redirigirTrasLogin");
-            } catch (error) {}
+            if (pendiente) {
+                redirigir = (window.Navegacion && Navegacion.destino(pendiente)) || "index.html";
+                try {
+                    localStorage.removeItem("redirigirTrasLogin");
+                } catch (error) {}
+            }
 
             // Momento grande: tarjeta centrada de bienvenida. La cuenta ya
             // vive en MySQL y la sesión quedó abierta con este registro.

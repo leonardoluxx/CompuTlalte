@@ -566,7 +566,7 @@ function iniciarPagina() {
     if (!usuario) {
         // No hay sesión: redirigir a login guardando el destino
         try {
-            localStorage.setItem("redirigirTrasLogin", "pago");
+            localStorage.setItem("redirigirTrasLogin", "pago.html");
         } catch (error) {}
         window.location.href = "login.html";
         return;

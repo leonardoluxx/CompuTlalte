@@ -739,7 +739,7 @@ pagarEl.addEventListener("click", () => {
     if (!usuario) {
         mostrarAviso("Inicia sesión para continuar con el pago.", "aviso");
         try {
-            localStorage.setItem("redirigirTrasLogin", "carrito");
+            localStorage.setItem("redirigirTrasLogin", "carrito.html");
         } catch (error) {}
         window.location.href = "login.html";
         return;

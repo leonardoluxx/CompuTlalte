@@ -215,11 +215,11 @@ function mostrarPanelSesion(texto) {
     mensajeSesionEl.textContent = texto || "";
 
     enlaceLoginEl.addEventListener("click", function () {
-        localStorage.setItem("redirigirTrasLogin", "cuenta");
+        localStorage.setItem("redirigirTrasLogin", "cuenta.html");
     });
 
     enlaceRegistroEl.addEventListener("click", function () {
-        localStorage.setItem("redirigirTrasLogin", "cuenta");
+        localStorage.setItem("redirigirTrasLogin", "cuenta.html");
     });
 }
 
