@@ -148,12 +148,20 @@ if ($accion === "instalar" && !$fallo_conexion) {
             $resenas_sitio = (int) $consulta_sitio->fetch_assoc()["t"];
         }
 
+        // Solicitudes de recuperación de contraseña (nuevo sistema)
+        $solicitudes_password = 0;
+        $consulta_sol_pass = $servidor->query("SELECT COUNT(*) AS t FROM solicitudes_password");
+        if ($consulta_sol_pass) {
+            $solicitudes_password = (int) $consulta_sol_pass->fetch_assoc()["t"];
+        }
+
         paso("Tablas creadas: $tablas.");
         paso("Productos con su precio final: $productos.");
         paso("Especificaciones cargadas: $especificaciones. Imágenes registradas: $imagenes.");
         paso("Cuentas creadas: $usuarios (administrador, gerente y cliente).");
         paso("Ventas de demostración: $ventas (para que los reportes tengan datos).");
         paso("Reseñas de productos: $resenas_productos. Encuestas del sitio: $resenas_sitio.");
+        paso("Solicitudes de recuperación de clave: $solicitudes_password (tabla lista).");
 
         if ($productos < 1 || $usuarios < 1) {
             throw new RuntimeException("La importación terminó pero faltan datos: revisa el archivo SQL.");
