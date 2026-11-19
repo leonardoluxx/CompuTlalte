@@ -39,6 +39,20 @@
     const enlaceDestino = document.getElementById("enlace-destino");
     const botonSalir = document.getElementById("salir-sesion");
 
+    // Recuperación de contraseña (la solicitud la aprueba el administrador).
+    const botonOlvidaste = document.getElementById("olvidaste-clave");
+    const modalRecuperacion = document.getElementById("modal-recuperacion");
+    const formularioRecuperacion = document.getElementById("formulario-recuperacion");
+    const correoRecuperacion = document.getElementById("correo-recuperacion");
+    const razonRecuperacion = document.getElementById("razon-recuperacion");
+    const mensajeRecuperacion = document.getElementById("mensaje-recuperacion");
+    const estadoRecuperacion = document.getElementById("estado-recuperacion");
+    const estadoSolicitudClave = document.getElementById("estado-solicitud-clave");
+    const botonEnviarRecuperacion = document.getElementById("enviar-recuperacion");
+    const botonCerrarRecuperacion = document.getElementById("cerrar-recuperacion");
+
+    const CLAVE_SOLICITUD = "computlalte-recuperacion";
+
     // Con movimiento reducido las animaciones se acortan casi a cero.
     const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -277,11 +291,11 @@
             // Sin almacenamiento se muestra el panel del rol.
         }
 
-        entrarConAnimacion(resultado.usuario, resultado.permisos, redirigir);
+        entrarConAnimacion(resultado.usuario, resultado.permisos, redirigir, resultado.usuario.debeCambiarClave);
     });
 
     // Secuencia cinemática: spinner → palomita → permisos del rol.
-    function entrarConAnimacion(usuario, permisos, redirigir) {
+    function entrarConAnimacion(usuario, permisos, redirigir, debeCambiarClave) {
         mostrarCara(caraVerificacion);
         caraVerificacion.classList.remove("confirmada");
         textoVerificacion.textContent = "Verificando credenciales…";
@@ -296,6 +310,13 @@
             textoVerificacion.textContent = "Acceso confirmado";
 
             window.setTimeout(() => {
+                // Contraseña temporal del administrador: el cambio es
+                // obligatorio y tiene prioridad sobre cualquier destino.
+                if (debeCambiarClave) {
+                    window.location.href = "cuenta.html?cambiar=1";
+                    return;
+                }
+
                 if (redirigir) {
                     // El destino se resuelve con la lista central de páginas
                     // (js/navegacion.js): acepta la clave corta ("cuenta") o
@@ -349,4 +370,211 @@
             botonEntrar.focus();
         });
     });
+
+    // ------------------------------------- recuperación de contraseña
+    // La solicitud se guarda como pendiente y el administrador la aprueba
+    // desde el panel. LocalStorage recuerda el correo y su estado para que
+    // el visitante vea en qué va sin volver a escribir todo.
+    function leerSolicitudLocal() {
+        try {
+            return JSON.parse(localStorage.getItem(CLAVE_SOLICITUD) || "null");
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function guardarSolicitudLocal(datos) {
+        try {
+            localStorage.setItem(CLAVE_SOLICITUD, JSON.stringify(datos));
+        } catch (error) {
+            // Sin almacenamiento el estado igual se consulta al servidor.
+        }
+    }
+
+    function pintarEstadoSolicitud(estado, email) {
+        const textos = {
+            pendiente: "Solicitud pendiente. El administrador la revisará y te avisará.",
+            aprobada: "¡Solicitud aprobada! Inicia sesión con la contraseña temporal que te compartió el administrador.",
+            rechazada: "Solicitud rechazada. Contacta al administrador para revisar tu caso."
+        };
+        const texto = textos[estado] || "";
+        const clase = "estado-solicitud-clave" + (estado ? " estado-" + estado : "");
+
+        [estadoSolicitudClave, estadoRecuperacion].forEach(function (elemento) {
+            if (!elemento) {
+                return;
+            }
+            elemento.textContent = texto;
+            elemento.className = clase;
+            elemento.hidden = texto === "";
+        });
+
+        if (texto && email) {
+            estadoSolicitudClave.dataset.email = email;
+        }
+    }
+
+    async function obtenerTokenCsrf() {
+        try {
+            const respuesta = await fetch("api/csrf.php", {
+                headers: { "Accept": "application/json" }
+            });
+            const datos = await respuesta.json();
+            return respuesta.ok && datos.ok ? (datos.csrf || "") : "";
+        } catch (error) {
+            return "";
+        }
+    }
+
+    async function enviarSolicitudRecuperacion(email, razon) {
+        for (let intento = 0; intento < 2; intento += 1) {
+            const token = await obtenerTokenCsrf();
+            let respuesta;
+
+            try {
+                respuesta = await fetch("api/recuperar_password.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-Token": token
+                    },
+                    body: JSON.stringify({ email: email, razon: razon, csrf: token })
+                });
+            } catch (error) {
+                return { ok: false, mensaje: "No se pudo conectar con el servidor. Intenta de nuevo." };
+            }
+
+            const datos = await respuesta.json().catch(function () {
+                return { ok: false, mensaje: "Respuesta inválida del servidor." };
+            });
+
+            // Token vencido: se renueva y se reintenta una sola vez.
+            if (respuesta.status === 403 && intento === 0) {
+                continue;
+            }
+
+            return {
+                ok: respuesta.ok && datos.ok,
+                mensaje: datos.mensaje || "No se pudo enviar la solicitud.",
+                estado: datos.estado || "pendiente"
+            };
+        }
+
+        return { ok: false, mensaje: "No se pudo validar la seguridad de la sesión. Recarga la página." };
+    }
+
+    // Refresca el estado con el servidor: si el admin aprobó, el visitante
+    // lo ve en cuanto vuelve a esta página.
+    async function actualizarEstadoSolicitud(email) {
+        try {
+            const respuesta = await fetch(
+                "api/recuperar_password.php?accion=estado&email=" + encodeURIComponent(email),
+                { headers: { "Accept": "application/json" }, cache: "no-store" }
+            );
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.ok || !datos.solicitud) {
+                return;
+            }
+
+            guardarSolicitudLocal({
+                email: email,
+                estado: datos.solicitud.estado,
+                fecha: datos.solicitud.fecha
+            });
+            pintarEstadoSolicitud(datos.solicitud.estado, email);
+        } catch (error) {
+            // Sin conexión se conserva el estado guardado en el navegador.
+        }
+    }
+
+    if (botonOlvidaste && modalRecuperacion && formularioRecuperacion) {
+        botonOlvidaste.addEventListener("click", function () {
+            const guardada = leerSolicitudLocal();
+            correoRecuperacion.value = (guardada && guardada.email) || correo.value.trim();
+            razonRecuperacion.value = "";
+            mensajeRecuperacion.textContent = "";
+            mensajeRecuperacion.classList.remove("mensaje-exito");
+            botonEnviarRecuperacion.disabled = false;
+            botonEnviarRecuperacion.textContent = "Enviar solicitud";
+
+            pintarEstadoSolicitud(guardada ? guardada.estado : "", guardada ? guardada.email : "");
+
+            if (guardada && guardada.email) {
+                actualizarEstadoSolicitud(guardada.email);
+
+                // Ya hay una solicitud pendiente: no se duplica.
+                if (guardada.estado === "pendiente") {
+                    botonEnviarRecuperacion.disabled = true;
+                    botonEnviarRecuperacion.textContent = "Solicitud enviada";
+                }
+            }
+
+            modalRecuperacion.showModal();
+            correoRecuperacion.focus();
+        });
+
+        botonCerrarRecuperacion.addEventListener("click", function () {
+            modalRecuperacion.close();
+        });
+
+        modalRecuperacion.addEventListener("click", function (evento) {
+            if (evento.target === modalRecuperacion) {
+                modalRecuperacion.close();
+            }
+        });
+
+        formularioRecuperacion.addEventListener("submit", async function (evento) {
+            evento.preventDefault();
+
+            const email = correoRecuperacion.value.trim();
+            const razon = razonRecuperacion.value.trim();
+
+            mensajeRecuperacion.textContent = "";
+            mensajeRecuperacion.classList.remove("mensaje-exito");
+
+            if (!email || !correoRecuperacion.checkValidity()) {
+                mensajeRecuperacion.textContent = "Escribe un correo electrónico válido.";
+                correoRecuperacion.focus();
+                return;
+            }
+
+            if (razon.length < 5) {
+                mensajeRecuperacion.textContent = "Cuéntanos brevemente por qué necesitas recuperarla.";
+                razonRecuperacion.focus();
+                return;
+            }
+
+            botonEnviarRecuperacion.disabled = true;
+            botonEnviarRecuperacion.textContent = "Enviando…";
+
+            const resultado = await enviarSolicitudRecuperacion(email, razon);
+
+            if (!resultado.ok) {
+                botonEnviarRecuperacion.disabled = false;
+                botonEnviarRecuperacion.textContent = "Enviar solicitud";
+                mensajeRecuperacion.textContent = resultado.mensaje;
+                return;
+            }
+
+            guardarSolicitudLocal({
+                email: email,
+                estado: resultado.estado || "pendiente",
+                fecha: new Date().toISOString()
+            });
+
+            pintarEstadoSolicitud(resultado.estado || "pendiente", email);
+            mensajeRecuperacion.textContent =
+                "Tu solicitud ha sido enviada. El administrador la revisará y te avisaremos. No cierres sesión";
+            mensajeRecuperacion.classList.add("mensaje-exito");
+            botonEnviarRecuperacion.textContent = "Solicitud enviada";
+        });
+
+        // Estado recordado al volver a la página de acceso.
+        const guardada = leerSolicitudLocal();
+        if (guardada && guardada.email) {
+            pintarEstadoSolicitud(guardada.estado, guardada.email);
+            actualizarEstadoSolicitud(guardada.email);
+        }
+    }
 })();

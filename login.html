@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1c1c1c">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">`n    <style>html,body{background:#0a0a0a;color:#f2f2f2;margin:0}</style>
+<meta name="theme-color" content="#1c1c1c">
     <meta name="color-scheme" content="dark">
     <title>Iniciar sesión | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <!-- Fuentes locales: se piden en paralelo al CSS para evitar el FOUT. -->
+    <link rel="preload" href="fuentes/orbitron-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/tokens.css?v=1">
-    <link rel="stylesheet" href="css/login-cinematico.css?v=3">
+    <link rel="stylesheet" href="css/tokens.css?v=4">
+    <link rel="stylesheet" href="css/login-cinematico.css?v=4">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
+    
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -67,8 +73,8 @@
                     <!-- novalidate: los errores los muestra el JS, no el navegador. -->
                     <form id="formulario" novalidate>
                         <div class="campo">
-                            <label for="correo">Usuario o correo</label>
-                            <input type="text" id="correo" autocomplete="username" placeholder="tu correo (ej. cliente@computlalte.com)" autocapitalize="none" spellcheck="false">
+                            <label for="correo">Correo electrónico</label>
+                            <input type="email" id="correo" autocomplete="username" placeholder="tu correo (ej. cliente@computlalte.com)" autocapitalize="none" spellcheck="false">
                         </div>
 
                         <div class="campo">
@@ -88,6 +94,12 @@
                         <p id="mensaje" role="alert"></p>
 
                         <button type="submit" id="entrar" class="boton-brillante">Iniciar sesión</button>
+
+                        <!-- Recuperación de contraseña: la solicitud la aprueba el administrador. -->
+                        <p class="fila-recuperar">
+                            <button type="button" id="olvidaste-clave" class="enlace-recuperar">¿Olvidaste tu contraseña?</button>
+                        </p>
+                        <p class="estado-solicitud-clave" id="estado-solicitud-clave" hidden role="status" aria-live="polite"></p>
                     </form>
 
                     <p id="registro">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
@@ -123,7 +135,46 @@
         </section>
     </main>
 
+    <!-- Modal de recuperación de contraseña. -->
+    <dialog class="modal-recuperacion" id="modal-recuperacion" aria-labelledby="titulo-recuperacion">
+        <form class="modal-recuperacion-caja" id="formulario-recuperacion" novalidate>
+            <header class="modal-recuperacion-cabecera">
+                <div>
+                    <p class="etiqueta-recuperacion">Recuperación de acceso</p>
+                    <h2 id="titulo-recuperacion">¿Olvidaste tu contraseña?</h2>
+                </div>
+                <button class="modal-recuperacion-cerrar" id="cerrar-recuperacion" type="button" aria-label="Cerrar">×</button>
+            </header>
+
+            <p class="texto-recuperacion">
+                Cuéntanos qué pasó. El administrador revisará tu solicitud y, si la aprueba,
+                te compartirá una contraseña temporal para volver a entrar.
+            </p>
+
+            <label class="campo">
+                <span>Correo electrónico</span>
+                <input type="email" id="correo-recuperacion" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+            </label>
+
+            <label class="campo">
+                <span>¿Por qué necesitas recuperar tu contraseña?</span>
+                <textarea id="razon-recuperacion" rows="3" maxlength="500" placeholder="Ej. Olvidé mi contraseña por andar de prisa"></textarea>
+            </label>
+
+            <p class="mensaje-recuperacion" id="mensaje-recuperacion" role="alert" aria-live="polite"></p>
+            <p class="estado-solicitud-clave" id="estado-recuperacion" role="status" aria-live="polite"></p>
+
+            <button type="submit" class="boton-brillante boton-enviar-recuperacion" id="enviar-recuperacion">Enviar solicitud</button>
+        </form>
+    </dialog>
+
+    <!-- Navegación SPA: transiciones instantáneas entre páginas + caché de datos.
+         Carga SIN defer para interceptar clics inmediatamente. -->
+    
     <script src="js/navegacion.js?v=1"></script>
-    <script src="js/scripts-login-cinematico.js?v=4"></script>
+    <script src="js/scripts-login-cinematico.js?v=5"></script>
+    
 </body>
 </html>
+
+

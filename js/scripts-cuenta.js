@@ -57,6 +57,49 @@ const formatoMoneda = new Intl.NumberFormat("es-MX", {
 
 let usuarioActual = null;
 
+// Cambio de contraseña obligatorio (contraseña temporal del administrador).
+const cambioForzado = new URLSearchParams(window.location.search).get("cambiar") === "1";
+
+function aplicarCambioObligatorio(obligatorio) {
+    const aviso = document.getElementById("aviso-cambio-obligatorio");
+    const seccion = document.getElementById("seguridad");
+
+    if (!obligatorio) {
+        if (aviso) {
+            aviso.hidden = true;
+        }
+        return;
+    }
+
+    if (aviso) {
+        aviso.hidden = false;
+    }
+
+    if (!seccion) {
+        return;
+    }
+
+    // Solo la sección de seguridad queda abierta: el cambio es obligatorio.
+    document.querySelectorAll(".acordeon-cuenta").forEach(function (acordeon) {
+        acordeon.open = acordeon === seccion;
+    });
+    seccion.open = true;
+
+    if (descripcionEl) {
+        descripcionEl.textContent = "Cambia tu contraseña temporal para continuar.";
+    }
+
+    window.setTimeout(function () {
+        seccion.scrollIntoView({
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+            block: "start"
+        });
+        if (claveNuevaEl) {
+            claveNuevaEl.focus({ preventScroll: true });
+        }
+    }, 250);
+}
+
 // La tarjeta guardada vive solo en este navegador y NUNCA se envía al
 // servidor: es una comodidad del cliente, no un dato de la base.
 const CLAVE_TARJETA = "computlalte-tarjeta-guardada";
@@ -421,6 +464,14 @@ async function cargarCuenta() {
 
     panelSesionEl.hidden = true;
     disposicionEl.hidden = false;
+
+    // La bandera vive en la base de datos; el parámetro ?cambiar=1 la
+    // refuerza cuando se llega desde el login con contraseña temporal.
+    const sesionServidor = window.Tienda ? Tienda.sesion() : null;
+    const debeCambiar = Boolean(datos.perfil.debeCambiarClave)
+        || Boolean(sesionServidor && sesionServidor.debeCambiarClave)
+        || cambioForzado;
+    aplicarCambioObligatorio(debeCambiar);
 }
 
 function obtenerIndiceUsuarioActual() {
@@ -530,6 +581,15 @@ formularioSeguridadEl.addEventListener("submit", async function (evento) {
     claveConfirmarEl.value = "";
     // Por seguridad, si las contraseñas se estaban mostrando se vuelven a ocultar.
     ocultarClaves();
+
+    // El cambio ya se hizo: se retira el aviso y la marca de temporal.
+    aplicarCambioObligatorio(false);
+    try {
+        localStorage.removeItem("computlalte-recuperacion");
+        history.replaceState(null, "", window.location.pathname);
+    } catch (error) {
+        // Sin historial ni almacenamiento, el cambio igual quedó guardado.
+    }
     // Doble confirmación: texto verde junto al formulario + toast elegante.
     mostrarMensaje(mensajeSeguridadEl, resultado.mensaje || "Tu contraseña se actualizó correctamente.", "exito");
     if (window.Notificaciones) {
@@ -648,3 +708,6 @@ cerrarSesionEl.addEventListener("click", function () {
 });
 
 cargarCuenta();
+
+// Exponer para navegación SPA
+window.inicializarCuenta = cargarCuenta;

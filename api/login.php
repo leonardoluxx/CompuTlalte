@@ -23,15 +23,22 @@ if ($identificador === "" || $password === "") {
 
 $bd = obtenerConexion();
 $consulta = $bd->prepare(
-    "SELECT id, nombre, email, password, rol FROM usuarios WHERE email = ? LIMIT 1"
+    "SELECT id, nombre, email, password, rol, debe_cambiar_clave FROM usuarios WHERE email = ? LIMIT 1"
 );
 $consulta->bind_param("s", $identificador);
 $consulta->execute();
 $usuario = $consulta->get_result()->fetch_assoc();
 $consulta->close();
 
+// Si esa IP ya acumuló demasiados fallos, se corta ANTES de verificar el
+// hash: el ataque no puede consumir CPU de bcrypt.
+limitar_por_ip("login_fallido", 30, 60, true);
+
 // Mensaje genérico a propósito: no se revela si el correo existe o no.
 if (!$usuario || !password_verify($password, $usuario["password"])) {
+    // Fuerza bruta: solo se cuentan los intentos fallidos por IP, para no
+    // castigar a oficinas o redes compartidas con varios accesos válidos.
+    limitar_por_ip("login_fallido", 30, 60);
     responder_error("Correo o contraseña incorrectos.", 401);
 }
 
@@ -44,7 +51,9 @@ responder_ok([
         "id" => (int) $usuario["id"],
         "nombre" => (string) $usuario["nombre"],
         "email" => (string) $usuario["email"],
-        "rol" => (string) $usuario["rol"]
+        "rol" => (string) $usuario["rol"],
+        // Con contraseña temporal el frontend manda a cambiarla sí o sí.
+        "debeCambiarClave" => (int) $usuario["debe_cambiar_clave"] === 1
     ],
     "permisos" => permisos_de_rol((string) $usuario["rol"])
 ]);

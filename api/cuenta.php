@@ -80,7 +80,8 @@ if ($metodo_http === "GET") {
             "direccion" => (string) ($usuario["direccion"] ?? ""),
             "telefono" => (string) ($usuario["telefono"] ?? ""),
             "rfc" => (string) ($usuario["rfc"] ?? ""),
-            "metodoPago" => (string) ($usuario["metodo_pago"] ?? "")
+            "metodoPago" => (string) ($usuario["metodo_pago"] ?? ""),
+            "debeCambiarClave" => ((int) ($usuario["debe_cambiar_clave"] ?? 0)) === 1
         ],
         "pedidos" => $pedidos
     ], JSON_UNESCAPED_UNICODE);
@@ -157,7 +158,11 @@ switch ($accion) {
         }
 
         $hash_nuevo = password_hash($nueva, PASSWORD_DEFAULT);
-        $actualizar = $bd->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
+        // Al fijar una contraseña propia se levanta el cambio obligatorio
+        // que dejó la contraseña temporal del administrador.
+        $actualizar = $bd->prepare(
+            "UPDATE usuarios SET password = ?, debe_cambiar_clave = 0 WHERE id = ?"
+        );
         $actualizar->bind_param("si", $hash_nuevo, $id);
         $actualizar->execute();
         $actualizar->close();

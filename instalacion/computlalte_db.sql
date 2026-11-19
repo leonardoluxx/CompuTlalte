@@ -192,6 +192,7 @@ CREATE TABLE `especificaciones` (
   `descripcion` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_especificaciones_producto` (`producto_id`),
+  KEY `idx_especificaciones_producto_orden` (`producto_id`,`tipo`,`id`),
   CONSTRAINT `fk_especificaciones_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2257 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2350,6 +2351,7 @@ CREATE TABLE `imagenes_producto` (
   `posicion` smallint(5) unsigned NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `idx_imagenes_producto` (`producto_id`),
+  KEY `idx_imagenes_producto_orden` (`producto_id`,`posicion`,`id`),
   CONSTRAINT `fk_imagenes_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3632,6 +3634,7 @@ CREATE TABLE `solicitudes` (
   `fecha_resolucion` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_solicitudes_estado` (`estado`),
+  KEY `idx_solicitudes_estado_id` (`estado`,`id`),
   KEY `fk_solicitudes_usuario` (`usuario_id`),
   KEY `fk_solicitudes_producto` (`producto_id`),
   CONSTRAINT `fk_solicitudes_producto` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -3651,6 +3654,39 @@ INSERT INTO `solicitudes` VALUES
 UNLOCK TABLES;
 
 --
+-- Table structure for table `solicitudes_password`
+--
+
+DROP TABLE IF EXISTS `solicitudes_password`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `solicitudes_password` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(160) NOT NULL,
+  `razon` varchar(500) NOT NULL,
+  `correo_registrado` tinyint(1) NOT NULL DEFAULT 1,
+  `nota` varchar(255) DEFAULT NULL,
+  `estado` enum('pendiente','aprobada','rechazada') NOT NULL DEFAULT 'pendiente',
+  `fecha_solicitud` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_resolucion` datetime DEFAULT NULL,
+  `resuelto_por` varchar(120) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_solicitudes_password_estado` (`estado`),
+  KEY `idx_solicitudes_password_estado_id` (`estado`,`id`),
+  KEY `idx_solicitudes_password_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `solicitudes_password`
+--
+
+LOCK TABLES `solicitudes_password` WRITE;
+/*!40000 ALTER TABLE `solicitudes_password` DISABLE KEYS */;
+/*!40000 ALTER TABLE `solicitudes_password` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuarios`
 --
 
@@ -3667,6 +3703,7 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(40) DEFAULT NULL,
   `rfc` varchar(13) DEFAULT NULL,
   `metodo_pago` enum('transferencia','tarjeta') DEFAULT NULL,
+  `debe_cambiar_clave` tinyint(1) NOT NULL DEFAULT 0,
   `creado` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_usuarios_email` (`email`)
@@ -3708,6 +3745,7 @@ CREATE TABLE `ventas` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uq_ventas_folio` (`folio`),
   KEY `idx_ventas_usuario` (`usuario_id`),
+  KEY `idx_ventas_usuario_id` (`usuario_id`,`id`),
   CONSTRAINT `fk_ventas_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

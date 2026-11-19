@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0a0a0a">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">`n    <style>html,body{background:#0a0a0a;color:#f2f2f2;margin:0}</style>
+<meta name="theme-color" content="#0a0a0a">
     <meta name="color-scheme" content="dark">
     <meta name="robots" content="noindex, nofollow">
     <title>Panel de control | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <!-- Fuentes locales: se piden en paralelo al CSS para evitar el FOUT. -->
+    <link rel="preload" href="fuentes/orbitron-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/panel.css?v=3">
+    <link rel="stylesheet" href="css/panel.css?v=4">
+    
 </head>
 <body class="panel-cuerpo">
     <header class="panel-cabecera">
@@ -46,6 +52,11 @@
                     <span class="panel-contador" id="contador-solicitudes">0</span>
                 </button>
                 <button class="panel-menu-boton" type="button" data-vista="resenas">Reseñas</button>
+                <button class="panel-menu-boton" type="button" data-vista="encuestas">Encuestas</button>
+                <button class="panel-menu-boton solo-admin" type="button" data-vista="seguridad">
+                    Seguridad
+                    <span class="panel-contador panel-contador-peligro" id="contador-seguridad" hidden>0</span>
+                </button>
                 <button class="panel-menu-boton solo-admin" type="button" data-vista="ajustes">Ajustes</button>
             </nav>
 
@@ -269,6 +280,93 @@
                 </div>
             </section>
 
+            <!-- Encuestas: detalle de la encuesta de satisfacción del sitio. -->
+            <section class="panel-vista" data-vista-panel="encuestas" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">VOZ DEL CLIENTE</p>
+                        <h1>Encuestas</h1>
+                    </div>
+                </div>
+
+                <p class="panel-nota">
+                    Cada respuesta guarda las estrellas, qué tan fácil resultó comprar y el comentario.
+                    Las encuestas se guardan en la base de datos y aquí se consultan tal cual las escribió el cliente.
+                </p>
+
+                <div class="panel-estadisticas">
+                    <article class="panel-stat">
+                        <span>Promedio general</span>
+                        <strong id="stat-encuestas-promedio">—</strong>
+                    </article>
+                    <article class="panel-stat">
+                        <span>Encuestas recibidas</span>
+                        <strong id="stat-encuestas-total">0</strong>
+                    </article>
+                    <article class="panel-stat">
+                        <span>Con comentario</span>
+                        <strong id="stat-encuestas-comentarios">0</strong>
+                    </article>
+                </div>
+
+                <div class="panel-tabla-envoltura">
+                    <table class="panel-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Calificación</th>
+                                <th scope="col">Facilidad de compra</th>
+                                <th scope="col">Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-encuestas"></tbody>
+                    </table>
+                </div>
+                <p class="panel-contador-tabla" id="conteo-encuestas"></p>
+            </section>
+
+            <!-- Seguridad: recuperación de contraseña aprobada por el admin. -->
+            <section class="panel-vista solo-admin" data-vista-panel="seguridad" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">CONTROL DE ACCESO</p>
+                        <h1>Seguridad</h1>
+                    </div>
+                    <button class="panel-boton panel-boton-secundario" id="recargar-seguridad" type="button">Actualizar</button>
+                </div>
+
+                <p class="panel-nota">
+                    Solicitudes de recuperación de contraseña. Al aprobar una, se genera una contraseña temporal
+                    que solo se muestra una vez: compártela con la persona. Al iniciar sesión con ella,
+                    se le pedirá obligatoriamente cambiarla.
+                </p>
+
+                <div class="panel-password-temporal" id="resultado-seguridad" hidden role="status" aria-live="polite">
+                    <p class="panel-password-etiqueta">Contraseña temporal generada</p>
+                    <div class="panel-password-fila">
+                        <code id="clave-temporal"></code>
+                        <button class="panel-boton panel-boton-mini" id="copiar-clave-temporal" type="button">Copiar</button>
+                    </div>
+                    <p class="panel-password-nota" id="nota-clave-temporal"></p>
+                </div>
+
+                <div class="panel-tabla-envoltura">
+                    <table class="panel-tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Correo</th>
+                                <th scope="col">Razón</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col"><span class="panel-solo-lector">Acciones</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-seguridad"></tbody>
+                    </table>
+                </div>
+                <p class="panel-contador-tabla" id="conteo-seguridad"></p>
+            </section>
+
             <!-- Ajustes exclusivos del administrador. -->
             <section class="panel-vista solo-admin" data-vista-panel="ajustes" hidden>
                 <div class="panel-encabezado">
@@ -488,8 +586,14 @@
     <div class="panel-aviso" id="panel-aviso" role="status" aria-live="polite" hidden></div>
 
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
-    <script src="api/bootstrap.php?v=1"></script>
+    <script src="api/bootstrap.php?v=1" fetchpriority="high"></script>
+    <!-- Navegación SPA: transiciones instantáneas entre páginas + caché de datos.
+         Carga SIN defer para interceptar clics inmediatamente. -->
+    
     <script src="js/tienda-datos.js?v=6"></script>
-    <script src="js/panel.js?v=5"></script>
+    <script src="js/panel.js?v=6"></script>
+    
 </body>
 </html>
+
+

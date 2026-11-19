@@ -18,23 +18,25 @@ $metodo = $_SERVER["REQUEST_METHOD"];
 // ------------------------------------------------------------ lectura
 if ($metodo === "GET") {
     cabeceras_json();
-    $margen = margen_global($bd);
     $visitante = usuario_de_sesion();
-    $productos = filtrar_costos(
-        obtener_productos($bd, $margen),
-        $visitante["rol"] ?? null
-    );
+    $rol = $visitante["rol"] ?? null;
 
+    // Una ficha concreta solo consulta ese producto (no el catálogo entero).
     if (isset($_GET["id"])) {
-        $id = (int) $_GET["id"];
-        foreach ($productos as $producto) {
-            if ($producto["id"] === $id) {
-                echo json_encode(["ok" => true, "producto" => $producto], JSON_UNESCAPED_UNICODE);
-                exit;
-            }
+        $producto = producto_adaptado_por_id($bd, (int) $_GET["id"]);
+        if (!$producto) {
+            responder_error("Ese producto no existe.", 404);
         }
-        responder_error("Ese producto no existe.", 404);
+
+        $producto = filtrar_costos([$producto], $rol)[0];
+        echo json_encode(["ok" => true, "producto" => $producto], JSON_UNESCAPED_UNICODE);
+        exit;
     }
+
+    $productos = filtrar_costos(
+        obtener_productos($bd, margen_global($bd)),
+        $rol
+    );
 
     echo json_encode(["ok" => true, "productos" => $productos], JSON_UNESCAPED_UNICODE);
     exit;

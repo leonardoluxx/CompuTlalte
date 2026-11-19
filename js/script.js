@@ -1,9 +1,9 @@
 // Guarda referencias a los elementos HTML que controla este archivo.
-const menuMovil = document.querySelector("#menu-movil");
-const botonMenu = document.querySelector(".boton-menu");
-const botonCerrar = document.querySelector(".boton-cerrar");
-const botonAcordeon = document.querySelector(".boton-acordeon");
-const submenuMovil = document.querySelector("#opciones-movil");
+let menuMovil = document.querySelector("#menu-movil");
+let botonMenu = document.querySelector(".boton-menu");
+let botonCerrar = document.querySelector(".boton-cerrar");
+let botonAcordeon = document.querySelector(".boton-acordeon");
+let submenuMovil = document.querySelector("#opciones-movil");
 
 // Abre el panel, bloquea el desplazamiento del fondo y mueve el foco a la X.
 function abrirMenu() {
@@ -37,112 +37,147 @@ function cambiarEstadoSubmenu(estaAbierto) {
     submenuMovil.inert = !estaAbierto;
 }
 
-// Al pulsar la hamburguesa se abre el menú, y la X lo cierra.
-botonMenu.addEventListener("click", abrirMenu);
-botonCerrar.addEventListener("click", cerrarMenu);
+// Inicializa menú móvil y mega menú (se llama al cargar y tras navegación SPA)
+function inicializarMenuYMega() {
+    // Actualizar referencias DOM (pueden haber cambiado tras SPA nav)
+    menuMovil = document.querySelector("#menu-movil");
+    botonMenu = document.querySelector(".boton-menu");
+    botonCerrar = document.querySelector(".boton-cerrar");
+    botonAcordeon = document.querySelector(".boton-acordeon");
+    submenuMovil = document.querySelector("#opciones-movil");
 
-// Al pulsar Computadoras se muestran u ocultan las opciones del acordeón.
-botonAcordeon.addEventListener("click", () => {
-    const estaAbierto = botonAcordeon.getAttribute("aria-expanded") === "true";
-    cambiarEstadoSubmenu(!estaAbierto);
-});
-
-// Cierra el menú después de elegir un enlace.
-menuMovil.querySelectorAll("a").forEach((enlace) => {
-    enlace.addEventListener("click", cerrarMenu);
-});
-
-// Escape cierra el menú; Tab mantiene el foco dentro del panel móvil.
-document.addEventListener("keydown", (evento) => {
-    if (!menuMovil.classList.contains("esta-abierto")) {
-        return;
+    if (!menuMovil || !botonMenu || !botonCerrar || !botonAcordeon || !submenuMovil) {
+        return; // No hay menú en esta página
     }
 
-    if (evento.key === "Escape") {
-        cerrarMenu();
-        return;
-    }
+    // Limpiar listeners previos clonando nodos (truco simple para evitar duplicados)
+    const nuevoBotonMenu = botonMenu.cloneNode(true);
+    botonMenu.parentNode.replaceChild(nuevoBotonMenu, botonMenu);
+    botonMenu = nuevoBotonMenu;
 
-    if (evento.key === "Tab") {
-        // Excluye los controles del submenú mientras esté cerrado (inert).
-        const elementosEnfocables = [...menuMovil.querySelectorAll("a[href], button:not([disabled])")]
-            .filter((elemento) => !elemento.closest("[inert]"));
-        const primerElemento = elementosEnfocables[0];
-        const ultimoElemento = elementosEnfocables[elementosEnfocables.length - 1];
+    const nuevoBotonCerrar = botonCerrar.cloneNode(true);
+    botonCerrar.parentNode.replaceChild(nuevoBotonCerrar, botonCerrar);
+    botonCerrar = nuevoBotonCerrar;
 
-        if (!menuMovil.contains(document.activeElement)) {
-            evento.preventDefault();
-            (evento.shiftKey ? ultimoElemento : primerElemento).focus();
-        } else if (evento.shiftKey && document.activeElement === primerElemento) {
-            evento.preventDefault();
-            ultimoElemento.focus();
-        } else if (!evento.shiftKey && document.activeElement === ultimoElemento) {
-            evento.preventDefault();
-            primerElemento.focus();
-        }
-    }
-});
+    const nuevoBotonAcordeon = botonAcordeon.cloneNode(true);
+    botonAcordeon.parentNode.replaceChild(nuevoBotonAcordeon, botonAcordeon);
+    botonAcordeon = nuevoBotonAcordeon;
 
-// ============================================================= mega menú
-// El panel de escritorio se abre al pasar el cursor (CSS) o cuando el foco
-// llega por teclado (la clase .menu-abierto-teclado la pone este bloque).
-// Un clic en un enlace debe cerrarlo de inmediato: antes el foco quedaba
-// en el enlace y el panel se quedaba pegado en pantalla tras el clic.
-const menusEscritorio = document.querySelectorAll(".menu-mega, .menu-ofertas");
+    // Al pulsar la hamburguesa se abre el menú, y la X lo cierra.
+    botonMenu.addEventListener("click", abrirMenu);
+    botonCerrar.addEventListener("click", cerrarMenu);
 
-menusEscritorio.forEach((menu) => {
-    const panel = menu.querySelector(".contenido-mega, .contenido-ofertas");
-    if (!panel) {
-        return;
-    }
-
-    // Teclado: al llegar el foco por Tab el panel se abre; al salir, se cierra.
-    menu.addEventListener("focusin", (evento) => {
-        if (evento.target.matches(":focus-visible")) {
-            menu.classList.add("menu-abierto-teclado");
-            menu.classList.remove("mega-cerrado-forzado");
-        }
+    // Al pulsar Computadoras se muestran u ocultan las opciones del acordeón.
+    botonAcordeon.addEventListener("click", () => {
+        const estaAbierto = botonAcordeon.getAttribute("aria-expanded") === "true";
+        cambiarEstadoSubmenu(!estaAbierto);
     });
 
-    menu.addEventListener("focusout", () => {
-        menu.classList.remove("menu-abierto-teclado");
+    // Cierra el menú después de elegir un enlace.
+    menuMovil.querySelectorAll("a").forEach((enlace) => {
+        enlace.addEventListener("click", cerrarMenu);
     });
 
-    // Escape cierra el panel y devuelve el foco al enlace principal del menú.
-    menu.addEventListener("keydown", (evento) => {
-        if (evento.key !== "Escape") {
+    // Escape cierra el menú; Tab mantiene el foco dentro del panel móvil.
+    document.addEventListener("keydown", (evento) => {
+        if (!menuMovil.classList.contains("esta-abierto")) {
             return;
         }
-        menu.classList.remove("menu-abierto-teclado");
-        const enlacePrincipal = menu.querySelector(":scope > a");
-        if (enlacePrincipal) {
-            enlacePrincipal.focus();
+
+        if (evento.key === "Escape") {
+            cerrarMenu();
+            return;
+        }
+
+        if (evento.key === "Tab") {
+            // Excluye los controles del submenú mientras esté cerrado (inert).
+            const elementosEnfocables = [...menuMovil.querySelectorAll("a[href], button:not([disabled])")]
+                .filter((elemento) => !elemento.closest("[inert]"));
+            const primerElemento = elementosEnfocables[0];
+            const ultimoElemento = elementosEnfocables[elementosEnfocables.length - 1];
+
+            if (!menuMovil.contains(document.activeElement)) {
+                evento.preventDefault();
+                (evento.shiftKey ? ultimoElemento : primerElemento).focus();
+            } else if (evento.shiftKey && document.activeElement === primerElemento) {
+                evento.preventDefault();
+                ultimoElemento.focus();
+            } else if (!evento.shiftKey && document.activeElement === ultimoElemento) {
+                evento.preventDefault();
+                primerElemento.focus();
+            }
         }
     });
 
-    // Clic en un enlace del panel: navega y cierra el menú aunque el cursor
-    // siga encima. El cierre forzado se retira al salir del área del menú,
-    // así la siguiente pasada del cursor lo vuelve a abrir con normalidad.
-    panel.querySelectorAll("a").forEach((enlace) => {
-        enlace.addEventListener("click", () => {
-            menu.classList.remove("menu-abierto-teclado");
-            menu.classList.add("mega-cerrado-forzado");
-            enlace.blur();
+    // ============================================================= mega menú
+    const menusEscritorio = document.querySelectorAll(".menu-mega, .menu-ofertas");
+
+    menusEscritorio.forEach((menu) => {
+        const panel = menu.querySelector(".contenido-mega, .contenido-ofertas");
+        if (!panel) {
+            return;
+        }
+
+        // Clonar menú para limpiar listeners
+        const nuevoMenu = menu.cloneNode(true);
+        menu.parentNode.replaceChild(nuevoMenu, menu);
+        // Re-obtener panel del menú clonado
+        const nuevoPanel = nuevoMenu.querySelector(".contenido-mega, .contenido-ofertas");
+
+        // Teclado: al llegar el foco por Tab el panel se abre; al salir, se cierra.
+        nuevoMenu.addEventListener("focusin", (evento) => {
+            if (evento.target.matches(":focus-visible")) {
+                nuevoMenu.classList.add("menu-abierto-teclado");
+                nuevoMenu.classList.remove("mega-cerrado-forzado");
+            }
+        });
+
+        nuevoMenu.addEventListener("focusout", () => {
+            nuevoMenu.classList.remove("menu-abierto-teclado");
+        });
+
+        // Escape cierra el panel y devuelve el foco al enlace principal del menú.
+        nuevoMenu.addEventListener("keydown", (evento) => {
+            if (evento.key !== "Escape") {
+                return;
+            }
+            nuevoMenu.classList.remove("menu-abierto-teclado");
+            const enlacePrincipal = nuevoMenu.querySelector(":scope > a");
+            if (enlacePrincipal) {
+                enlacePrincipal.focus();
+            }
+        });
+
+        // Clic en un enlace del panel: navega y cierra el menú aunque el cursor
+        // siga encima. El cierre forzado se retira al salir del área del menú,
+        // así la siguiente pasada del cursor lo vuelve a abrir con normalidad.
+        nuevoPanel.querySelectorAll("a").forEach((enlace) => {
+            enlace.addEventListener("click", () => {
+                nuevoMenu.classList.remove("menu-abierto-teclado");
+                nuevoMenu.classList.add("mega-cerrado-forzado");
+                enlace.blur();
+            });
+        });
+
+        nuevoMenu.addEventListener("mouseleave", () => {
+            nuevoMenu.classList.remove("mega-cerrado-forzado");
         });
     });
 
-    menu.addEventListener("mouseleave", () => {
-        menu.classList.remove("mega-cerrado-forzado");
+    // Si la ventana pasa a escritorio, cierra el panel y reinicia el acordeón.
+    window.matchMedia("(min-width: 769px)").addEventListener("change", (cambio) => {
+        if (cambio.matches && menuMovil.classList.contains("esta-abierto")) {
+            cerrarMenu();
+            cambiarEstadoSubmenu(false);
+        }
     });
-});
+}
 
-// Si la ventana pasa a escritorio, cierra el panel y reinicia el acordeón.
-window.matchMedia("(min-width: 769px)").addEventListener("change", (cambio) => {
-    if (cambio.matches && menuMovil.classList.contains("esta-abierto")) {
-        cerrarMenu();
-        cambiarEstadoSubmenu(false);
-    }
-});
+// Inicializar al cargar
+inicializarMenuYMega();
+
+// Exponer para navegación SPA
+window.inicializarMenuYMega = inicializarMenuYMega;
 
 // Formatea los importes como pesos mexicanos sin depender de servicios externos.
 const formateadorMoneda = new Intl.NumberFormat("es-MX", {
@@ -173,6 +208,7 @@ const selectorOrdenComputadoras = document.querySelector("#orden-computadoras");
 const conteoComputadoras = document.querySelector("#conteo-computadoras");
 const mensajeSinComputadoras = document.querySelector("#sin-resultados-computadoras");
 const botonLimpiarFiltrosComputadoras = document.querySelector("#limpiar-filtros-computadoras");
+const botonLimpiarVacioComputadoras = document.querySelector("#limpiar-vacio-computadoras");
 const contenedorComputadoras = document.querySelector("#contenedor-catalogo-computadoras");
 const botonAlternarFiltrosComputadoras = document.querySelector("#alternar-filtros-computadoras");
 const textoAlternarFiltrosComputadoras = document.querySelector("#texto-alternar-filtros-computadoras");
@@ -183,6 +219,7 @@ const selectorOrdenAccesorios = document.querySelector("#orden-accesorios");
 const conteoAccesorios = document.querySelector("#conteo-accesorios");
 const mensajeSinAccesorios = document.querySelector("#sin-resultados-accesorios");
 const botonLimpiarFiltros = document.querySelector("#limpiar-filtros");
+const botonLimpiarVacioAccesorios = document.querySelector("#limpiar-vacio-accesorios");
 const contenedorCatalogo = document.querySelector("#contenedor-catalogo");
 const botonAlternarFiltros = document.querySelector("#alternar-filtros");
 const textoAlternarFiltros = document.querySelector("#texto-alternar-filtros");
@@ -1530,17 +1567,22 @@ document.addEventListener("click", (evento) => {
 
 // Actualiza el catálogo de computadoras al cambiar cualquier filtro u orden.
 if (filtrosComputadoras && selectorOrdenComputadoras && botonLimpiarFiltrosComputadoras) {
-    filtrosComputadoras.addEventListener("change", mostrarComputadoras);
-    selectorOrdenComputadoras.addEventListener("change", mostrarComputadoras);
-    botonLimpiarFiltrosComputadoras.addEventListener("click", () => {
-        // "Limpiar filtros" quita TODO: se vuelve a ver el catálogo completo,
-        // no un estado inicial que ya traía "Juegos" marcado.
+    // Un solo reinicio para el botón lateral y el del estado vacío: deja
+    // todos los checkboxes sin marcar y vuelve a "Destacados".
+    const limpiarFiltrosComputadoras = () => {
         filtrosComputadoras.querySelectorAll('input[type="checkbox"]').forEach((filtro) => {
             filtro.checked = false;
         });
         selectorOrdenComputadoras.value = "destacados";
         mostrarComputadoras();
-    });
+    };
+
+    filtrosComputadoras.addEventListener("change", mostrarComputadoras);
+    selectorOrdenComputadoras.addEventListener("change", mostrarComputadoras);
+    botonLimpiarFiltrosComputadoras.addEventListener("click", limpiarFiltrosComputadoras);
+    if (botonLimpiarVacioComputadoras) {
+        botonLimpiarVacioComputadoras.addEventListener("click", limpiarFiltrosComputadoras);
+    }
 }
 
 // Reacomodo suave de las tarjetas al abrir o cerrar los filtros.
@@ -1653,16 +1695,21 @@ if (rejillaOfertas) {
 
 // Actualiza accesorios al cambiar cualquier filtro u orden.
 if (filtrosAccesorios && selectorOrdenAccesorios && botonLimpiarFiltros) {
-    filtrosAccesorios.addEventListener("change", mostrarAccesorios);
-    selectorOrdenAccesorios.addEventListener("change", mostrarAccesorios);
-    botonLimpiarFiltros.addEventListener("click", () => {
-        // Igual que en computadoras: sin filtros se ve todo el catálogo.
+    // Mismo reinicio que en computadoras, también para el estado vacío.
+    const limpiarFiltrosAccesorios = () => {
         filtrosAccesorios.querySelectorAll('input[type="checkbox"]').forEach((filtro) => {
             filtro.checked = false;
         });
         selectorOrdenAccesorios.value = "destacados";
         mostrarAccesorios();
-    });
+    };
+
+    filtrosAccesorios.addEventListener("change", mostrarAccesorios);
+    selectorOrdenAccesorios.addEventListener("change", mostrarAccesorios);
+    botonLimpiarFiltros.addEventListener("click", limpiarFiltrosAccesorios);
+    if (botonLimpiarVacioAccesorios) {
+        botonLimpiarVacioAccesorios.addEventListener("click", limpiarFiltrosAccesorios);
+    }
 }
 
 // Muestra u oculta el panel lateral y actualiza el texto del botón.
@@ -1960,6 +2007,11 @@ botonComprarProducto.addEventListener("click", () => {
     );
     estadoCompra.textContent = "Producto añadido al carrito. Redirigiendo...";
 
+    // El overlay avisa que el sitio está trabajando mientras redirige.
+    if (window.OverlayCarga) {
+        OverlayCarga.mostrar("Procesando… Redirigiendo al carrito");
+    }
+
     setTimeout(() => {
         estadoCompra.textContent = "";
         window.location.href = "carrito.html";
@@ -2114,3 +2166,10 @@ function abrirProductoDesdeAncla() {
 
 abrirProductoDesdeAncla();
 suavizarLlegadaAAncla();
+
+// Exponer funciones globalmente para navegación SPA
+window.mostrarComputadoras = mostrarComputadoras;
+window.mostrarAccesorios = mostrarAccesorios;
+window.mostrarOfertas = mostrarOfertas;
+window.aplicarCategoriaComputadoras = aplicarCategoriaComputadoras;
+window.crearTarjetaProducto = crearTarjetaProducto;

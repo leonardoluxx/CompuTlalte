@@ -1,10 +1,10 @@
-// Núcleo de la tienda, ahora alimentado por MySQL a través de la API PHP.
+// Núcleo de la tienda, alimentado por MySQL a través de la API PHP.
 // ---------------------------------------------------------------
-// Los datos llegan sincrónicamente en window.DatosBD (los genera
-// api/bootstrap.php consultando la base de datos), así que toda la
-// interfaz existente sigue funcionando sin rehacerse.
-// Las escrituras (panel, ventas, cuentas, solicitudes) viajan por
-// fetch() a los endpoints de /api/ y luego se refresca la caché.
+// Datos esenciales (sesión, config, permisos) llegan sincrónicamente
+// en window.DatosBD vía bootstrap.php (ligero, sin productos).
+// Los PRODUCTOS se cargan ASÍNCRONAMENTE bajo demanda vía
+// api/productos-lista.php (solo cuando la página los necesite).
+// Las escrituras viajan por fetch() a los endpoints de /api/.
 (function () {
     "use strict";
 
@@ -41,8 +41,8 @@
     };
 
     // ---------------------------------------------------------------- caché
-    // Estado en memoria, sembrado por la base de datos en cada carga.
-    let productosCache = Array.isArray(DatosBD.productos) ? DatosBD.productos : [];
+    // Estado en memoria. Productos empiezan VACÍOS; se llenan con cargarProductos().
+    let productosCache = [];
     let configCache = Object.assign({ margenGlobal: 35 }, DatosBD.config || {});
     let sesionCache = DatosBD.sesion || null;
     let permisosCache = Array.isArray(DatosBD.permisos)
@@ -55,12 +55,53 @@
     let resenasSitioCache = DatosBD.resenasSitio || { promedio: 0, total: 0, lista: [] };
     let resenasProductosCache = DatosBD.resenasProductos || { total: 0, lista: [] };
 
+    // Promesa de carga de productos (evita fetches duplicados concurrentes)
+    let productosLoadPromise = null;
+
     function emitir() {
         try {
             document.dispatchEvent(new CustomEvent("tienda:actualizada"));
         } catch (error) {
             // En navegadores antiguos sin CustomEvent los cambios se ven al recargar.
         }
+    }
+
+    // Carga productos desde la API (asíncrona, con deduplicación)
+    async function cargarProductos() {
+        if (productosLoadPromise) return productosLoadPromise;
+
+        productosLoadPromise = (async () => {
+            try {
+                const resp = await fetch("api/productos-lista.php", { credentials: "same-origin" });
+                if (!resp.ok) throw new Error("Error " + resp.status);
+                const data = await resp.json();
+                if (!data.ok) throw new Error(data.mensaje || "Error cargando productos");
+
+                productosCache = data.productos || [];
+                // Si vienen con costos (admin/gerente), los respetamos; si no, filtramos
+                if (sesionCache && (sesionCache.rol === "admin" || sesionCache.rol === "gerente")) {
+                    // Ya vienen completos del servidor
+                } else {
+                    // Cliente: quitar costos/márgenes
+                    productosCache = productosCache.map(function (p) {
+                        return Object.assign({}, p, { costoBase: null, margen: null, margenAplicado: null });
+                    });
+                }
+                emitir();
+                return productosCache;
+            } catch (e) {
+                productosLoadPromise = null; // Permite reintentar
+                throw e;
+            }
+        })();
+
+        return productosLoadPromise;
+    }
+
+    // Fuerza recarga de productos (útil tras crear/editar/eliminar)
+    async function refrescarProductos() {
+        productosLoadPromise = null;
+        return cargarProductos();
     }
 
     // Reemplaza la caché con datos frescos del servidor.
@@ -226,7 +267,11 @@
     }
 
     // ------------------------------------------------- lectura (síncrona)
+    // Si el cache está vacío, dispara carga asíncrona y devuelve [] (la UI reaccionará al evento "tienda:actualizada")
     function productos(opciones) {
+        if (!productosCache.length) {
+            cargarProductos(); // Dispara carga en background
+        }
         const incluirEliminados = Boolean(opciones && opciones.incluirEliminados);
         return productosCache.filter(function (producto) {
             return incluirEliminados || producto.estado !== "eliminado";
@@ -610,6 +655,9 @@
         resenasProductos: resenasProductos,
         guardarImagenConfig: guardarImagenConfig,
         construirRutaImagen: construirRutaImagen,
-        refrescar: refrescar
+        refrescar: refrescar,
+        // Nuevas: carga asíncrona de productos
+        cargarProductos: cargarProductos,
+        refrescarProductos: refrescarProductos
     };
 })();

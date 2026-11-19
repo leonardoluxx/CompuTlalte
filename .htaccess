@@ -1,0 +1,89 @@
+# .htaccess — Caché agresivo para assets estáticos + SPA fallback
+# Requiere mod_headers, mod_expires, mod_rewrite en Apache (XAMPP los trae)
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+
+    # HTML: sin caché (cambia dinámicamente)
+    ExpiresByType text/html "access plus 0 seconds"
+
+    # CSS/JS: 1 año con versionado (?v=X)
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+
+    # Fuentes: 1 año
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+
+    # Imágenes: 1 año
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+
+    # JSON/XML: 1 hora
+    ExpiresByType application/json "access plus 1 hour"
+    ExpiresByType application/xml "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Cache-Control para assets versionados (1 año, inmutable)
+    <FilesMatch "\.(css|js|woff2|woff|webp|avif|jpg|jpeg|png|svg|gif|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML: no cachear (siempre fresco)
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # API PHP: no cachear (datos dinámicos)
+    <FilesMatch "\.php$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+
+    # Seguridad básica
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # SPA: servir index.html para rutas que no son archivos reales
+    # (opcional: útil si usas rutas limpias sin .html)
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^ index.html [L]
+
+    # Forzar HTTPS en producción (descomenta en prod)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Compresión GZIP/DEFLATE
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/xml font/woff2 font/woff image/svg+xml
+    <IfModule mod_setenvif.c>
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    </IfModule>
+</IfModule>
+
+# Desactivar ETags (usamos versionado en URL: ?v=X)
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None

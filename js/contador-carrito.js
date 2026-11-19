@@ -37,4 +37,7 @@
     window.addEventListener("storage", (evento) => {
         if (evento.key === "carrito") actualizarIndicador();
     });
+
+    // Exponer globalmente para navegación SPA
+    window.actualizarIndicador = actualizarIndicador;
 })();

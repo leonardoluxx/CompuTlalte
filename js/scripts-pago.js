@@ -229,27 +229,6 @@ function limpiarMensajes() {
     mensajeTarjetaEl.textContent = "";
 }
 
-function validarLuhn(numero) {
-    let suma = 0;
-    let duplicar = false;
-
-    for (let indice = numero.length - 1; indice >= 0; indice -= 1) {
-        let digito = Number(numero.charAt(indice));
-
-        if (duplicar) {
-            digito *= 2;
-            if (digito > 9) {
-                digito -= 9;
-            }
-        }
-
-        suma += digito;
-        duplicar = !duplicar;
-    }
-
-    return numero.length >= 13 && numero.length <= 19 && suma % 10 === 0;
-}
-
 function vencimientoValido(valor) {
     const coincidencia = /^(\d{2})\/(\d{2})$/.exec(valor);
     if (!coincidencia) {
@@ -316,6 +295,9 @@ async function finalizarPago(metodo, datosPago = {}) {
     const carritoFinal = obtenerCarrito();
 
     if (carritoFinal.length === 0) {
+        if (window.OverlayCarga) {
+            OverlayCarga.ocultar();
+        }
         mostrarAviso("Tu carrito está vacío. Agrega un producto para continuar.", true);
         return;
     }
@@ -347,11 +329,17 @@ async function finalizarPago(metodo, datosPago = {}) {
     try {
         resultado = await enviarVentaConCsrf(carga);
     } catch (error) {
+        if (window.OverlayCarga) {
+            OverlayCarga.ocultar();
+        }
         mostrarAviso("No se pudo conectar con el servidor. Verifica que XAMPP esté corriendo.", false);
         return;
     }
 
     if (!resultado.ok) {
+        if (window.OverlayCarga) {
+            OverlayCarga.ocultar();
+        }
         mostrarAviso(resultado.mensaje || "No se pudo registrar la venta.", false);
         return;
     }
@@ -366,6 +354,12 @@ async function finalizarPago(metodo, datosPago = {}) {
     encabezadoPagoEl.hidden = true;
     disposicionPagoEl.hidden = true;
     panelExitoEl.hidden = false;
+
+    // El pedido ya quedó registrado: se retira la capa para mostrar la
+    // confirmación con el folio.
+    if (window.OverlayCarga) {
+        OverlayCarga.ocultar();
+    }
 
     folioEl.textContent = folio;
     metodoExitoEl.textContent = metodo === "tarjeta"
@@ -439,6 +433,10 @@ function manejarTransferencia(evento) {
         return;
     }
 
+    if (window.OverlayCarga) {
+        OverlayCarga.mostrar("Procesando pago…");
+    }
+
     finalizarPago("transferencia", {
         banco: banco,
         referencia: referencia,
@@ -460,8 +458,10 @@ function manejarTarjeta(evento) {
     const vencimiento = vencimientoTarjetaEl.value.trim();
     const cvv = cvvTarjetaEl.value.trim();
 
-    if (!/^\d{13,19}$/.test(numero) || !validarLuhn(numero)) {
-        mensajeTarjetaEl.textContent = "Revisa el número de la tarjeta.";
+    // Solo se valida al confirmar: 16 dígitos completos. Mientras escribe,
+    // el usuario no recibe alertas ni se le interrumpe.
+    if (numero.length !== 16) {
+        mensajeTarjetaEl.textContent = "Escribe los 16 dígitos de tu tarjeta para continuar.";
         numeroTarjetaEl.focus();
         return;
     }
@@ -484,6 +484,10 @@ function manejarTarjeta(evento) {
         return;
     }
 
+    if (window.OverlayCarga) {
+        OverlayCarga.mostrar("Procesando pago…");
+    }
+
     confirmarTarjetaEl.disabled = true;
     confirmarTarjetaEl.textContent = "Procesando pago…";
     formularioTarjetaEl.querySelectorAll("input").forEach(function (campo) {
@@ -495,10 +499,16 @@ function manejarTarjeta(evento) {
     }, 900);
 }
 
-// Formatea el número mientras se escribe y limita los campos numéricos.
+// Libertad controlada: acepta solo dígitos, los agrupa de 4 en 4 y se
+// detiene en los 16 dígitos. No muestra errores mientras se escribe.
 numeroTarjetaEl.addEventListener("input", function () {
-    const digitos = numeroTarjetaEl.value.replace(/\D/g, "").slice(0, 19);
+    const digitos = numeroTarjetaEl.value.replace(/\D/g, "").slice(0, 16);
     numeroTarjetaEl.value = digitos.replace(/(\d{4})(?=\d)/g, "$1 ");
+
+    // Si había un aviso de un intento de pago anterior, desaparece al teclear.
+    if (mensajeTarjetaEl.textContent !== "") {
+        mensajeTarjetaEl.textContent = "";
+    }
 });
 
 vencimientoTarjetaEl.addEventListener("input", function () {

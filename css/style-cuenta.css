@@ -1204,3 +1204,20 @@ body {
         transform: none;
     }
 }
+
+/* Aviso de contraseña temporal: cambio obligatorio. */
+.aviso-cambio-obligatorio {
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    background: rgb(240 192 64 / 10%);
+    border: 1px solid rgb(240 192 64 / 42%);
+    border-radius: 10px;
+    color: #ffdf8a;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.aviso-cambio-obligatorio[hidden] {
+    display: none;
+}

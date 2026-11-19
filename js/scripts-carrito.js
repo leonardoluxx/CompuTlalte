@@ -745,6 +745,11 @@ pagarEl.addEventListener("click", () => {
         return;
     }
 
+    // Feedback inmediato: el pago tarda un instante en cargar.
+    if (window.OverlayCarga) {
+        OverlayCarga.mostrar("Preparando el pago…");
+    }
+
     window.location.href = "pago.html";
 });
 

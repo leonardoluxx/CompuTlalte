@@ -83,3 +83,419 @@
         background: #141414;
     }
 }
+
+/* =========================================================
+   Encuesta de satisfacción (widget global)
+   ---------------------------------------------------------
+   Este componente se inyecta en varias páginas (inicio, pago,
+   catálogo, ofertas...). Sus estilos viven aquí, en la hoja
+   compartida, para que se vea igual en todas y no dependa de
+   que cada página cargue styles.css.
+   ========================================================= */
+.encuesta-sitio {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 999;
+    box-sizing: border-box;
+    width: min(300px, calc(100vw - 36px));
+    padding: 14px 16px 16px;
+    color: #f2f2f2;
+    background: rgba(18, 18, 22, 0.88);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(240, 192, 64, 0.25);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    font-family: var(--fuente-interfaz, 'Rajdhani', system-ui, sans-serif);
+    text-align: left;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.encuesta-sitio[hidden] {
+    display: none;
+}
+
+/* "oculta" solo anima la entrada/salida; el atributo hidden la quita. */
+.encuesta-sitio.oculta {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+    pointer-events: none;
+}
+
+.encuesta-cerrar {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    padding: 2px 6px;
+    color: #9a9a9a;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.encuesta-cerrar:hover,
+.encuesta-cerrar:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+}
+
+.encuesta-titulo {
+    margin: 0 24px 10px 0;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.encuesta-estrellas {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.encuesta-estrellas button {
+    padding: 0 2px;
+    color: #555555;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.encuesta-estrellas button.activo,
+.encuesta-estrellas button:hover,
+.encuesta-estrellas button:focus-visible {
+    color: #f0c040;
+    transform: scale(1.15);
+    outline: none;
+}
+
+/* Campos extra: qué tan fácil fue comprar y el comentario libre. */
+.encuesta-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.encuesta-campo span {
+    color: #b9b9b9;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.encuesta-campo select,
+.encuesta-campo textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 10px;
+    color: #f2f2f2;
+    background: #0d0d0d;
+    border: 1px solid #353535;
+    border-radius: 8px;
+    font-family: var(--fuente-interfaz, 'Rajdhani', system-ui, sans-serif);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.encuesta-campo textarea {
+    min-height: 54px;
+    resize: vertical;
+}
+
+/* El select nativo pierde la flecha del sistema para integrarse
+   con el vidrio oscuro del widget. */
+.encuesta-campo select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 30px;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #f0c040 50%),
+        linear-gradient(135deg, #f0c040 50%, transparent 50%);
+    background-position:
+        calc(100% - 16px) calc(50% - 2px),
+        calc(100% - 11px) calc(50% - 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.encuesta-campo select option {
+    color: #f2f2f2;
+    background: #141414;
+}
+
+.encuesta-campo select:focus-visible,
+.encuesta-campo textarea:focus-visible {
+    outline: none;
+    border-color: rgba(240, 192, 64, 0.65);
+    box-shadow: 0 0 0 2px rgba(240, 192, 64, 0.16);
+}
+
+.encuesta-campo select:disabled,
+.encuesta-campo textarea:disabled {
+    opacity: 0.55;
+}
+
+.encuesta-enviar {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 9px 12px;
+    color: #1a1405;
+    background: linear-gradient(135deg, #f7d977, #e3ad2f);
+    border: none;
+    border-radius: 10px;
+    font-family: var(--fuente-interfaz, 'Rajdhani', system-ui, sans-serif);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.encuesta-enviar:hover,
+.encuesta-enviar:focus-visible {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.encuesta-enviar:disabled {
+    opacity: 0.6;
+    cursor: progress;
+    transform: none;
+}
+
+.encuesta-gracias {
+    margin: 8px 0 0;
+    color: #f0c040;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Chispas al elegir 5 estrellas */
+.encuesta-estrellas.destello {
+    animation: latidoEstrellas 0.8s ease;
+}
+
+@keyframes latidoEstrellas {
+    0% { filter: drop-shadow(0 0 0 rgba(240, 192, 64, 0)); }
+    35% { filter: drop-shadow(0 0 10px rgba(240, 192, 64, 0.95)); }
+    100% { filter: drop-shadow(0 0 0 rgba(240, 192, 64, 0)); }
+}
+
+.chispa {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 8px rgba(255, 224, 102, 0.9);
+    animation: subirChispa 0.85s ease-out forwards;
+}
+
+@keyframes subirChispa {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, -30px))) scale(0.25); }
+}
+
+/* Responsiva: el widget ocupa el ancho disponible en móvil. */
+@media (max-width: 640px) {
+    .encuesta-sitio {
+        right: 10px;
+        left: 10px;
+        bottom: 10px;
+        width: auto;
+        padding: 12px 14px 14px;
+    }
+
+    .encuesta-estrellas button {
+        font-size: 26px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .encuesta-sitio,
+    .encuesta-estrellas.destello,
+    .chispa {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* =========================================================
+   Overlay de carga (global)
+   ---------------------------------------------------------
+   Capa a pantalla completa con vidrio oscuro y spinner. La
+   usan el carrito, el pago y cualquier acción con espera.
+   ========================================================= */
+html.overlay-carga-activo,
+html.overlay-carga-activo body {
+    overflow: hidden;
+}
+
+.overlay-carga {
+    position: fixed;
+    inset: 0;
+    z-index: 12000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(5, 5, 8, 0.68);
+    -webkit-backdrop-filter: blur(7px) saturate(120%);
+    backdrop-filter: blur(7px) saturate(120%);
+    animation: aparecerOverlay 0.2s ease-out;
+}
+
+.overlay-carga[hidden] {
+    display: none;
+}
+
+.overlay-carga-caja {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 340px;
+    padding: 26px 30px;
+    text-align: center;
+    background: rgba(16, 16, 20, 0.92);
+    border: 1px solid rgba(240, 192, 64, 0.28);
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+    font-family: var(--fuente-interfaz, 'Rajdhani', system-ui, sans-serif);
+}
+
+.overlay-carga-spinner {
+    width: 42px;
+    height: 42px;
+    border: 3px solid rgba(255, 255, 255, 0.12);
+    border-top-color: #f0c040;
+    border-radius: 50%;
+    animation: girarOverlay 0.8s linear infinite;
+}
+
+.overlay-carga-texto {
+    margin: 0;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.overlay-carga-ayuda {
+    margin: -6px 0 0;
+    color: #a9a9a9;
+    font-size: 12.5px;
+    line-height: 1.4;
+}
+
+@keyframes girarOverlay {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes aparecerOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .overlay-carga,
+    .overlay-carga-spinner {
+        animation-duration: 2s;
+    }
+}
+
+/* =========================================================
+   Estado vacío del catálogo (computadoras y accesorios)
+   ---------------------------------------------------------
+   Ocupa el lugar de la cuadrícula cuando los filtros no
+   devuelven nada. Incluye un monitor triste dibujado con SVG,
+   el mensaje del easter egg y un botón para reiniciar filtros.
+   ========================================================= */
+.estado-vacio-catalogo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 4px 0 24px;
+    padding: clamp(30px, 6vw, 58px) 22px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 50% 0%, rgb(255 0 51 / 9%), transparent 62%),
+        #101010;
+    border: 1px dashed #3a3a3a;
+    border-radius: 8px;
+}
+
+.estado-vacio-catalogo[hidden] {
+    display: none;
+}
+
+.estado-vacio-catalogo svg {
+    width: 64px;
+    height: 64px;
+    fill: none;
+    stroke: var(--color-acento);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+    filter: drop-shadow(0 0 14px rgb(255 0 51 / 22%));
+}
+
+.estado-vacio-catalogo h3 {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--fuente-titulos, "Orbitron", sans-serif);
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    letter-spacing: 0.02em;
+}
+
+.estado-vacio-catalogo p {
+    max-width: 520px;
+    margin: 0;
+    color: #b9b9b9;
+    font-family: var(--fuente-lectura, "Chakra Petch", sans-serif);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.boton-vacio-catalogo {
+    min-height: 44px;
+    margin-top: 4px;
+    padding: 0 24px;
+    color: #ffffff;
+    background: var(--color-acento);
+    border: 0;
+    border-radius: 999px;
+    font-family: var(--fuente-interfaz, "Rajdhani", sans-serif);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.boton-vacio-catalogo:hover,
+.boton-vacio-catalogo:focus-visible {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .boton-vacio-catalogo {
+        transition: none;
+    }
+}

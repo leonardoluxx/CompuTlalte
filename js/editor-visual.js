@@ -246,4 +246,7 @@
     } else {
         inyectarLapices();
     }
+
+    // Exponer para navegación SPA
+    window.inicializarEditorVisual = inyectarLapices;
 })();

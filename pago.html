@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1c1c1c">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">`n    <style>html,body{background:#0a0a0a;color:#f2f2f2;margin:0}</style>
+<meta name="theme-color" content="#1c1c1c">
     <meta name="color-scheme" content="dark">
     <title>Método de pago | Computlalte</title>
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
+    <!-- Fuentes locales: se piden en paralelo al CSS para evitar el FOUT. -->
+    <link rel="preload" href="fuentes/orbitron-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/tokens.css?v=4">
     <link rel="stylesheet" href="css/style-pago.css?v=6">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
+    
 </head>
 <body>
     <!-- Misma barra que el resto de páginas interiores. -->
@@ -150,7 +156,7 @@
                             <div class="campo-pago campo-completo-pago">
                                 <label for="numero-tarjeta">Número de tarjeta</label>
                                 <div class="campo-tarjeta-numero">
-                                    <input type="text" id="numero-tarjeta" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000">
+                                    <input type="text" id="numero-tarjeta" inputmode="numeric" autocomplete="cc-number" maxlength="19" placeholder="0000 0000 0000 0000">
                                     <button class="boton-usar-cupon" id="usar-cupon" type="button">Usar Cupón</button>
                                 </div>
                             </div>
@@ -241,40 +247,17 @@
     </main>
 
 
-    <!-- Encuesta de satisfacción (aparece después de comprar). -->
-    <div class="encuesta-sitio oculta" id="encuesta-sitio" hidden role="dialog" aria-label="Encuesta de satisfacción">
-        <button class="encuesta-cerrar" id="encuesta-cerrar" type="button" aria-label="Cerrar encuesta">×</button>
-        <p class="encuesta-titulo">¿Cómo fue tu experiencia en Computlalte?</p>
-        <div class="encuesta-estrellas" id="encuesta-estrellas">
-            <button type="button" data-valor="1" aria-label="1 estrella">★</button>
-            <button type="button" data-valor="2" aria-label="2 estrellas">★</button>
-            <button type="button" data-valor="3" aria-label="3 estrellas">★</button>
-            <button type="button" data-valor="4" aria-label="4 estrellas">★</button>
-            <button type="button" data-valor="5" aria-label="5 estrellas">★</button>
-        </div>
-        <label class="encuesta-campo">
-            <span>¿Qué tan fácil te resultó comprar?</span>
-            <select id="encuesta-facilidad">
-                <option value="">Sin responder</option>
-                <option value="5">Muy fácil</option>
-                <option value="4">Fácil</option>
-                <option value="3">Normal</option>
-                <option value="2">Complicado</option>
-                <option value="1">Muy complicado</option>
-            </select>
-        </label>
-        <label class="encuesta-campo">
-            <span>¿Qué fue lo más difícil o qué mejorarías? (opcional)</span>
-            <textarea id="encuesta-comentario" rows="2" maxlength="400"></textarea>
-        </label>
-        <button class="encuesta-enviar boton-brillante" id="encuesta-enviar" type="button">Enviar</button>
-        <p class="encuesta-gracias" id="encuesta-gracias" hidden>¡Gracias por tu feedback!</p>
-    </div>
 
     <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
-    <script src="api/bootstrap.php?v=1"></script>
+    <script src="api/bootstrap.php?v=1" fetchpriority="high"></script>
+    <!-- Navegación SPA: transiciones instantáneas entre páginas + caché de datos.
+         Carga SIN defer para interceptar clics inmediatamente. -->
+    
     <script src="js/tienda-datos.js?v=6"></script>
-    <script src="js/scripts-pago.js?v=7"></script>
-    <script src="js/encuesta.js?v=3" defer></script>
+    <script src="js/overlay-carga.js?v=1"></script>
+    <script src="js/scripts-pago.js?v=9"></script>
+    
 </body>
 </html>
+
+

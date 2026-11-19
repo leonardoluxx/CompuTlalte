@@ -64,45 +64,95 @@ function adaptar_producto(array $fila, array $especificaciones, array $imagenes,
     ];
 }
 
-// Consulta el catálogo completo y lo devuelve adaptado.
-function obtener_productos(mysqli $bd, float $margen_global): array
+// Consulta el catálogo y lo devuelve adaptado. Con $solo_id se limita a un
+// producto: así una ficha o una edición no cargan el catálogo entero.
+function obtener_productos(mysqli $bd, float $margen_global, ?int $solo_id = null): array
 {
     $filas = [];
-    $resultado = $bd->query(
-        "SELECT p.*, c.nombre AS categoria_nombre
-         FROM productos p LEFT JOIN categorias c ON c.id = p.categoria_id
-         ORDER BY p.id"
-    );
+
+    if ($solo_id !== null) {
+        $consulta = $bd->prepare(
+            "SELECT p.*, c.nombre AS categoria_nombre
+             FROM productos p LEFT JOIN categorias c ON c.id = p.categoria_id
+             WHERE p.id = ? ORDER BY p.id"
+        );
+        $consulta->bind_param("i", $solo_id);
+        $consulta->execute();
+        $resultado = $consulta->get_result();
+    } else {
+        $resultado = $bd->query(
+            "SELECT p.*, c.nombre AS categoria_nombre
+             FROM productos p LEFT JOIN categorias c ON c.id = p.categoria_id
+             ORDER BY p.id"
+        );
+    }
+
     while ($fila = $resultado->fetch_assoc()) {
         $filas[(int) $fila["id"]] = $fila;
     }
 
+    if (!count($filas)) {
+        return [];
+    }
+
+    $filtro = $solo_id !== null ? " WHERE producto_id = ?" : "";
+
     // Reseñas REALES por producto (conteo y promedio de calificaciones).
     // Una sola consulta agrupada alimenta a todo el catálogo.
     $resenas = [];
-    $resultado = $bd->query(
-        "SELECT producto_id, COUNT(*) AS total, AVG(calificacion) AS promedio
-         FROM resenas_productos GROUP BY producto_id"
-    );
+    if ($solo_id !== null) {
+        $consulta = $bd->prepare(
+            "SELECT producto_id, COUNT(*) AS total, AVG(calificacion) AS promedio
+             FROM resenas_productos" . $filtro . " GROUP BY producto_id"
+        );
+        $consulta->bind_param("i", $solo_id);
+        $consulta->execute();
+        $resultado = $consulta->get_result();
+    } else {
+        $resultado = $bd->query(
+            "SELECT producto_id, COUNT(*) AS total, AVG(calificacion) AS promedio
+             FROM resenas_productos GROUP BY producto_id"
+        );
+    }
     while ($fila = $resultado->fetch_assoc()) {
         $resenas[(int) $fila["producto_id"]] = $fila;
     }
 
     // Especificaciones agrupadas por producto y tipo (una sola consulta).
     $especificaciones = [];
-    $resultado = $bd->query(
-        "SELECT producto_id, tipo, descripcion FROM especificaciones
-         ORDER BY producto_id, id"
-    );
+    if ($solo_id !== null) {
+        $consulta = $bd->prepare(
+            "SELECT producto_id, tipo, descripcion FROM especificaciones" . $filtro .
+            " ORDER BY producto_id, id"
+        );
+        $consulta->bind_param("i", $solo_id);
+        $consulta->execute();
+        $resultado = $consulta->get_result();
+    } else {
+        $resultado = $bd->query(
+            "SELECT producto_id, tipo, descripcion FROM especificaciones
+             ORDER BY producto_id, id"
+        );
+    }
     while ($fila = $resultado->fetch_assoc()) {
         $especificaciones[(int) $fila["producto_id"]][$fila["tipo"]][] = $fila["descripcion"];
     }
 
     // Galería ordenada por posición (la 1 es la principal).
     $imagenes = [];
-    $resultado = $bd->query(
-        "SELECT producto_id, url FROM imagenes_producto ORDER BY producto_id, posicion, id"
-    );
+    if ($solo_id !== null) {
+        $consulta = $bd->prepare(
+            "SELECT producto_id, url FROM imagenes_producto" . $filtro .
+            " ORDER BY producto_id, posicion, id"
+        );
+        $consulta->bind_param("i", $solo_id);
+        $consulta->execute();
+        $resultado = $consulta->get_result();
+    } else {
+        $resultado = $bd->query(
+            "SELECT producto_id, url FROM imagenes_producto ORDER BY producto_id, posicion, id"
+        );
+    }
     while ($fila = $resultado->fetch_assoc()) {
         $imagenes[(int) $fila["producto_id"]][] = $fila["url"];
     }
@@ -310,14 +360,11 @@ function aplicar_cambios_producto(mysqli $bd, int $id, array $cambios): void
 }
 
 // Carga un producto en formato frontend (para diffs y respuestas).
+// Solo consulta ese producto: no arma el catálogo completo.
 function producto_adaptado_por_id(mysqli $bd, int $id): ?array
 {
-    foreach (obtener_productos($bd, margen_global($bd)) as $producto) {
-        if ($producto["id"] === $id) {
-            return $producto;
-        }
-    }
-    return null;
+    $productos = obtener_productos($bd, margen_global($bd), $id);
+    return $productos[0] ?? null;
 }
 
 // Diferencias campo por campo entre lo enviado y lo guardado.
@@ -350,8 +397,9 @@ function filtrar_costos(array $productos, ?string $rol): array
     }, $productos);
 }
 
-// Paquete completo de datos para el frontend.
-function datos_para_frontend(mysqli $bd): array
+// Paquete LIGERO para bootstrap.php (solo sesión, config, permisos — SIN productos).
+// Los productos se cargan aparte vía api/productos-lista.php cuando la página los necesite.
+function datos_para_frontend_ligero(mysqli $bd): array
 {
     $usuario = usuario_de_sesion();
     $rol = $usuario["rol"] ?? null;
@@ -360,7 +408,7 @@ function datos_para_frontend(mysqli $bd): array
     $margen = margen_global($bd);
 
     $datos = [
-        "productos" => filtrar_costos(obtener_productos($bd, $margen), $rol),
+        "productos" => [], // VACÍO: se carga por fetch aparte
         "categorias" => [],
         "config" => [
             "margenGlobal" => $margen,
@@ -409,7 +457,9 @@ function datos_para_frontend(mysqli $bd): array
             "direccion" => (string) ($usuario["direccion"] ?? ""),
             "telefono" => (string) ($usuario["telefono"] ?? ""),
             "rfc" => (string) ($usuario["rfc"] ?? ""),
-            "metodoPago" => (string) ($usuario["metodo_pago"] ?? "")
+            "metodoPago" => (string) ($usuario["metodo_pago"] ?? ""),
+            // true cuando la contraseña es temporal y debe cambiarse.
+            "debeCambiarClave" => ((int) ($usuario["debe_cambiar_clave"] ?? 0)) === 1
         ];
         $datos["permisos"] = permisos_de_rol($usuario["rol"]);
     }
@@ -497,6 +547,179 @@ function datos_para_frontend(mysqli $bd): array
         ];
 
         // Últimas reseñas que los clientes dejaron a productos concretos.
+        $resultado = $bd->query("SELECT COUNT(*) AS t FROM resenas_productos");
+        $total_productos = (int) $resultado->fetch_assoc()["t"];
+        $lista_productos = [];
+        $resultado = $bd->query(
+            "SELECT r.id, r.producto_id, p.nombre AS producto_nombre,
+                    r.nombre_usuario, r.calificacion, r.comentario, r.fecha
+             FROM resenas_productos r
+             LEFT JOIN productos p ON p.id = r.producto_id
+             ORDER BY r.id DESC LIMIT 20"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $lista_productos[] = [
+                "id" => (int) $fila["id"],
+                "productoId" => (int) $fila["producto_id"],
+                "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
+                "nombreUsuario" => (string) $fila["nombre_usuario"],
+                "calificacion" => (int) $fila["calificacion"],
+                "comentario" => (string) ($fila["comentario"] ?? ""),
+                "fecha" => (string) $fila["fecha"]
+            ];
+        }
+        $datos["resenasProductos"] = [
+            "total" => $total_productos,
+            "lista" => $lista_productos
+        ];
+    }
+
+    return $datos;
+}
+
+// Paquete COMPLETO para panel y páginas admin (CON productos).
+// Mantiene la firma original para compatibilidad.
+function datos_para_frontend(mysqli $bd): array
+{
+    $usuario = usuario_de_sesion();
+    $rol = $usuario["rol"] ?? null;
+    $es_admin = $rol === "admin";
+    $es_gestor = $rol === "admin" || $rol === "gerente";
+    $margen = margen_global($bd);
+
+    $datos = [
+        "productos" => filtrar_costos(obtener_productos($bd, $margen), $rol),
+        "categorias" => [],
+        "config" => [
+            "margenGlobal" => $margen,
+            "heroImagen" => null,
+            "imagenComputadoras" => null,
+            "imagenAccesorios" => null,
+            "imagenOfertas" => null
+        ],
+        "sesion" => null,
+        "permisos" => [],
+        "usuarios" => [],
+        "solicitudes" => [],
+        "bitacora" => [],
+        "resenasSitio" => ["promedio" => 0, "total" => 0, "lista" => []],
+        "resenasProductos" => ["total" => 0, "lista" => []]
+    ];
+
+    // Imágenes configurables de la tienda (portada y secciones).
+    $mapa_imagenes = [
+        "heroImagen" => "hero_imagen",
+        "imagenComputadoras" => "imagen_computadoras",
+        "imagenAccesorios" => "imagen_accesorios",
+        "imagenOfertas" => "imagen_ofertas"
+    ];
+    $resultado = $bd->query(
+        "SELECT clave, valor FROM configuracion WHERE clave IN ('hero_imagen','imagen_computadoras','imagen_accesorios','imagen_ofertas')"
+    );
+    while ($fila = $resultado->fetch_assoc()) {
+        $indice = array_search($fila["clave"], $mapa_imagenes, true);
+        if ($indice !== false) {
+            $datos["config"][$indice] = (string) $fila["valor"];
+        }
+    }
+
+    $resultado = $bd->query("SELECT nombre FROM categorias ORDER BY nombre");
+    while ($fila = $resultado->fetch_assoc()) {
+        $datos["categorias"][] = $fila["nombre"];
+    }
+
+    if ($usuario) {
+        $datos["sesion"] = [
+            "id" => (int) $usuario["id"],
+            "nombre" => (string) $usuario["nombre"],
+            "email" => (string) $usuario["email"],
+            "rol" => (string) $usuario["rol"],
+            "direccion" => (string) ($usuario["direccion"] ?? ""),
+            "telefono" => (string) ($usuario["telefono"] ?? ""),
+            "rfc" => (string) ($usuario["rfc"] ?? ""),
+            "metodoPago" => (string) ($usuario["metodo_pago"] ?? ""),
+            "debeCambiarClave" => ((int) ($usuario["debe_cambiar_clave"] ?? 0)) === 1
+        ];
+        $datos["permisos"] = permisos_de_rol($usuario["rol"]);
+    }
+
+    if ($es_admin) {
+        $resultado = $bd->query(
+            "SELECT id, nombre, email, rol, direccion, telefono, rfc, creado
+             FROM usuarios ORDER BY id"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $datos["usuarios"][] = [
+                "id" => (int) $fila["id"],
+                "nombre" => (string) $fila["nombre"],
+                "email" => (string) $fila["email"],
+                "rol" => (string) $fila["rol"],
+                "direccion" => (string) ($fila["direccion"] ?? ""),
+                "telefono" => (string) ($fila["telefono"] ?? ""),
+                "rfc" => (string) ($fila["rfc"] ?? ""),
+                "creado" => (string) $fila["creado"]
+            ];
+        }
+    }
+
+    if ($es_gestor) {
+        $resultado = $bd->query(
+            "SELECT s.*, u.nombre AS autor
+             FROM solicitudes s LEFT JOIN usuarios u ON u.id = s.usuario_id
+             ORDER BY s.estado = 'pendiente' DESC, s.id DESC"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $datos["solicitudes"][] = [
+                "id" => (int) $fila["id"],
+                "productoId" => $fila["producto_id"] !== null ? (int) $fila["producto_id"] : null,
+                "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
+                "cambios" => json_decode((string) $fila["cambios"], true) ?: new stdClass(),
+                "resumen" => (string) ($fila["resumen"] ?? ""),
+                "estado" => (string) $fila["estado"],
+                "autor" => (string) ($fila["autor"] ?? "Usuario"),
+                "fecha" => (string) $fila["creado"],
+                "resueltoPor" => (string) ($fila["resuelto_por"] ?? ""),
+                "fechaResolucion" => (string) ($fila["fecha_resolucion"] ?? "")
+            ];
+        }
+
+        $resultado = $bd->query(
+            "SELECT fecha, autor, rol, accion, detalle FROM bitacora ORDER BY id DESC LIMIT 60"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $datos["bitacora"][] = [
+                "fecha" => (string) $fila["fecha"],
+                "autor" => (string) $fila["autor"],
+                "rol" => (string) $fila["rol"],
+                "accion" => (string) $fila["accion"],
+                "detalle" => (string) $fila["detalle"]
+            ];
+        }
+
+        $resultado = $bd->query(
+            "SELECT COALESCE(AVG(calificacion), 0) AS promedio, COUNT(*) AS total FROM resenas_sitio"
+        );
+        $resumen_sitio = $resultado->fetch_assoc();
+        $lista_sitio = [];
+        $resultado = $bd->query(
+            "SELECT id, calificacion, facilidad, comentario, fecha
+             FROM resenas_sitio ORDER BY id DESC LIMIT 50"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $lista_sitio[] = [
+                "id" => (int) $fila["id"],
+                "calificacion" => (int) $fila["calificacion"],
+                "facilidad" => $fila["facilidad"] !== null ? (int) $fila["facilidad"] : null,
+                "comentario" => (string) ($fila["comentario"] ?? ""),
+                "fecha" => (string) $fila["fecha"]
+            ];
+        }
+        $datos["resenasSitio"] = [
+            "promedio" => round((float) $resumen_sitio["promedio"], 1),
+            "total" => (int) $resumen_sitio["total"],
+            "lista" => $lista_sitio
+        ];
+
         $resultado = $bd->query("SELECT COUNT(*) AS t FROM resenas_productos");
         $total_productos = (int) $resultado->fetch_assoc()["t"];
         $lista_productos = [];

@@ -40,3 +40,6 @@ __pycache__/
 node_modules/
 dist/
 build/
+
+# Marca local de migración del esquema de seguridad
+instalacion/.esquema_seguridad_ok

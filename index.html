@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
-    <!-- Metadatos básicos para que la página se muestre correctamente en distintos dispositivos. -->
+<!-- Metadatos básicos para que la página se muestre correctamente en distintos dispositivos. -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">`n    <style>html,body{background:#0a0a0a;color:#f2f2f2;margin:0}</style>
+<meta name="theme-color" content="#0a0a0a">
     <meta name="description" content="Computlalte: computadoras de alto rendimiento para juegos, desarrollo y uso diario, con accesorios y ofertas.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Computlalte | Tecnología de alto rendimiento">
@@ -13,15 +13,21 @@
     <link rel="icon" type="image/svg+xml" href="imagenes/interfaz/favicon.svg">
     <!-- La imagen del anuncio es el elemento más grande de la primera pantalla. -->
     <link rel="preload" as="image" href="imagenes/anuncios/imagen-procesador-add.jpg" fetchpriority="high">
-    <!-- Tipografías incrustadas para que el diseño se vea igual sin conexión. -->
+    <!-- Tipografías locales: mismo diseño sin conexión y sin recursos externos. -->
+    <!-- Fuentes locales: se piden en paralelo al CSS para evitar el FOUT. -->
+    <link rel="preload" href="fuentes/orbitron-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/rajdhani-700.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/tokens.css?v=1">
+    <link rel="stylesheet" href="css/tokens.css?v=4">
     <link rel="stylesheet" href="css/styles.css?v=27">
     <link rel="stylesheet" href="css/hero-cinematico.css?v=3">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
     <link rel="stylesheet" href="css/notificaciones.css?v=2">
     <link rel="stylesheet" href="css/editor-visual.css?v=3">
     <link rel="stylesheet" href="css/mega-menu.css?v=8">
+    
 </head>
 <body>
     <!-- Encabezado de navegación para las versiones de escritorio y móvil. -->
@@ -212,7 +218,16 @@
 
         <main class="contenedor-catalogo">
             <section class="seccion-catalogo" id="catalogo" aria-label="Catálogo de computadoras">
-                <p class="mensaje-sin-resultados" id="sin-resultados-computadoras" hidden>No encontramos computadoras con esos filtros. Prueba quitar uno: ni una RTX 5090 rinde con todo encendido.</p>
+                <div class="estado-vacio-catalogo" id="sin-resultados-computadoras" role="status" hidden>
+                    <svg viewBox="0 0 64 64" aria-hidden="true">
+                        <rect x="6" y="12" width="52" height="34" rx="4" />
+                        <path d="M22 54h20M32 46v8" />
+                        <path d="M22 27h4M38 27h4M24 36c4-4 12-4 16 0" />
+                    </svg>
+                    <h3>Sin resultados</h3>
+                    <p>Ni la mejor tarjeta gráfica puede renderizar estos filtros. Intenta limpiar los filtros para ver todo nuestro catálogo.</p>
+                    <button class="boton-vacio-catalogo" id="limpiar-vacio-computadoras" type="button">Limpiar Filtros</button>
+                </div>
                 <div class="rejilla-productos" id="rejilla-computadoras"></div>
             </section>
         </main>
@@ -449,18 +464,25 @@
 
     <!-- Catálogo servido desde MySQL: api/bootstrap.php consulta la base y
          entrega los datos como JavaScript antes del núcleo de la tienda. -->
-    <script src="api/bootstrap.php?v=1"></script>
+    <script src="api/bootstrap.php?v=1" fetchpriority="high"></script>
+    <!-- Navegación SPA: transiciones instantáneas entre páginas + caché de datos.
+         Carga SIN defer para interceptar clics inmediatamente. -->
+    
     <!-- Núcleo de la tienda: consume window.DatosBD y habla con la API. -->
     <script src="js/tienda-datos.js?v=6" defer></script>
     <!-- Avisos bonitos: tarjeta centrada y toasts de confirmación. -->
     <script src="js/notificaciones.js?v=2" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
-    <script src="js/script.js?v=29" defer></script>
-    <script src="js/encuesta.js?v=3" defer></script>
+    <script src="js/overlay-carga.js?v=1" defer></script>
+    <script src="js/script.js?v=31" defer></script>
+    <script src="js/encuesta.js?v=5" defer></script>
     <script src="js/contador-carrito.js?v=1" defer></script>
     <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
     <script src="js/micro-interacciones.js?v=1" defer></script>
     <!-- Lápices de edición visual (solo administrador). -->
     <script src="js/editor-visual.js?v=2" defer></script>
+    
 </body>
 </html>
+
+

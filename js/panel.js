@@ -77,6 +77,25 @@
     const ejemploMargen = document.getElementById("ejemplo-margen");
     const listaUsuarios = document.getElementById("lista-usuarios");
 
+    // Encuestas: detalle de la encuesta de satisfacción.
+    const statEncuestasPromedio = document.getElementById("stat-encuestas-promedio");
+    const statEncuestasTotal = document.getElementById("stat-encuestas-total");
+    const statEncuestasComentarios = document.getElementById("stat-encuestas-comentarios");
+    const tablaEncuestas = document.getElementById("tabla-encuestas");
+    const conteoEncuestas = document.getElementById("conteo-encuestas");
+
+    // Seguridad: solicitudes de recuperación de contraseña.
+    const contadorSeguridad = document.getElementById("contador-seguridad");
+    const tablaSeguridad = document.getElementById("tabla-seguridad");
+    const conteoSeguridad = document.getElementById("conteo-seguridad");
+    const resultadoSeguridad = document.getElementById("resultado-seguridad");
+    const claveTemporalEl = document.getElementById("clave-temporal");
+    const notaClaveTemporal = document.getElementById("nota-clave-temporal");
+    const botonRecargarSeguridad = document.getElementById("recargar-seguridad");
+    const botonCopiarClave = document.getElementById("copiar-clave-temporal");
+
+    let solicitudesSeguridad = [];
+
     const editor = document.getElementById("editor-producto");
     const formularioProducto = document.getElementById("formulario-producto");
     const editorTitulo = document.getElementById("editor-titulo");
@@ -231,6 +250,10 @@
             renderSolicitudes();
         } else if (vistaActual === "resenas") {
             renderResenas();
+        } else if (vistaActual === "encuestas") {
+            renderEncuestas();
+        } else if (vistaActual === "seguridad" && esAdmin) {
+            renderSeguridad();
         } else if (vistaActual === "ajustes" && esAdmin) {
             renderAjustes();
         } else {
@@ -868,6 +891,268 @@
         });
     }
 
+    // --------------------------------------------------------------- encuestas
+
+    // Detalle de cada encuesta: estrellas, facilidad y comentario tal como
+    // quedaron guardados en resenas_sitio.
+    function renderEncuestas() {
+        const sitio = Tienda.resenasSitio();
+
+        statEncuestasPromedio.textContent = sitio.total > 0 ? `${sitio.promedio.toFixed(1)} ★` : "—";
+        statEncuestasTotal.textContent = String(sitio.total);
+        statEncuestasComentarios.textContent = String(
+            sitio.lista.filter(function (resena) { return Boolean(resena.comentario); }).length
+        );
+
+        tablaEncuestas.replaceChildren();
+
+        if (!sitio.lista.length) {
+            const fila = document.createElement("tr");
+            const celda = crear("td", "panel-tabla-vacia", "Aún no hay encuestas. Aparecen cuando un cliente califica su experiencia.");
+            celda.colSpan = 4;
+            fila.append(celda);
+            tablaEncuestas.append(fila);
+        } else {
+            sitio.lista.forEach(function (resena) {
+                const fila = document.createElement("tr");
+                const facilidad = resena.facilidad
+                    ? (ETIQUETAS_FACILIDAD[resena.facilidad] || `${resena.facilidad}/5`)
+                    : "Sin responder";
+
+                fila.append(
+                    crear("td", "", fechaCorta(resena.fecha)),
+                    crear("td", "panel-estrellas-celda", `${estrellasPanel(resena.calificacion)} ${resena.calificacion}/5`),
+                    crear("td", "", facilidad),
+                    crear("td", "panel-comentario-celda", resena.comentario || "—")
+                );
+
+                tablaEncuestas.append(fila);
+            });
+        }
+
+        conteoEncuestas.textContent = `${sitio.total} encuestas guardadas en la base de datos.`;
+    }
+
+    // --------------------------------------------------------------- seguridad
+
+    function tokenCsrfPanel() {
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        return meta ? meta.content : "";
+    }
+
+    function actualizarContadorSeguridad(total) {
+        if (!contadorSeguridad) {
+            return;
+        }
+
+        const pendientes = Number(total) || 0;
+        contadorSeguridad.textContent = String(pendientes);
+        contadorSeguridad.hidden = pendientes === 0;
+    }
+
+    // Pide la bandeja al servidor. El contador rojo del menú se actualiza
+    // aunque el administrador esté en otra sección.
+    async function cargarSolicitudesSeguridad() {
+        if (!esAdmin) {
+            return;
+        }
+
+        try {
+            const respuesta = await fetch("api/gestionar_password.php", {
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
+            });
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.ok) {
+                avisar(datos.mensaje || "No se pudieron cargar las solicitudes de seguridad.", "error");
+                return;
+            }
+
+            solicitudesSeguridad = Array.isArray(datos.solicitudes) ? datos.solicitudes : [];
+            actualizarContadorSeguridad(datos.pendientes);
+
+            if (vistaActual === "seguridad") {
+                renderSeguridad();
+            }
+        } catch (error) {
+            avisar("No se pudo conectar con el servidor para cargar Seguridad.", "error");
+        }
+    }
+
+    function mostrarClaveTemporal(datos) {
+        if (!resultadoSeguridad) {
+            return;
+        }
+
+        claveTemporalEl.textContent = datos.claveTemporal;
+        notaClaveTemporal.textContent =
+            `Comparte esta contraseña con ${datos.nombre || datos.email} (${datos.email}). ` +
+            "Solo se muestra una vez; al entrar se le pedirá cambiarla.";
+        resultadoSeguridad.hidden = false;
+        resultadoSeguridad.scrollIntoView({ block: "nearest" });
+    }
+
+    function renderSeguridad() {
+        if (!tablaSeguridad) {
+            return;
+        }
+
+        actualizarContadorSeguridad(
+            solicitudesSeguridad.filter(function (solicitud) {
+                return solicitud.estado === "pendiente";
+            }).length
+        );
+
+        tablaSeguridad.replaceChildren();
+
+        if (!solicitudesSeguridad.length) {
+            const fila = document.createElement("tr");
+            const celda = crear("td", "panel-tabla-vacia", "No hay solicitudes de recuperación de contraseña.");
+            celda.colSpan = 5;
+            fila.append(celda);
+            tablaSeguridad.append(fila);
+            conteoSeguridad.textContent = "";
+            return;
+        }
+
+        solicitudesSeguridad.forEach(function (solicitud) {
+            const fila = document.createElement("tr");
+            if (!solicitud.correoRegistrado) {
+                fila.className = "panel-fila-riesgo";
+            }
+
+            // Correo + advertencia si la cuenta no existe.
+            const celdaCorreo = document.createElement("td");
+            celdaCorreo.append(crear("strong", "", solicitud.email));
+            if (!solicitud.correoRegistrado) {
+                celdaCorreo.append(crear("span", "panel-alerta-riesgo", "⚠ Correo no registrado · Posible trampa"));
+            }
+            fila.append(celdaCorreo);
+
+            const celdaEstado = document.createElement("td");
+            celdaEstado.append(crear(
+                "span",
+                "panel-insignia panel-insignia-" + solicitud.estado,
+                solicitud.estado === "pendiente"
+                    ? "Pendiente"
+                    : solicitud.estado === "aprobada" ? "Aprobada" : "Rechazada"
+            ));
+
+            fila.append(
+                crear("td", "panel-razon-celda", solicitud.razon),
+                crear("td", "", fechaCorta(solicitud.fecha)),
+                celdaEstado
+            );
+
+            const celdaAcciones = crear("td", "panel-celda-acciones");
+            if (solicitud.estado === "pendiente") {
+                const aprobar = crear("button", "panel-boton panel-boton-mini", "Aprobar");
+                aprobar.type = "button";
+                aprobar.dataset.accionSeguridad = "aprobar";
+                aprobar.dataset.id = String(solicitud.id);
+                aprobar.disabled = !solicitud.correoRegistrado;
+                aprobar.title = solicitud.correoRegistrado
+                    ? "Generar contraseña temporal"
+                    : "El correo no está registrado en la base de datos";
+
+                const rechazar = crear("button", "panel-boton panel-boton-mini panel-boton-peligro", "Rechazar");
+                rechazar.type = "button";
+                rechazar.dataset.accionSeguridad = "rechazar";
+                rechazar.dataset.id = String(solicitud.id);
+
+                celdaAcciones.append(aprobar, rechazar);
+            }
+
+            const eliminar = crear("button", "panel-boton panel-boton-mini panel-boton-secundario", "Eliminar");
+            eliminar.type = "button";
+            eliminar.dataset.accionSeguridad = "eliminar";
+            eliminar.dataset.id = String(solicitud.id);
+            celdaAcciones.append(eliminar);
+            fila.append(celdaAcciones);
+
+            tablaSeguridad.append(fila);
+        });
+
+        const pendientes = solicitudesSeguridad.filter(function (solicitud) {
+            return solicitud.estado === "pendiente";
+        }).length;
+        conteoSeguridad.textContent = `${solicitudesSeguridad.length} solicitudes · ${pendientes} pendientes de revisión.`;
+    }
+
+    async function resolverSeguridad(id, accion) {
+        const textos = {
+            aprobar: "¿Aprobar la recuperación? Se generará una contraseña temporal y la cuenta deberá cambiarla al entrar.",
+            rechazar: "¿Rechazar esta solicitud de recuperación?",
+            eliminar: "¿Eliminar esta solicitud del registro? Esta acción no se puede deshacer."
+        };
+
+        if (!window.confirm(textos[accion] || "¿Continuar?")) {
+            return;
+        }
+
+        let datos;
+        try {
+            const respuesta = await fetch("api/gestionar_password.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": tokenCsrfPanel()
+                },
+                body: JSON.stringify({ id: id, accion: accion, csrf: tokenCsrfPanel() })
+            });
+            datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.ok) {
+                avisar(datos.mensaje || "No se pudo completar la operación.", "error");
+                return;
+            }
+        } catch (error) {
+            avisar("No se pudo conectar con el servidor.", "error");
+            return;
+        }
+
+        if (datos.claveTemporal) {
+            mostrarClaveTemporal(datos);
+        }
+
+        avisar(
+            accion === "aprobar"
+                ? "Solicitud aprobada. Comparte la contraseña temporal."
+                : accion === "rechazar" ? "Solicitud rechazada." : "Solicitud eliminada.",
+            "exito"
+        );
+
+        await cargarSolicitudesSeguridad();
+    }
+
+    if (botonRecargarSeguridad) {
+        botonRecargarSeguridad.addEventListener("click", function () {
+            cargarSolicitudesSeguridad();
+        });
+    }
+
+    if (botonCopiarClave) {
+        botonCopiarClave.addEventListener("click", async function () {
+            try {
+                await navigator.clipboard.writeText(claveTemporalEl.textContent);
+                avisar("Contraseña temporal copiada al portapapeles.", "exito");
+            } catch (error) {
+                avisar("Copia la contraseña manualmente.", "error");
+            }
+        });
+    }
+
+    if (tablaSeguridad) {
+        tablaSeguridad.addEventListener("click", function (evento) {
+            const boton = evento.target.closest("button[data-accion-seguridad]");
+            if (!boton) {
+                return;
+            }
+            resolverSeguridad(Number(boton.dataset.id), boton.dataset.accionSeguridad);
+        });
+    }
+
     // ----------------------------------------------------------------- ajustes
 
     function renderAjustes() {
@@ -1362,5 +1647,18 @@
         }
     });
 
+    // El badge rojo de Seguridad debe verse desde cualquier sección.
+    cargarSolicitudesSeguridad();
+
     mostrarVista("resumen");
+
+    // Exponer para navegación SPA
+    window.inicializarPanel = function () {
+        // Re-ejecutar inicialización básica
+        cargarSolicitudesSeguridad();
+        // La vista actual se mantiene; si cambió el DOM, re-renderizar
+        if (!disposicion.hidden) {
+            renderVistaActual();
+        }
+    };
 })();

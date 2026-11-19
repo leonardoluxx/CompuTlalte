@@ -6,10 +6,15 @@ declare(strict_types=1);
 
 require_once __DIR__ . "/_compat.php";
 require __DIR__ . "/../conexion.php";
+require_once __DIR__ . "/_seguridad.php";
 
 // Primero lo primero: si el PHP del servidor es más viejo que 7.1, se avisa
 // con un mensaje claro en vez de reventar en mitad de un archivo.
 exigir_php_compatible();
+
+// El esquema del módulo de seguridad se asegura en cada petición (es
+// idempotente y barato): así una base existente también lo recibe.
+asegurar_esquema_seguridad(obtenerConexion());
 
 // ------------------------------------------------------------- sesión
 // Todas las peticiones comparten la sesión de PHP (cookie PHPSESSID).
@@ -80,6 +85,69 @@ function rate_limit(string $accion, int $max = 30, int $ventana = 60): void
     $_SESSION[$clave] = $historial;
 }
 
+// Límite por IP pensado para ataques sin sesión (fuerza bruta de login o
+// de recuperación de contraseña). El rate_limit de sesión se salta
+// fácilmente descartando la cookie; este no. Usa un archivo con bloqueo en
+// el directorio temporal: no requiere base de datos ni extensiones extra.
+function limitar_por_ip(string $accion, int $max = 60, int $ventana = 60, bool $solo_consultar = false): void
+{
+    $ip = (string) ($_SERVER["REMOTE_ADDR"] ?? "desconocida");
+    $archivo = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR)
+        . DIRECTORY_SEPARATOR . "computlalte_rl_" . sha1($accion . "|" . $ip) . ".json";
+
+    $manejador = @fopen($archivo, "c+");
+    if (!$manejador) {
+        return; // Sin permisos de escritura no se bloquea el servicio.
+    }
+
+    if (!flock($manejador, LOCK_EX)) {
+        fclose($manejador);
+        return;
+    }
+
+    $ahora = microtime(true);
+    $crudo = stream_get_contents($manejador);
+    $marcas = json_decode($crudo ?: "[]", true);
+    if (!is_array($marcas)) {
+        $marcas = [];
+    }
+
+    // Solo cuentan las marcas dentro de la ventana.
+    $vigentes = [];
+    foreach ($marcas as $marca) {
+        if (is_numeric($marca) && $ahora - (float) $marca < $ventana) {
+            $vigentes[] = (float) $marca;
+        }
+    }
+
+    if (count($vigentes) >= $max) {
+        flock($manejador, LOCK_UN);
+        fclose($manejador);
+        http_response_code(429);
+        responder_error(
+            "Demasiadas solicitudes desde tu conexión. Espera un momento e intenta de nuevo.",
+            429
+        );
+    }
+
+    // En modo consulta solo se comprueba el límite: no se suma la petición
+    // actual (se usa antes de verificar una contraseña, para poder cortar
+    // el ataque sin gastar CPU en hashes).
+    if ($solo_consultar) {
+        flock($manejador, LOCK_UN);
+        fclose($manejador);
+        return;
+    }
+
+    $vigentes[] = $ahora;
+    rewind($manejador);
+    ftruncate($manejador, 0);
+    fwrite($manejador, json_encode($vigentes));
+    fflush($manejador);
+    flock($manejador, LOCK_UN);
+    fclose($manejador);
+}
+
 // ---------------------------------------------------------- cabeceras
 // La API siempre responde JSON y solo acepta peticiones del mismo sitio.
 function cabeceras_json(): void
@@ -134,7 +202,7 @@ function usuario_de_sesion(): ?array
 
     $bd = obtenerConexion();
     $consulta = $bd->prepare(
-        "SELECT id, nombre, email, rol, direccion, telefono, rfc, metodo_pago
+        "SELECT id, nombre, email, rol, direccion, telefono, rfc, metodo_pago, debe_cambiar_clave
          FROM usuarios WHERE id = ? LIMIT 1"
     );
     $id = (int) $_SESSION["usuario_id"];

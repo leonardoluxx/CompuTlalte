@@ -1,15 +1,14 @@
 <?php
-// bootstrap.php — Entrega los datos de MySQL como JavaScript.
-// Las páginas lo cargan ANTES de tienda-datos.js: así la interfaz sigue
-// siendo síncrona, pero los datos nacen de la base de datos real.
-// Salida:  window.DatosBD = { productos, categorias, config, sesion, ... }
+// bootstrap.php - Entrega datos ESENCIALES (sesión, config, permisos) como JavaScript.
+// SIN productos (pesan 300KB+). Los productos se cargan aparte vía api/productos-lista.php
+// cuando la página los necesite (catálogo, ofertas, etc.).
 
 declare(strict_types=1);
 
 require __DIR__ . "/_bd.php";
 require __DIR__ . "/_datos.php";
 
-$datos = datos_para_frontend(obtenerConexion());
+$datos = datos_para_frontend_ligero(obtenerConexion());
 $csrf = csrf_token();
 
 header("Content-Type: text/javascript; charset=utf8");

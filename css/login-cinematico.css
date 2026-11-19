@@ -847,3 +847,223 @@ button {
         stroke-dashoffset: 0;
     }
 }
+
+/* =========================================================
+   Recuperación de contraseña
+   ---------------------------------------------------------
+   Enlace bajo el botón de acceso + modal con correo y razón.
+   La solicitud la revisa el administrador desde el panel.
+   ========================================================= */
+.fila-recuperar {
+    margin: 12px 0 0;
+    text-align: center;
+}
+
+.enlace-recuperar {
+    padding: 6px 8px;
+    color: #c9c9c9;
+    background: none;
+    border: none;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.enlace-recuperar:hover,
+.enlace-recuperar:focus-visible {
+    color: #f0c040;
+    outline: none;
+}
+
+.estado-solicitud-clave {
+    margin: 10px 0 0;
+    padding: 9px 12px;
+    background: rgb(240 192 64 / 10%);
+    border: 1px solid rgb(240 192 64 / 35%);
+    border-radius: 8px;
+    color: #ffdf8a;
+    font-size: 12.5px;
+    line-height: 1.45;
+    text-align: left;
+}
+
+.estado-solicitud-clave:empty {
+    display: none;
+}
+
+.estado-solicitud-clave.estado-aprobada {
+    background: rgb(112 214 162 / 10%);
+    border-color: rgb(112 214 162 / 40%);
+    color: #9ff0c4;
+}
+
+.estado-solicitud-clave.estado-rechazada {
+    background: rgb(255 0 51 / 10%);
+    border-color: rgb(255 0 51 / 40%);
+    color: #ff9bab;
+}
+
+/* ---------------------------------------------------------- modal */
+.modal-recuperacion {
+    width: min(460px, calc(100vw - 24px));
+    max-height: calc(100vh - 32px);
+    padding: 0;
+    color: var(--color-texto);
+    background: transparent;
+    border: none;
+    overflow: visible;
+}
+
+.modal-recuperacion::backdrop {
+    background: rgba(4, 4, 6, 0.72);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-recuperacion-caja {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: calc(100vh - 32px);
+    padding: 22px;
+    overflow-y: auto;
+    background: #141416;
+    border: 1px solid #303030;
+    border-radius: 16px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.6);
+}
+
+.modal-recuperacion-cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.etiqueta-recuperacion {
+    margin: 0 0 4px;
+    color: #f0c040;
+    font-family: var(--fuente-interfaz);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.modal-recuperacion-cabecera h2 {
+    margin: 0;
+    font-family: var(--fuente-titulos);
+    font-size: 19px;
+    line-height: 1.3;
+}
+
+.modal-recuperacion-cerrar {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    color: #9a9a9a;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-recuperacion-cerrar:hover,
+.modal-recuperacion-cerrar:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+}
+
+.texto-recuperacion {
+    margin: 0;
+    color: var(--color-atenuado);
+    font-size: 13.5px;
+    line-height: 1.55;
+}
+
+.modal-recuperacion .campo {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+}
+
+.modal-recuperacion .campo > span {
+    color: var(--color-texto);
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.modal-recuperacion .campo input,
+.modal-recuperacion .campo textarea {
+    width: 100%;
+    padding: 11px 13px;
+    color: var(--color-texto);
+    background: #0d0d0d;
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    font-family: var(--fuente-lectura);
+    font-size: 15px;
+    line-height: 1.45;
+    resize: vertical;
+}
+
+.modal-recuperacion .campo input::placeholder,
+.modal-recuperacion .campo textarea::placeholder {
+    color: #767676;
+}
+
+.modal-recuperacion .campo input:focus,
+.modal-recuperacion .campo textarea:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    box-shadow: 0 0 0 3px var(--color-acento-suave);
+}
+
+.mensaje-recuperacion {
+    min-height: 1.2em;
+    margin: 0;
+    color: #ff9bab;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.mensaje-recuperacion.mensaje-exito {
+    color: #9ff0c4;
+}
+
+.boton-enviar-recuperacion {
+    width: 100%;
+    padding: 13px 16px;
+    color: #ffffff;
+    background: var(--color-acento);
+    border: 0;
+    border-radius: var(--radio-chico);
+    font-family: var(--fuente-interfaz);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition:
+        filter var(--duracion-instante) ease,
+        transform var(--duracion-instante) ease;
+}
+
+.boton-enviar-recuperacion:hover:not(:disabled),
+.boton-enviar-recuperacion:focus-visible {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+}
+
+.boton-enviar-recuperacion:disabled {
+    opacity: 0.65;
+    cursor: default;
+}

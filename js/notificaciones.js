@@ -300,6 +300,9 @@
         // Toast neutro informativo.
         informacion: function (texto, titulo) {
             return toast({ tipo: "info", texto: texto, titulo: titulo });
-        }
+        },
+
+        // No-op para compatibilidad SPA (no necesita reinicialización)
+        inicializar: function () {}
     };
 })();

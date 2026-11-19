@@ -103,4 +103,7 @@
     } else {
         iniciar();
     }
+
+    // Exponer para navegación SPA
+    window.inicializarMicroInteracciones = iniciar;
 })();

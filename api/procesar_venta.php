@@ -40,10 +40,12 @@ if (!$usuario) {
 
 $bd = obtenerConexion();
 
-// Folio legible: CTL-20261104-AB3F
+// Folio legible: CTL-20261104-1A2B3C4D
+// 4 bytes aleatorios (32 bits) en lugar de 2: con 500 compras simultáneas
+// la probabilidad de choque del índice único baja a prácticamente cero.
 function generar_folio(): string
 {
-    return "CTL-" . date("Ymd") . "-" . strtoupper(bin2hex(random_bytes(2)));
+    return "CTL-" . date("Ymd") . "-" . strtoupper(bin2hex(random_bytes(4)));
 }
 
 $bd->begin_transaction();
@@ -229,7 +231,18 @@ try {
         "estado" => $estado,
         "cupon" => $cupon_aplicado
     ]);
-} catch (Throwable $error) {
+} catch (mysqli_sql_exception $error) {
+    // Un fallo de base de datos nunca se muestra al cliente: se registra
+    // en el log y se responde con un mensaje genérico.
+    $bd->rollback();
+    error_log("procesar_venta SQL: " . $error->getMessage());
+    responder_error("No se pudo completar la compra. Intenta de nuevo.", 500);
+} catch (RuntimeException $error) {
+    // Reglas de negocio (stock, cupón, producto inexistente): mensaje claro.
     $bd->rollback();
     responder_error($error->getMessage(), 409);
+} catch (Throwable $error) {
+    $bd->rollback();
+    error_log("procesar_venta: " . $error->getMessage());
+    responder_error("No se pudo completar la compra. Intenta de nuevo.", 500);
 }
