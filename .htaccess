@@ -1,5 +1,43 @@
-# .htaccess — Caché agresivo para assets estáticos + SPA fallback
+# .htaccess — Caché agresivo para assets estáticos
 # Requiere mod_headers, mod_expires, mod_rewrite en Apache (XAMPP los trae)
+
+# ------------------------------------------------------------------ CODIFICACIÓN
+# Todos los archivos son UTF-8 SIN BOM. Si el Apache de otra computadora trae
+# "AddDefaultCharset ISO-8859-1" (o ningún charset), el navegador interpreta
+# mal los acentos y la ñ y la página se ve con caracteres extraños. Fijarlo
+# aquí garantiza la misma lectura en cualquier servidor.
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+    AddType "text/html; charset=UTF-8" .html .htm
+    AddType "text/css; charset=UTF-8" .css
+    AddType "application/javascript; charset=UTF-8" .js
+</IfModule>
+
+# Página de inicio explícita: sin esto, un servidor con otra configuración
+# puede mostrar el listado de archivos en lugar de la tienda.
+DirectoryIndex index.html index.htm index.php
+
+# Nunca listar el contenido de una carpeta (equivalente no agresivo a
+# "Options -Indexes", que sí puede dar error 500 con AllowOverride restrictivo).
+<IfModule mod_autoindex.c>
+    IndexIgnore *
+</IfModule>
+
+# Los errores de PHP van al registro, NO a la pantalla: un simple "Warning"
+# impreso antes del <!DOCTYPE es la causa clásica de texto extraño al inicio
+# de la página en servidores ajenos.
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
 
 <IfModule mod_expires.c>
     ExpiresActive On
@@ -32,8 +70,18 @@
 </IfModule>
 
 <IfModule mod_headers.c>
-    # Cache-Control para assets versionados (1 año, inmutable)
-    <FilesMatch "\.(css|js|woff2|woff|webp|avif|jpg|jpeg|png|svg|gif|ico)$">
+    # CSS y JS: se guardan pero SIEMPRE se revalidan. Con "immutable" un
+    # archivo corregido seguía sirviéndose viejo durante un año en cualquier
+    # computadora que ya hubiera abierto la página, aunque el código nuevo
+    # estuviera en el servidor (eso rompía la tienda en equipos ajenos).
+    # El ?v= de las etiquetas <link>/<script> sigue siendo el mecanismo
+    # principal para forzar la descarga de una versión nueva.
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+
+    # Imágenes y fuentes (1 año, inmutable): casi nunca cambian.
+    <FilesMatch "\.(woff2|woff|webp|avif|jpg|jpeg|png|svg|gif|ico)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 
@@ -60,12 +108,6 @@
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    # SPA: servir index.html para rutas que no son archivos reales
-    # (opcional: útil si usas rutas limpias sin .html)
-    # RewriteCond %{REQUEST_FILENAME} !-f
-    # RewriteCond %{REQUEST_FILENAME} !-d
-    # RewriteRule ^ index.html [L]
 
     # Forzar HTTPS en producción (descomenta en prod)
     # RewriteCond %{HTTPS} off

@@ -148,6 +148,18 @@
         }) + " h";
     }
 
+    // Confirmaciones dentro de la web: mismos materiales que el resto del
+    // sitio, en lugar del window.confirm nativo del navegador.
+    function confirmarAccion(opciones) {
+        if (window.Notificaciones && typeof Notificaciones.confirmar === "function") {
+            return Notificaciones.confirmar(opciones);
+        }
+
+        // Sin el sistema de avisos cargado no se ejecuta una acción
+        // destructiva: mejor no hacer nada que arriesgar datos.
+        return Promise.resolve(false);
+    }
+
     function avisar(texto, tipo) {
         avisoEl.textContent = texto;
         avisoEl.className = "panel-aviso panel-aviso-visible" + (tipo ? " panel-aviso-" + tipo : "");
@@ -170,23 +182,24 @@
         return;
     }
 
+    // Puerta cerrada de verdad: quien no es del equipo de la tienda no se
+    // queda en el panel ni un instante. Antes solo se mostraba una tarjeta
+    // explicativa, así que entrar por URL directa con una cuenta de cliente
+    // "parecía" funcionar, aunque la API ya devolviera 403.
     if (!esAdmin && !esGerente) {
-        panelAcceso.hidden = false;
-
-        if (sesion && sesion.rol === "cliente") {
-            tituloAcceso.textContent = "Esta sección es del equipo de la tienda";
-            textoAcceso.textContent = "Tu cuenta es de cliente: puedes comprar en la tienda, pero no administrar el catálogo.";
-            enlaceLogin.hidden = true;
-        } else {
-            enlaceLogin.addEventListener("click", function () {
-                try {
-                    localStorage.setItem("redirigirTrasLogin", "panel.html");
-                } catch (error) {
-                    // Si el navegador bloquea el almacenamiento, el login igual funciona.
-                }
-            });
+        if (sesion) {
+            // Sesión de cliente: se le devuelve a la tienda.
+            window.location.replace("index.html");
+            return;
         }
 
+        // Sin sesión: al acceso, y al entrar vuelve al panel.
+        try {
+            localStorage.setItem("redirigirTrasLogin", "panel.html");
+        } catch (error) {
+            // Si el navegador bloquea el almacenamiento, el login igual funciona.
+        }
+        window.location.replace("login.html");
         return;
     }
 
@@ -246,6 +259,8 @@
             renderProductos();
         } else if (vistaActual === "ofertas") {
             renderOfertas();
+        } else if (vistaActual === "pedidos") {
+            renderPedidos();
         } else if (vistaActual === "solicitudes") {
             renderSolicitudes();
         } else if (vistaActual === "resenas") {
@@ -253,7 +268,10 @@
         } else if (vistaActual === "encuestas") {
             renderEncuestas();
         } else if (vistaActual === "seguridad" && esAdmin) {
+            // Se pinta lo que ya está en memoria y se vuelve a pedir la bandeja:
+            // una solicitud recién creada aparecería solo tras recargar la página.
             renderSeguridad();
+            cargarSolicitudesSeguridad();
         } else if (vistaActual === "ajustes" && esAdmin) {
             renderAjustes();
         } else {
@@ -563,12 +581,22 @@
         if (boton.dataset.accion === "editar") {
             abrirEditor(producto);
         } else if (boton.dataset.accion === "eliminar") {
-            if (window.confirm(`¿Eliminar "${producto.nombre}" de la tienda? Podrás restaurarlo desde el filtro Eliminados.`)) {
-                const resultado = await Tienda.eliminarProducto(producto.id);
-                avisar(resultado.ok ? "Producto eliminado de la tienda." : resultado.mensaje, resultado.ok ? "exito" : "error");
-                renderProductos();
-                renderContadores();
+            const confirmado = await confirmarAccion({
+                tipo: "error",
+                titulo: "¿Eliminar este producto?",
+                texto: `"${producto.nombre}" saldrá de la tienda. Podrás restaurarlo desde el filtro Eliminados.`,
+                textoAceptar: "Sí, eliminar",
+                textoCancelar: "No, conservarlo"
+            });
+
+            if (!confirmado) {
+                return;
             }
+
+            const resultado = await Tienda.eliminarProducto(producto.id);
+            avisar(resultado.ok ? "Producto eliminado de la tienda." : resultado.mensaje, resultado.ok ? "exito" : "error");
+            renderProductos();
+            renderContadores();
         } else if (boton.dataset.accion === "restaurar") {
             const resultado = await Tienda.restaurarProducto(producto.id);
             avisar(resultado.ok ? "Producto restaurado." : resultado.mensaje, resultado.ok ? "exito" : "error");
@@ -1081,13 +1109,31 @@
     }
 
     async function resolverSeguridad(id, accion) {
+        const titulos = {
+            aprobar: "¿Aprobar la recuperación?",
+            rechazar: "¿Rechazar esta solicitud?",
+            eliminar: "¿Eliminar esta solicitud?"
+        };
         const textos = {
-            aprobar: "¿Aprobar la recuperación? Se generará una contraseña temporal y la cuenta deberá cambiarla al entrar.",
-            rechazar: "¿Rechazar esta solicitud de recuperación?",
-            eliminar: "¿Eliminar esta solicitud del registro? Esta acción no se puede deshacer."
+            aprobar: "Se generará una contraseña temporal y la cuenta deberá cambiarla al entrar.",
+            rechazar: "La persona no recibirá ninguna contraseña temporal.",
+            eliminar: "La solicitud desaparecerá del registro y esta acción no se puede deshacer."
+        };
+        const botones = {
+            aprobar: "Sí, aprobar",
+            rechazar: "Sí, rechazar",
+            eliminar: "Sí, eliminar"
         };
 
-        if (!window.confirm(textos[accion] || "¿Continuar?")) {
+        const confirmado = await confirmarAccion({
+            tipo: accion === "aprobar" ? "aviso" : "error",
+            titulo: titulos[accion] || "¿Continuar?",
+            texto: textos[accion] || "",
+            textoAceptar: botones[accion] || "Sí, continuar",
+            textoCancelar: "Cancelar"
+        });
+
+        if (!confirmado) {
             return;
         }
 
@@ -1150,6 +1196,156 @@
                 return;
             }
             resolverSeguridad(Number(boton.dataset.id), boton.dataset.accionSeguridad);
+        });
+    }
+
+    // ------------------------------------------------------------------ pedidos
+
+    const listaPedidosEl = document.getElementById("lista-pedidos");
+
+    const ETIQUETAS_PEDIDO = {
+        pendiente: "Pendiente de pago",
+        pagado: "Pagado",
+        enviado: "Enviado",
+        entregado: "Entregado",
+        cancelado: "Cancelado"
+    };
+
+    const formatoMonedaPedido = new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+        maximumFractionDigits: 2
+    });
+
+    function filaVaciaPedidos(texto) {
+        const fila = document.createElement("tr");
+        const celda = crear("td", "panel-tabla-vacia", texto);
+        celda.colSpan = 6;
+        fila.append(celda);
+        return fila;
+    }
+
+    // Fecha de MySQL ("2026-11-19 20:45:15") expresada en hora local.
+    function fechaPedido(valor) {
+        const fecha = new Date(String(valor || "").replace(" ", "T"));
+        if (Number.isNaN(fecha.getTime())) {
+            return String(valor || "—");
+        }
+        return fecha.toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
+    }
+
+    async function renderPedidos() {
+        if (!listaPedidosEl) {
+            return;
+        }
+
+        listaPedidosEl.replaceChildren(filaVaciaPedidos("Cargando pedidos…"));
+
+        let datos;
+        try {
+            const respuesta = await fetch("api/pedidos.php", {
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
+            });
+            datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.ok) {
+                listaPedidosEl.replaceChildren(filaVaciaPedidos(datos.mensaje || "No se pudieron cargar los pedidos."));
+                return;
+            }
+        } catch (error) {
+            listaPedidosEl.replaceChildren(filaVaciaPedidos("No se pudo conectar con el servidor."));
+            return;
+        }
+
+        const pedidos = Array.isArray(datos.pedidos) ? datos.pedidos : [];
+
+        if (!pedidos.length) {
+            listaPedidosEl.replaceChildren(filaVaciaPedidos("Todavía no hay pedidos registrados."));
+            return;
+        }
+
+        listaPedidosEl.replaceChildren(...pedidos.map(function (pedido) {
+            const fila = document.createElement("tr");
+
+            const cliente = document.createElement("td");
+            cliente.append(crear("span", "", pedido.cliente || "Invitado"));
+            if (pedido.clienteEmail) {
+                cliente.append(crear("small", "panel-subtexto", pedido.clienteEmail));
+            }
+
+            const celdaEstado = document.createElement("td");
+            if (esAdmin) {
+                const selector = document.createElement("select");
+                selector.className = "panel-selector-rol";
+                selector.dataset.folio = pedido.folio;
+                selector.dataset.estadoAnterior = pedido.estado;
+                selector.setAttribute("aria-label", "Estado del pedido " + pedido.folio);
+
+                Object.keys(ETIQUETAS_PEDIDO).forEach(function (clave) {
+                    const opcion = crear("option", "", ETIQUETAS_PEDIDO[clave]);
+                    opcion.value = clave;
+                    opcion.selected = clave === pedido.estado;
+                    selector.append(opcion);
+                });
+
+                celdaEstado.append(selector);
+            } else {
+                celdaEstado.append(crear("span", "panel-subtexto", ETIQUETAS_PEDIDO[pedido.estado] || pedido.estado));
+            }
+
+            fila.append(
+                crear("td", "", pedido.folio),
+                cliente,
+                crear("td", "", fechaPedido(pedido.fecha)),
+                crear("td", "", pedido.metodo === "tarjeta" ? "Tarjeta" : "Transferencia"),
+                crear("td", "", formatoMonedaPedido.format(Number(pedido.total) || 0)),
+                celdaEstado
+            );
+
+            return fila;
+        }));
+    }
+
+    // Un solo manejador para toda la tabla: los selectores se recrean en cada
+    // carga, así que no se les puede asignar un listener individual.
+    if (listaPedidosEl) {
+        listaPedidosEl.addEventListener("change", async function (evento) {
+            const selector = evento.target.closest("select[data-folio]");
+            if (!selector) {
+                return;
+            }
+
+            const folio = selector.dataset.folio;
+            const estado = selector.value;
+            const anterior = selector.dataset.estadoAnterior || "";
+
+            selector.disabled = true;
+            try {
+                const respuesta = await fetch("api/pedidos.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-Token": tokenCsrfPanel()
+                    },
+                    body: JSON.stringify({ folio: folio, estado: estado, csrf: tokenCsrfPanel() })
+                });
+                const datos = await respuesta.json();
+
+                if (!respuesta.ok || !datos.ok) {
+                    avisar(datos.mensaje || "No se pudo cambiar el estado del pedido.", "error");
+                    selector.value = anterior || selector.value;
+                    return;
+                }
+
+                selector.dataset.estadoAnterior = estado;
+                avisar("Pedido " + folio + ": " + (ETIQUETAS_PEDIDO[estado] || estado) + ".", "exito");
+            } catch (error) {
+                avisar("No se pudo conectar con el servidor.", "error");
+                selector.value = anterior || selector.value;
+            } finally {
+                selector.disabled = false;
+            }
         });
     }
 
@@ -1243,7 +1439,15 @@
 
     if (botonLimpiarBitacora) {
         botonLimpiarBitacora.addEventListener("click", async function () {
-            if (!window.confirm("¿Borrar TODOS los registros de la bitácora? Esta acción no se puede deshacer.")) {
+            const confirmado = await confirmarAccion({
+                tipo: "error",
+                titulo: "¿Borrar toda la bitácora?",
+                texto: "Se eliminarán todos los registros de movimientos. Esta acción no se puede deshacer.",
+                textoAceptar: "Sí, borrar todo",
+                textoCancelar: "Cancelar"
+            });
+
+            if (!confirmado) {
                 return;
             }
 
@@ -1271,7 +1475,15 @@
         const nuevoRol = selector.value;
         const nombreRol = Tienda.roles[nuevoRol] ? Tienda.roles[nuevoRol].etiqueta : nuevoRol;
 
-        if (!window.confirm(`¿Cambiar el rol de esta cuenta a ${nombreRol}? El cambio es inmediato.`)) {
+        const confirmado = await confirmarAccion({
+            tipo: "aviso",
+            titulo: "¿Cambiar el rol de esta cuenta?",
+            texto: `La cuenta pasará a ${nombreRol} y el cambio es inmediato.`,
+            textoAceptar: "Sí, cambiar rol",
+            textoCancelar: "Cancelar"
+        });
+
+        if (!confirmado) {
             renderAjustes();
             return;
         }
@@ -1294,7 +1506,15 @@
             return;
         }
 
-        if (!window.confirm("¿Eliminar esta cuenta por completo? Esa persona ya no podrá iniciar sesión.")) {
+        const confirmado = await confirmarAccion({
+            tipo: "error",
+            titulo: "¿Eliminar esta cuenta?",
+            texto: "La cuenta se borrará por completo y esa persona ya no podrá iniciar sesión.",
+            textoAceptar: "Sí, eliminar cuenta",
+            textoCancelar: "Cancelar"
+        });
+
+        if (!confirmado) {
             return;
         }
 
@@ -1647,12 +1867,20 @@
         }
     });
 
+    // Los datos de gestión ya no viajan en bootstrap.php: se piden aquí,
+    // en segundo plano, y la vista abierta se redibuja al llegar.
+    if (typeof Tienda.cargarGestion === "function") {
+        Tienda.cargarGestion().catch(function () {
+            avisar("No se pudieron cargar las solicitudes y la bitácora. Recarga la página para reintentar.", "error");
+        });
+    }
+
     // El badge rojo de Seguridad debe verse desde cualquier sección.
     cargarSolicitudesSeguridad();
 
     mostrarVista("resumen");
 
-    // Exponer para navegación SPA
+    // Exponer para uso desde otras páginas
     window.inicializarPanel = function () {
         // Re-ejecutar inicialización básica
         cargarSolicitudesSeguridad();

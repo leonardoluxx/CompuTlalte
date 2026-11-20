@@ -19,8 +19,10 @@
 --
 -- Current Database: `computlalte_db`
 --
-
-/*!40000 DROP DATABASE IF EXISTS `computlalte_db`*/;
+-- Nota: este archivo NO incluye DROP DATABASE a propósito. El instalador
+-- crea la base con CREATE DATABASE IF NOT EXISTS y luego recrea las tablas
+-- (cada una tiene su DROP TABLE IF EXISTS). Así se puede importar varias
+-- veces sin borrar la base completa ni fallar por tablas duplicadas.
 
 CREATE DATABASE /*!32312 IF NOT EXISTS*/ `computlalte_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
 
@@ -3670,10 +3672,13 @@ CREATE TABLE `solicitudes_password` (
   `fecha_solicitud` datetime NOT NULL DEFAULT current_timestamp(),
   `fecha_resolucion` datetime DEFAULT NULL,
   `resuelto_por` varchar(120) DEFAULT NULL,
+  `clave_temporal` varchar(40) DEFAULT NULL,
+  `token` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_solicitudes_password_estado` (`estado`),
   KEY `idx_solicitudes_password_estado_id` (`estado`,`id`),
-  KEY `idx_solicitudes_password_email` (`email`)
+  KEY `idx_solicitudes_password_email` (`email`),
+  KEY `idx_solicitudes_password_token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3717,9 +3722,9 @@ CREATE TABLE `usuarios` (
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 INSERT INTO `usuarios` VALUES
-(1,'Administrador','admin@computlalte.com','$2y$10$kLFvpji2WNJu4L8OYC1jNON94paROdOpRLKWSwxSukzod.ZG5lXk6','admin','Av. Tecnología 123, Col. Centro, CDMX','55 1234 5678',NULL,NULL,'2026-11-04 18:09:39'),
-(2,'Gerente','gerente@computlalte.com','$2y$10$3W6IZb3nw3pN1zGWZl1FBeNFqq0rObKwoIXV7lEYFyWOOWvQ7BrdS','gerente','Av. Tecnología 123, Col. Centro, CDMX','55 8765 4321',NULL,NULL,'2026-11-04 18:09:40'),
-(3,'Cliente','cliente@computlalte.com','$2y$10$M6lDaOcEqPvuz3lI3VmMZ.3N6Jq3jlrycQs98d8QlhcuOMZ60lDTO','cliente','Calle Jacarandas 45, CDMX','55 5555 1111','','tarjeta','2026-11-04 18:09:40');
+(1,'Administrador','admin@computlalte.com','$2y$10$kLFvpji2WNJu4L8OYC1jNON94paROdOpRLKWSwxSukzod.ZG5lXk6','admin','Av. Tecnología 123, Col. Centro, CDMX','55 1234 5678',NULL,NULL,0,'2026-11-04 18:09:39'),
+(2,'Gerente','gerente@computlalte.com','$2y$10$3W6IZb3nw3pN1zGWZl1FBeNFqq0rObKwoIXV7lEYFyWOOWvQ7BrdS','gerente','Av. Tecnología 123, Col. Centro, CDMX','55 8765 4321',NULL,NULL,0,'2026-11-04 18:09:40'),
+(3,'Cliente','cliente@computlalte.com','$2y$10$M6lDaOcEqPvuz3lI3VmMZ.3N6Jq3jlrycQs98d8QlhcuOMZ60lDTO','cliente','Calle Jacarandas 45, CDMX','55 5555 1111','','tarjeta',0,'2026-11-04 18:09:40');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 

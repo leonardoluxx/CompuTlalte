@@ -2,7 +2,8 @@
 <html lang="es-MX">
 <head>
 <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">`n    <style>html,body{background:#0a0a0a;color:#f2f2f2;margin:0}</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html,body{background-color:#0a0a0a;color:#f2f2f2;margin:0}</style>
 <meta name="theme-color" content="#0a0a0a">
     <meta name="color-scheme" content="dark">
     <meta name="robots" content="noindex, nofollow">
@@ -13,8 +14,10 @@
     <link rel="preload" href="fuentes/rajdhani-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fuentes/rajdhani-700.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/panel.css?v=4">
+    <link rel="stylesheet" href="css/fuentes.css?v=20261119">
+    <link rel="stylesheet" href="css/tokens.css?v=20261119">
+    <link rel="stylesheet" href="css/panel.css?v=20261119">
+    <link rel="stylesheet" href="css/notificaciones.css?v=20261120">
     
 </head>
 <body class="panel-cuerpo">
@@ -42,6 +45,7 @@
         <aside class="panel-lateral">
             <nav class="panel-menu" aria-label="Secciones del panel">
                 <button class="panel-menu-boton esta-activo" type="button" data-vista="resumen">Resumen</button>
+                <button class="panel-menu-boton" type="button" data-vista="pedidos">Pedidos</button>
                 <button class="panel-menu-boton" type="button" data-vista="productos">Productos</button>
                 <button class="panel-menu-boton" type="button" data-vista="ofertas">
                     Ofertas
@@ -225,6 +229,40 @@
                         <tbody id="lista-ofertas"></tbody>
                     </table>
                 </div>
+            </section>
+
+            <!-- Pedidos: todas las compras de la tienda y su seguimiento. -->
+            <section class="panel-vista" data-vista-panel="pedidos" hidden>
+                <div class="panel-encabezado">
+                    <div>
+                        <p class="panel-etiqueta">VENTAS DE LA TIENDA</p>
+                        <h1>Pedidos</h1>
+                    </div>
+                </div>
+
+                <p class="panel-nota">
+                    Cada compra queda registrada con su folio, cliente, método de pago y total.
+                    El administrador puede mover el pedido entre <b>pendiente</b>, <b>pagado</b>,
+                    <b>enviado</b>, <b>entregado</b> y <b>cancelado</b>.
+                </p>
+
+                <section class="panel-tarjeta">
+                    <div class="panel-tabla-envoltura">
+                        <table class="panel-tabla">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Folio</th>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Método</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-pedidos"></tbody>
+                        </table>
+                    </div>
+                </section>
             </section>
 
             <!-- Solicitudes de cambio del gerente. -->
@@ -585,13 +623,12 @@
 
     <div class="panel-aviso" id="panel-aviso" role="status" aria-live="polite" hidden></div>
 
-    <!-- Catálogo y sesión servidos desde MySQL por api/bootstrap.php. -->
-    <script src="api/bootstrap.php?v=1" fetchpriority="high"></script>
-    <!-- Navegación SPA: transiciones instantáneas entre páginas + caché de datos.
-         Carga SIN defer para interceptar clics inmediatamente. -->
-    
-    <script src="js/tienda-datos.js?v=6"></script>
-    <script src="js/panel.js?v=6"></script>
+    <!-- Sesión y configuración desde MySQL; el catálogo y los datos de
+         gestión se cargan aparte por fetch. -->
+    <script src="api/bootstrap.php?v=20261119" fetchpriority="high"></script>
+    <script src="js/tienda-datos.js?v=20261119"></script>
+    <script src="js/notificaciones.js?v=20261120"></script>
+    <script src="js/panel.js?v=20261120"></script>
     
 </body>
 </html>

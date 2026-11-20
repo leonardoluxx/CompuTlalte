@@ -21,6 +21,18 @@
     box-sizing: border-box;
 }
 
+/* Transición nativa entre documentos: el navegador hace el fundido,
+   sin JavaScript que intercepte la navegación. */
+@view-transition {
+    navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    @view-transition {
+        navigation: none;
+    }
+}
+
 html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;

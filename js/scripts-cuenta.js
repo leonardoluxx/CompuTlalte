@@ -68,6 +68,15 @@ function aplicarCambioObligatorio(obligatorio) {
         if (aviso) {
             aviso.hidden = true;
         }
+        // Al terminar el cambio obligatorio se retira también el texto de
+        // emergencia; si no, la cuenta seguiría diciendo que debe cambiarla.
+        if (descripcionEl) {
+            if (typeof usuarioActual !== "undefined" && usuarioActual && usuarioActual.nombre) {
+                actualizarEncabezado(usuarioActual.nombre);
+            } else {
+                descripcionEl.textContent = "Administra tus datos, tu seguridad y tus compras.";
+            }
+        }
         return;
     }
 
@@ -709,5 +718,5 @@ cerrarSesionEl.addEventListener("click", function () {
 
 cargarCuenta();
 
-// Exponer para navegación SPA
+// Exponer para uso desde otras páginas
 window.inicializarCuenta = cargarCuenta;

@@ -37,9 +37,9 @@ function cambiarEstadoSubmenu(estaAbierto) {
     submenuMovil.inert = !estaAbierto;
 }
 
-// Inicializa menú móvil y mega menú (se llama al cargar y tras navegación SPA)
+// Inicializa menú móvil y mega menú al cargar la página
 function inicializarMenuYMega() {
-    // Actualizar referencias DOM (pueden haber cambiado tras SPA nav)
+    // Actualizar referencias DOM al inicializar la interfaz
     menuMovil = document.querySelector("#menu-movil");
     botonMenu = document.querySelector(".boton-menu");
     botonCerrar = document.querySelector(".boton-cerrar");
@@ -176,7 +176,7 @@ function inicializarMenuYMega() {
 // Inicializar al cargar
 inicializarMenuYMega();
 
-// Exponer para navegación SPA
+// Exponer para uso desde otras páginas
 window.inicializarMenuYMega = inicializarMenuYMega;
 
 // Formatea los importes como pesos mexicanos sin depender de servicios externos.
@@ -194,9 +194,10 @@ const mejorasPredeterminadas = [
     { grupo: "color", grupoEtiqueta: "Color", valor: "plata", etiqueta: "Plata", extra: 0 }
 ];
 
-// La interfaz consume el catálogo que vive en MySQL: api/bootstrap.php
-// lo entrega sincrónicamente en window.DatosBD antes de este archivo.
-const productos = window.Tienda
+// El catálogo vive en MySQL y se carga en segundo plano desde
+// api/productos-lista.php. Aquí se guarda la copia que la interfaz usa;
+// "tienda:actualizada" la renueva en cuanto terminan de llegar los datos.
+let productos = window.Tienda
     ? window.Tienda.productos()
     : [];
 
@@ -858,6 +859,15 @@ function mostrarComputadoras() {
         return;
     }
 
+    // Mientras el catálogo llega por fetch no se muestra el estado vacío:
+    // eso haría creer al usuario que no hay productos.
+    if (!productos.length && window.Tienda && !Tienda.productosListos()) {
+        rejillaComputadoras.replaceChildren();
+        if (conteoComputadoras) conteoComputadoras.textContent = "Cargando catálogo…";
+        if (mensajeSinComputadoras) mensajeSinComputadoras.hidden = true;
+        return;
+    }
+
     const disponibilidadSeleccionada = [...filtrosComputadoras.querySelectorAll('input[name="disponibilidad-computadora"]:checked')]
         .map((filtro) => filtro.value);
     const categoriasSeleccionadas = [...filtrosComputadoras.querySelectorAll('input[name="categoria-computadora"]:checked')]
@@ -900,6 +910,12 @@ function mostrarComputadoras() {
     const criterioOrden = selectorOrdenComputadoras.value;
     computadorasVisibles.sort((primero, segundo) => {
         switch (criterioOrden) {
+            case "nombre-asc":
+                return String(primero.nombre).localeCompare(String(segundo.nombre), "es", { sensitivity: "base" })
+                    || primero.id - segundo.id;
+            case "nombre-desc":
+                return String(segundo.nombre).localeCompare(String(primero.nombre), "es", { sensitivity: "base" })
+                    || primero.id - segundo.id;
             case "precio-ascendente":
                 return calcularPrecioOferta(primero) - calcularPrecioOferta(segundo);
             case "precio-descendente":
@@ -950,6 +966,18 @@ function aplicarCategoriaDesdeHash() {
 
 // Dibuja tarjetas de accesorios, aplicando filtros y orden al conjunto local.
 function mostrarAccesorios() {
+    if (!rejillaAccesorios) {
+        return;
+    }
+
+    // Igual que en computadoras: evita el "sin resultados" prematuro.
+    if (!productos.length && window.Tienda && !Tienda.productosListos()) {
+        rejillaAccesorios.replaceChildren();
+        if (conteoAccesorios) conteoAccesorios.textContent = "Cargando catálogo…";
+        if (mensajeSinAccesorios) mensajeSinAccesorios.hidden = true;
+        return;
+    }
+
     const disponibilidadSeleccionada = [...filtrosAccesorios.querySelectorAll('input[name="disponibilidad"]:checked')]
         .map((filtro) => filtro.value);
     const categoriasSeleccionadas = [...filtrosAccesorios.querySelectorAll('input[name="categoria-accesorio"]:checked')]
@@ -1000,6 +1028,12 @@ function mostrarAccesorios() {
 // activo y cada tarjeta conserva su porcentaje para el modal y el carrito.
 function mostrarOfertas() {
     if (!rejillaOfertas) {
+        return;
+    }
+
+    // Hasta que llegue el catálogo no se anuncia que no hay ofertas.
+    if (window.Tienda && !Tienda.productosListos()) {
+        rejillaOfertas.replaceChildren();
         return;
     }
 
@@ -1529,6 +1563,10 @@ if (rejillaOfertas) {
 // Cuando el panel guarda precios, ofertas o el margen global, la tienda se
 // vuelve a dibujar sin necesidad de recargar la página.
 document.addEventListener("tienda:actualizada", () => {
+    // Los productos se cargan de forma asíncrona: la copia local se
+    // renueva antes de volver a dibujar cualquier catálogo.
+    productos = window.Tienda ? window.Tienda.productos() : [];
+
     if (rejillaComputadoras) {
         mostrarComputadoras();
     }
@@ -2167,7 +2205,7 @@ function abrirProductoDesdeAncla() {
 abrirProductoDesdeAncla();
 suavizarLlegadaAAncla();
 
-// Exponer funciones globalmente para navegación SPA
+// Exponer funciones globalmente para uso desde otras páginas
 window.mostrarComputadoras = mostrarComputadoras;
 window.mostrarAccesorios = mostrarAccesorios;
 window.mostrarOfertas = mostrarOfertas;

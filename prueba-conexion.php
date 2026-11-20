@@ -2,7 +2,7 @@
 // prueba-conexion.php — Comprueba la cadena completa Apache + PHP + MySQL.
 // Si todo está bien imprime "Conexión exitosa" con los datos del servidor.
 
-require __DIR__ . "/conexion.php";
+require_once __DIR__ . "/conexion.php";
 
 try {
     $conexion = obtenerConexion();

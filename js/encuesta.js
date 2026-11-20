@@ -22,7 +22,7 @@
         }
     }
 
-    // Función principal de inicialización (expuesta globalmente para SPA)
+    // Función principal de inicialización (expuesta globalmente)
     function inicializarEncuesta() {
         if (!PAGINAS_CON_ENCUESTA.includes(paginaActual())) {
             eliminarWidget();
@@ -346,7 +346,7 @@
         })();
     } // fin de inicializarEncuesta
 
-    // Exponer globalmente para navegación SPA
+    // Exponer globalmente para uso desde otras páginas
     window.inicializarEncuesta = inicializarEncuesta;
 
     // Auto-ejecutar al cargar

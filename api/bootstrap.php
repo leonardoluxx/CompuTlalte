@@ -1,7 +1,9 @@
 <?php
 // bootstrap.php - Entrega datos ESENCIALES (sesión, config, permisos) como JavaScript.
-// SIN productos (pesan 300KB+). Los productos se cargan aparte vía api/productos-lista.php
+// SIN productos (pesan 300KB+): se cargan aparte vía api/productos-lista.php
 // cuando la página los necesite (catálogo, ofertas, etc.).
+// Los datos exclusivos del panel (usuarios, solicitudes, bitácora, reseñas)
+// se piden en api/panel-datos.php solo al abrir el panel.
 
 declare(strict_types=1);
 
@@ -11,7 +13,7 @@ require __DIR__ . "/_datos.php";
 $datos = datos_para_frontend_ligero(obtenerConexion());
 $csrf = csrf_token();
 
-header("Content-Type: text/javascript; charset=utf8");
+header("Content-Type: text/javascript; charset=utf-8");
 header("Cache-Control: no-store");
 
 // Inyectar meta CSRF en el documento (ejecuta antes de tienda-datos.js)

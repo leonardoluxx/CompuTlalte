@@ -52,7 +52,12 @@ const totalExitoEl = document.getElementById("total-exito");
 const tituloExitoEl = document.getElementById("titulo-exito");
 
 let carrito = obtenerCarrito();
-let cuponPreviewActivo = false;
+
+// Descuento REAL del cupón, consultado al servidor (0 = sin cupón).
+let descuentoPreview = 0;
+
+// Una sola venta a la vez (protege del doble clic y del Enter repetido).
+let ventaEnCurso = false;
 
 function tokenCsrfActual() {
     return document.querySelector('meta[name="csrf-token"]')?.content || "";
@@ -164,7 +169,9 @@ function crearElemento(etiqueta, clase, texto) {
 
 function mostrarResumen() {
     const subtotal = calcularTotal(carrito);
-    const total = cuponPreviewActivo ? Math.round(subtotal * 0.9) : subtotal;
+    const total = descuentoPreview > 0
+        ? Math.round(subtotal * (1 - descuentoPreview / 100))
+        : subtotal;
     montoEl.textContent = "Total: " + formatoMoneda.format(total);
     subtotalEl.textContent = formatoMoneda.format(subtotal);
     totalEl.textContent = "Total: " + formatoMoneda.format(total);
@@ -291,7 +298,8 @@ function guardarTarjetaEnCuenta(numero) {
     });
 }
 
-async function finalizarPago(metodo, datosPago = {}) {
+// Registra la venta en la base de datos. Se llama SOLO desde finalizarPago().
+async function registrarVenta(metodo, datosPago = {}) {
     const carritoFinal = obtenerCarrito();
 
     if (carritoFinal.length === 0) {
@@ -390,6 +398,23 @@ async function finalizarPago(metodo, datosPago = {}) {
         document.dispatchEvent(new CustomEvent("encuesta:mostrar"));
     } catch (error) {
         // Navegadores antiguos sin CustomEvent: la encuesta no se muestra aquí.
+    }
+}
+
+// Una sola venta a la vez: un doble clic rápido (o Enter repetido) en
+// "Pagar" / "Confirmar transferencia" no puede registrar dos pedidos ni
+// descontar el stock dos veces. El formulario de tarjeta además deshabilita
+// sus campos; el de transferencia se apoya en esta bandera.
+async function finalizarPago(metodo, datosPago = {}) {
+    if (ventaEnCurso) {
+        return;
+    }
+
+    ventaEnCurso = true;
+    try {
+        await registrarVenta(metodo, datosPago);
+    } finally {
+        ventaEnCurso = false;
     }
 }
 
@@ -537,19 +562,61 @@ radiosMetodo.forEach(function (radio) {
 formularioTransferenciaEl.addEventListener("submit", manejarTransferencia);
 formularioTarjetaEl.addEventListener("submit", manejarTarjeta);
 
-botonUsarCuponEl.addEventListener("click", function () {
-    cuponEl.value = "COMPU10";
-    cuponPreviewActivo = true;
-    estadoCuponEl.textContent = "COMPU10 aplicado: 10% de descuento al confirmar el pedido.";
-    mostrarResumen();
-});
+// El descuento real lo decide la base de datos: se le pregunta al servidor
+// en lugar de suponer un 10 % fijo. Con un cupón de otro porcentaje (por
+// ejemplo BIENVENIDA15) el total mostrado no coincidía con el que se
+// cobraba de verdad.
+async function validarCupon(codigo) {
+    const limpio = String(codigo || "").trim().toUpperCase();
 
-cuponEl.addEventListener("input", function () {
-    if (cuponPreviewActivo && cuponEl.value.trim().toUpperCase() !== "COMPU10") {
-        cuponPreviewActivo = false;
+    if (limpio === "") {
+        descuentoPreview = 0;
         estadoCuponEl.textContent = "";
         mostrarResumen();
+        return;
     }
+
+    try {
+        const respuesta = await fetch("api/cupones.php?codigo=" + encodeURIComponent(limpio), {
+            cache: "no-store",
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" }
+        });
+        const datos = await respuesta.json();
+
+        if (respuesta.ok && datos.ok && datos.valido) {
+            descuentoPreview = Math.min(95, Math.max(0, Number(datos.descuento) || 0));
+            estadoCuponEl.textContent =
+                limpio + " aplicado: " + descuentoPreview + "% de descuento al confirmar el pedido.";
+        } else {
+            descuentoPreview = 0;
+            estadoCuponEl.textContent = limpio + " no es un cupón válido o ya expiró.";
+        }
+    } catch (error) {
+        // Sin conexión no se inventa un descuento: se muestra el precio real.
+        descuentoPreview = 0;
+        estadoCuponEl.textContent = "No se pudo verificar el cupón en este momento.";
+    }
+
+    mostrarResumen();
+}
+
+botonUsarCuponEl.addEventListener("click", function () {
+    if (cuponEl.value.trim() === "") {
+        cuponEl.value = "COMPU10";
+    }
+
+    validarCupon(cuponEl.value);
+});
+
+// Al escribir se valida solo, con una pequeña pausa para no consultar en
+// cada tecla.
+let temporizadorCupon = null;
+cuponEl.addEventListener("input", function () {
+    window.clearTimeout(temporizadorCupon);
+    temporizadorCupon = window.setTimeout(function () {
+        validarCupon(cuponEl.value);
+    }, 400);
 });
 
 // Copiar la CLABE facilita hacer la transferencia sin errores de dedo.

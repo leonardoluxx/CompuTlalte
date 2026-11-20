@@ -17,7 +17,9 @@ function asegurar_esquema_seguridad(mysqli $bd): void
         return;
     }
 
-    $marca = dirname(__DIR__) . "/instalacion/.esquema_seguridad_ok";
+    // El nombre lleva versión a propósito: al añadir columnas nuevas hay que
+    // volver a migrar incluso en instalaciones que ya tenían la marca vieja.
+    $marca = dirname(__DIR__) . "/instalacion/.esquema_seguridad_v2";
     if (is_file($marca)) {
         $listo = true;
         return;
@@ -34,6 +36,8 @@ function asegurar_esquema_seguridad(mysqli $bd): void
             fecha_solicitud datetime NOT NULL DEFAULT current_timestamp(),
             fecha_resolucion datetime DEFAULT NULL,
             resuelto_por varchar(120) DEFAULT NULL,
+            clave_temporal varchar(40) DEFAULT NULL,
+            token varchar(64) DEFAULT NULL,
             PRIMARY KEY (id),
             KEY idx_solicitudes_password_estado (estado),
             KEY idx_solicitudes_password_email (email)
@@ -48,6 +52,24 @@ function asegurar_esquema_seguridad(mysqli $bd): void
         );
     }
 
+    // Columnas del aviso en tiempo real: la contraseña temporal aprobada y la
+    // ficha secreta con la que el solicitante consulta su estado.
+    $columnas_nuevas = [
+        "clave_temporal" => "ALTER TABLE solicitudes_password
+             ADD COLUMN clave_temporal varchar(40) DEFAULT NULL AFTER resuelto_por",
+        "token" => "ALTER TABLE solicitudes_password
+             ADD COLUMN token varchar(64) DEFAULT NULL AFTER clave_temporal"
+    ];
+
+    foreach ($columnas_nuevas as $columna_nombre => $alter) {
+        $existe_columna = $bd->query(
+            "SHOW COLUMNS FROM solicitudes_password LIKE '" . $columna_nombre . "'"
+        );
+        if (!$existe_columna || $existe_columna->num_rows === 0) {
+            $bd->query($alter);
+        }
+    }
+
     // Índices pensados para las consultas reales de la aplicación:
     // catálogo y galería, pedidos de una cuenta y bandejas del panel.
     $indices = [
@@ -55,7 +77,8 @@ function asegurar_esquema_seguridad(mysqli $bd): void
         ["especificaciones", "idx_especificaciones_producto_orden", "(producto_id, tipo, id)"],
         ["ventas", "idx_ventas_usuario_id", "(usuario_id, id)"],
         ["solicitudes", "idx_solicitudes_estado_id", "(estado, id)"],
-        ["solicitudes_password", "idx_solicitudes_password_estado_id", "(estado, id)"]
+        ["solicitudes_password", "idx_solicitudes_password_estado_id", "(estado, id)"],
+        ["solicitudes_password", "idx_solicitudes_password_token", "(token)"]
     ];
 
     foreach ($indices as [$tabla, $nombre, $columnas]) {

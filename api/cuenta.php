@@ -172,12 +172,17 @@ switch ($accion) {
 
     case "metodo":
         $metodo = (string) ($cuerpo["metodo"] ?? "");
-        if (!in_array($metodo, ["transferencia", "tarjeta"], true)) {
+        // "ninguno" (o vacío) quita la preferencia: se guarda NULL.
+        if ($metodo === "ninguno") {
+            $metodo = "";
+        }
+        if (!in_array($metodo, ["", "transferencia", "tarjeta"], true)) {
             responder_error("Método de pago no válido.");
         }
 
+        $valor_metodo = $metodo === "" ? null : $metodo;
         $actualizar = $bd->prepare("UPDATE usuarios SET metodo_pago = ? WHERE id = ?");
-        $actualizar->bind_param("si", $metodo, $id);
+        $actualizar->bind_param("si", $valor_metodo, $id);
         $actualizar->execute();
         $actualizar->close();
 

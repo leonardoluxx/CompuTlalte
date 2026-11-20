@@ -5,7 +5,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . "/_compat.php";
-require __DIR__ . "/../conexion.php";
+require_once __DIR__ . "/../conexion.php";
 require_once __DIR__ . "/_seguridad.php";
 
 // Primero lo primero: si el PHP del servidor es más viejo que 7.1, se avisa
@@ -14,7 +14,23 @@ exigir_php_compatible();
 
 // El esquema del módulo de seguridad se asegura en cada petición (es
 // idempotente y barato): así una base existente también lo recibe.
-asegurar_esquema_seguridad(obtenerConexion());
+//
+// En una instalación nueva la base todavía no existe (la crea el instalador).
+// Si se intentara conectar aquí a DB_NOMBRE, PHP abortaría con el error
+// "Unknown database" antes de que el instalador pudiera siquiera mostrarse.
+// Por eso solo se refuerza el esquema cuando la base ya está disponible; si
+// no, se continúa para que instalador.php y requisitos.php puedan cargar y
+// explicar el problema. Los endpoints que necesiten datos responderán con un
+// mensaje amigable (BaseDatosNoDisponible) en lugar de un error fatal.
+if (base_de_datos_lista()) {
+    try {
+        asegurar_esquema_seguridad(obtenerConexion());
+    } catch (Throwable $e) {
+        // MySQL apagado, base a medio migrar o sin permisos: no se rompe la
+        // carga de la página; el error real se mostrará al usar la API.
+        error_log("Computlalte: no se pudo reforzar el esquema de seguridad: " . $e->getMessage());
+    }
+}
 
 // ------------------------------------------------------------- sesión
 // Todas las peticiones comparten la sesión de PHP (cookie PHPSESSID).

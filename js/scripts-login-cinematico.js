@@ -52,6 +52,17 @@
     const botonCerrarRecuperacion = document.getElementById("cerrar-recuperacion");
 
     const CLAVE_SOLICITUD = "computlalte-recuperacion";
+    // Ficha secreta de la solicitud: permite consultar el estado (y recibir
+    // la contraseña temporal) sin depender de la sesión de PHP, que el
+    // servidor puede caducar antes de que el administrador responda.
+    const CLAVE_TOKEN = "computlalte-recuperacion-token";
+    // Sondeo silencioso cada 5 segundos mientras la solicitud esté abierta.
+    const INTERVALO_POLLING = 5000;
+
+    // Estado del sondeo (una sola consulta a la vez por pestaña).
+    let temporizadorPolling = null;
+    let consultaEnCurso = false;
+    let emailEnSeguimiento = "";
 
     // Con movimiento reducido las animaciones se acortan casi a cero.
     const movimientoReducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -296,6 +307,9 @@
 
     // Secuencia cinemática: spinner → palomita → permisos del rol.
     function entrarConAnimacion(usuario, permisos, redirigir, debeCambiarClave) {
+        // Si el acceso se resolvió, ya no hay solicitud que vigilar.
+        detenerPolling();
+
         mostrarCara(caraVerificacion);
         caraVerificacion.classList.remove("confirmada");
         textoVerificacion.textContent = "Verificando credenciales…";
@@ -385,10 +399,105 @@
 
     function guardarSolicitudLocal(datos) {
         try {
-            localStorage.setItem(CLAVE_SOLICITUD, JSON.stringify(datos));
+            // Se mezcla con lo guardado: la ficha (token), la contraseña
+            // temporal y el aviso ya mostrado no se pierden al actualizar
+            // solo el estado.
+            const previos = leerSolicitudLocal() || {};
+            localStorage.setItem(CLAVE_SOLICITUD, JSON.stringify(Object.assign({}, previos, datos)));
         } catch (error) {
             // Sin almacenamiento el estado igual se consulta al servidor.
         }
+    }
+
+    function leerToken() {
+        try {
+            return localStorage.getItem(CLAVE_TOKEN) || "";
+        } catch (error) {
+            return "";
+        }
+    }
+
+    function guardarToken(token) {
+        try {
+            if (token) {
+                localStorage.setItem(CLAVE_TOKEN, token);
+            }
+        } catch (error) {
+            // Sin almacenamiento la consulta de estado sigue funcionando,
+            // solo que sin poder recibir la contraseña temporal.
+        }
+    }
+
+    function marcarNotificada(estado) {
+        const guardada = leerSolicitudLocal() || {};
+        guardarSolicitudLocal({
+            email: guardada.email || emailEnSeguimiento,
+            estado: guardada.estado || estado,
+            fecha: guardada.fecha || "",
+            claveTemporal: guardada.claveTemporal || "",
+            notificada: estado
+        });
+    }
+
+    // Aviso flotante de reserva: si notificaciones.js no está disponible
+    // (o el CSS no cargó), el mensaje igual se ve. Nunca deja al usuario
+    // sin enterarse de que su solicitud cambió de estado.
+    function avisoMinimo(titulo, texto, tono) {
+        const caja = document.createElement("div");
+        caja.setAttribute("role", "alert");
+        caja.style.cssText = [
+            "position:fixed", "right:18px", "bottom:18px", "z-index:2147483647",
+            "max-width:min(420px,calc(100vw - 36px))", "padding:16px 40px 16px 18px",
+            "border-radius:12px", "border:1px solid " + (tono === "error" ? "#ff0033" : "#2fbf7a"),
+            "background:#141414", "color:#f5f5f5", "font:14px/1.6 'Segoe UI',system-ui,sans-serif",
+            "box-shadow:0 18px 44px rgba(0,0,0,.6)", "white-space:pre-line"
+        ].join(";");
+
+        const fuerte = document.createElement("strong");
+        fuerte.textContent = titulo;
+        fuerte.style.cssText = "display:block;margin-bottom:6px;font-size:15px";
+
+        const cuerpo = document.createElement("span");
+        cuerpo.textContent = texto;
+
+        const cerrar = document.createElement("button");
+        cerrar.type = "button";
+        cerrar.setAttribute("aria-label", "Cerrar aviso");
+        cerrar.textContent = "\u00d7";
+        cerrar.style.cssText = "position:absolute;top:8px;right:10px;background:none;border:0;"
+            + "color:#a3a3a3;font-size:20px;line-height:1;cursor:pointer";
+        cerrar.addEventListener("click", function () {
+            caja.remove();
+        });
+
+        caja.append(fuerte, cuerpo, cerrar);
+        document.body.appendChild(caja);
+        window.setTimeout(function () {
+            caja.remove();
+        }, 15000);
+    }
+
+    function avisar(titulo, texto, tono, esModal) {
+        if (window.Notificaciones) {
+            if (esModal) {
+                window.Notificaciones.tarjeta({
+                    tipo: tono || "exito",
+                    titulo: titulo,
+                    texto: texto,
+                    textoBoton: "Entendido"
+                });
+            } else {
+                window.Notificaciones.toast({
+                    tipo: tono || "info",
+                    titulo: titulo,
+                    texto: texto,
+                    duracion: 12000
+                });
+            }
+            return;
+        }
+
+        avisoMinimo(titulo, texto, tono);
     }
 
     function pintarEstadoSolicitud(estado, email) {
@@ -456,7 +565,8 @@
             return {
                 ok: respuesta.ok && datos.ok,
                 mensaje: datos.mensaje || "No se pudo enviar la solicitud.",
-                estado: datos.estado || "pendiente"
+                estado: datos.estado || "pendiente",
+                token: datos.token || ""
             };
         }
 
@@ -465,27 +575,160 @@
 
     // Refresca el estado con el servidor: si el admin aprobó, el visitante
     // lo ve en cuanto vuelve a esta página.
-    async function actualizarEstadoSolicitud(email) {
-        try {
-            const respuesta = await fetch(
-                "api/recuperar_password.php?accion=estado&email=" + encodeURIComponent(email),
-                { headers: { "Accept": "application/json" }, cache: "no-store" }
-            );
-            const datos = await respuesta.json();
+    //
+    // Sondeo en tiempo real (polling): mientras la solicitud esté abierta,
+    // la página pregunta al servidor cada 5 segundos. Cuando el estado cambia
+    // se avisa al instante, sin necesidad de recargar.
+    function detenerPolling() {
+        if (temporizadorPolling !== null) {
+            window.clearInterval(temporizadorPolling);
+            temporizadorPolling = null;
+        }
+    }
 
-            if (!respuesta.ok || !datos.ok || !datos.solicitud) {
-                return;
+    function iniciarPolling(email) {
+        if (!email) {
+            return;
+        }
+
+        emailEnSeguimiento = email;
+
+        // Comprobación inmediata: el usuario ve el estado real sin esperar
+        // los primeros 5 segundos.
+        consultarEstadoSolicitud();
+
+        if (temporizadorPolling !== null) {
+            return; // ya hay un sondeo activo
+        }
+
+        temporizadorPolling = window.setInterval(consultarEstadoSolicitud, INTERVALO_POLLING);
+    }
+
+    function mostrarClaveEnLinea(estado, clave) {
+        if (!estadoSolicitudClave) {
+            return;
+        }
+
+        if (estado === "aprobada" && clave) {
+            estadoSolicitudClave.textContent =
+                "¡Solicitud aprobada! Tu contraseña temporal es: " + clave;
+            estadoSolicitudClave.className = "estado-solicitud-clave estado-aprobada";
+            estadoSolicitudClave.hidden = false;
+        }
+    }
+
+    async function consultarEstadoSolicitud() {
+        const previa = leerSolicitudLocal() || {};
+        const email = emailEnSeguimiento || previa.email || "";
+
+        // Una sola consulta a la vez: si el servidor tarda, el siguiente
+        // ciclo no se acumula encima.
+        if (!email || consultaEnCurso) {
+            return;
+        }
+
+        consultaEnCurso = true;
+        let datos = null;
+
+        try {
+            const parametros = new URLSearchParams();
+            parametros.set("accion", "estado");
+            parametros.set("email", email);
+
+            // La ficha secreta viaja aparte del correo: sin ella el servidor
+            // solo revela el estado, nunca la contraseña temporal.
+            const token = leerToken();
+            if (token) {
+                parametros.set("token", token);
             }
 
-            guardarSolicitudLocal({
-                email: email,
-                estado: datos.solicitud.estado,
-                fecha: datos.solicitud.fecha
+            const respuesta = await fetch("api/recuperar_password.php?" + parametros.toString(), {
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
             });
-            pintarEstadoSolicitud(datos.solicitud.estado, email);
+            const cuerpo = await respuesta.json();
+
+            if (respuesta.ok && cuerpo.ok && cuerpo.solicitud) {
+                datos = cuerpo.solicitud;
+            }
         } catch (error) {
-            // Sin conexión se conserva el estado guardado en el navegador.
+            // Sin conexión (XAMPP apagado, red del plantel): se conserva el
+            // estado guardado y se reintenta en el siguiente ciclo.
+            return;
+        } finally {
+            consultaEnCurso = false;
         }
+
+        if (!datos) {
+            return;
+        }
+
+        const estado = String(datos.estado || "pendiente");
+        const clave = estado === "aprobada"
+            ? String(datos.claveTemporal || previa.claveTemporal || "")
+            : "";
+
+        // ¿Es un cambio respecto a lo último que se le mostró al usuario?
+        // "notificada" guarda el estado ya avisado, para no repetir el modal.
+        const notificada = previa.notificada || "";
+        const esNuevo = notificada !== estado;
+
+        guardarSolicitudLocal({
+            email: email,
+            estado: estado,
+            fecha: datos.fecha || previa.fecha || "",
+            claveTemporal: clave,
+            notificada: notificada
+        });
+
+        pintarEstadoSolicitud(estado, email);
+        mostrarClaveEnLinea(estado, clave);
+
+        if (estado === "aprobada" || estado === "rechazada") {
+            // Ya no hay nada que esperar: se detiene el sondeo.
+            detenerPolling();
+
+            // La solicitud quedó resuelta: se vuelve a habilitar el envío
+            // por si la persona necesita pedir otra. Sin esto, el botón se
+            // quedaba en "Solicitud enviada" para siempre.
+            if (botonEnviarRecuperacion) {
+                botonEnviarRecuperacion.disabled = false;
+                botonEnviarRecuperacion.textContent = "Enviar solicitud";
+            }
+        }
+
+        if (!esNuevo) {
+            return;
+        }
+
+        if (estado === "aprobada") {
+            avisarAprobada(clave);
+            marcarNotificada(estado);
+            return;
+        }
+
+        if (estado === "rechazada") {
+            avisar(
+                "Solicitud rechazada",
+                "El administrador rechazó tu solicitud. Contacta a soporte para revisar tu caso.",
+                "error",
+                false
+            );
+            marcarNotificada(estado);
+        }
+    }
+
+    function avisarAprobada(clave) {
+        const texto = clave
+            ? "¡Tu solicitud fue aprobada! Usa esta contraseña temporal: " + clave
+            : "¡Tu solicitud fue aprobada! El administrador te compartirá la contraseña temporal.";
+
+        if (mensajeRecuperacion) {
+            mensajeRecuperacion.textContent = texto;
+            mensajeRecuperacion.classList.add("mensaje-exito");
+        }
+
+        avisar("¡Solicitud aprobada!", texto, "exito", true);
     }
 
     if (botonOlvidaste && modalRecuperacion && formularioRecuperacion) {
@@ -501,7 +744,7 @@
             pintarEstadoSolicitud(guardada ? guardada.estado : "", guardada ? guardada.email : "");
 
             if (guardada && guardada.email) {
-                actualizarEstadoSolicitud(guardada.email);
+                iniciarPolling(guardada.email);
 
                 // Ya hay una solicitud pendiente: no se duplica.
                 if (guardada.estado === "pendiente") {
@@ -557,24 +800,32 @@
                 return;
             }
 
+            guardarToken(resultado.token);
             guardarSolicitudLocal({
                 email: email,
                 estado: resultado.estado || "pendiente",
-                fecha: new Date().toISOString()
+                fecha: new Date().toISOString(),
+                claveTemporal: "",
+                // Solicitud nueva: el próximo aviso sí debe mostrarse.
+                notificada: ""
             });
 
             pintarEstadoSolicitud(resultado.estado || "pendiente", email);
+            // A partir de aquí la página vigila la solicitud cada 5 s.
+            iniciarPolling(email);
             mensajeRecuperacion.textContent =
                 "Tu solicitud ha sido enviada. El administrador la revisará y te avisaremos. No cierres sesión";
             mensajeRecuperacion.classList.add("mensaje-exito");
             botonEnviarRecuperacion.textContent = "Solicitud enviada";
         });
 
-        // Estado recordado al volver a la página de acceso.
+        // Estado recordado al volver a la página de acceso: se pinta y se
+        // retoma el sondeo para no perder el aviso del administrador.
         const guardada = leerSolicitudLocal();
         if (guardada && guardada.email) {
             pintarEstadoSolicitud(guardada.estado, guardada.email);
-            actualizarEstadoSolicitud(guardada.email);
+            mostrarClaveEnLinea(guardada.estado, guardada.claveTemporal || "");
+            iniciarPolling(guardada.email);
         }
     }
 })();

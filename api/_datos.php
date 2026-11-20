@@ -390,9 +390,9 @@ function filtrar_costos(array $productos, ?string $rol): array
     }
 
     return array_map(function (array $producto) {
-        $producto["costoBase"] = null;
-        $producto["margen"] = null;
-        $producto["margenAplicado"] = null;
+        // Se eliminan del payload (no solo se anulan): así el JSON público
+        // no contiene ninguna clave de costo ni de margen interno.
+        unset($producto["costoBase"], $producto["margen"], $producto["margenAplicado"]);
         return $producto;
     }, $productos);
 }
@@ -402,16 +402,17 @@ function filtrar_costos(array $productos, ?string $rol): array
 function datos_para_frontend_ligero(mysqli $bd): array
 {
     $usuario = usuario_de_sesion();
-    $rol = $usuario["rol"] ?? null;
-    $es_admin = $rol === "admin";
-    $es_gestor = $rol === "admin" || $rol === "gerente";
     $margen = margen_global($bd);
 
     $datos = [
         "productos" => [], // VACÍO: se carga por fetch aparte
         "categorias" => [],
         "config" => [
-            "margenGlobal" => $margen,
+            // El margen global es información interna: solo lo reciben los
+            // roles que gestionan precios.
+            "margenGlobal" => ($usuario && in_array($usuario["rol"], ["admin", "gerente"], true))
+                ? $margen
+                : null,
             "heroImagen" => null,
             "imagenComputadoras" => null,
             "imagenAccesorios" => null,
@@ -464,6 +465,31 @@ function datos_para_frontend_ligero(mysqli $bd): array
         $datos["permisos"] = permisos_de_rol($usuario["rol"]);
     }
 
+    return $datos;
+}
+
+// Datos de gestión para el panel (usuarios, solicitudes, bitácora y reseñas).
+// Se piden aparte con api/panel-datos.php SOLO cuando el panel los necesita;
+// así bootstrap.php no los envía en cada página. No incluye productos.
+function datos_gestion(mysqli $bd): array
+{
+    $usuario = usuario_de_sesion();
+    $rol = $usuario["rol"] ?? null;
+    $es_admin = $rol === "admin";
+    $es_gestor = $rol === "admin" || $rol === "gerente";
+
+    $datos = [
+        "usuarios" => [],
+        "solicitudes" => [],
+        "bitacora" => [],
+        "resenasSitio" => ["promedio" => 0, "total" => 0, "lista" => []],
+        "resenasProductos" => ["total" => 0, "lista" => []]
+    ];
+
+    if (!$es_gestor) {
+        return $datos;
+    }
+
     // La lista de cuentas solo viaja para el administrador.
     if ($es_admin) {
         $resultado = $bd->query(
@@ -484,95 +510,91 @@ function datos_para_frontend_ligero(mysqli $bd): array
         }
     }
 
-    // Solicitudes y bitácora: solo para quien administra o gestiona.
-    if ($es_gestor) {
-        $resultado = $bd->query(
-            "SELECT s.*, u.nombre AS autor
-             FROM solicitudes s LEFT JOIN usuarios u ON u.id = s.usuario_id
-             ORDER BY s.estado = 'pendiente' DESC, s.id DESC"
-        );
-        while ($fila = $resultado->fetch_assoc()) {
-            $datos["solicitudes"][] = [
-                "id" => (int) $fila["id"],
-                "productoId" => $fila["producto_id"] !== null ? (int) $fila["producto_id"] : null,
-                "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
-                "cambios" => json_decode((string) $fila["cambios"], true) ?: new stdClass(),
-                "resumen" => (string) ($fila["resumen"] ?? ""),
-                "estado" => (string) $fila["estado"],
-                "autor" => (string) ($fila["autor"] ?? "Usuario"),
-                "fecha" => (string) $fila["creado"],
-                "resueltoPor" => (string) ($fila["resuelto_por"] ?? ""),
-                "fechaResolucion" => (string) ($fila["fecha_resolucion"] ?? "")
-            ];
-        }
-
-        $resultado = $bd->query(
-            "SELECT fecha, autor, rol, accion, detalle FROM bitacora ORDER BY id DESC LIMIT 60"
-        );
-        while ($fila = $resultado->fetch_assoc()) {
-            $datos["bitacora"][] = [
-                "fecha" => (string) $fila["fecha"],
-                "autor" => (string) $fila["autor"],
-                "rol" => (string) $fila["rol"],
-                "accion" => (string) $fila["accion"],
-                "detalle" => (string) $fila["detalle"]
-            ];
-        }
-
-        // ------------------------------------------- reseñas (admin + gerente)
-        // Reseñas del sitio: la encuesta que los clientes responden al
-        // terminar una compra (o al llegar al final de la página).
-        $resultado = $bd->query(
-            "SELECT COALESCE(AVG(calificacion), 0) AS promedio, COUNT(*) AS total FROM resenas_sitio"
-        );
-        $resumen_sitio = $resultado->fetch_assoc();
-        $lista_sitio = [];
-        $resultado = $bd->query(
-            "SELECT id, calificacion, facilidad, comentario, fecha
-             FROM resenas_sitio ORDER BY id DESC LIMIT 50"
-        );
-        while ($fila = $resultado->fetch_assoc()) {
-            $lista_sitio[] = [
-                "id" => (int) $fila["id"],
-                "calificacion" => (int) $fila["calificacion"],
-                "facilidad" => $fila["facilidad"] !== null ? (int) $fila["facilidad"] : null,
-                "comentario" => (string) ($fila["comentario"] ?? ""),
-                "fecha" => (string) $fila["fecha"]
-            ];
-        }
-        $datos["resenasSitio"] = [
-            "promedio" => round((float) $resumen_sitio["promedio"], 1),
-            "total" => (int) $resumen_sitio["total"],
-            "lista" => $lista_sitio
-        ];
-
-        // Últimas reseñas que los clientes dejaron a productos concretos.
-        $resultado = $bd->query("SELECT COUNT(*) AS t FROM resenas_productos");
-        $total_productos = (int) $resultado->fetch_assoc()["t"];
-        $lista_productos = [];
-        $resultado = $bd->query(
-            "SELECT r.id, r.producto_id, p.nombre AS producto_nombre,
-                    r.nombre_usuario, r.calificacion, r.comentario, r.fecha
-             FROM resenas_productos r
-             LEFT JOIN productos p ON p.id = r.producto_id
-             ORDER BY r.id DESC LIMIT 20"
-        );
-        while ($fila = $resultado->fetch_assoc()) {
-            $lista_productos[] = [
-                "id" => (int) $fila["id"],
-                "productoId" => (int) $fila["producto_id"],
-                "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
-                "nombreUsuario" => (string) $fila["nombre_usuario"],
-                "calificacion" => (int) $fila["calificacion"],
-                "comentario" => (string) ($fila["comentario"] ?? ""),
-                "fecha" => (string) $fila["fecha"]
-            ];
-        }
-        $datos["resenasProductos"] = [
-            "total" => $total_productos,
-            "lista" => $lista_productos
+    $resultado = $bd->query(
+        "SELECT s.*, u.nombre AS autor
+         FROM solicitudes s LEFT JOIN usuarios u ON u.id = s.usuario_id
+         ORDER BY s.estado = 'pendiente' DESC, s.id DESC"
+    );
+    while ($fila = $resultado->fetch_assoc()) {
+        $datos["solicitudes"][] = [
+            "id" => (int) $fila["id"],
+            "productoId" => $fila["producto_id"] !== null ? (int) $fila["producto_id"] : null,
+            "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
+            "cambios" => json_decode((string) $fila["cambios"], true) ?: new stdClass(),
+            "resumen" => (string) ($fila["resumen"] ?? ""),
+            "estado" => (string) $fila["estado"],
+            "autor" => (string) ($fila["autor"] ?? "Usuario"),
+            "fecha" => (string) $fila["creado"],
+            "resueltoPor" => (string) ($fila["resuelto_por"] ?? ""),
+            "fechaResolucion" => (string) ($fila["fecha_resolucion"] ?? "")
         ];
     }
+
+    $resultado = $bd->query(
+        "SELECT fecha, autor, rol, accion, detalle FROM bitacora ORDER BY id DESC LIMIT 60"
+    );
+    while ($fila = $resultado->fetch_assoc()) {
+        $datos["bitacora"][] = [
+            "fecha" => (string) $fila["fecha"],
+            "autor" => (string) $fila["autor"],
+            "rol" => (string) $fila["rol"],
+            "accion" => (string) $fila["accion"],
+            "detalle" => (string) $fila["detalle"]
+        ];
+    }
+
+    // Reseñas del sitio: la encuesta que los clientes responden al
+    // terminar una compra (o al llegar al final de la página).
+    $resultado = $bd->query(
+        "SELECT COALESCE(AVG(calificacion), 0) AS promedio, COUNT(*) AS total FROM resenas_sitio"
+    );
+    $resumen_sitio = $resultado->fetch_assoc();
+    $lista_sitio = [];
+    $resultado = $bd->query(
+        "SELECT id, calificacion, facilidad, comentario, fecha
+         FROM resenas_sitio ORDER BY id DESC LIMIT 50"
+    );
+    while ($fila = $resultado->fetch_assoc()) {
+        $lista_sitio[] = [
+            "id" => (int) $fila["id"],
+            "calificacion" => (int) $fila["calificacion"],
+            "facilidad" => $fila["facilidad"] !== null ? (int) $fila["facilidad"] : null,
+            "comentario" => (string) ($fila["comentario"] ?? ""),
+            "fecha" => (string) $fila["fecha"]
+        ];
+    }
+    $datos["resenasSitio"] = [
+        "promedio" => round((float) $resumen_sitio["promedio"], 1),
+        "total" => (int) $resumen_sitio["total"],
+        "lista" => $lista_sitio
+    ];
+
+    // Últimas reseñas que los clientes dejaron a productos concretos.
+    $resultado = $bd->query("SELECT COUNT(*) AS t FROM resenas_productos");
+    $total_productos = (int) $resultado->fetch_assoc()["t"];
+    $lista_productos = [];
+    $resultado = $bd->query(
+        "SELECT r.id, r.producto_id, p.nombre AS producto_nombre,
+                r.nombre_usuario, r.calificacion, r.comentario, r.fecha
+         FROM resenas_productos r
+         LEFT JOIN productos p ON p.id = r.producto_id
+         ORDER BY r.id DESC LIMIT 20"
+    );
+    while ($fila = $resultado->fetch_assoc()) {
+        $lista_productos[] = [
+            "id" => (int) $fila["id"],
+            "productoId" => (int) $fila["producto_id"],
+            "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
+            "nombreUsuario" => (string) $fila["nombre_usuario"],
+            "calificacion" => (int) $fila["calificacion"],
+            "comentario" => (string) ($fila["comentario"] ?? ""),
+            "fecha" => (string) $fila["fecha"]
+        ];
+    }
+    $datos["resenasProductos"] = [
+        "total" => $total_productos,
+        "lista" => $lista_productos
+    ];
 
     return $datos;
 }
@@ -591,7 +613,7 @@ function datos_para_frontend(mysqli $bd): array
         "productos" => filtrar_costos(obtener_productos($bd, $margen), $rol),
         "categorias" => [],
         "config" => [
-            "margenGlobal" => $margen,
+            "margenGlobal" => $es_gestor ? $margen : null,
             "heroImagen" => null,
             "imagenComputadoras" => null,
             "imagenAccesorios" => null,

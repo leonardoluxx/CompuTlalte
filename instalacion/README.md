@@ -47,7 +47,7 @@ escuela) en **menos de 5 minutos**. No necesitas saber de bases de datos.
 Abre `instalacion/requisitos.php` en el navegador:
 
 ```
-http://localhost/computlalte/instalacion/requisitos.php
+http://localhost/computlaltenango/instalacion/requisitos.php
 ```
 
 La página revisa sola la versión de PHP, las extensiones (`mysqli`, `json`,
@@ -62,10 +62,10 @@ Copia la carpeta completa del proyecto dentro de la carpeta `htdocs` de XAMPP:
 
 ```
 De:  <donde tengas la carpeta>\computlalte
-A:   C:\xampp\htdocs\computlalte
+A:   C:\xampp\htdocs\computlaltenango
 ```
 
-> 💡 Si XAMPP está en otra unidad (por ejemplo `D:`), la ruta sería `D:\xampp\htdocs\computlalte`.
+> 💡 Si XAMPP está en otra unidad (por ejemplo `D:`), la ruta sería `D:\xampp\htdocs\computlaltenango`.
 
 ## Paso 2 · Encender Apache y MySQL
 
@@ -81,14 +81,14 @@ problemas al final de esta guía.
 1. Abre el navegador y entra a:
 
    ```
-   http://localhost/computlalte/instalacion/instalador.php
+   http://localhost/computlaltenango/instalacion/instalador.php
    ```
 
 2. Pulsa el botón **«Instalar ahora»**.
 
 3. Espera unos segundos: verás una lista con pasos en verde ✔ y los enlaces
    finales. **Listo, eso es todo.** El instalador crea la base de datos
-   `computlalte_db` con 13 tablas y el catálogo completo: **160 productos**
+   `computlalte_db` con 14 tablas y el catálogo completo: **160 productos**
    (60 computadoras y 100 accesorios), **2 130 especificaciones**, **953 imágenes
    de producto**, tres cuentas de prueba, una venta de demostración y las rutas
    predeterminadas de portada, accesorios y ofertas. También incluye **24 reseñas
@@ -117,7 +117,7 @@ problemas al final de esta guía.
 
 1. Entra a `http://localhost/phpmyadmin`.
 2. Pestaña **Importar** → botón **Seleccionar archivo** → elige
-   `computlalte/instalacion/computlalte_db.sql`.
+   `computlaltenango/instalacion/computlalte_db.sql`.
 3. Botón **Continuar** (abajo). Al terminar verás la base `computlalte_db` en el menú izquierdo.
 
 > ⚠️ El SQL completo elimina y vuelve a crear `computlalte_db`. Úsalo solo en
@@ -130,7 +130,7 @@ problemas al final de esta guía.
 Abre en el navegador:
 
 ```
-http://localhost/computlalte/prueba-conexion.php
+http://localhost/computlaltenango/prueba-conexion.php
 ```
 
 Debe decir: **«Conexión exitosa»** con la versión de MariaDB y el nombre de la base.
@@ -138,7 +138,7 @@ Debe decir: **«Conexión exitosa»** con la versión de MariaDB y el nombre de 
 Después entra a la tienda:
 
 ```
-http://localhost/computlalte/
+http://localhost/computlaltenango/
 ```
 
 ---
@@ -166,7 +166,7 @@ También hay botones de acceso rápido en la propia página de login.
 |---|---|
 | MySQL no enciende en XAMPP | Otro programa usa el puerto 3306 (o el 80). Cierra Skype/IIS u otra instancia de MySQL y vuelve a pulsar Start. |
 | «No pude conectarme a MySQL» en el instalador | MySQL está apagado: enciéndelo en el Panel de XAMPP y recarga. |
-| La página carga en blanco o da 404 | El proyecto no está dentro de `htdocs`, o la carpeta tiene otro nombre. La ruta debe ser `htdocs\computlalte`. |
+| La página carga en blanco o da 404 | El proyecto no está dentro de `htdocs`, o la carpeta tiene otro nombre. La ruta debe ser `htdocs\computlaltenango`. |
 | Error «Access denied» | Las credenciales de `conexion.php` deben ser: servidor `localhost`, usuario `root`, contraseña vacía (valores por defecto de XAMPP). |
 | Ya tenía la base instalada y quiero empezar de cero | Abre el instalador y pulsa **«Reinstalar desde cero»**. |
 

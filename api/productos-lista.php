@@ -15,7 +15,9 @@ $rol = $usuario["rol"] ?? null;
 $productos = filtrar_costos(obtener_productos($bd, $margen), $rol);
 
 header("Content-Type: application/json; charset=utf-8");
-header("Cache-Control: public, max-age=60"); // 1 min de caché navegador
+// Solo caché del navegador: la respuesta puede incluir costos para
+// admin/gerente y nunca debe guardarse en una caché compartida.
+header("Cache-Control: private, max-age=60");
 
 echo json_encode([
     "ok" => true,

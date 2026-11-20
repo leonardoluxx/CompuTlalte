@@ -150,10 +150,14 @@ try {
 
     $actualizar = $bd->prepare(
         "UPDATE solicitudes_password
-         SET estado = 'aprobada', fecha_resolucion = NOW(), resuelto_por = ?
+         SET estado = 'aprobada', fecha_resolucion = NOW(), resuelto_por = ?,
+             clave_temporal = ?
          WHERE id = ?"
     );
-    $actualizar->bind_param("si", $usuario["nombre"], $id);
+    // La clave temporal se guarda en la propia solicitud para que el
+    // solicitante la reciba por el sondeo en tiempo real (solo él, porque
+    // necesita la ficha secreta que se generó al pedirla).
+    $actualizar->bind_param("ssi", $usuario["nombre"], $clave_temporal, $id);
     $actualizar->execute();
     $actualizar->close();
 

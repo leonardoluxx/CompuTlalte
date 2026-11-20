@@ -3,7 +3,8 @@
 <head>
 <!-- Metadatos básicos para que la página se muestre correctamente en distintos dispositivos. -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">`n    <style>html,body{background:#0a0a0a;color:#f2f2f2;margin:0}</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>html,body{background-color:#0a0a0a;color:#f2f2f2;margin:0}</style>
 <meta name="theme-color" content="#0a0a0a">
     <meta name="description" content="Computlalte: computadoras de alto rendimiento para juegos, desarrollo y uso diario, con accesorios y ofertas.">
     <meta property="og:type" content="website">
@@ -19,14 +20,14 @@
     <link rel="preload" href="fuentes/rajdhani-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fuentes/rajdhani-700.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="css/fuentes.css">
-    <link rel="stylesheet" href="css/tokens.css?v=4">
-    <link rel="stylesheet" href="css/styles.css?v=27">
-    <link rel="stylesheet" href="css/hero-cinematico.css?v=3">
-    <link rel="stylesheet" href="css/micro-interacciones.css?v=2">
-    <link rel="stylesheet" href="css/notificaciones.css?v=2">
-    <link rel="stylesheet" href="css/editor-visual.css?v=3">
-    <link rel="stylesheet" href="css/mega-menu.css?v=8">
+    <link rel="stylesheet" href="css/fuentes.css?v=20261119">
+    <link rel="stylesheet" href="css/tokens.css?v=20261119">
+    <link rel="stylesheet" href="css/styles.css?v=20261119">
+    <link rel="stylesheet" href="css/hero-cinematico.css?v=20261119">
+    <link rel="stylesheet" href="css/micro-interacciones.css?v=20261119">
+    <link rel="stylesheet" href="css/notificaciones.css?v=20261120">
+    <link rel="stylesheet" href="css/editor-visual.css?v=20261119">
+    <link rel="stylesheet" href="css/mega-menu.css?v=20261119">
     
 </head>
 <body>
@@ -133,6 +134,8 @@
                 <label class="etiqueta-orden" for="orden-computadoras">Ordenar por:</label>
                 <select id="orden-computadoras" class="campo-orden">
                     <option value="destacados" selected>Destacados</option>
+                    <option value="nombre-asc">Nombre: A-Z</option>
+                    <option value="nombre-desc">Nombre: Z-A</option>
                     <option value="precio-ascendente">Precio: Menor a Mayor</option>
                     <option value="precio-descendente">Precio: Mayor a Menor</option>
                 </select>
@@ -462,25 +465,22 @@
         <p class="encuesta-gracias" id="encuesta-gracias" hidden>¡Gracias por tu feedback!</p>
     </div>
 
-    <!-- Catálogo servido desde MySQL: api/bootstrap.php consulta la base y
-         entrega los datos como JavaScript antes del núcleo de la tienda. -->
-    <script src="api/bootstrap.php?v=1" fetchpriority="high"></script>
-    <!-- Navegación SPA: transiciones instantáneas entre páginas + caché de datos.
-         Carga SIN defer para interceptar clics inmediatamente. -->
-    
+    <!-- Datos esenciales (sesión, configuración y permisos) desde MySQL.
+         El catálogo se pide aparte por fetch cuando la página lo necesita. -->
+    <script src="api/bootstrap.php?v=20261119" fetchpriority="high"></script>
     <!-- Núcleo de la tienda: consume window.DatosBD y habla con la API. -->
-    <script src="js/tienda-datos.js?v=6" defer></script>
+    <script src="js/tienda-datos.js?v=20261119" defer></script>
     <!-- Avisos bonitos: tarjeta centrada y toasts de confirmación. -->
-    <script src="js/notificaciones.js?v=2" defer></script>
+    <script src="js/notificaciones.js?v=20261120" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
-    <script src="js/overlay-carga.js?v=1" defer></script>
-    <script src="js/script.js?v=31" defer></script>
-    <script src="js/encuesta.js?v=5" defer></script>
-    <script src="js/contador-carrito.js?v=1" defer></script>
+    <script src="js/overlay-carga.js?v=20261119" defer></script>
+    <script src="js/script.js?v=20261120" defer></script>
+    <script src="js/encuesta.js?v=20261119" defer></script>
+    <script src="js/contador-carrito.js?v=20261119" defer></script>
     <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
-    <script src="js/micro-interacciones.js?v=1" defer></script>
+    <script src="js/micro-interacciones.js?v=20261119" defer></script>
     <!-- Lápices de edición visual (solo administrador). -->
-    <script src="js/editor-visual.js?v=2" defer></script>
+    <script src="js/editor-visual.js?v=20261119" defer></script>
     
 </body>
 </html>

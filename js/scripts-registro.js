@@ -169,7 +169,8 @@ formularioEl.addEventListener("submit", async function (evento) {
             }
         });
     } else {
-        alert(resultado.mensaje || "Cuenta registrada con éxito. Ahora puedes iniciar sesión.");
+        // Sin el sistema de avisos cargado, la tarjeta no se muestra: se
+        // sigue al inicio de sesión sin abrir un diálogo nativo del navegador.
         window.location.href = "login.html";
     }
 });

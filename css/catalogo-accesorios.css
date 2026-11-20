@@ -42,12 +42,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Entrada suave para que el cambio de página no se sienta de golpe. */
-@keyframes aparecer-pagina {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 body {
     /* Sin ancho mínimo fijo para no generar scroll horizontal en móviles
        pequeños o cuando la barra de desplazamiento resta ancho. */
@@ -58,7 +52,6 @@ body {
     color: var(--color-texto);
     font-family: var(--fuente-lectura);
     -webkit-font-smoothing: antialiased;
-    animation: aparecer-pagina 0.28s ease both;
 }
 
 body.menu-abierto { overflow: hidden; }

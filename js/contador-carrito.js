@@ -38,6 +38,6 @@
         if (evento.key === "carrito") actualizarIndicador();
     });
 
-    // Exponer globalmente para navegación SPA
+    // Exponer globalmente para uso desde otras páginas
     window.actualizarIndicador = actualizarIndicador;
 })();

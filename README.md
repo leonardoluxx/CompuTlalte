@@ -7,10 +7,10 @@ Resumen rápido:
 
 1. Si lo bajas de GitHub, clona el repositorio indicando el nombre de la carpeta:
    `git clone https://github.com/leonardoluxx/CompuTlalte.git computlalte`.
-2. Copiar la carpeta `computlalte` a `C:\xampp\htdocs\computlalte`.
+2. Copiar la carpeta `computlalte` a `C:\xampp\htdocs\computlaltenango`.
 3. Encender **Apache** y **MySQL** en el Panel de XAMPP.
-4. Abrir `http://localhost/computlalte/instalacion/instalador.php` y pulsar **«Instalar ahora»**.
-5. Verificar en `http://localhost/computlalte/prueba-conexion.php` → «Conexión exitosa».
+4. Abrir `http://localhost/computlaltenango/instalacion/instalador.php` y pulsar **«Instalar ahora»**.
+5. Verificar en `http://localhost/computlaltenango/prueba-conexion.php` → «Conexión exitosa».
 
 ## Cuentas de prueba
 

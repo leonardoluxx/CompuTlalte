@@ -11,10 +11,12 @@ const formatoMoneda = new Intl.NumberFormat("es-MX", {
 // El precio de cada línea ya viene calculado desde la tienda y su panel.
 
 // Catálogo local: sirve para recuperar especificaciones e imágenes si una
-// línea del carrito se guardó antes de este rediseño.
-// El catálogo vive en MySQL: api/bootstrap.php lo entrega en window.DatosBD
-// y el núcleo (tienda-datos.js) lo expone sincrónicamente.
-const catalogo = window.Tienda ? Tienda.productos({ incluirEliminados: true }) : [];
+// línea del carrito se guardó antes de este rediseño. Se consulta en el
+// momento (no se guarda una copia) porque los productos ahora llegan por
+// fetch en segundo plano y pueden no estar listos al cargar este archivo.
+function catalogoActual() {
+    return window.Tienda ? Tienda.productos({ incluirEliminados: true }) : [];
+}
 
 // Mejoras disponibles, en el mismo orden que el detalle de la tienda.
 const GRUPOS_MEJORA = [
@@ -80,7 +82,7 @@ let indiceEdicion = null;
 let temporizadorAviso = null;
 
 function buscarEnCatalogo(id) {
-    return catalogo.find((producto) => producto.id === id) || null;
+    return catalogoActual().find((producto) => producto.id === id) || null;
 }
 
 function crearElemento(etiqueta, clase, texto) {
@@ -127,9 +129,20 @@ function normalizarOpciones(item, producto) {
     const etiquetas = String(item.personalizacion || "")
         .split(",")
         .map((texto) => texto.trim());
-    const gruposProducto = Array.isArray(producto?.personalizacion) && producto.personalizacion.length
-        ? producto.personalizacion
-        : GRUPOS_MEJORA;
+
+    // Si el catálogo todavía no llegó (se pide por fetch en segundo plano), no
+    // hay con qué comparar los grupos reales del producto. En ese caso se
+    // respetan TAL CUAL las mejoras guardadas: antes se caía en los grupos
+    // genéricos (GRUPOS_MEJORA) y la personalización elegida —junto con su
+    // precio— se perdía cada vez que se abría el carrito.
+    const tieneGruposReales = Array.isArray(producto?.personalizacion)
+        && producto.personalizacion.length > 0;
+
+    if (!tieneGruposReales && guardadas.length) {
+        return guardadas;
+    }
+
+    const gruposProducto = tieneGruposReales ? producto.personalizacion : GRUPOS_MEJORA;
 
     return gruposProducto.map((grupo) => {
         const opcionesGrupo = Array.isArray(grupo.opciones) ? grupo.opciones : [];

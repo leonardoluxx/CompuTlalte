@@ -12,6 +12,8 @@ require __DIR__ . "/_bd.php";
 $metodo_http = $_SERVER["REQUEST_METHOD"];
 
 if ($metodo_http === "GET") {
+    // Los ajustes incluyen el margen global: solo para roles de gestión.
+    exigir_rol(["admin", "gerente"]);
     cabeceras_json();
     $bd = obtenerConexion();
 

@@ -172,6 +172,117 @@
         return cerrar;
     }
 
+    /* ---------------------------------------- confirmación (sí / no) */
+    // Sustituye a window.confirm con la misma tarjeta centrada del sitio.
+    // Devuelve una promesa que solo se resuelve en true si se acepta.
+    function confirmar(opciones) {
+        var datos = opciones || {};
+
+        return new Promise(function (resolver) {
+            var tipo = datos.tipo || "aviso";
+
+            // Solo un aviso a la vez, igual que la tarjeta de éxito.
+            var abierta = document.querySelector(".aviso-velo");
+            if (abierta) {
+                abierta.remove();
+            }
+
+            var elementoPrevio = document.activeElement;
+            var decidido = false;
+
+            var velo = crear("div", "aviso-velo aviso-velo-confirmar");
+            velo.setAttribute("role", "dialog");
+            velo.setAttribute("aria-modal", "true");
+            velo.setAttribute("aria-label", datos.titulo || "Confirmar acción");
+
+            var caja = crear("div", "aviso-tarjeta aviso-" + tipo);
+            var insignia = crear("div", "aviso-insignia");
+            insignia.append(iconoDe(tipo));
+
+            caja.append(
+                insignia,
+                crear("h2", "aviso-titulo", datos.titulo || "¿Continuar?"),
+                crear("p", "aviso-texto", datos.texto || "")
+            );
+
+            var acciones = crear("div", "aviso-acciones aviso-acciones-doble");
+            var cancelar = crear("button", "aviso-boton aviso-boton-secundario", datos.textoCancelar || "Cancelar");
+            cancelar.type = "button";
+            var aceptar = crear("button", "aviso-boton", datos.textoAceptar || "Sí, continuar");
+            aceptar.type = "button";
+            acciones.append(cancelar, aceptar);
+            caja.append(acciones);
+            velo.append(caja);
+
+            var dialogoAbierto = dialogoSuperior();
+            (dialogoAbierto || document.body).append(velo);
+            document.body.style.overflow = "hidden";
+
+            function terminar(valor) {
+                if (decidido) {
+                    return;
+                }
+                decidido = true;
+
+                document.removeEventListener("keydown", alPulsarTecla);
+
+                velo.classList.add("aviso-saliendo");
+                window.setTimeout(function () {
+                    velo.remove();
+                    document.body.style.overflow = "";
+                }, DURACION_SALIDA);
+
+                if (elementoPrevio && typeof elementoPrevio.focus === "function") {
+                    try {
+                        elementoPrevio.focus({ preventScroll: true });
+                    } catch (error) {
+                        // El elemento original ya puede no existir.
+                    }
+                }
+
+                resolver(valor);
+            }
+
+            function alPulsarTecla(evento) {
+                if (evento.key === "Escape") {
+                    evento.preventDefault();
+                    terminar(false);
+                    return;
+                }
+
+                // El foco se queda entre los dos botones mientras el aviso vive.
+                if (evento.key === "Tab") {
+                    var foco = document.activeElement;
+                    if (!caja.contains(foco)) {
+                        evento.preventDefault();
+                        cancelar.focus();
+                    } else if (evento.shiftKey && foco === cancelar) {
+                        evento.preventDefault();
+                        aceptar.focus();
+                    } else if (!evento.shiftKey && foco === aceptar) {
+                        evento.preventDefault();
+                        cancelar.focus();
+                    }
+                }
+            }
+
+            aceptar.addEventListener("click", function () { terminar(true); });
+            cancelar.addEventListener("click", function () { terminar(false); });
+            velo.addEventListener("click", function (evento) {
+                if (evento.target === velo) {
+                    terminar(false);
+                }
+            });
+            document.addEventListener("keydown", alPulsarTecla);
+
+            window.setTimeout(function () {
+                // El foco arranca en la opción segura: un Enter reflejo no
+                // ejecuta la acción destructiva.
+                cancelar.focus();
+            }, 60);
+        });
+    }
+
     /* ------------------------------------------------------ toasts */
     // Los diálogos (showModal) viven en la capa superior del navegador:
     // ningún z-index del cuerpo puede verse por encima de ellos. Por eso,
@@ -270,6 +381,7 @@
     /* -------------------------------------------------------- API */
     window.Notificaciones = {
         tarjeta: tarjeta,
+        confirmar: confirmar,
         toast: toast,
 
         // Tarjeta centrada de éxito (momentos grandes).
@@ -302,7 +414,7 @@
             return toast({ tipo: "info", texto: texto, titulo: titulo });
         },
 
-        // No-op para compatibilidad SPA (no necesita reinicialización)
+        // No requiere reinicialización
         inicializar: function () {}
     };
 })();

@@ -37,16 +37,10 @@ body {
         var(--color-fondo);
     font-family: var(--fuente-lectura);
     -webkit-font-smoothing: antialiased;
-    animation: aparecer-pagina 0.28s ease both;
 }
 
 body.carrito-con-modal {
     overflow: hidden;
-}
-
-@keyframes aparecer-pagina {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 @keyframes aparecer-modal {

@@ -43,6 +43,9 @@
     // ---------------------------------------------------------------- caché
     // Estado en memoria. Productos empiezan VACÍOS; se llenan con cargarProductos().
     let productosCache = [];
+    // false hasta que termina la primera carga: la interfaz lo usa para no
+    // mostrar "sin resultados" mientras el catálogo todavía viene en camino.
+    let productosCargados = false;
     let configCache = Object.assign({ margenGlobal: 35 }, DatosBD.config || {});
     let sesionCache = DatosBD.sesion || null;
     let permisosCache = Array.isArray(DatosBD.permisos)
@@ -57,6 +60,8 @@
 
     // Promesa de carga de productos (evita fetches duplicados concurrentes)
     let productosLoadPromise = null;
+    // Reintento automático si la primera carga falla (red o MySQL ocupado).
+    let reintentoProductos = null;
 
     function emitir() {
         try {
@@ -78,6 +83,7 @@
                 if (!data.ok) throw new Error(data.mensaje || "Error cargando productos");
 
                 productosCache = data.productos || [];
+                productosCargados = true;
                 // Si vienen con costos (admin/gerente), los respetamos; si no, filtramos
                 if (sesionCache && (sesionCache.rol === "admin" || sesionCache.rol === "gerente")) {
                     // Ya vienen completos del servidor
@@ -91,6 +97,14 @@
                 return productosCache;
             } catch (e) {
                 productosLoadPromise = null; // Permite reintentar
+                // Si el catálogo aún no se había cargado, reintenta en unos
+                // segundos en vez de dejar la página en "Cargando catálogo…".
+                if (!productosCargados && !reintentoProductos) {
+                    reintentoProductos = setTimeout(function () {
+                        reintentoProductos = null;
+                        cargarProductos().catch(function () {});
+                    }, 4000);
+                }
                 throw e;
             }
         })();
@@ -104,10 +118,53 @@
         return cargarProductos();
     }
 
+    // ------------------------------------------------ datos de gestión
+    // Usuarios, solicitudes, bitácora y reseñas solo se piden desde el panel.
+    // Las páginas de la tienda no los necesitan y así bootstrap.php queda
+    // realmente ligero. El resultado se emite como "tienda:actualizada"
+    // para que el panel vuelva a dibujar la vista que esté abierta.
+    let gestionLoadPromise = null;
+
+    async function cargarGestion() {
+        if (gestionLoadPromise) return gestionLoadPromise;
+
+        gestionLoadPromise = (async () => {
+            try {
+                const resp = await fetch("api/panel-datos.php", {
+                    credentials: "same-origin",
+                    headers: { "Accept": "application/json" }
+                });
+                if (!resp.ok) throw new Error("Error " + resp.status);
+                const data = await resp.json();
+                if (!data.ok) throw new Error(data.mensaje || "Error cargando el panel");
+
+                if (Array.isArray(data.usuarios)) usuariosCache = data.usuarios;
+                if (Array.isArray(data.solicitudes)) solicitudesCache = data.solicitudes;
+                if (Array.isArray(data.bitacora)) bitacoraCache = data.bitacora;
+                if (data.resenasSitio) resenasSitioCache = data.resenasSitio;
+                if (data.resenasProductos) resenasProductosCache = data.resenasProductos;
+
+                emitir();
+                return data;
+            } catch (e) {
+                gestionLoadPromise = null; // Permite reintentar
+                throw e;
+            }
+        })();
+
+        return gestionLoadPromise;
+    }
+
+    function refrescarGestion() {
+        gestionLoadPromise = null;
+        return cargarGestion();
+    }
+
     // Reemplaza la caché con datos frescos del servidor.
     function aplicarDatos(datos) {
         if (Array.isArray(datos.productos)) {
             productosCache = datos.productos;
+            productosCargados = true;
         }
         if (datos.config) {
             configCache = Object.assign({}, datos.config);
@@ -270,12 +327,18 @@
     // Si el cache está vacío, dispara carga asíncrona y devuelve [] (la UI reaccionará al evento "tienda:actualizada")
     function productos(opciones) {
         if (!productosCache.length) {
-            cargarProductos(); // Dispara carga en background
+            // Dispara carga en background; el evento "tienda:actualizada"
+            // vuelve a dibujar la interfaz cuando los datos lleguen.
+            cargarProductos().catch(function () {});
         }
         const incluirEliminados = Boolean(opciones && opciones.incluirEliminados);
         return productosCache.filter(function (producto) {
             return incluirEliminados || producto.estado !== "eliminado";
         });
+    }
+
+    function productosListos() {
+        return productosCargados;
     }
 
     function producto(id) {
@@ -632,6 +695,7 @@
         sesion: sesion,
         puede: puede,
         productos: productos,
+        productosListos: productosListos,
         producto: producto,
         config: config,
         margenDe: margenDe,
@@ -656,8 +720,11 @@
         guardarImagenConfig: guardarImagenConfig,
         construirRutaImagen: construirRutaImagen,
         refrescar: refrescar,
-        // Nuevas: carga asíncrona de productos
+        // Carga asíncrona de productos
         cargarProductos: cargarProductos,
-        refrescarProductos: refrescarProductos
+        refrescarProductos: refrescarProductos,
+        // Carga asíncrona de los datos exclusivos del panel
+        cargarGestion: cargarGestion,
+        refrescarGestion: refrescarGestion
     };
 })();

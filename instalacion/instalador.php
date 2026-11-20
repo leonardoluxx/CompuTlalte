@@ -5,6 +5,9 @@
 // crea la base de datos, importa todas las tablas con sus datos y
 // verifica que todo quedó bien. No hace falta usar phpMyAdmin.
 //
+// Es idempotente: se puede ejecutar varias veces sin errores de
+// "database exists", "table already exists" ni "table was not locked".
+//
 // Uso:  http://localhost/computlalte/instalacion/instalador.php
 
 declare(strict_types=1);
@@ -16,7 +19,8 @@ require_once __DIR__ . "/../api/_compat.php";
 exigir_php_compatible();
 
 // Credenciales y sesión: _bd.php carga conexion.php (constantes DB_*) y
-// abre la sesión de PHP para comprobar quién está instalando.
+// abre la sesión de PHP para comprobar quién está instalando. Desde el
+// blindaje de conexion.php, incluir _bd.php ya no falla si la base no existe.
 require_once __DIR__ . "/../api/_bd.php";
 
 $accion = $_GET["accion"] ?? "";
@@ -26,6 +30,7 @@ $ruta_sql = __DIR__ . "/computlalte_db.sql";
 // Mensajes del proceso (se muestran como lista de pasos).
 $pasos = [];
 $error = null;
+$instalacion_completada = false;
 
 function paso(string $texto, bool $ok = true): void
 {
@@ -33,9 +38,98 @@ function paso(string $texto, bool $ok = true): void
     $pasos[] = ["texto" => $texto, "ok" => $ok];
 }
 
+/**
+ * Ejecuta un bloque SQL con multi_query y consume todos sus resultados.
+ * Con MYSQLI_REPORT_STRICT cualquier error de MySQL llega como excepción,
+ * así el instalador puede mostrarlo en pantalla sin dejar la base a medias.
+ */
+function ejecutar_sql(mysqli $servidor, string $sql): void
+{
+    if (trim($sql) === "") {
+        return;
+    }
+
+    if (!$servidor->multi_query($sql)) {
+        throw new RuntimeException("MySQL rechazó el archivo SQL: " . $servidor->error);
+    }
+
+    do {
+        // Un error en cualquier sentencia posterior a la primera no siempre
+        // se convierte en excepción: mysqli lo deja en errno/error. Se revisa
+        // en cada paso para no terminar con una importación incompleta.
+        if ($servidor->errno !== 0) {
+            throw new RuntimeException("Error de MySQL durante la importación: " . $servidor->error);
+        }
+
+        $resultado = $servidor->store_result();
+        if ($resultado instanceof mysqli_result) {
+            $resultado->free();
+        }
+
+        if (!$servidor->more_results()) {
+            break;
+        }
+    } while ($servidor->next_result());
+
+    if ($servidor->errno !== 0) {
+        throw new RuntimeException("Error de MySQL durante la importación: " . $servidor->error);
+    }
+}
+
+/**
+ * Deja el dump listo para importarlo con mysqli::multi_query.
+ *
+ * - Quita el DROP DATABASE: la base la administra el instalador (nunca se
+ *   borra por accidente al reinstalar; las tablas sí se recrean).
+ * - Quita CREATE DATABASE y USE: el instalador ya los ejecutó con el nombre
+ *   y el juego de caracteres correctos.
+ * - Quita LOCK TABLES / UNLOCK TABLES: con multi_query esos bloqueos hacen
+ *   que MySQL rechace los INSERT de tablas relacionadas por clave foránea
+ *   ("Table 'productos' was not locked with LOCK TABLES").
+ * - Quita DISABLE/ENABLE KEYS: son para MyISAM y aquí todas las tablas son
+ *   InnoDB, así que solo estorban.
+ */
+function preparar_sql(string $sql): string
+{
+    // BOM UTF-8 que algunos editores agregan al inicio.
+    $sql = preg_replace('/^\xEF\xBB\xBF/', '', $sql) ?? $sql;
+
+    // Comentario de "sandbox" que agrega MariaDB al volcar (solo cliente).
+    $sql = preg_replace('/^[ \t]*\/\*M![^\r\n]*\*\/[ \t]*\r?\n/mi', '', $sql) ?? $sql;
+
+    // DROP DATABASE del dump: jamás debe ejecutarse desde el instalador.
+    $sql = preg_replace('/^[ \t]*\/\*!40000 DROP DATABASE\b[^;]*;[ \t]*\r?\n/mi', '', $sql) ?? $sql;
+
+    // CREATE DATABASE y USE: los controla el instalador (ver más abajo).
+    $sql = preg_replace('/^[ \t]*CREATE DATABASE\b[^;]*;[ \t]*\r?\n/mi', '', $sql) ?? $sql;
+    $sql = preg_replace('/^[ \t]*USE\s+`?[^;`\r\n]+`?\s*;[ \t]*\r?\n/mi', '', $sql) ?? $sql;
+
+    // Bloqueos de tabla del dump.
+    $sql = preg_replace('/^[ \t]*(?:LOCK TABLES|UNLOCK TABLES)\b[^;\r\n]*;[ \t]*\r?\n/mi', '', $sql) ?? $sql;
+
+    // Ajustes de claves para MyISAM.
+    $sql = preg_replace(
+        '/^[ \t]*\/\*!40000 ALTER TABLE [^;\r\n]*? (?:DISABLE|ENABLE) KEYS \*\/;[ \t]*\r?\n/mi',
+        '',
+        $sql
+    ) ?? $sql;
+
+    return trim($sql) . "\n";
+}
+
 // ------------------------------------------------------- conexión base
-$servidor = @new mysqli(DB_HOST, DB_USUARIO, DB_CLAVE);
-$fallo_conexion = $servidor->connect_error ?? null;
+// Se conecta al servidor SIN seleccionar la base: en una primera instalación
+// todavía no existe. Además los errores de mysqli se lanzan como excepciones
+// (MYSQLI_REPORT_STRICT), así que la conexión debe ir dentro de try/catch;
+// de lo contrario, con MySQL apagado, la página moriría con un error fatal.
+$servidor = null;
+$fallo_conexion = null;
+
+try {
+    $servidor = obtenerConexionServidor();
+} catch (Throwable $e) {
+    $fallo_conexion = $e->getMessage();
+}
 
 // ¿La base de datos ya existe y tiene cuentas?
 $base_existe = false;
@@ -44,10 +138,7 @@ $usuarios_actuales = 0;
 
 if (!$fallo_conexion) {
     try {
-        $resultado = $servidor->query(
-            "SELECT SCHEMA_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '" . DB_NOMBRE . "'"
-        );
-        $base_existe = $resultado && $resultado->num_rows > 0;
+        $base_existe = base_de_datos_existe($servidor);
 
         if ($base_existe && $servidor->select_db(DB_NOMBRE)) {
             // Una base a medio crear (sin todas sus tablas) no debe romper el
@@ -75,7 +166,13 @@ if (!$fallo_conexion) {
 $instalacion_bloqueada = false;
 
 if (!$fallo_conexion && $usuarios_actuales > 0) {
-    $sesion_actual = usuario_de_sesion();
+    try {
+        $sesion_actual = usuario_de_sesion();
+    } catch (Throwable $e) {
+        // Base a medio migrar: se trata como no autenticado en lugar de
+        // terminar con un error fatal antes de mostrar el instalador.
+        $sesion_actual = null;
+    }
     $instalacion_bloqueada = !$sesion_actual || $sesion_actual["rol"] !== "admin";
 }
 
@@ -107,27 +204,45 @@ if ($accion === "instalar" && !$fallo_conexion) {
 
         paso("Conectado a MySQL en " . DB_HOST . " como " . DB_USUARIO . ".");
 
-        // El dump incluye CREATE DATABASE, USE y todas las tablas con sus
-        // datos: una sola llamada multi_query hace todo el trabajo.
-        if (!$servidor->multi_query($sql)) {
-            throw new RuntimeException("MySQL rechazó el archivo SQL: " . $servidor->error);
-        }
+        // ---------------------------------------------------- 1) base de datos
+        // Se crea (si hace falta) con el juego de caracteres correcto.
+        // `CREATE DATABASE IF NOT EXISTS` hace que reinstalar sea seguro.
+        $nombre_sql = str_replace("`", "``", DB_NOMBRE);
+        $servidor->query(
+            "CREATE DATABASE IF NOT EXISTS `" . $nombre_sql . "` "
+            . "CHARACTER SET " . DB_CHARSET . " COLLATE " . DB_COLACION
+        );
+        paso("Base de datos \"" . DB_NOMBRE . "\" creada o verificada (CREATE DATABASE IF NOT EXISTS).");
 
-        // Se recorren todos los resultados hasta terminar sin errores.
-        while ($servidor->more_results() && $servidor->next_result()) {
-            if ($servidor->errno) {
-                throw new RuntimeException("Error de MySQL durante la importación: " . $servidor->error);
-            }
-            if ($resultado = $servidor->store_result()) {
-                $resultado->free();
-            }
+        // ---------------------------------------------------- 2) seleccionar base
+        // Equivale a "USE computlalte_db;". Se usa la API de mysqli porque
+        // informa de inmediato si la base no quedó disponible.
+        if (!$servidor->select_db(DB_NOMBRE)) {
+            throw new RuntimeException("No se pudo seleccionar la base de datos " . DB_NOMBRE . ".");
         }
-        paso("Base de datos \"" . DB_NOMBRE . "\" creada e importada (tablas + datos).");
+        $servidor->set_charset(DB_CHARSET);
+        paso("Base de datos \"" . DB_NOMBRE . "\" seleccionada (USE).");
+
+        // ---------------------------------------------------- 3) importar tablas
+        $sql = preparar_sql($sql);
+
+        // Las claves foráneas se desactivan durante la carga: el dump crea e
+        // inserta tabla por tabla en orden alfabético y algunos hijos
+        // (detalle_ventas, especificaciones) van antes que su tabla padre.
+        $servidor->query("SET FOREIGN_KEY_CHECKS=0");
+        $servidor->query("SET UNIQUE_CHECKS=0");
+
+        ejecutar_sql($servidor, $sql);
+
+        $servidor->query("SET FOREIGN_KEY_CHECKS=1");
+        $servidor->query("SET UNIQUE_CHECKS=1");
+
+        paso("Tablas y datos importados desde computlalte_db.sql.");
 
         // ------------------------------------------------------ verificación
         $servidor->select_db(DB_NOMBRE);
         $tablas = (int) $servidor->query(
-            "SELECT COUNT(*) AS t FROM information_schema.tables WHERE table_schema = '" . DB_NOMBRE . "'"
+            "SELECT COUNT(*) AS t FROM information_schema.tables WHERE table_schema = '" . $nombre_sql . "'"
         )->fetch_assoc()["t"];
         $productos = (int) $servidor->query("SELECT COUNT(*) AS t FROM productos")->fetch_assoc()["t"];
         $usuarios = (int) $servidor->query("SELECT COUNT(*) AS t FROM usuarios")->fetch_assoc()["t"];
@@ -164,8 +279,35 @@ if ($accion === "instalar" && !$fallo_conexion) {
         paso("Solicitudes de recuperación de clave: $solicitudes_password (tabla lista).");
 
         if ($productos < 1 || $usuarios < 1) {
-            throw new RuntimeException("La importación terminó pero faltan datos: revisa el archivo SQL.");
+            throw new RuntimeException(
+                "La importación terminó pero faltan datos (productos: $productos, usuarios: $usuarios). "
+                . "Revisa el archivo SQL."
+            );
         }
+
+        // La marca de "esquema de seguridad al día" puede venir de otra
+        // instalación o de antes de reinstalar: se borra para que la próxima
+        // petición vuelva a validar el esquema sobre la base recién importada.
+        @unlink(__DIR__ . "/.esquema_seguridad_ok");
+        @unlink(__DIR__ . "/.esquema_seguridad_v2");
+
+        // El esquema de seguridad (columnas de la recuperación de contraseña
+        // e índices) se aplica aquí mismo: así la base queda completa al
+        // terminar la instalación, sin esperar a la primera visita.
+        try {
+            asegurar_esquema_seguridad($servidor);
+            paso("Esquema de seguridad verificado (recuperación de contraseña y avisos en tiempo real).");
+        } catch (Throwable $e) {
+            error_log("Computlalte instalador: esquema de seguridad: " . $e->getMessage());
+            paso("Aviso: el esquema de seguridad se aplicará en la primera visita a la tienda.", false);
+        }
+
+        // La página se dibuja después: se actualiza el estado para que no
+        // siga diciendo "la base no existe" tras una instalación correcta.
+        $base_existe = true;
+        $productos_actuales = $productos;
+        $usuarios_actuales = $usuarios;
+        $instalacion_completada = true;
 
         paso("¡Instalación completada con éxito!", true);
     } catch (Throwable $e) {
@@ -236,6 +378,9 @@ if ($accion === "instalar" && !$fallo_conexion) {
             <?php if ($fallo_conexion): ?>
                 <span class="mal">✖ No pude conectarme a MySQL (<?php echo htmlspecialchars(DB_HOST); ?>).<br>
                 Abre el Panel de XAMPP y enciende <b>MySQL</b>; después recarga esta página.</span>
+                <?php if ($fallo_conexion !== ""): ?>
+                    <br><small>Detalle: <?php echo htmlspecialchars($fallo_conexion); ?></small>
+                <?php endif; ?>
             <?php elseif ($base_existe && $productos_actuales > 0): ?>
                 ✔ Conexión a MySQL correcta. La base <b><?php echo DB_NOMBRE; ?></b> ya existe con
                 <b><?php echo $productos_actuales; ?></b> productos instalados.
@@ -274,7 +419,7 @@ if ($accion === "instalar" && !$fallo_conexion) {
             </div>
         <?php endif; ?>
 
-        <?php if (!$fallo_conexion && !$error && !$instalacion_bloqueada && !(isset($paso) && count($pasos) > 0 && strpos(end($pasos)["texto"], "completada") !== false)): ?>
+        <?php if (!$fallo_conexion && !$error && !$instalacion_bloqueada && !$instalacion_completada): ?>
             <?php if ($productos_actuales > 0): ?>
                 <a class="boton secundario" href="?accion=instalar&confirmar=1">Reinstalar desde cero (borra los datos actuales)</a>
             <?php else: ?>

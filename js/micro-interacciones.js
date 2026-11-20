@@ -104,6 +104,6 @@
         iniciar();
     }
 
-    // Exponer para navegación SPA
+    // Exponer para uso desde otras páginas
     window.inicializarMicroInteracciones = iniciar;
 })();

@@ -19,12 +19,6 @@
     box-sizing: border-box;
 }
 
-/* Entrada suave para que el cambio de página no se sienta de golpe. */
-@keyframes aparecer-pagina {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 body {
     min-width: 320px;
     min-height: 100vh;
@@ -35,7 +29,6 @@ body {
     color: var(--color-texto);
     font-family: var(--fuente-lectura);
     -webkit-font-smoothing: antialiased;
-    animation: aparecer-pagina 0.28s ease both;
 }
 
 /* Barra superior con el logotipo y el enlace de regreso a la tienda. */

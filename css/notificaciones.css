@@ -129,6 +129,12 @@
     gap: var(--espacio-2);
 }
 
+/* Confirmaciones (sí / no): dos botones lado a lado. */
+.aviso-acciones-doble {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
 .aviso-boton {
     padding: 13px var(--espacio-5);
     border: 0;
@@ -162,6 +168,14 @@
     background: #262626;
     box-shadow: none;
     border: 1px solid #3a3a3a;
+}
+
+/* En pantallas angostas la confirmación se apila para que quepan
+   las dos etiquetas completas. */
+@media (max-width: 480px) {
+    .aviso-acciones-doble {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Salida suave al cerrar. */
