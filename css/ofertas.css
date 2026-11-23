@@ -53,7 +53,7 @@
 
 .descripcion-ofertas {
     max-width: 560px;
-    margin: 16px auto 0;
+    margin: 14px 0 0;
     color: #b8b8b8;
     font-family: var(--fuente-lectura);
     font-size: 15px;
@@ -86,8 +86,10 @@
 }
 
 .encabezado-ofertas {
-    margin: 0 0 34px;
-    text-align: center;
+    margin: 0 0 52px;
+    padding-left: 18px;
+    border-left: 3px solid var(--color-acento);
+    text-align: left;
 }
 
 /* Mismo encabezado que Computadoras y Accesorios: título blanco, segunda
@@ -97,7 +99,7 @@
     margin: 0;
     color: #ffffff;
     font-family: var(--fuente-titulos);
-    font-size: 3.5rem;
+    font-size: clamp(2.2rem, 4.5vw, 3.1rem);
     font-weight: 700;
     letter-spacing: 3px;
     line-height: 1.2;
@@ -116,11 +118,50 @@
 
 .encabezado-ofertas h2::after {
     display: block;
-    width: 170px;
+    width: 140px;
     height: 3px;
-    margin: 22px auto 0;
+    margin: 18px 0 0;
     background: var(--color-acento);
     content: "";
+}
+
+.contenedor-grupos-ofertas {
+    display: grid;
+    gap: 72px;
+}
+
+.grupo-ofertas {
+    scroll-margin-top: calc(var(--alto-encabezado, 70px) + 24px);
+}
+
+.encabezado-grupo-ofertas {
+    margin: 0 0 26px;
+    padding-left: 18px;
+    border-left: 3px solid var(--color-acento);
+}
+
+.encabezado-grupo-ofertas h3 {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--fuente-titulos);
+    font-size: clamp(1.7rem, 3vw, 2.35rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.encabezado-grupo-ofertas h3 .texto-rojo {
+    color: var(--color-acento);
+}
+
+.descripcion-grupo-ofertas {
+    max-width: 620px;
+    margin: 12px 0 0;
+    color: #b8b8b8;
+    font-family: var(--fuente-lectura);
+    font-size: 15px;
+    line-height: 1.6;
 }
 
 .rejilla-ofertas {
@@ -133,6 +174,7 @@
 
 /* Aviso cuando el panel deja la lista de ofertas vacía. */
 .ofertas-vacio {
+    display: block;
     grid-column: 1 / -1;
     max-width: 560px;
     margin: 0 auto;
@@ -144,6 +186,24 @@
     font-family: var(--fuente-interfaz);
     font-size: 16px;
     line-height: 1.6;
+    text-align: center;
+}
+
+.ofertas-vacio[hidden] {
+    display: none;
+}
+
+.ofertas-grupo-vacio {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 22px 20px;
+    background: #141414;
+    border: 1px dashed #3a3a3a;
+    border-radius: 10px;
+    color: #a9a9a9;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+    line-height: 1.55;
     text-align: center;
 }
 
@@ -208,6 +268,14 @@
     .rejilla-ofertas {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 20px;
+    }
+
+    .contenedor-grupos-ofertas {
+        gap: 52px;
+    }
+
+    .encabezado-grupo-ofertas {
+        padding-left: 14px;
     }
 }
 

@@ -57,6 +57,14 @@
     // Reseñas del sitio y de productos: solo viajan para admin y gerente.
     let resenasSitioCache = DatosBD.resenasSitio || { promedio: 0, total: 0, lista: [] };
     let resenasProductosCache = DatosBD.resenasProductos || { total: 0, lista: [] };
+    // Textos y secciones editables. Si no hay filas guardadas, la página
+    // conserva sus textos originales y las tres secciones históricas.
+    let contenidoCache = DatosBD.contenido && typeof DatosBD.contenido === "object"
+        ? Object.assign({}, DatosBD.contenido)
+        : {};
+    let seccionesOfertaCache = Array.isArray(DatosBD.seccionesOferta)
+        ? DatosBD.seccionesOferta.slice()
+        : [];
 
     // Promesa de carga de productos (evita fetches duplicados concurrentes)
     let productosLoadPromise = null;
@@ -185,6 +193,12 @@
         }
         if (datos.resenasProductos) {
             resenasProductosCache = datos.resenasProductos;
+        }
+        if (datos.contenido && typeof datos.contenido === "object") {
+            contenidoCache = Object.assign({}, datos.contenido);
+        }
+        if (Array.isArray(datos.seccionesOferta)) {
+            seccionesOfertaCache = datos.seccionesOferta.slice();
         }
 
         aplicarImagenes();
@@ -424,6 +438,64 @@
         return permisosCache.includes(accion);
     }
 
+    // Sincronización de la tienda: cada segundo se consulta una firma muy
+    // pequeña del servidor. Si cambió algo (productos, textos, secciones o
+    // solicitudes), se recarga el paquete completo y se redibuja la página.
+    // Se pausa mientras hay un diálogo abierto para no borrar lo que el
+    // usuario está escribiendo; al cerrarlo, la siguiente comprobación aplica
+    // los cambios pendientes. El servidor sigue siendo la única verdad.
+    let versionConocida = null;
+    let refrescoEnCurso = false;
+
+    async function comprobarVersion() {
+        if (refrescoEnCurso) {
+            return;
+        }
+        if (document.querySelector("dialog[open], .panel-modal-abierto")) {
+            return;
+        }
+
+        try {
+            const respuesta = await fetch("api/version.php", {
+                credentials: "same-origin",
+                cache: "no-store",
+                headers: { "Accept": "application/json" }
+            });
+            if (!respuesta.ok) {
+                return;
+            }
+            const datos = await respuesta.json();
+            if (!datos.ok || !datos.version) {
+                return;
+            }
+            if (versionConocida === null) {
+                versionConocida = datos.version;
+                return;
+            }
+            if (datos.version === versionConocida) {
+                return;
+            }
+
+            refrescoEnCurso = true;
+            try {
+                await refrescar();
+                versionConocida = datos.version;
+            } finally {
+                refrescoEnCurso = false;
+            }
+        } catch (error) {
+            // Sin conexión momentánea: se reintenta en el siguiente segundo.
+        }
+    }
+
+    window.setInterval(comprobarVersion, 1000);
+    document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") {
+            comprobarVersion();
+        }
+    });
+    window.addEventListener("focus", comprobarVersion);
+
     // --------------------------------------------- escrituras (asíncronas)
     // El administrador aplica al instante; el gerente deja una solicitud
     // que el administrador aprueba o rechaza (última palabra).
@@ -493,6 +565,72 @@
             await refrescar();
         }
 
+        return resultado;
+    }
+
+    // ------------------------------------------------- contenido editable
+    function contenido() {
+        return Object.assign({}, contenidoCache);
+    }
+
+    function seccionesOferta() {
+        return seccionesOfertaCache.map(function (seccion) {
+            return Object.assign({}, seccion);
+        });
+    }
+
+    async function guardarContenido(cambios) {
+        const resultado = await peticion("api/contenido.php", {
+            accion: "textos",
+            datos: { cambios: cambios }
+        });
+        if (resultado.ok) {
+            await refrescar();
+        }
+        return resultado;
+    }
+
+    async function guardarSeccion(datos) {
+        const resultado = await peticion("api/contenido.php", {
+            accion: "seccion_guardar",
+            datos: datos
+        });
+        if (resultado.ok) {
+            await refrescar();
+        }
+        return resultado;
+    }
+
+    async function crearSeccion(datos) {
+        const resultado = await peticion("api/contenido.php", {
+            accion: "seccion_crear",
+            datos: datos
+        });
+        if (resultado.ok) {
+            await refrescar();
+        }
+        return resultado;
+    }
+
+    async function eliminarSeccion(id) {
+        const resultado = await peticion("api/contenido.php", {
+            accion: "seccion_eliminar",
+            datos: { id: id }
+        });
+        if (resultado.ok) {
+            await refrescar();
+        }
+        return resultado;
+    }
+
+    async function ordenarSecciones(ids) {
+        const resultado = await peticion("api/contenido.php", {
+            accion: "seccion_orden",
+            datos: { ids: ids }
+        });
+        if (resultado.ok) {
+            await refrescar();
+        }
         return resultado;
     }
 
@@ -719,6 +857,13 @@
         resenasProductos: resenasProductos,
         guardarImagenConfig: guardarImagenConfig,
         construirRutaImagen: construirRutaImagen,
+        contenido: contenido,
+        seccionesOferta: seccionesOferta,
+        guardarContenido: guardarContenido,
+        guardarSeccion: guardarSeccion,
+        crearSeccion: crearSeccion,
+        eliminarSeccion: eliminarSeccion,
+        ordenarSecciones: ordenarSecciones,
         refrescar: refrescar,
         // Carga asíncrona de productos
         cargarProductos: cargarProductos,

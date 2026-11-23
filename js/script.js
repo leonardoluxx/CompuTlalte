@@ -849,6 +849,24 @@ function crearTarjetaProducto(producto, { descuentoPorcentaje = null, etiquetaOf
 
     tarjeta.append(botonTarjeta, botonResenas);
 
+    // Lápiz de edición rápida en la esquina de cada tarjeta. Solo aparece
+    // para administrador y gerente; el cliente nunca lo ve.
+    const sesionActual = window.Tienda ? Tienda.sesion() : null;
+    if (sesionActual && (sesionActual.rol === "admin" || sesionActual.rol === "gerente")) {
+        const lapiz = document.createElement("button");
+        lapiz.type = "button";
+        lapiz.className = "lapiz-tarjeta-producto";
+        lapiz.title = "Editar este producto";
+        lapiz.setAttribute("aria-label", `Editar ${producto.nombre}`);
+        lapiz.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.5 7.5 3 3"/></svg>';
+        lapiz.addEventListener("click", (evento) => {
+            evento.preventDefault();
+            evento.stopPropagation();
+            document.dispatchEvent(new CustomEvent("producto:editar", { detail: { id: producto.id } }));
+        });
+        tarjeta.append(lapiz);
+    }
+
     return tarjeta;
 }
 
@@ -1024,8 +1042,9 @@ function mostrarAccesorios() {
     );
 }
 
-// Ofertas: las define el panel. Solo se dibujan los productos con descuento
-// activo y cada tarjeta conserva su porcentaje para el modal y el carrito.
+// Ofertas: las define el panel. Se reparten en las tres secciones que anuncia
+// la navegación y cada tarjeta conserva su porcentaje para el modal y el carrito.
+// No hay límite: si el administrador activa más, todas se siguen mostrando.
 function mostrarOfertas() {
     if (!rejillaOfertas) {
         return;
@@ -1033,29 +1052,90 @@ function mostrarOfertas() {
 
     // Hasta que llegue el catálogo no se anuncia que no hay ofertas.
     if (window.Tienda && !Tienda.productosListos()) {
-        rejillaOfertas.replaceChildren();
         return;
     }
 
     const enOferta = window.Tienda
         ? window.Tienda.ofertas()
         : productos.filter((producto) => descuentoVigente(producto) > 0);
+    const vacio = document.querySelector("#ofertas-vacio");
 
-    if (!enOferta.length) {
-        const aviso = crearElemento("p", "ofertas-vacio", "Por ahora no hay ofertas activas. Nuestro gerente sigue negociando con el proveedor: y con su conciencia.");
-        rejillaOfertas.replaceChildren(aviso);
-        return;
+    // Secciones ilimitadas: el servidor manda el nombre, el orden y la
+    // descripción. Si todavía no hay ninguna guardada, se usan las tres
+    // históricas para que la página nunca quede vacía.
+    const seccionesGuardadas = window.Tienda ? Tienda.seccionesOferta() : [];
+    const secciones = seccionesGuardadas.length
+        ? seccionesGuardadas
+        : [
+            { id: 1, clave: "semana", etiqueta: "DESTACADAS", titulo: "Ofertas", acento: "de la semana", descripcion: "Los favoritos del momento, con descuento durante esta semana." },
+            { id: 2, clave: "educativo", etiqueta: "PARA ESTUDIAR", titulo: "Descuentos", acento: "educativos", descripcion: "Equipos pensados para clases, programación y trabajo académico." },
+            { id: 3, clave: "especial", etiqueta: "SELECCIÓN PREMIUM", titulo: "Promociones", acento: "especiales", descripcion: "Oportunidades puntuales en equipos y accesorios de gama alta." }
+        ];
+    const claves = secciones.map((seccion) => seccion.clave);
+
+    if (vacio) {
+        vacio.hidden = enOferta.length > 0;
     }
 
+    const porGrupo = {};
+    claves.forEach((clave) => {
+        porGrupo[clave] = [];
+    });
+    enOferta.forEach((producto) => {
+        const grupo = porGrupo[producto.grupoOferta] ? producto.grupoOferta : claves[0];
+        porGrupo[grupo].push(producto);
+    });
+
     rejillaOfertas.replaceChildren(
-        ...enOferta.map((producto) => {
-            const descuento = descuentoVigente(producto);
-            return crearTarjetaProducto(producto, {
-                descuentoPorcentaje: descuento,
-                etiquetaOferta: `${descuento}% de descuento`
-            });
+        ...secciones.map((seccion) => {
+            const grupo = document.createElement("section");
+            grupo.className = "grupo-ofertas";
+            grupo.id = `seccion-${seccion.clave}`;
+            grupo.dataset.seccionOferta = seccion.clave;
+            grupo.dataset.seccionId = String(seccion.id || "");
+
+            const encabezado = document.createElement("div");
+            encabezado.className = "encabezado-grupo-ofertas";
+            encabezado.setAttribute("data-revelar", "");
+
+            const etiqueta = crearElemento("p", "etiqueta-ofertas", seccion.etiqueta || "");
+            const titulo = document.createElement("h3");
+            titulo.id = `titulo-seccion-${seccion.clave}`;
+            titulo.append(document.createTextNode(seccion.titulo || ""));
+            if (seccion.acento) {
+                const acento = crearElemento("span", "texto-rojo", seccion.acento);
+                titulo.append(document.createTextNode(" "), acento);
+            }
+
+            const descripcion = crearElemento("p", "descripcion-grupo-ofertas", seccion.descripcion || "");
+            encabezado.append(etiqueta, titulo, descripcion);
+
+            const lista = document.createElement("div");
+            lista.className = "rejilla-productos rejilla-ofertas";
+            lista.dataset.grupoOfertas = seccion.clave;
+            lista.setAttribute("aria-label", `Ofertas: ${seccion.titulo || seccion.clave}`);
+
+            const productosSeccion = porGrupo[seccion.clave] || [];
+            if (!productosSeccion.length) {
+                lista.append(crearElemento("p", "ofertas-grupo-vacio", "No hay ofertas en esta sección por ahora."));
+            } else {
+                lista.append(
+                    ...productosSeccion.map((producto) => {
+                        const descuento = descuentoVigente(producto);
+                        return crearTarjetaProducto(producto, {
+                            descuentoPorcentaje: descuento,
+                            etiquetaOferta: `${descuento}% de descuento`
+                        });
+                    })
+                );
+            }
+
+            grupo.append(encabezado, lista);
+            return grupo;
         })
     );
+
+    document.dispatchEvent(new CustomEvent("ofertas:renderizadas"));
 }
 
 // Llena una lista de viñetas usando texto plano para cada característica.

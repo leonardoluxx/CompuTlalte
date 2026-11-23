@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="css/catalogo-accesorios.css?v=20261119">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=20261119">
     <link rel="stylesheet" href="css/notificaciones.css?v=20261120">
-    <link rel="stylesheet" href="css/editor-visual.css?v=20261119">
+    <link rel="stylesheet" href="css/editor-visual.css?v=20261123c">
     <link rel="stylesheet" href="css/mega-menu.css?v=20261119">
     
 </head>
@@ -69,9 +69,9 @@
                 <li class="menu-desplegable menu-ofertas">
                     <a class="enlace-navegacion" href="ofertas.html">Ofertas <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
                     <ul class="contenido-ofertas" aria-label="Ofertas">
-                        <li><a href="ofertas.html">Ofertas de la semana</a></li>
-                        <li><a href="ofertas.html">Descuentos educativos</a></li>
-                        <li><a href="ofertas.html">Promociones especiales</a></li>
+                        <li><a href="ofertas.html#ofertas-semana">Ofertas de la semana</a></li>
+                        <li><a href="ofertas.html#descuentos-educativos">Descuentos educativos</a></li>
+                        <li><a href="ofertas.html#promociones-especiales">Promociones especiales</a></li>
                     </ul>
                 </li>
             </ul>
@@ -90,17 +90,18 @@
         </nav>
     </header>
 
-    <section class="seccion-anuncio">
+    <section class="seccion-anuncio" data-editor-grupo="accesorios.hero" data-editor-titulo="Portada de Accesorios" data-editor-imagen="imagen_accesorios">
         <div class="contenido-anuncio">
-            <h1>ATTACK SHARK R3</h1>
-            <p class="subtitulo">Precisión extrema en solo 46 gramos.</p>
-            <p class="descripcion">Mouse ultraligero con cuerpo de aleación de magnesio, sensor óptico PixArt PAW3395, tasa de sondeo de 8000 Hz y conectividad triple. Diseñado para los desafíos más extremos.</p>
-            <a href="#" id="boton-comprar-anuncio" class="boton-comprar boton-brillante">Comprar ahora</a>
+            <h1 data-contenido="accesorios.hero.titulo" data-etiqueta="Título">ATTACK SHARK R3</h1>
+            <p class="subtitulo" data-contenido="accesorios.hero.subtitulo" data-etiqueta="Subtítulo">Precisión extrema en solo 46 gramos.</p>
+            <p class="descripcion" data-contenido="accesorios.hero.descripcion" data-etiqueta="Descripción">Mouse ultraligero con cuerpo de aleación de magnesio, sensor óptico PixArt PAW3395, tasa de sondeo de 8000 Hz y conectividad triple. Diseñado para los desafíos más extremos.</p>
+            <a href="#" id="boton-comprar-anuncio" class="boton-comprar boton-brillante" data-contenido="accesorios.hero.boton" data-etiqueta="Texto del botón">Comprar ahora</a>
         </div>
     </section>
 
-    <section class="titulo-categoria" id="accesorios" data-revelar>
-        <h2>Accesorios <span class="texto-rojo">de alto rendimiento</span></h2>
+    <section class="titulo-categoria" id="accesorios" data-revelar data-editor-grupo="accesorios" data-editor-titulo="Accesorios">
+        <h2><span data-contenido="accesorios.titulo" data-etiqueta="Título">Accesorios</span> <span class="texto-rojo" data-contenido="accesorios.acento" data-etiqueta="Título rojo">de alto rendimiento</span></h2>
+        <p class="descripcion-categoria" data-contenido="accesorios.descripcion" data-etiqueta="Descripción">Piezas pensadas para completar tu equipo, ganar precisión y mejorar tu espacio de juego o trabajo. Filtra por categoría, disponibilidad y precio para encontrar las tuyas.</p>
     </section>
 
     <div class="contenedor-catalogo-con-filtros" id="contenedor-catalogo">
@@ -407,16 +408,16 @@
 
     <!-- Sesión, configuración y permisos; el catálogo se carga por fetch. -->
     <script src="api/bootstrap.php?v=20261119" fetchpriority="high"></script>
-    <script src="js/tienda-datos.js?v=20261119" defer></script>
+    <script src="js/tienda-datos.js?v=20261123e" defer></script>
     <script src="js/notificaciones.js?v=20261120" defer></script>
     <script src="js/overlay-carga.js?v=20261119" defer></script>
-    <script src="js/script.js?v=20261123" defer></script>
+    <script src="js/script.js?v=20261123c" defer></script>
     <script src="js/encuesta.js?v=20261119" defer></script>
     <script src="js/contador-carrito.js?v=20261119" defer></script>
     <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
-    <script src="js/micro-interacciones.js?v=20261119" defer></script>
+    <script src="js/micro-interacciones.js?v=20261123c" defer></script>
     <!-- Lápices de edición visual (solo administrador). -->
-    <script src="js/editor-visual.js?v=20261119" defer></script>
+    <script src="js/editor-visual.js?v=20261123d" defer></script>
     
 </body>
 </html>

@@ -348,7 +348,11 @@ async function registrarVenta(metodo, datosPago = {}) {
         if (window.OverlayCarga) {
             OverlayCarga.ocultar();
         }
-        mostrarAviso(resultado.mensaje || "No se pudo registrar la venta.", false);
+        const mensaje = resultado.mensaje || "No se pudo registrar la venta.";
+        mostrarAviso(`${mensaje} No se realizó ningún cargo: actualiza tu carrito y vuelve a intentarlo.`, false);
+        if (window.Tienda && typeof Tienda.refrescarProductos === "function") {
+            Tienda.refrescarProductos().catch(function () {});
+        }
         return;
     }
 

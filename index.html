@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="css/hero-cinematico.css?v=20261119">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=20261119">
     <link rel="stylesheet" href="css/notificaciones.css?v=20261120">
-    <link rel="stylesheet" href="css/editor-visual.css?v=20261119">
+    <link rel="stylesheet" href="css/editor-visual.css?v=20261123c">
     <link rel="stylesheet" href="css/mega-menu.css?v=20261119">
     
 </head>
@@ -77,9 +77,9 @@
                 <li class="menu-desplegable menu-ofertas">
                     <a class="enlace-navegacion" href="ofertas.html">Ofertas <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
                     <ul class="contenido-ofertas" aria-label="Ofertas">
-                        <li><a href="ofertas.html">Ofertas de la semana</a></li>
-                        <li><a href="ofertas.html">Descuentos educativos</a></li>
-                        <li><a href="ofertas.html">Promociones especiales</a></li>
+                        <li><a href="ofertas.html#ofertas-semana">Ofertas de la semana</a></li>
+                        <li><a href="ofertas.html#descuentos-educativos">Descuentos educativos</a></li>
+                        <li><a href="ofertas.html#promociones-especiales">Promociones especiales</a></li>
                     </ul>
                 </li>
             </ul>
@@ -102,24 +102,24 @@
 
     <!-- Portada cinematográfica: gradiente en movimiento sobre la
          fotografía del procesador. Ver css/hero-cinematico.css. -->
-    <section class="seccion-anuncio" id="heroe">
+    <section class="seccion-anuncio" id="heroe" data-editor-grupo="inicio.hero" data-editor-titulo="Portada" data-editor-imagen="hero_imagen">
         <!-- Capa decorativa: dos orbes de luz que derivan lentamente. -->
         <div class="escenario-heroe" aria-hidden="true"></div>
 
         <div class="contenido-heroe">
             <div class="texto-heroe">
-                <h1 class="titulo-heroe">Snapdragon 8 Elite Gen 6</h1>
+                <h1 class="titulo-heroe" data-contenido="inicio.hero.titulo" data-etiqueta="Título">Snapdragon 8 Elite Gen 6</h1>
 
-                <p class="subtitulo">El futuro de la potencia móvil en tus manos.</p>
-                <p class="descripcion">Experimenta un salto generacional en rendimiento y eficiencia energética. Diseñado para los desafíos más extremos. Y para tener 47 pestañas abiertas sin culpa.</p>
-                <a href="#catalogo" class="boton-comprar boton-brillante">Comprar ahora</a>
+                <p class="subtitulo" data-contenido="inicio.hero.subtitulo" data-etiqueta="Subtítulo">El futuro de la potencia móvil en tus manos.</p>
+                <p class="descripcion" data-contenido="inicio.hero.descripcion" data-etiqueta="Descripción">Experimenta un salto generacional en rendimiento y eficiencia energética. Diseñado para los desafíos más extremos. Y para tener 47 pestañas abiertas sin culpa.</p>
+                <a href="#catalogo" class="boton-comprar boton-brillante" data-contenido="inicio.hero.boton" data-etiqueta="Texto del botón">Comprar ahora</a>
             </div>
         </div>
     </section>
 
-    <section class="titulo-categoria" id="computadoras" data-revelar>
-        <h2>Computadoras <span class="texto-rojo">de alto rendimiento</span></h2>
-        <p class="descripcion-categoria">Equipos pensados para jugar, crear y trabajar. Filtra por categoría, disponibilidad y precio para encontrar el tuyo.</p>
+    <section class="titulo-categoria" id="computadoras" data-revelar data-editor-grupo="inicio.computadoras" data-editor-titulo="Computadoras" data-editor-imagen="imagen_computadoras">
+        <h2><span data-contenido="inicio.computadoras.titulo" data-etiqueta="Título">Computadoras</span> <span class="texto-rojo" data-contenido="inicio.computadoras.acento" data-etiqueta="Título rojo">de alto rendimiento</span></h2>
+        <p class="descripcion-categoria" data-contenido="inicio.computadoras.descripcion" data-etiqueta="Descripción">Equipos pensados para jugar, crear y trabajar. Filtra por categoría, disponibilidad y precio para encontrar el tuyo.</p>
     </section>
 
     <!-- Mismo layout de dos columnas que Accesorios: controles arriba y filtros a la izquierda. -->
@@ -469,18 +469,18 @@
          El catálogo se pide aparte por fetch cuando la página lo necesita. -->
     <script src="api/bootstrap.php?v=20261119" fetchpriority="high"></script>
     <!-- Núcleo de la tienda: consume window.DatosBD y habla con la API. -->
-    <script src="js/tienda-datos.js?v=20261119" defer></script>
+    <script src="js/tienda-datos.js?v=20261123e" defer></script>
     <!-- Avisos bonitos: tarjeta centrada y toasts de confirmación. -->
     <script src="js/notificaciones.js?v=20261120" defer></script>
     <!-- Lógica de interfaz para navegación, catálogo, búsqueda y detalles. -->
     <script src="js/overlay-carga.js?v=20261119" defer></script>
-    <script src="js/script.js?v=20261123" defer></script>
+    <script src="js/script.js?v=20261123c" defer></script>
     <script src="js/encuesta.js?v=20261119" defer></script>
     <script src="js/contador-carrito.js?v=20261119" defer></script>
     <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
-    <script src="js/micro-interacciones.js?v=20261119" defer></script>
+    <script src="js/micro-interacciones.js?v=20261123c" defer></script>
     <!-- Lápices de edición visual (solo administrador). -->
-    <script src="js/editor-visual.js?v=20261119" defer></script>
+    <script src="js/editor-visual.js?v=20261123d" defer></script>
     
 </body>
 </html>

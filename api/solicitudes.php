@@ -44,24 +44,38 @@ if ($solicitud["estado"] !== "pendiente") {
 }
 
 if ($accion === "aprobar") {
-    // Los cambios guardados vienen como {campo: {antes, despues}};
-    // se aplica el valor "despues" de cada campo con el mapper estándar.
     $paquete = json_decode((string) $solicitud["cambios"], true);
-    $cambios = [];
-    foreach (($paquete["diff"] ?? []) as $campo => $valores) {
-        $cambios[$campo] = $valores["despues"] ?? null;
+    $paquete = is_array($paquete) ? $paquete : [];
+
+    if (($paquete["tipo"] ?? "") === "contenido") {
+        // Propuestas de textos o secciones: se aplican con las mismas
+        // validaciones que usa el editor del administrador.
+        try {
+            aplicar_cambios_contenido($bd, $paquete);
+        } catch (Throwable $e) {
+            responder_error($e->getMessage(), 409);
+        }
+        $estado = "aprobada";
+        $detalle = "{$solicitud["producto_nombre"]}: {$solicitud["resumen"]} (aprobada)";
+    } else {
+        // Los cambios guardados vienen como {campo: {antes, despues}};
+        // se aplica el valor "despues" de cada campo con el mapper estándar.
+        $cambios = [];
+        foreach (($paquete["diff"] ?? []) as $campo => $valores) {
+            $cambios[$campo] = $valores["despues"] ?? null;
+        }
+
+        $producto_id = (int) ($solicitud["producto_id"] ?? 0);
+        $producto = producto_adaptado_por_id($bd, $producto_id);
+
+        if (!$producto) {
+            responder_error("El producto de la solicitud ya no existe.", 409);
+        }
+
+        aplicar_cambios_producto($bd, $producto_id, $cambios);
+        $estado = "aprobada";
+        $detalle = "{$solicitud["producto_nombre"]}: {$solicitud["resumen"]} (aprobada)";
     }
-
-    $producto_id = (int) ($solicitud["producto_id"] ?? 0);
-    $producto = producto_adaptado_por_id($bd, $producto_id);
-
-    if (!$producto) {
-        responder_error("El producto de la solicitud ya no existe.", 409);
-    }
-
-    aplicar_cambios_producto($bd, $producto_id, $cambios);
-    $estado = "aprobada";
-    $detalle = "{$solicitud["producto_nombre"]}: {$solicitud["resumen"]} (aprobada)";
 } else {
     $estado = "rechazada";
     $detalle = "{$solicitud["producto_nombre"]}: {$solicitud["resumen"]} (rechazada)";

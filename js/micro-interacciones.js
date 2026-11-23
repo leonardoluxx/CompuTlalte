@@ -19,7 +19,7 @@
     const SELECTORES_REJILLA = [
         "#rejilla-computadoras",
         "#rejilla-accesorios",
-        "#rejilla-ofertas"
+        ".rejilla-ofertas"
     ];
 
     // Elementos fijos marcados en el HTML con data-revelar.
@@ -91,10 +91,7 @@
         document.querySelectorAll(SELECTOR_SECCIONES).forEach(vigilar);
 
         SELECTORES_REJILLA.forEach((selector) => {
-            const rejilla = document.querySelector(selector);
-            if (rejilla) {
-                montarRejilla(rejilla);
-            }
+            document.querySelectorAll(selector).forEach(montarRejilla);
         });
     }
 

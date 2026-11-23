@@ -611,6 +611,22 @@ body.rol-admin .solo-gerente {
     font-size: 14px;
 }
 
+.panel-tabla .oferta-grupo {
+    width: 100%;
+    min-width: 150px;
+    padding: 8px 10px;
+    background: #141414;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    color: #eeeeee;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+}
+
+.panel-tabla .oferta-grupo:disabled {
+    opacity: 0.45;
+}
+
 .panel-tabla th,
 .panel-tabla td {
     padding: 12px 14px;

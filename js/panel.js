@@ -32,7 +32,8 @@
         imagenesGaleria: "Imágenes",
         imagenPrincipal: "Imagen principal",
         terminosBusqueda: "Términos de búsqueda",
-        oferta: "Oferta"
+        oferta: "Oferta",
+        grupoOferta: "Sección de la oferta"
     };
 
     const panelAcceso = document.getElementById("panel-acceso");
@@ -613,6 +614,28 @@
 
     // ---------------------------------------------------------------- ofertas
 
+    // Secciones reales creadas por el administrador (no un límite de tres).
+    function seccionesDeOfertas() {
+        const guardadas = Tienda.seccionesOferta();
+        if (guardadas.length) {
+            return guardadas.map(function (seccion) {
+                return { clave: seccion.clave, nombre: [seccion.titulo, seccion.acento].filter(Boolean).join(" ") };
+            });
+        }
+        return [
+            { clave: "semana", nombre: "Ofertas de la semana" },
+            { clave: "educativo", nombre: "Descuentos educativos" },
+            { clave: "especial", nombre: "Promociones especiales" }
+        ];
+    }
+
+    function nombreSeccionOferta(clave) {
+        const encontrada = seccionesDeOfertas().find(function (seccion) {
+            return seccion.clave === clave;
+        });
+        return encontrada ? encontrada.nombre : "Sin sección";
+    }
+
     function renderOfertas() {
         const productos = Tienda.productos();
         listaOfertas.replaceChildren();
@@ -620,11 +643,13 @@
         if (!productos.length) {
             const fila = crear("tr");
             const celda = crear("td", "panel-tabla-vacia", "No hay productos activos.");
-            celda.colSpan = 5;
+            celda.colSpan = 6;
             fila.append(celda);
             listaOfertas.append(fila);
             return;
         }
+
+        const secciones = seccionesDeOfertas();
 
         productos.forEach(function (producto) {
             const fila = document.createElement("tr");
@@ -646,6 +671,23 @@
             casilla.setAttribute("aria-label", `Poner ${producto.nombre} en oferta`);
             celdaActiva.append(casilla);
 
+            const celdaGrupo = document.createElement("td");
+            const selectorGrupo = document.createElement("select");
+            selectorGrupo.className = "oferta-grupo";
+            selectorGrupo.setAttribute("aria-label", `Sección de la oferta de ${producto.nombre}`);
+            secciones.forEach(function (seccion) {
+                const opcion = document.createElement("option");
+                opcion.value = seccion.clave;
+                opcion.textContent = seccion.nombre;
+                selectorGrupo.append(opcion);
+            });
+            selectorGrupo.value = producto.grupoOferta || (secciones[0] || {}).clave || "semana";
+            selectorGrupo.disabled = !casilla.checked;
+            casilla.addEventListener("change", function () {
+                selectorGrupo.disabled = !casilla.checked;
+            });
+            celdaGrupo.append(selectorGrupo);
+
             const celdaDescuento = document.createElement("td");
             const campo = document.createElement("input");
             campo.type = "number";
@@ -663,7 +705,7 @@
             boton.dataset.guardarOferta = "true";
             celdaBoton.append(boton);
 
-            fila.append(nombre, precio, celdaActiva, celdaDescuento, celdaBoton);
+            fila.append(nombre, precio, celdaActiva, celdaGrupo, celdaDescuento, celdaBoton);
             listaOfertas.append(fila);
         });
     }
@@ -682,16 +724,26 @@
 
         const activa = fila.querySelector(".oferta-activa").checked;
         const descuento = Number(fila.querySelector(".oferta-descuento").value) || 0;
+        const grupo = fila.querySelector(".oferta-grupo").value;
 
         if (activa && (descuento <= 0 || descuento > 95)) {
             avisar("El descuento debe estar entre 1 % y 95 %.", "error");
             return;
         }
 
+        const nombreSeccion = {
+            semana: "Ofertas de la semana",
+            educativo: "Descuentos educativos",
+            especial: "Promociones especiales"
+        }[grupo] || "Ofertas de la semana";
+
         const resultado = await Tienda.proponerCambios(
             producto.id,
-            { oferta: { activa: activa, descuento: descuento } },
-            activa ? `Oferta de ${descuento} %` : "Oferta retirada"
+            {
+                oferta: { activa: activa, descuento: descuento, grupo: activa ? grupo : "" },
+                grupoOferta: activa ? grupo : ""
+            },
+            activa ? `${descuento} % en ${nombreSeccion}` : "Oferta retirada"
         );
 
         if (!resultado.ok) {
@@ -721,6 +773,10 @@
         if (campo === "oferta") {
             const oferta = valor || {};
             return oferta.activa ? `${oferta.descuento} % de descuento` : "Sin oferta";
+        }
+
+        if (campo === "grupoOferta") {
+            return nombreSeccionOferta(valor);
         }
 
         if (campo === "disponible") {
@@ -1570,7 +1626,7 @@
             especificacionesTecnicas: [],
             imagenPrincipal: "",
             imagenesGaleria: [],
-            oferta: { activa: false, descuento: 0 }
+            oferta: { activa: false, descuento: 0, grupo: "semana" }
         };
 
         imagenesDraft = Array.isArray(datos.imagenesGaleria) ? datos.imagenesGaleria.slice() : [];
@@ -1757,7 +1813,10 @@
             imagenPrincipal: imagenesDraft[0] || "",
             oferta: {
                 activa: document.getElementById("p-oferta-activa").checked,
-                descuento: Number(document.getElementById("p-oferta-descuento").value) || 0
+                descuento: Number(document.getElementById("p-oferta-descuento").value) || 0,
+                grupo: productoEnEdicion && productoEnEdicion.grupoOferta
+                    ? productoEnEdicion.grupoOferta
+                    : "semana"
             }
         };
     }

@@ -16,7 +16,7 @@
     <link rel="preload" href="fuentes/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fuentes.css?v=20261119">
     <link rel="stylesheet" href="css/tokens.css?v=20261119">
-    <link rel="stylesheet" href="css/panel.css?v=20261119">
+    <link rel="stylesheet" href="css/panel.css?v=20261123c">
     <link rel="stylesheet" href="css/notificaciones.css?v=20261120">
     
 </head>
@@ -211,7 +211,8 @@
                     </div>
                 </div>
                 <p class="panel-nota">
-                    Marca los productos que aparecerán en la página de ofertas y define su descuento.
+                    Marca los productos que aparecerán en la página de ofertas, define su descuento
+                    y elige la sección donde se mostrarán. No hay límite de ofertas activas.
                     <span class="solo-admin">Los cambios se publican al guardar.</span>
                     <span class="solo-gerente">Cada cambio queda como solicitud para que el administrador lo apruebe.</span>
                 </p>
@@ -222,6 +223,7 @@
                                 <th scope="col">Producto</th>
                                 <th scope="col">Precio de lista</th>
                                 <th scope="col">En oferta</th>
+                                <th scope="col">Sección</th>
                                 <th scope="col">Descuento</th>
                                 <th scope="col"><span class="panel-solo-lector">Guardar</span></th>
                             </tr>
@@ -626,9 +628,9 @@
     <!-- Sesión y configuración desde MySQL; el catálogo y los datos de
          gestión se cargan aparte por fetch. -->
     <script src="api/bootstrap.php?v=20261119" fetchpriority="high"></script>
-    <script src="js/tienda-datos.js?v=20261119"></script>
+    <script src="js/tienda-datos.js?v=20261123e"></script>
     <script src="js/notificaciones.js?v=20261120"></script>
-    <script src="js/panel.js?v=20261123"></script>
+    <script src="js/panel.js?v=20261123c"></script>
     
 </body>
 </html>

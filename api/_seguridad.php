@@ -19,7 +19,7 @@ function asegurar_esquema_seguridad(mysqli $bd): void
 
     // El nombre lleva versión a propósito: al añadir columnas nuevas hay que
     // volver a migrar incluso en instalaciones que ya tenían la marca vieja.
-    $marca = dirname(__DIR__) . "/instalacion/.esquema_seguridad_v2";
+    $marca = dirname(__DIR__) . "/instalacion/.esquema_seguridad_v4";
     if (is_file($marca)) {
         $listo = true;
         return;
@@ -68,6 +68,77 @@ function asegurar_esquema_seguridad(mysqli $bd): void
         if (!$existe_columna || $existe_columna->num_rows === 0) {
             $bd->query($alter);
         }
+    }
+
+    // El margen propio guarda suficientes decimales para que el precio que
+    // escribe el administrador se conserve al centavo. Con solo dos
+    // decimales, un precio como $41,000 podía terminar en $41,001.
+    $tabla_margen = $bd->query("SHOW TABLES LIKE 'productos'");
+    if ($tabla_margen && $tabla_margen->num_rows > 0) {
+        $columna_margen = $bd->query("SHOW COLUMNS FROM productos LIKE 'margen_propio'");
+        if ($columna_margen && $columna_margen->num_rows > 0) {
+            $info_margen = $columna_margen->fetch_assoc();
+            if ($info_margen && stripos((string) $info_margen["Type"], "decimal(5,2)") !== false) {
+                $bd->query("ALTER TABLE productos MODIFY COLUMN margen_propio decimal(9,6) DEFAULT NULL");
+            }
+        }
+    }
+
+    // Sección de la oferta: el administrador decide en qué sección aparece
+    // cada producto. La clave es libre para que pueda crear más secciones
+    // desde la tienda, no solo las tres iniciales.
+    $tabla_productos = $bd->query("SHOW TABLES LIKE 'productos'");
+    if ($tabla_productos && $tabla_productos->num_rows > 0) {
+        $columna_grupo = $bd->query("SHOW COLUMNS FROM productos LIKE 'grupo_oferta'");
+        if (!$columna_grupo || $columna_grupo->num_rows === 0) {
+            $bd->query(
+                "ALTER TABLE productos
+                 ADD COLUMN grupo_oferta varchar(60) DEFAULT NULL AFTER descuento"
+            );
+        } else {
+            $info_grupo = $columna_grupo->fetch_assoc();
+            if ($info_grupo && stripos((string) $info_grupo["Type"], "enum") !== false) {
+                $bd->query("ALTER TABLE productos MODIFY COLUMN grupo_oferta varchar(60) DEFAULT NULL");
+            }
+        }
+    }
+
+    // Contenido editable de la tienda. Cada clave corresponde a un texto
+    // visible; las secciones de ofertas se guardan aparte porque también
+    // llevan orden, título, subtítulo y descripción.
+    $bd->query(
+        "CREATE TABLE IF NOT EXISTS contenido_sitio (
+            clave varchar(100) NOT NULL,
+            valor text NOT NULL,
+            actualizado timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (clave)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    );
+    $bd->query(
+        "CREATE TABLE IF NOT EXISTS secciones_oferta (
+            id int(10) unsigned NOT NULL AUTO_INCREMENT,
+            clave varchar(60) NOT NULL,
+            etiqueta varchar(60) DEFAULT NULL,
+            titulo varchar(120) NOT NULL,
+            acento varchar(120) DEFAULT NULL,
+            descripcion varchar(500) DEFAULT NULL,
+            orden int(11) NOT NULL DEFAULT 0,
+            actualizado timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (id),
+            UNIQUE KEY uq_secciones_oferta_clave (clave),
+            KEY idx_secciones_oferta_orden (orden, id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    );
+
+    $total_secciones = $bd->query("SELECT COUNT(*) AS total FROM secciones_oferta");
+    $hay_secciones = $total_secciones ? (int) $total_secciones->fetch_assoc()["total"] : 0;
+    if ($hay_secciones === 0) {
+        $bd->query(
+            "INSERT INTO secciones_oferta (clave, etiqueta, titulo, acento, descripcion, orden) VALUES
+             ('semana', 'DESTACADAS', 'Ofertas', 'de la semana', 'Los favoritos del momento, con descuento durante esta semana.', 1),
+             ('educativo', 'PARA ESTUDIAR', 'Descuentos', 'educativos', 'Equipos pensados para clases, programación y trabajo académico.', 2),
+             ('especial', 'SELECCIÓN PREMIUM', 'Promociones', 'especiales', 'Oportunidades puntuales en equipos y accesorios de gama alta.', 3)"
+        );
     }
 
     // Índices pensados para las consultas reales de la aplicación:

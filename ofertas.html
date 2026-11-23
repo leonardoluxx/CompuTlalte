@@ -20,10 +20,10 @@
     <link rel="stylesheet" href="css/fuentes.css?v=20261119">
     <link rel="stylesheet" href="css/tokens.css?v=20261119">
     <link rel="stylesheet" href="css/catalogo-accesorios.css?v=20261119">
-    <link rel="stylesheet" href="css/ofertas.css?v=20261119">
+    <link rel="stylesheet" href="css/ofertas.css?v=20261123d">
     <link rel="stylesheet" href="css/micro-interacciones.css?v=20261119">
     <link rel="stylesheet" href="css/notificaciones.css?v=20261120">
-    <link rel="stylesheet" href="css/editor-visual.css?v=20261119">
+    <link rel="stylesheet" href="css/editor-visual.css?v=20261123c">
     <link rel="stylesheet" href="css/mega-menu.css?v=20261119">
     
 </head>
@@ -70,9 +70,9 @@
                 <li class="menu-desplegable menu-ofertas">
                     <a class="enlace-navegacion" href="#ofertas">Ofertas <svg class="flecha-desplegable" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></a>
                     <ul class="contenido-ofertas" aria-label="Ofertas">
-                        <li><a href="#ofertas">Ofertas de la semana</a></li>
-                        <li><a href="#ofertas">Descuentos educativos</a></li>
-                        <li><a href="#ofertas">Promociones especiales</a></li>
+                        <li><a href="#ofertas-semana">Ofertas de la semana</a></li>
+                        <li><a href="#descuentos-educativos">Descuentos educativos</a></li>
+                        <li><a href="#promociones-especiales">Promociones especiales</a></li>
                     </ul>
                 </li>
             </ul>
@@ -93,23 +93,54 @@
 
     <!-- Anuncio principal de ofertas: la imagen cubre todo el fondo, como en
          Computadoras y Accesorios. -->
-    <section class="seccion-anuncio anuncio-ofertas" aria-labelledby="titulo-anuncio-ofertas">
+    <section class="seccion-anuncio anuncio-ofertas" aria-labelledby="titulo-anuncio-ofertas" data-editor-grupo="ofertas.hero" data-editor-titulo="Portada de Ofertas" data-editor-imagen="imagen_ofertas">
         <div class="contenido-anuncio">
-            <p class="etiqueta-anuncio">PRECIOS ESPECIALES</p>
-            <h1 id="titulo-anuncio-ofertas">Ofertas</h1>
-            <p class="descripcion">Descuentos exclusivos en equipos y accesorios seleccionados. Aprovecha antes de que termine la promoción.</p>
-            <a href="#ofertas" class="boton-comprar boton-brillante">Ver ofertas ahora</a>
+            <p class="etiqueta-anuncio" data-contenido="ofertas.hero.etiqueta" data-etiqueta="Etiqueta">PRECIOS ESPECIALES</p>
+            <h1 id="titulo-anuncio-ofertas" data-contenido="ofertas.hero.titulo" data-etiqueta="Título">Ofertas</h1>
+            <p class="descripcion" data-contenido="ofertas.hero.descripcion" data-etiqueta="Descripción">Descuentos exclusivos en equipos y accesorios seleccionados. Aprovecha antes de que termine la promoción.</p>
+            <a href="#ofertas" class="boton-comprar boton-brillante" data-contenido="ofertas.hero.boton" data-etiqueta="Texto del botón">Ver ofertas ahora</a>
         </div>
     </section>
 
     <main class="contenido-ofertas-pagina">
         <section class="seccion-ofertas" id="ofertas" aria-labelledby="titulo-ofertas">
-            <div class="encabezado-ofertas" data-revelar>
-                <p class="etiqueta-ofertas">APROVECHA</p>
-                <h2 id="titulo-ofertas">Ofertas <span class="texto-rojo">de la semana</span></h2>
-                <p class="descripcion-ofertas">Productos seleccionados con precio especial por tiempo limitado.</p>
+            <div class="encabezado-ofertas" data-revelar data-editor-grupo="ofertas.intro" data-editor-titulo="Sección de ofertas" data-editor-secciones="true">
+                <p class="etiqueta-ofertas" data-contenido="ofertas.intro.etiqueta" data-etiqueta="Etiqueta">APROVECHA</p>
+                <h2 id="titulo-ofertas"><span data-contenido="ofertas.intro.titulo" data-etiqueta="Título">Ofertas</span> <span class="texto-rojo" data-contenido="ofertas.intro.acento" data-etiqueta="Título rojo">de la tienda</span></h2>
+                <p class="descripcion-ofertas" data-contenido="ofertas.intro.descripcion" data-etiqueta="Descripción">Tres selecciones con precio especial por tiempo limitado: para tu semana, para estudiar y para darte un gusto.</p>
             </div>
-            <div class="rejilla-productos rejilla-ofertas" id="rejilla-ofertas"></div>
+
+            <p class="ofertas-vacio" id="ofertas-vacio" hidden>Por ahora no hay ofertas activas. Vuelve pronto: el equipo renueva las promociones con frecuencia.</p>
+
+            <div class="contenedor-grupos-ofertas" id="rejilla-ofertas">
+                <section class="grupo-ofertas" id="ofertas-semana" aria-labelledby="titulo-ofertas-semana">
+                    <div class="encabezado-grupo-ofertas" data-revelar>
+                        <p class="etiqueta-ofertas">DESTACADAS</p>
+                        <h3 id="titulo-ofertas-semana">Ofertas <span class="texto-rojo">de la semana</span></h3>
+                        <p class="descripcion-grupo-ofertas">Los favoritos del momento, con descuento durante esta semana.</p>
+                    </div>
+                    <div class="rejilla-productos rejilla-ofertas" data-grupo-ofertas="semana" aria-label="Ofertas de la semana"></div>
+                </section>
+
+                <section class="grupo-ofertas" id="descuentos-educativos" aria-labelledby="titulo-descuentos-educativos">
+                    <div class="encabezado-grupo-ofertas" data-revelar>
+                        <p class="etiqueta-ofertas">PARA ESTUDIAR</p>
+                        <h3 id="titulo-descuentos-educativos">Descuentos <span class="texto-rojo">educativos</span></h3>
+                        <p class="descripcion-grupo-ofertas">Equipos pensados para clases, programación y trabajo académico.</p>
+                    </div>
+                    <div class="rejilla-productos rejilla-ofertas" data-grupo-ofertas="educativo" aria-label="Descuentos educativos"></div>
+                </section>
+
+                <section class="grupo-ofertas" id="promociones-especiales" aria-labelledby="titulo-promociones-especiales">
+                    <div class="encabezado-grupo-ofertas" data-revelar>
+                        <p class="etiqueta-ofertas">SELECCIÓN PREMIUM</p>
+                        <h3 id="titulo-promociones-especiales">Promociones <span class="texto-rojo">especiales</span></h3>
+                        <p class="descripcion-grupo-ofertas">Oportunidades puntuales en equipos y accesorios de gama alta.</p>
+                    </div>
+                    <div class="rejilla-productos rejilla-ofertas" data-grupo-ofertas="especial" aria-label="Promociones especiales"></div>
+                </section>
+            </div>
+
             <p class="enlace-volver-tienda"><a href="index.html#catalogo">Seguir explorando la tienda</a></p>
         </section>
     </main>
@@ -314,16 +345,16 @@
 
     <!-- Sesión, configuración y permisos; el catálogo se carga por fetch. -->
     <script src="api/bootstrap.php?v=20261119" fetchpriority="high"></script>
-    <script src="js/tienda-datos.js?v=20261119" defer></script>
+    <script src="js/tienda-datos.js?v=20261123e" defer></script>
     <script src="js/notificaciones.js?v=20261120" defer></script>
     <script src="js/overlay-carga.js?v=20261119" defer></script>
-    <script src="js/script.js?v=20261123" defer></script>
+    <script src="js/script.js?v=20261123c" defer></script>
     <script src="js/encuesta.js?v=20261119" defer></script>
     <script src="js/contador-carrito.js?v=20261119" defer></script>
     <!-- Revelado al hacer scroll de las tarjetas del catálogo. -->
-    <script src="js/micro-interacciones.js?v=20261119" defer></script>
+    <script src="js/micro-interacciones.js?v=20261123c" defer></script>
     <!-- Lápices de edición visual (solo administrador). -->
-    <script src="js/editor-visual.js?v=20261119" defer></script>
+    <script src="js/editor-visual.js?v=20261123d" defer></script>
     
 </body>
 </html>

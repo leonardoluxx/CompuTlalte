@@ -1214,3 +1214,110 @@ body {
 .aviso-cambio-obligatorio[hidden] {
     display: none;
 }
+
+/* ---------------------------------------------------------------
+   Espacio de invitado en Mi cuenta
+   ---------------------------------------------------------------
+   Debajo de los botones de acceso se muestran los beneficios y
+   accesos rápidos para que la pantalla no quede medio vacía. */
+.beneficios-invitado {
+    margin-top: 30px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-linea);
+}
+
+.beneficios-invitado h3 {
+    margin: 0 0 14px;
+    font-family: var(--fuente-interfaz);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-texto);
+}
+
+.lista-beneficios-invitado {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-beneficios-invitado li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #111111;
+    border: 1px solid #292929;
+    border-radius: 8px;
+}
+
+.icono-beneficio {
+    display: grid;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    place-items: center;
+    margin-top: 1px;
+    background: rgb(255 0 51 / 14%);
+    border: 1px solid rgb(255 0 51 / 38%);
+    border-radius: 50%;
+    color: var(--color-acento);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.lista-beneficios-invitado div {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.lista-beneficios-invitado strong {
+    color: #f5f5f5;
+    font-family: var(--fuente-interfaz);
+    font-size: 14px;
+}
+
+.lista-beneficios-invitado span:not(.icono-beneficio) {
+    color: var(--color-atenuado);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.enlaces-invitado {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.enlaces-invitado a {
+    padding: 8px 12px;
+    background: #151515;
+    border: 1px solid #303030;
+    border-radius: 999px;
+    color: #d8d8d8;
+    font-family: var(--fuente-interfaz);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.enlaces-invitado a:hover,
+.enlaces-invitado a:focus-visible {
+    border-color: var(--color-acento);
+    color: #ffffff;
+}
+
+@media (max-width: 520px) {
+    .lista-beneficios-invitado li {
+        padding: 11px 12px;
+    }
+
+    .enlaces-invitado a {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+}

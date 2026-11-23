@@ -3336,7 +3336,7 @@ CREATE TABLE `productos` (
   `categoria_id` int(10) unsigned DEFAULT NULL,
   `costo_base` decimal(10,2) NOT NULL DEFAULT 0.00,
   `precio_final` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `margen_propio` decimal(5,2) DEFAULT NULL,
+  `margen_propio` decimal(9,6) DEFAULT NULL,
   `imagen_url` varchar(255) DEFAULT NULL,
   `video_url` varchar(255) DEFAULT NULL,
   `stock` int(11) NOT NULL DEFAULT 0,
@@ -3650,8 +3650,6 @@ CREATE TABLE `solicitudes` (
 
 LOCK TABLES `solicitudes` WRITE;
 /*!40000 ALTER TABLE `solicitudes` DISABLE KEYS */;
-INSERT INTO `solicitudes` VALUES
-(1,2,3,'ASUS Zenbook 14 OLED','{\"diff\":{\"costoBase\":{\"antes\":23500,\"despues\":24000}}}','cambio con imagenes ajenas','rechazada','2026-11-04 18:24:22','Administrador','2026-11-04 18:25:08');
 /*!40000 ALTER TABLE `solicitudes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -3776,3 +3774,63 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-11-12 19:49:23
+
+-- ---------------------------------------------------------------------------
+-- Ofertas iniciales de la tienda
+-- ---------------------------------------------------------------------------
+-- La instalación arranca con 10 ofertas repartidas en las tres secciones de
+-- la página. No es un límite: el administrador puede activar todas las que
+-- quiera desde el panel y el gerente puede proponer cambios.
+--
+-- La columna se agrega DESPUÉS de importar los productos: así el INSERT
+-- histórico de 160 filas sigue teniendo exactamente las mismas columnas y la
+-- instalación no se rompe por un desfase en el número de valores.
+ALTER TABLE productos
+  ADD COLUMN grupo_oferta varchar(60) DEFAULT NULL AFTER descuento;
+
+UPDATE productos SET en_oferta = 0, descuento = 0, grupo_oferta = NULL;
+UPDATE productos SET en_oferta = 1, descuento = 10, grupo_oferta = 'semana' WHERE id = 2;
+UPDATE productos SET en_oferta = 1, descuento = 18, grupo_oferta = 'semana' WHERE id = 57;
+UPDATE productos SET en_oferta = 1, descuento = 12, grupo_oferta = 'semana' WHERE id = 76;
+UPDATE productos SET en_oferta = 1, descuento = 12, grupo_oferta = 'semana' WHERE id = 105;
+UPDATE productos SET en_oferta = 1, descuento = 12, grupo_oferta = 'educativo' WHERE id = 3;
+UPDATE productos SET en_oferta = 1, descuento = 15, grupo_oferta = 'educativo' WHERE id = 5;
+UPDATE productos SET en_oferta = 1, descuento = 10, grupo_oferta = 'educativo' WHERE id = 100;
+UPDATE productos SET en_oferta = 1, descuento = 12, grupo_oferta = 'especial' WHERE id = 47;
+UPDATE productos SET en_oferta = 1, descuento = 15, grupo_oferta = 'especial' WHERE id = 48;
+UPDATE productos SET en_oferta = 1, descuento = 10, grupo_oferta = 'especial' WHERE id = 55;
+
+-- ---------------------------------------------------------------------------
+-- Contenido editable y secciones de ofertas
+-- ---------------------------------------------------------------------------
+-- Los textos que el administrador edita desde los lápices viven aquí. Si una
+-- clave no tiene fila, la página conserva su texto original. Las secciones son
+-- ilimitadas: el administrador puede crear, renombrar, ordenar y eliminar.
+DROP TABLE IF EXISTS `contenido_sitio`;
+CREATE TABLE IF NOT EXISTS `contenido_sitio` (
+  `clave` varchar(100) NOT NULL,
+  `valor` text NOT NULL,
+  `actualizado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`clave`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `secciones_oferta`;
+CREATE TABLE IF NOT EXISTS `secciones_oferta` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `clave` varchar(60) NOT NULL,
+  `etiqueta` varchar(60) DEFAULT NULL,
+  `titulo` varchar(120) NOT NULL,
+  `acento` varchar(120) DEFAULT NULL,
+  `descripcion` varchar(500) DEFAULT NULL,
+  `orden` int(11) NOT NULL DEFAULT 0,
+  `actualizado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_secciones_oferta_clave` (`clave`),
+  KEY `idx_secciones_oferta_orden` (`orden`,`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `secciones_oferta` (`clave`, `etiqueta`, `titulo`, `acento`, `descripcion`, `orden`) VALUES
+('semana', 'DESTACADAS', 'Ofertas', 'de la semana', 'Los favoritos del momento, con descuento durante esta semana.', 1),
+('educativo', 'PARA ESTUDIAR', 'Descuentos', 'educativos', 'Equipos pensados para clases, programación y trabajo académico.', 2),
+('especial', 'SELECCIÓN PREMIUM', 'Promociones', 'especiales', 'Oportunidades puntuales en equipos y accesorios de gama alta.', 3)
+ON DUPLICATE KEY UPDATE `clave` = VALUES(`clave`);

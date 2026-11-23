@@ -334,3 +334,248 @@
         transition: none;
     }
 }
+
+/* =========================================================
+   Edición ampliada: textos, tarjetas, secciones y producto
+   ========================================================= */
+
+/* El modal de producto necesita más ancho para las dos columnas. */
+.modal-editor-producto {
+    width: min(760px, calc(100vw - 24px));
+}
+
+.modal-editor-seccion {
+    width: min(620px, calc(100vw - 24px));
+}
+
+.modal-editor-visual .caja-editor-visual {
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+}
+
+.cuerpo-editor-visual {
+    display: grid;
+    gap: 14px;
+}
+
+.campos-editor-visual,
+.rejilla-campos-editor {
+    display: grid;
+    gap: 12px;
+}
+
+.rejilla-campos-editor {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.campo-editor-visual input[type="text"],
+.campo-editor-visual input[type="number"],
+.campo-editor-visual textarea,
+.campo-editor-visual select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #101010;
+    border: 1px solid #3a3a3a;
+    border-radius: var(--radio-chico, 8px);
+    color: var(--color-texto, #f5f5f5);
+    font-family: var(--fuente-interfaz, sans-serif);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.campo-editor-visual textarea {
+    min-height: 74px;
+    resize: vertical;
+}
+
+.campo-editor-visual input:focus,
+.campo-editor-visual textarea:focus,
+.campo-editor-visual select:focus {
+    border-color: var(--color-acento, #ff0033);
+    outline: 2px solid rgb(255 0 51 / 22%);
+    outline-offset: 1px;
+}
+
+.campo-archivo-editor[hidden] {
+    display: none !important;
+}
+
+.fila-checks-editor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 12px;
+    background: #101010;
+    border: 1px solid #2f2f2f;
+    border-radius: var(--radio-chico, 8px);
+}
+
+.fila-checks-editor label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #dddddd;
+    font-family: var(--fuente-interfaz, sans-serif);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.fila-checks-editor input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-acento, #ff0033);
+}
+
+.subtitulo-editor-visual {
+    margin: 0 0 8px;
+    color: #ffffff;
+    font-family: var(--fuente-interfaz, sans-serif);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.bloque-imagen-editor {
+    display: grid;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid #2f2f2f;
+}
+
+.imagen-previa-producto {
+    display: block;
+    width: 100%;
+    max-height: 220px;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: #0b0b0b;
+    border: 1px solid var(--vidrio-borde, rgb(255 255 255 / 9%));
+    border-radius: var(--radio-medio, 14px);
+}
+
+.imagen-previa-producto[hidden] {
+    display: none !important;
+}
+
+.nombre-previa-producto,
+.nota-editor-visual {
+    margin: 0;
+    color: var(--color-atenuado, #a3a3a3);
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.nota-editor-visual[hidden] {
+    display: none !important;
+}
+
+.pie-editor-seccion {
+    align-items: center;
+}
+
+.espaciador-editor {
+    flex: 1;
+}
+
+.boton-editor-eliminar {
+    background: #2a1014;
+    border: 1px solid #7a1b28;
+    color: #ff8b99;
+}
+
+.boton-editor-eliminar:hover {
+    border-color: #ff0033;
+    color: #ffffff;
+}
+
+.boton-editor-eliminar[hidden] {
+    display: none !important;
+}
+
+/* Botón "Nueva sección" en el encabezado de Ofertas. */
+.boton-nueva-seccion {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 5;
+    padding: 9px 14px;
+    background: #151515;
+    border: 1px solid #3a3a3a;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: var(--fuente-interfaz, sans-serif);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.boton-nueva-seccion:hover,
+.boton-nueva-seccion:focus-visible {
+    border-color: var(--color-acento, #ff0033);
+    transform: translateY(-1px);
+}
+
+/* El lápiz de la tarjeta de producto: visible siempre, sin abrir la ficha. */
+.lapiz-tarjeta-producto {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 7;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    padding: 0;
+    background: rgb(12 12 12 / 88%);
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 50%;
+    color: #ffffff;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.lapiz-tarjeta-producto svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.lapiz-tarjeta-producto:hover,
+.lapiz-tarjeta-producto:focus-visible {
+    background: var(--color-acento, #ff0033);
+    border-color: var(--color-acento, #ff0033);
+    transform: scale(1.08);
+}
+
+/* En el encabezado de una sección de ofertas el lápiz no debe tapar el texto. */
+.encabezado-grupo-ofertas {
+    position: relative;
+}
+
+.encabezado-grupo-ofertas .boton-lapiz-visual {
+    bottom: auto;
+    top: 8px;
+}
+
+@media (max-width: 640px) {
+    .rejilla-campos-editor {
+        grid-template-columns: 1fr;
+    }
+
+    .boton-nueva-seccion {
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .encabezado-grupo-ofertas .boton-lapiz-visual {
+        top: auto;
+        bottom: 8px;
+    }
+}

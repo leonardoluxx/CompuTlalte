@@ -290,6 +290,8 @@ if ($accion === "instalar" && !$fallo_conexion) {
         // petición vuelva a validar el esquema sobre la base recién importada.
         @unlink(__DIR__ . "/.esquema_seguridad_ok");
         @unlink(__DIR__ . "/.esquema_seguridad_v2");
+        @unlink(__DIR__ . "/.esquema_seguridad_v3");
+        @unlink(__DIR__ . "/.esquema_seguridad_v4");
 
         // El esquema de seguridad (columnas de la recuperación de contraseña
         // e índices) se aplica aquí mismo: así la base queda completa al

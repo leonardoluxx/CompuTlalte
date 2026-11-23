@@ -6,6 +6,261 @@
 
 declare(strict_types=1);
 
+// Secciones visibles de la página de ofertas. Cualquier valor desconocido
+// se guarda como vacío y la tienda lo coloca en Ofertas de la semana.
+function normalizar_grupo_oferta($valor): string
+{
+    $grupo = strtolower(trim((string) $valor));
+    $grupo = (string) preg_replace("/[^a-z0-9_-]+/", "-", $grupo);
+    $grupo = trim($grupo, "-");
+    return substr($grupo, 0, 60);
+}
+
+// Claves de texto que el editor visual puede modificar. La lista blanca vive
+// en el servidor para que nadie pueda escribir configuraciones arbitrarias.
+function claves_contenido_validas(): array
+{
+    return [
+        "inicio.hero.titulo",
+        "inicio.hero.subtitulo",
+        "inicio.hero.descripcion",
+        "inicio.hero.boton",
+        "inicio.computadoras.titulo",
+        "inicio.computadoras.acento",
+        "inicio.computadoras.descripcion",
+        "accesorios.hero.titulo",
+        "accesorios.hero.subtitulo",
+        "accesorios.hero.descripcion",
+        "accesorios.hero.boton",
+        "accesorios.titulo",
+        "accesorios.acento",
+        "accesorios.descripcion",
+        "ofertas.hero.etiqueta",
+        "ofertas.hero.titulo",
+        "ofertas.hero.descripcion",
+        "ofertas.hero.boton",
+        "ofertas.intro.etiqueta",
+        "ofertas.intro.titulo",
+        "ofertas.intro.acento",
+        "ofertas.intro.descripcion"
+    ];
+}
+
+// Textos editables guardados en la base. Sin fila guardada, la página
+// conserva el texto original del diseño.
+function obtener_contenido_sitio(mysqli $bd): array
+{
+    $contenido = [];
+    try {
+        $resultado = $bd->query("SELECT clave, valor FROM contenido_sitio");
+        while ($fila = $resultado->fetch_assoc()) {
+            $contenido[(string) $fila["clave"]] = (string) $fila["valor"];
+        }
+    } catch (Throwable $e) {
+        return [];
+    }
+    return $contenido;
+}
+
+// Secciones de la página de ofertas, en el orden que decidió el admin.
+function obtener_secciones_oferta(mysqli $bd): array
+{
+    $secciones = [];
+    try {
+        $resultado = $bd->query(
+            "SELECT id, clave, etiqueta, titulo, acento, descripcion, orden
+             FROM secciones_oferta ORDER BY orden, id"
+        );
+        while ($fila = $resultado->fetch_assoc()) {
+            $secciones[] = [
+                "id" => (int) $fila["id"],
+                "clave" => (string) $fila["clave"],
+                "etiqueta" => (string) ($fila["etiqueta"] ?? ""),
+                "titulo" => (string) $fila["titulo"],
+                "acento" => (string) ($fila["acento"] ?? ""),
+                "descripcion" => (string) ($fila["descripcion"] ?? ""),
+                "orden" => (int) $fila["orden"]
+            ];
+        }
+    } catch (Throwable $e) {
+        return [];
+    }
+    return $secciones;
+}
+
+// Guarda un lote de textos. Devuelve cuántas claves se aplicaron.
+function guardar_contenido_sitio(mysqli $bd, array $cambios): int
+{
+    $validas = array_flip(claves_contenido_validas());
+    $guardar = $bd->prepare(
+        "INSERT INTO contenido_sitio (clave, valor) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE valor = VALUES(valor), actualizado = CURRENT_TIMESTAMP"
+    );
+    $aplicadas = 0;
+
+    foreach ($cambios as $clave => $valor) {
+        if (!isset($validas[$clave])) {
+            continue;
+        }
+        $texto = trim((string) $valor);
+        if (strlen($texto) > 5000) {
+            $texto = substr($texto, 0, 5000);
+        }
+        $guardar->bind_param("ss", $clave, $texto);
+        $guardar->execute();
+        $aplicadas++;
+    }
+
+    $guardar->close();
+    if ($aplicadas === 0) {
+        throw new RuntimeException("No hay textos válidos para guardar.");
+    }
+    return $aplicadas;
+}
+
+// Convierte un nombre visible en una clave segura para una sección nueva.
+function slug_seccion_oferta(string $texto): string
+{
+    $mapa = [
+        "á" => "a", "à" => "a", "ä" => "a", "â" => "a", "ã" => "a",
+        "é" => "e", "è" => "e", "ë" => "e", "ê" => "e",
+        "í" => "i", "ì" => "i", "ï" => "i", "î" => "i",
+        "ó" => "o", "ò" => "o", "ö" => "o", "ô" => "o", "õ" => "o",
+        "ú" => "u", "ù" => "u", "ü" => "u", "û" => "u",
+        "ñ" => "n", "ç" => "c",
+        "Á" => "a", "À" => "a", "Ä" => "a", "Â" => "a", "Ã" => "a",
+        "É" => "e", "È" => "e", "Ë" => "e", "Ê" => "e",
+        "Í" => "i", "Ì" => "i", "Ï" => "i", "Î" => "i",
+        "Ó" => "o", "Ò" => "o", "Ö" => "o", "Ô" => "o", "Õ" => "o",
+        "Ú" => "u", "Ù" => "u", "Ü" => "u", "Û" => "u",
+        "Ñ" => "n", "Ç" => "c"
+    ];
+    $slug = strtolower(strtr($texto, $mapa));
+    $slug = trim((string) preg_replace("/[^a-z0-9]+/", "-", $slug), "-");
+    return substr($slug !== "" ? $slug : "seccion", 0, 48);
+}
+
+// Aplica una propuesta de contenido aprobada (o un cambio directo del admin).
+// Las acciones de secciones incluyen crear, renombrar y eliminar; al eliminar
+// se reasignan las ofertas a otra sección para no dejar productos huérfanos.
+function aplicar_cambios_contenido(mysqli $bd, array $paquete): void
+{
+    $accion = (string) ($paquete["accion"] ?? "");
+    $datos = is_array($paquete["datos"] ?? null) ? $paquete["datos"] : [];
+
+    if ($accion === "textos") {
+        guardar_contenido_sitio($bd, $datos);
+        return;
+    }
+
+    if ($accion === "seccion_guardar") {
+        $id = (int) ($datos["id"] ?? 0);
+        $titulo = trim((string) ($datos["titulo"] ?? ""));
+        if ($id <= 0 || $titulo === "") {
+            throw new RuntimeException("La sección necesita un título.");
+        }
+        $etiqueta = substr(trim((string) ($datos["etiqueta"] ?? "")), 0, 60);
+        $acento = substr(trim((string) ($datos["acento"] ?? "")), 0, 120);
+        $descripcion = substr(trim((string) ($datos["descripcion"] ?? "")), 0, 500);
+        $consulta = $bd->prepare(
+            "UPDATE secciones_oferta SET etiqueta = ?, titulo = ?, acento = ?, descripcion = ? WHERE id = ?"
+        );
+        $consulta->bind_param("ssssi", $etiqueta, $titulo, $acento, $descripcion, $id);
+        $consulta->execute();
+        if ($consulta->affected_rows === 0) {
+            $existe = $bd->prepare("SELECT id FROM secciones_oferta WHERE id = ?");
+            $existe->bind_param("i", $id);
+            $existe->execute();
+            if (!$existe->get_result()->fetch_assoc()) {
+                $existe->close();
+                $consulta->close();
+                throw new RuntimeException("Esa sección ya no existe.");
+            }
+            $existe->close();
+        }
+        $consulta->close();
+        return;
+    }
+
+    if ($accion === "seccion_crear") {
+        $titulo = trim((string) ($datos["titulo"] ?? ""));
+        if ($titulo === "") {
+            throw new RuntimeException("La nueva sección necesita un título.");
+        }
+        $etiqueta = substr(trim((string) ($datos["etiqueta"] ?? "")), 0, 60);
+        $acento = substr(trim((string) ($datos["acento"] ?? "")), 0, 120);
+        $descripcion = substr(trim((string) ($datos["descripcion"] ?? "")), 0, 500);
+        $base = slug_seccion_oferta($titulo . " " . $acento);
+        $clave = $base;
+        $intento = 2;
+        while (true) {
+            $existe = $bd->prepare("SELECT id FROM secciones_oferta WHERE clave = ? LIMIT 1");
+            $existe->bind_param("s", $clave);
+            $existe->execute();
+            $duplicada = $existe->get_result()->fetch_assoc();
+            $existe->close();
+            if (!$duplicada) {
+                break;
+            }
+            $clave = substr($base, 0, 55) . "-" . $intento;
+            $intento++;
+        }
+        $orden = (int) ($bd->query("SELECT COALESCE(MAX(orden), 0) + 1 AS siguiente FROM secciones_oferta")->fetch_assoc()["siguiente"] ?? 1);
+        $insertar = $bd->prepare(
+            "INSERT INTO secciones_oferta (clave, etiqueta, titulo, acento, descripcion, orden) VALUES (?, ?, ?, ?, ?, ?)"
+        );
+        $insertar->bind_param("sssssi", $clave, $etiqueta, $titulo, $acento, $descripcion, $orden);
+        $insertar->execute();
+        $insertar->close();
+        return;
+    }
+
+    if ($accion === "seccion_eliminar") {
+        $id = (int) ($datos["id"] ?? 0);
+        $total = (int) ($bd->query("SELECT COUNT(*) AS total FROM secciones_oferta")->fetch_assoc()["total"] ?? 0);
+        if ($total <= 1) {
+            throw new RuntimeException("Debe quedar al menos una sección de ofertas.");
+        }
+        $consulta = $bd->prepare("SELECT clave FROM secciones_oferta WHERE id = ? LIMIT 1");
+        $consulta->bind_param("i", $id);
+        $consulta->execute();
+        $seccion = $consulta->get_result()->fetch_assoc();
+        $consulta->close();
+        if (!$seccion) {
+            throw new RuntimeException("Esa sección ya no existe.");
+        }
+        $otra = $bd->query("SELECT clave FROM secciones_oferta WHERE id <> " . $id . " ORDER BY orden, id LIMIT 1");
+        $clave_destino = (string) ($otra->fetch_assoc()["clave"] ?? "");
+        if ($clave_destino !== "") {
+            $mover = $bd->prepare("UPDATE productos SET grupo_oferta = ? WHERE grupo_oferta = ?");
+            $mover->bind_param("ss", $clave_destino, $seccion["clave"]);
+            $mover->execute();
+            $mover->close();
+        }
+        $borrar = $bd->prepare("DELETE FROM secciones_oferta WHERE id = ?");
+        $borrar->bind_param("i", $id);
+        $borrar->execute();
+        $borrar->close();
+        return;
+    }
+
+    if ($accion === "seccion_orden") {
+        $ids = array_values(array_filter(array_map("intval", (array) ($datos["ids"] ?? [])), function ($id) {
+            return $id > 0;
+        }));
+        $actualizar = $bd->prepare("UPDATE secciones_oferta SET orden = ? WHERE id = ?");
+        foreach ($ids as $indice => $id) {
+            $orden = $indice + 1;
+            $actualizar->bind_param("ii", $orden, $id);
+            $actualizar->execute();
+        }
+        $actualizar->close();
+        return;
+    }
+
+    throw new RuntimeException("Cambio de contenido no reconocido.");
+}
+
 // Convierte una fila de la BD al formato del frontend.
 // $resenas trae el conteo y promedio REALES de la tabla resenas_productos
 // (agrupados por producto_id); las reseñas nunca se inventan en el código.
@@ -20,6 +275,10 @@ function adaptar_producto(array $fila, array $especificaciones, array $imagenes,
     $precio_venta = $descuento > 0
         ? round($precio_lista * (1 - $descuento / 100), 2)
         : $precio_lista;
+    $grupo_oferta = normalizar_grupo_oferta($fila["grupo_oferta"] ?? "");
+    if ($descuento > 0 && $grupo_oferta === "") {
+        $grupo_oferta = "semana";
+    }
 
     $resenas_producto = $resenas[(int) $fila["id"]] ?? null;
 
@@ -46,9 +305,11 @@ function adaptar_producto(array $fila, array $especificaciones, array $imagenes,
         "precioLista" => $precio_lista,
         "descuento" => $descuento,
         "precioVenta" => $precio_venta,
+        "grupoOferta" => $grupo_oferta,
         "oferta" => [
             "activa" => ((int) ($fila["en_oferta"] ?? 0)) === 1,
-            "descuento" => $descuento
+            "descuento" => $descuento,
+            "grupo" => $grupo_oferta
         ],
         "descripcionLarga" => (string) ($fila["descripcion"] ?? ""),
         "especificacionesCortas" => (string) ($fila["descripcion_corta"] ?? ""),
@@ -257,10 +518,27 @@ function aplicar_cambios_producto(mysqli $bd, int $id, array $cambios): void
 
     if (array_key_exists("oferta", $cambios) && is_array($cambios["oferta"])) {
         $oferta = $cambios["oferta"];
-        $asignaciones[] = "en_oferta = ?, descuento = ?";
-        $tipos .= "ii";
-        $valores[] = !empty($oferta["activa"]) ? 1 : 0;
+        $activa = !empty($oferta["activa"]);
+        $grupo = normalizar_grupo_oferta($cambios["grupoOferta"] ?? ($oferta["grupo"] ?? ""));
+        if ($activa && $grupo === "") {
+            // El editor general del producto no envía la sección: se conserva
+            // la que ya tenía para no moverla de lugar sin querer.
+            $consulta_grupo = $bd->prepare("SELECT grupo_oferta FROM productos WHERE id = ? LIMIT 1");
+            $consulta_grupo->bind_param("i", $id);
+            $consulta_grupo->execute();
+            $grupo_actual = (string) ($consulta_grupo->get_result()->fetch_assoc()["grupo_oferta"] ?? "");
+            $consulta_grupo->close();
+            $grupo = normalizar_grupo_oferta($grupo_actual) ?: "semana";
+        }
+        $asignaciones[] = "en_oferta = ?, descuento = ?, grupo_oferta = ?";
+        $tipos .= "iis";
+        $valores[] = $activa ? 1 : 0;
         $valores[] = min(95, max(0, (int) ($oferta["descuento"] ?? 0)));
+        $valores[] = $activa ? $grupo : null;
+    } elseif (array_key_exists("grupoOferta", $cambios)) {
+        $asignaciones[] = "grupo_oferta = ?";
+        $tipos .= "s";
+        $valores[] = normalizar_grupo_oferta($cambios["grupoOferta"]) ?: null;
     }
 
     if (array_key_exists("disponible", $cambios)) {
@@ -424,7 +702,9 @@ function datos_para_frontend_ligero(mysqli $bd): array
         "solicitudes" => [],
         "bitacora" => [],
         "resenasSitio" => ["promedio" => 0, "total" => 0, "lista" => []],
-        "resenasProductos" => ["total" => 0, "lista" => []]
+        "resenasProductos" => ["total" => 0, "lista" => []],
+        "contenido" => obtener_contenido_sitio($bd),
+        "seccionesOferta" => obtener_secciones_oferta($bd)
     ];
 
     // Imágenes configurables de la tienda (portada y secciones).
@@ -466,6 +746,40 @@ function datos_para_frontend_ligero(mysqli $bd): array
     }
 
     return $datos;
+}
+
+// Convierte una solicitud de la BD al formato que dibuja el panel. Incluye
+// "antes" y "despues" ya separados para que las propuestas de productos y de
+// contenido muestren exactamente qué va a cambiar.
+function normalizar_solicitud(array $fila): array
+{
+    $paquete = json_decode((string) $fila["cambios"], true);
+    $paquete = is_array($paquete) ? $paquete : [];
+    $diff = is_array($paquete["diff"] ?? null) ? $paquete["diff"] : [];
+    $antes = [];
+    $despues = [];
+    foreach ($diff as $campo => $valores) {
+        if (!is_array($valores)) {
+            continue;
+        }
+        $antes[$campo] = $valores["antes"] ?? null;
+        $despues[$campo] = $valores["despues"] ?? null;
+    }
+
+    return [
+        "id" => (int) $fila["id"],
+        "productoId" => $fila["producto_id"] !== null ? (int) $fila["producto_id"] : null,
+        "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
+        "cambios" => $paquete,
+        "antes" => $antes,
+        "despues" => $despues,
+        "resumen" => (string) ($fila["resumen"] ?? ""),
+        "estado" => (string) $fila["estado"],
+        "autor" => (string) ($fila["autor"] ?? "Usuario"),
+        "fecha" => (string) $fila["creado"],
+        "resueltoPor" => (string) ($fila["resuelto_por"] ?? ""),
+        "fechaResolucion" => (string) ($fila["fecha_resolucion"] ?? "")
+    ];
 }
 
 // Datos de gestión para el panel (usuarios, solicitudes, bitácora y reseñas).
@@ -516,18 +830,7 @@ function datos_gestion(mysqli $bd): array
          ORDER BY s.estado = 'pendiente' DESC, s.id DESC"
     );
     while ($fila = $resultado->fetch_assoc()) {
-        $datos["solicitudes"][] = [
-            "id" => (int) $fila["id"],
-            "productoId" => $fila["producto_id"] !== null ? (int) $fila["producto_id"] : null,
-            "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
-            "cambios" => json_decode((string) $fila["cambios"], true) ?: new stdClass(),
-            "resumen" => (string) ($fila["resumen"] ?? ""),
-            "estado" => (string) $fila["estado"],
-            "autor" => (string) ($fila["autor"] ?? "Usuario"),
-            "fecha" => (string) $fila["creado"],
-            "resueltoPor" => (string) ($fila["resuelto_por"] ?? ""),
-            "fechaResolucion" => (string) ($fila["fecha_resolucion"] ?? "")
-        ];
+        $datos["solicitudes"][] = normalizar_solicitud($fila);
     }
 
     $resultado = $bd->query(
@@ -625,7 +928,9 @@ function datos_para_frontend(mysqli $bd): array
         "solicitudes" => [],
         "bitacora" => [],
         "resenasSitio" => ["promedio" => 0, "total" => 0, "lista" => []],
-        "resenasProductos" => ["total" => 0, "lista" => []]
+        "resenasProductos" => ["total" => 0, "lista" => []],
+        "contenido" => obtener_contenido_sitio($bd),
+        "seccionesOferta" => obtener_secciones_oferta($bd)
     ];
 
     // Imágenes configurables de la tienda (portada y secciones).
@@ -691,18 +996,7 @@ function datos_para_frontend(mysqli $bd): array
              ORDER BY s.estado = 'pendiente' DESC, s.id DESC"
         );
         while ($fila = $resultado->fetch_assoc()) {
-            $datos["solicitudes"][] = [
-                "id" => (int) $fila["id"],
-                "productoId" => $fila["producto_id"] !== null ? (int) $fila["producto_id"] : null,
-                "productoNombre" => (string) ($fila["producto_nombre"] ?? "Producto"),
-                "cambios" => json_decode((string) $fila["cambios"], true) ?: new stdClass(),
-                "resumen" => (string) ($fila["resumen"] ?? ""),
-                "estado" => (string) $fila["estado"],
-                "autor" => (string) ($fila["autor"] ?? "Usuario"),
-                "fecha" => (string) $fila["creado"],
-                "resueltoPor" => (string) ($fila["resuelto_por"] ?? ""),
-                "fechaResolucion" => (string) ($fila["fecha_resolucion"] ?? "")
-            ];
+            $datos["solicitudes"][] = normalizar_solicitud($fila);
         }
 
         $resultado = $bd->query(
