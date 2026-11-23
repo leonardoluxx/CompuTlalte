@@ -1430,7 +1430,7 @@
             return;
         }
 
-        avisar(`Margen global actualizado a ${resultado.config.margenGlobal} %. Los precios ya se recalcularon.`, "exito");
+        avisar(`Margen global actualizado a ${resultado.margenGlobal} %. Los precios ya se recalcularon.`, "exito");
         renderAjustes();
     });
 
@@ -1835,7 +1835,7 @@
             return;
         }
 
-        const idEditado = fueNuevo ? resultado.producto.id : productoEnEdicion.id;
+        const idEditado = fueNuevo ? resultado.id : productoEnEdicion.id;
         cerrarEditor();
 
         if (fueNuevo) {

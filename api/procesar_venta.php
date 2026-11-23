@@ -59,6 +59,11 @@ try {
          FROM productos WHERE id = ? LIMIT 1 FOR UPDATE"
     );
 
+    // Cantidad acumulada por producto: si el carrito trae el mismo artículo
+    // en varias líneas (por ejemplo, con personalizaciones distintas), el
+    // stock se valida contra la suma y nunca se puede vender de más.
+    $solicitado = [];
+
     foreach ($items as $item) {
         $id = (int) ($item["id"] ?? 0);
         $cantidad = min(99, max(1, (int) ($item["cantidad"] ?? 1)));
@@ -75,10 +80,13 @@ try {
         if (!$producto) {
             throw new RuntimeException("Un producto del carrito ya no existe.");
         }
-        if ($producto["estado"] === "eliminado") {
+        // Solo se vende lo que está activo: un producto eliminado o marcado
+        // como agotado (aunque conserve existencias) no debe poder comprarse.
+        if ($producto["estado"] !== "activo") {
             throw new RuntimeException("\"{$producto["nombre"]}\" ya no está disponible.");
         }
-        if ((int) $producto["stock"] < $cantidad) {
+        $solicitado[$id] = ($solicitado[$id] ?? 0) + $cantidad;
+        if ((int) $producto["stock"] < $solicitado[$id]) {
             throw new RuntimeException("No hay stock suficiente de \"{$producto["nombre"]}\".");
         }
 
@@ -187,7 +195,7 @@ try {
          VALUES (?, ?, ?, ?, ?)"
     );
     $actualizar_stock = $bd->prepare(
-        "UPDATE productos SET stock = stock - ? WHERE id = ?"
+        "UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?"
     );
     $marcar_agotado = $bd->prepare(
         "UPDATE productos SET estado = 'agotado' WHERE id = ? AND stock = 0 AND estado = 'activo'"
@@ -197,8 +205,14 @@ try {
         $insertar_detalle->bind_param("iisid", $venta_id, $id, $nombre_snapshot, $cantidad, $unitario);
         $insertar_detalle->execute();
 
-        $actualizar_stock->bind_param("ii", $cantidad, $id);
+        $actualizar_stock->bind_param("iii", $cantidad, $id, $cantidad);
         $actualizar_stock->execute();
+
+        // Si la fila cambió entre la lectura y la escritura, se revierte
+        // toda la venta en lugar de dejar existencias negativas.
+        if ($actualizar_stock->affected_rows !== 1) {
+            throw new RuntimeException("No hay stock suficiente de \"$nombre_snapshot\".");
+        }
 
         $marcar_agotado->bind_param("i", $id);
         $marcar_agotado->execute();

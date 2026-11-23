@@ -1547,10 +1547,11 @@ botonesEstrellasResena.forEach((boton) => {
 });
 if (formResena) formResena.addEventListener("submit", enviarResena);
 // Presenta el catálogo cuando el documento ya está listo para usarse.
-// La categoría inicial es Juegos para no mostrar todo el catálogo de golpe.
+// Sin filtros activos se muestran todas las computadoras; si la URL trae
+// un ancla de categoría (#juegos, #desarrollo, #uso-diario) se aplica esa.
 if (rejillaComputadoras) {
     if (!aplicarCategoriaDesdeHash()) {
-        aplicarCategoriaComputadoras("Juegos");
+        mostrarComputadoras();
     }
 }
 if (rejillaAccesorios) {
