@@ -555,7 +555,9 @@ button { color: inherit; font: inherit; }
 /* Panel de filtros */
 .panel-filtros {
     position: sticky;
-    top: 24px;
+    /* Debajo de la barra fija: así el panel nunca queda tapado (misma
+       lógica que la landing, css/styles.css). */
+    top: calc(var(--alto-encabezado) + 16px);
     grid-area: filtros;
     align-self: start;
     min-width: 0;
